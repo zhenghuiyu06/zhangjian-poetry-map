@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通吕运河 · 张謇时空罗盘</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --zhu: #A0522D;
+  --hong: #6B1A1A;
+  --jin: #C5A028;
+  --jin-light: rgba(197,160,40,0.15);
+  --jin-border: rgba(197,160,40,0.25);
+  --mi: #F2EAD8;
+  --mi-dim: rgba(242,234,216,0.55);
+  --mi-faint: rgba(242,234,216,0.25);
+  --panel-bg: #160E06;
+  --card-bg: rgba(16,9,4,0.97);
+  --panel-w: 288px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Noto Serif SC', 'KaiTi', 'STKaiti', '楷体', serif;
+  display: flex;
+  background: #0D0806;
+}
+
+/* ── LEFT PANEL ── */
+#panel {
+  width: var(--panel-w);
+  min-width: var(--panel-w);
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--jin-border);
+  z-index: 900;
+  position: relative;
+}
+
+/* decorative top corner lines */
+#panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
+
+.panel-head {
+  padding: 28px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--jin-border);
+  position: relative;
+}
+
+.panel-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 5px;
+  line-height: 1.5;
+}
+
+.panel-sub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 3px;
+}
+
+.panel-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 10px;
+}
+.panel-divider span {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+.panel-divider::before,
+.panel-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--jin-border);
+}
+
+#poem-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 14px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.2) transparent;
+}
+#poem-list::-webkit-scrollbar { width: 3px; }
+#poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.2); border-radius: 2px; }
+
+.poem-card {
+  border: 1px solid var(--jin-border);
+  border-radius: 3px;
+  padding: 13px 15px;
+  margin-bottom: 9px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+.poem-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: var(--hong);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.25s;
+}
+.poem-card:hover { background: var(--jin-light); border-color: rgba(197,160,40,0.4); }
+.poem-card.active { background: var(--jin-light); border-color: rgba(197,160,40,0.5); }
+.poem-card:hover::after, .poem-card.active::after { transform: scaleY(1); }
+
+.poem-seq {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.poem-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mi);
+  letter-spacing: 3px;
+  transition: color 0.2s;
+}
+.poem-card.active .poem-name { color: var(--jin); }
+.poem-place {
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 1px;
+}
+.poem-place::before { content: '▪ '; }
+
+/* fly arrow indicator */
+.poem-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--jin);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.poem-card:hover .poem-arrow, .poem-card.active .poem-arrow { opacity: 1; }
+
+.panel-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--jin-border);
+  font-size: 10px;
+  color: var(--mi-faint);
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ── MAP ── */
+#map-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Leaflet tile sepia filter for "古地图" feel */
+.leaflet-tile-pane { filter: sepia(0.3) saturate(0.8) brightness(0.9); }
+
+/* ── DETAIL CARD (slides up from bottom, draggable resize) ── */
+#detail {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(20,10,6,0.88);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border-top: 1px solid var(--jin-border);
+  z-index: 800;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4,0,0.2,1);
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+}
+#detail.open { transform: translateY(0); }
+
+/* ── Resize Handle (drag bar at top of detail card) ── */
+.resize-handle {
+  height: 16px;
+  cursor: ns-resize;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  z-index: 10;
+  position: relative;
+  margin-top: -1px;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 16px; right: 16px;
+  top: 50%; transform: translateY(-50%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197,160,40,0.2), transparent);
+  transition: background 0.2s;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: rgba(197,160,40,0.08);
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
+.resize-grip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+.resize-grip span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(197,160,40,0.2);
+  transition: all 0.2s;
+}
+.resize-handle:hover .resize-grip span,
+.resize-handle.dragging .resize-grip span {
+  background: var(--jin);
+  width: 36px;
+}
+
+/* top decorative line */
+#detail::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jin), var(--hong), transparent);
+  flex-shrink: 0;
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 10px;
+  border-bottom: 1px solid var(--jin-border);
+  flex-shrink: 0;
+}
+.detail-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 3px;
+}
+.detail-loc {
+  font-size: 11px;
+  color: var(--mi-dim);
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
+.close-btn {
+  background: none;
+  border: 1px solid var(--jin-border);
+  color: var(--mi-dim);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+.close-btn:hover { border-color: var(--jin); color: var(--jin); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--jin-border);
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--mi-faint);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 9px 14px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--mi); }
+.tab.on {
+  color: #D4AF37;
+  border-bottom-color: #D4AF37;
+  font-weight: 700;
+}
+
+/* ── TAB BODY ── */
+.detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.15) transparent;
+}
+
+.pane { display: none; }
+.pane.on { display: block; }
+
+.placeholder-box {
+  width: 100%;
+  height: 160px;
+  border: 1px dashed rgba(197,160,40,0.25);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mi-faint);
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+/* video tab */
+.video-ratio {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: #000;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.video-ratio iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* audio tab */
+.audio-wrap {
+  background: rgba(197,160,40,0.05);
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  padding: 20px;
+}
+.audio-label {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.audio-wrap audio {
+  width: 100%;
+  accent-color: var(--jin);
+}
+
+/* graph tab — ECharts container */
+.graph-wrap {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  background: rgba(10,6,3,0.6);
+}
+.graph-wrap canvas {
+  display: block;
+}
+
+/* graph image (pre-made knowledge graph PNG) */
+.graph-img-wrap {
+  margin-top: 14px;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(10,6,3,0.4);
+}
+.graph-img-wrap img {
+  width: 100%;
+  display: block;
+}
+.graph-img-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid rgba(197,160,40,0.12);
+}
+
+/* poem lines under graph */
+.poem-lines {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-left: 2px solid var(--hong);
+  background: rgba(107,26,26,0.07);
+  position: relative;
+}
+.poem-lines-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.poem-lines-text {
+  font-size: 15px;
+  color: #E0D6C8;
+  line-height: 2.5;
+  letter-spacing: 4px;
+}
+
+/* ── CUSTOM LEAFLET MARKER: 垂签 ── */
+.mk-tag {
+  position: relative;
+  width: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 6px rgba(107,26,26,0.5));
+  transition: filter 0.3s;
+}
+.mk-tag-body {
+  width: 36px;
+  height: 46px;
+  background: var(--hong, #6B1A1A);
+  border: 1.5px solid #C5A028;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.mk-tag-body::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(197,160,40,0.3);
+  border-radius: 2px 2px 0 0;
+  pointer-events: none;
+}
+.mk-tag-char {
+  font-family: 'Noto Serif SC', 'KaiTi', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #C5A028;
+  line-height: 1;
+  user-select: none;
+}
+.mk-tag-tip {
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #C5A028;
+  margin-top: -1px;
+}
+.mk-tag-hole {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(197,160,40,0.6);
+  border: 1px solid #C5A028;
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* active: glow + pulse ring */
+.mk-tag.lit {
+  filter: drop-shadow(0 0 10px rgba(197,160,40,0.7)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.mk-tag.lit .mk-tag-body {
+  background: #8B2500;
+  border-color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-char {
+  color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-tip {
+  border-top-color: #F2EAD8;
+}
+.mk-tag.lit::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(197,160,40,0.6);
+  animation: pulse-ring 1.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse-ring {
+  0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LEFT PANEL ══════════════ -->
+<div id="panel">
+  <div class="panel-head">
+    <div class="panel-title">张謇时空罗盘</div>
+    <div class="panel-sub">通吕运河 · 诗歌足迹</div>
+  </div>
+
+  <div class="panel-divider"><span>诗 卷</span></div>
+
+  <div id="poem-list">
+    <!-- JS rendered -->
+  </div>
+
+  <div class="panel-footer">点击诗题 · 循迹而往</div>
+</div>
+
+<!-- ══════════════ MAP ══════════════ -->
+<div id="map-wrap">
+  <div id="map"></div>
+
+  <!-- DETAIL CARD -->
+  <div id="detail">
+    <div class="resize-handle">
+      <div class="resize-grip"><span></span><span></span></div>
+    </div>
+    <div class="detail-head">
+      <div>
+        <div class="detail-title" id="d-title">—</div>
+        <div class="detail-loc" id="d-loc">—</div>
+      </div>
+      <button class="close-btn" id="close-btn">× 收 起</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="gph">知识图谱</button>
+      <button class="tab" data-tab="vid">视 频</button>
+      <button class="tab" data-tab="aud">音 频</button>
+    </div>
+
+    <div class="detail-body">
+      <div class="pane on" id="pane-gph">
+        <div class="graph-wrap" id="d-graph"></div>
+        <div class="graph-img-wrap" id="d-graph-img-wrap" style="display:none">
+          <div class="graph-img-label">图谱原图</div>
+          <img id="d-graph-img" src="" alt="知识图谱" />
+        </div>
+        <div class="poem-lines" id="d-lines">
+          <div class="poem-lines-label">诗 文</div>
+          <div class="poem-lines-text" id="d-lines-text"></div>
+        </div>
+      </div>
+      <div class="pane" id="pane-vid">
+        <div class="video-ratio" id="d-video"></div>
+      </div>
+      <div class="pane" id="pane-aud">
+        <div class="audio-wrap">
+          <div class="audio-label">相关音频</div>
+          <div id="d-audio"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   核心数据 —— 后续只需维护此数组
+   ══════════════════════════════════════════ */
+const POEMS = [
+  {
+    id: 1,
+    title: "《狼山三元宫近斥僧挽词》",
+    emoji: "🐺",
+    location: "狼山 · 南通",
+    lat: 31.94928,
+    lng: 120.88813,
+    lines: "山寺禅房列，三元长老尊。\n遗徒通世学，护佛广宗门。\n焚象衰时及。斋鱼俭德存。\n空堂照遗拂，江月白翻翻。",
+    videoUrl:   "",
+    videoFile:  "《狼山三元宫近圻僧挽词》/《狼山三元宫近圻僧挽词》.mp4",
+    audioUrl:   "《狼山三元宫近圻僧挽词》/《狼山三元宫近圻僧挽词》.wav",
+    graphImage: "《狼山三元宫近圻僧挽词》/《狼山三元宫近斥僧挽词》.png"
+  },
+  {
+    id: 2,
+    title: "《落日九月十五歸自吕四途中》",
+    emoji: "🌅",
+    location: "吕四 · 南通",
+    lat: 32.05992,
+    lng: 121.60266,
+    lines: "落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。",
+    videoUrl:   "",
+    videoFile:  "",
+    audioUrl:   "",
+    graphImage: ""
+  },
+  {
+    id: 3,
+    title: "《盆松》",
+    emoji: "🌲",
+    location: "常乐镇 · 海门",
+    lat: 31.9331,
+    lng: 121.2515,
+    lines: "山泽孤生种，谁将到此盆？\n青苍一撮土，蟠郁百年根。\n宿黛含霜气，创鳞见斧痕。\n等闲怜托处，梁栋与谁论。",
+    videoUrl:   "",
+    videoFile:  "盆松/盆松.mov",
+    audioUrl:   "盆松/盆松播客.wav",
+    graphImage: "盆松/盆松.png"
+  },
+  {
+    id: 4,
+    title: "《过排河观》",
+    emoji: "⛩",
+    location: "排河观 · 金沙镇 · 通州",
+    lat: 32.051,
+    lng: 121.095,
+    lines: "沧海成田后，蔚然一寺开。\n钟声随鸟远，河势趁林回。\n佛圯尘龛在，僧贫圭挫颓。\n兴衰何处问，夕暖上经台。",
+    videoUrl:   "",
+    videoFile:  "过排河观/过排河观.mp4",
+    audioUrl:   "过排河观/過排河觀.wav",
+    graphImage: "过排河观/过排河观.png"
+  },
+  {
+    id: 5,
+    title: "《千佛寺》",
+    emoji: "🙏",
+    location: "千佛寺 · 南通",
+    lat: 31.974351,
+    lng: 120.867435,
+    lines: "复泣回汀水一涯，招提是处并行查。\n烟寒荫霁繁茅屋，风静楸榆点暮鸦。\n衰草城边游客渡，夕阳野外病僧家。\n年年来去孤篷里，卧听钟声间晚笳。",
+    videoUrl:   "",
+    videoFile:  "千佛寺/千佛寺.mp4",
+    audioUrl:   "千佛寺/千佛寺.wav",
+    graphImage: "千佛寺/千佛寺.png"
+  },
+  {
+    id: 6,
+    title: "《八月十三夜曼寿堂看月》",
+    emoji: "🌙",
+    location: "曼寿堂 · 南通",
+    lat: 32.02,
+    lng: 120.87,
+    lines: "已自东天出，都疑下界新。\n未圆怜更好，独对故相亲。\n树镂移阴叶，波笼久坐巾。\n啼螀尔何意，宁伴倚阑人？",
+    videoUrl:   "",
+    videoFile:  "八月十三夜曼寿堂看月/八月十三夜曼寿堂看月.mp4",
+    audioUrl:   "八月十三夜曼寿堂看月/八月十三夜曼寿堂赏月.wav",
+    graphImage: "八月十三夜曼寿堂看月/八月十三夜曼寿堂看月.jpg"
+  },
+  {
+    id: 7,
+    title: "《金沙祭墓饮客沧园》",
+    emoji: "🎋",
+    location: "金沙 · 沧园 · 通州",
+    lat: 32.0787752,
+    lng: 121.0744572,
+    lines: "沧园栏楯尚清华，载槛重停隔水车。\n燕子不来春不住，龙孙方纵日方斜。\n荒疏江客调笙曲，辛苦张生课菊花。\n惆怅百年寒食节，冬青无恙几人家？",
+    videoUrl:   "",
+    videoFile:  "金沙祭墓饮客沧园/金沙祭墓饮客沧园.mp4",
+    audioUrl:   "金沙祭墓饮客沧园/金沙祭墓饮客沧园.wav",
+    graphImage: "金沙祭墓饮客沧园/金沙祭墓饮客沧园.jpg"
+  },
+  {
+    id: 8,
+    title: "《千龄观消寒第五集闻粤事稍平》",
+    emoji: "🍶",
+    location: "千龄观 · 南通",
+    lat: 32.005538,
+    lng: 120.885269,
+    lines: "未嫌寒气尚逡巡，泥饮连朝选主宾。\n小醉大醒悬酒户，遥开缓落衔花辰。\n相随少长兰亭集，渐次龙蛇桂海删。\n遗火春星看不厌，疏缝人语况濠濛。",
+    videoUrl:   "",
+    videoFile:  "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.mp4",
+    audioUrl:   "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.wav",
+    graphImage: "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.jpg"
+  },
+];
+
+/* ═══════ 汉字序号 ═══════ */
+const HAN = ['一','二','三','四','五','六','七','八','九','十',
+             '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
+
+/* ═══════ 地图初始化 ═══════ */
+const map = L.map('map', {
+  center: [31.97, 120.89],
+  zoom: 11,
+  zoomControl: true,
+  attributionControl: false
+});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18
+}).addTo(map);
+
+/* ═══════ 状态 ═══════ */
+let activeId  = null;
+let chartInstance = null;
+const markers = {};
+
+/* ═══════ 自定义标记图标：垂签 ═══════ */
+function mkIcon(lit, char) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="mk-tag${lit ? ' lit' : ''}">
+      <div class="mk-tag-hole"></div>
+      <div class="mk-tag-body">
+        <span class="mk-tag-char">${char || '詩'}</span>
+      </div>
+      <div class="mk-tag-tip"></div>
+    </div>`,
+    iconSize: [36, 60],
+    iconAnchor: [18, 56]
+  });
+}
+
+/* ═══════ 渲染左侧列表 ═══════ */
+const list = document.getElementById('poem-list');
+POEMS.forEach((p, i) => {
+  const el = document.createElement('div');
+  el.className = 'poem-card';
+  el.id = 'pc-' + p.id;
+  el.innerHTML = `
+    <div class="poem-seq">其${HAN[i]}</div>
+    <div class="poem-name">${p.title}</div>
+    <div class="poem-place">${p.location}</div>
+    <span class="poem-arrow">→</span>`;
+  el.addEventListener('click', () => flyToPoem(p));
+  list.appendChild(el);
+});
+
+/* ═══════ 取标记字符：优先使用 emoji 字段 ═══════ */
+function getChar(p) {
+  return p.emoji || p.title.replace(/[《》]/g, '')[0] || '詩';
+}
+
+/* ═══════ 添加地图标记 ═══════ */
+POEMS.forEach(p => {
+  const m = L.marker([p.lat, p.lng], { icon: mkIcon(false, getChar(p)) }).addTo(map);
+  m.on('click', () => openCard(p));
+  markers[p.id] = m;
+});
+
+/* ═══════ 点击左侧诗卡：飞行定位 ═══════ */
+function flyToPoem(p) {
+  setActivePoem(p.id);
+  map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 });
+  // 如果详情卡已打开，同步更新内容
+  if (document.getElementById('detail').classList.contains('open')) {
+    fillCard(p);
+  }
+}
+
+/* ═══════ 点击地图标记：打开卡片 ═══════ */
+function openCard(p) {
+  setActivePoem(p.id);
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+}
+
+/* ═══════ 设置当前激活诗歌 ═══════ */
+function setActivePoem(id) {
+  activeId = id;
+  document.querySelectorAll('.poem-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('pc-' + id)?.classList.add('active');
+  POEMS.forEach(p => markers[p.id]?.setIcon(mkIcon(p.id === id, getChar(p))));
+}
+
+/* ═══════ ECharts Graph 配置 ═══════ */
+function buildGraphOption(p) {
+  return {
+    backgroundColor: 'transparent',
+    animationDuration: 1200,
+    animationEasingUpdate: 'quinticInOut',
+    tooltip: {
+      trigger: 'item',
+      formatter: function(params) {
+        if (params.dataType === 'edge') {
+          return '<span style="color:#D4AF37;font-size:13px;letter-spacing:2px">' + (params.data.label || '') + '</span>';
+        }
+        return '<span style="color:#D4AF37;font-size:14px;font-weight:bold;letter-spacing:2px">' + params.name + '</span>';
+      },
+      backgroundColor: 'rgba(20,10,6,0.95)',
+      borderColor: 'rgba(212,175,55,0.4)',
+      borderWidth: 1,
+      textStyle: { color: '#E0D6C8', fontFamily: "'Noto Serif SC','KaiTi',serif", fontSize: 13 }
+    },
+    series: [{
+      type: 'graph',
+      layout: 'force',
+      roam: true,
+      draggable: true,
+      force: {
+        repulsion: 280,
+        edgeLength: [100, 180],
+        gravity: 0.06
+      },
+      emphasis: {
+        focus: 'adjacency',
+        lineStyle: { width: 3 },
+        itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' }
+      },
+      label: {
+        show: true,
+        position: 'bottom',
+        color: '#E0D6C8',
+        fontSize: 13,
+        fontWeight: 'bold',
+        fontFamily: "'Noto Serif SC','KaiTi',serif",
+        distance: 8,
+        letterSpacing: 2,
+        textShadowColor: 'rgba(0,0,0,0.6)',
+        textShadowBlur: 4
+      },
+      edgeLabel: {
+        show: true,
+        color: '#E0D6C8',
+        fontSize: 10,
+        fontWeight: 'bold',
+        fontFamily: "'Noto Serif SC','KaiTi',serif",
+        letterSpacing: 1,
+        textShadowColor: 'rgba(0,0,0,0.5)',
+        textShadowBlur: 3
+      },
+      edgeSymbol: ['none', 'arrow'],
+      edgeSymbolSize: 8,
+      lineStyle: {
+        color: 'rgba(224,214,200,0.45)',
+        width: 1.8,
+        curveness: 0.25
+      },
+      categories: [
+        { name: '作者', itemStyle: { color: '#D64545' }, symbol: 'diamond', symbolSize: 46,
+          label: { color: '#D4AF37', fontSize: 15, fontWeight: 700 } },
+        { name: '意象', itemStyle: { color: '#6B9B6A' }, symbol: 'circle', symbolSize: 28 },
+        { name: '情感', itemStyle: { color: '#E07B39' }, symbol: 'roundRect', symbolSize: 34 },
+        { name: '哲思', itemStyle: { color: '#8B7BBE' }, symbol: 'triangle', symbolSize: 32 }
+      ],
+      data: getGraphData(p),
+      links: getGraphLinks(p)
+    }]
+  };
+}
+
+function getGraphData(p) {
+  const base = [
+    { name: '张謇', category: 0, symbolSize: 52,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:15px;font-weight:bold">张謇</span><br><span style="color:#E0D6C8;font-size:12px">近代实业家·教育家</span>' } }
+  ];
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return base.concat([
+      { name: '三元宫', category: 1, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">三元宫</span><br><span style="color:#E0D6C8;font-size:12px">狼山古刹<br/>禅房山寺列</span>' } },
+      { name: '长老', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">长老</span><br><span style="color:#E0D6C8;font-size:12px">三元长老尊<br/>遗徒通世学</span>' } },
+      { name: '佛门', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛门</span><br><span style="color:#E0D6C8;font-size:12px">护佛广宗门</span>' } },
+{ name: '俭德', category: 3, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">俭德</span><br><span style="color:#E0D6C8;font-size:12px">斋鱼俭德存</span>' } },
+      { name: '江月', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江月</span><br><span style="color:#E0D6C8;font-size:12px">空堂照遗拂<br/>江月白翻翻</span>' } }
+    ]);
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return base.concat([
+      { name: '排河观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">排河观</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>蔚然一寺开</span>' } },
+      { name: '钟声', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声</span><br><span style="color:#E0D6C8;font-size:12px">钟声随鸟远<br/>悠远空灵</span>' } },
+      { name: '河势', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">河势</span><br><span style="color:#E0D6C8;font-size:12px">河势趁林回<br/>通吕运河蜿蜒</span>' } },
+      { name: '佛圯尘龛', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛圯尘龛</span><br><span style="color:#E0D6C8;font-size:12px">佛圯尘龛在<br/>僧贫圭挫颓</span>' } },
+      { name: '兴衰之叹', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兴衰之叹</span><br><span style="color:#E0D6C8;font-size:12px">兴衰何处问<br/>夕暖上经台</span>' } },
+      { name: '沧海桑田', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧海桑田</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>世事无常·时光流转</span>' } }
+    ]);
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return base.concat([
+      { name: '千龄观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千龄观</span><br><span style="color:#E0D6C8;font-size:12px">消寒第五集<br/>闻粤事稍平</span>' } },
+      { name: '泥饮连朝', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">泥饮连朝</span><br><span style="color:#E0D6C8;font-size:12px">未嫌寒气尚逡巡<br/>泥饮连朝选主宾</span>' } },
+      { name: '兰亭雅集', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兰亭雅集</span><br><span style="color:#E0D6C8;font-size:12px">相随少长兰亭集<br/>酒中聚友·以古为喻</span>' } },
+      { name: '粤事稍平', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">粤事稍平</span><br><span style="color:#E0D6C8;font-size:12px">渐次龙蛇桂海删<br/>岭南动乱渐息</span>' } },
+      { name: '春星遗火', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">春星遗火</span><br><span style="color:#E0D6C8;font-size:12px">遗火春星看不厌<br/>疏缝人语况濠濛</span>' } },
+      { name: '忧世情怀', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">忧世情怀</span><br><span style="color:#E0D6C8;font-size:12px">饮中闻时局<br/>杯酒难消家国忧</span>' } }
+    ]);
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return base.concat([
+      { name: '沧园', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧园</span><br><span style="color:#E0D6C8;font-size:12px">沧园栏楯尚清华<br/>载槛重停隔水车</span>' } },
+      { name: '燕子春暮', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">燕子春暮</span><br><span style="color:#E0D6C8;font-size:12px">燕子不来春不住<br/>春光将尽·燕归何处</span>' } },
+      { name: '龙孙斜日', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">龙孙斜日</span><br><span style="color:#E0D6C8;font-size:12px">龙孙方纵日方斜<br/>竹笋怒长·日影西沉</span>' } },
+      { name: '江客张生', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江客张生</span><br><span style="color:#E0D6C8;font-size:12px">荒疏江客调笙曲<br/>辛苦张生课菊花</span>' } },
+      { name: '寒食追思', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">寒食追思</span><br><span style="color:#E0D6C8;font-size:12px">惆怅百年寒食节<br/>祭墓思亲·百年惆怅</span>' } },
+      { name: '沧桑兴替', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧桑兴替</span><br><span style="color:#E0D6C8;font-size:12px">冬青无恙几人家<br/>物是人非·世事变迁</span>' } }
+    ]);
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return base.concat([
+      { name: '曼寿堂', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">曼寿堂</span><br><span style="color:#E0D6C8;font-size:12px">八月十三夜<br/>月下看月之所</span>' } },
+      { name: '未圆之月', category: 1, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">未圆之月</span><br><span style="color:#E0D6C8;font-size:12px">未圆怜更好<br/>将满未满·最是动人</span>' } },
+      { name: '树镂波笼', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">树镂波笼</span><br><span style="color:#E0D6C8;font-size:12px">树镂移阴叶<br/>波笼久坐巾</span>' } },
+      { name: '独对相亲', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">独对相亲</span><br><span style="color:#E0D6C8;font-size:12px">独对故相亲<br/>与月为友·清寂自得</span>' } },
+      { name: '啼螀倚阑', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">啼螀倚阑</span><br><span style="color:#E0D6C8;font-size:12px">啼螀尔何意<br/>宁伴倚阑人</span>' } },
+      { name: '月下哲思', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">月下哲思</span><br><span style="color:#E0D6C8;font-size:12px">已自东天出<br/>都疑下界新</span>' } }
+    ]);
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return base.concat([
+      { name: '千佛寺', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千佛寺</span><br><span style="color:#E0D6C8;font-size:12px">招提是处并行查<br/>南通名刹·千佛之寺</span>' } },
+      { name: '回汀烟寒', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">回汀烟寒</span><br><span style="color:#E0D6C8;font-size:12px">烟寒荫霁繁茅屋<br/>水畔寒烟·茅屋掩映</span>' } },
+      { name: '暮鸦楸榆', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">暮鸦楸榆</span><br><span style="color:#E0D6C8;font-size:12px">风静楸榆点暮鸦<br/>日暮归鸦·萧瑟苍凉</span>' } },
+      { name: '病僧夕阳', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">病僧夕阳</span><br><span style="color:#E0D6C8;font-size:12px">衰草城边游客渡<br/>夕阳野外病僧家</span>' } },
+      { name: '孤篷漂泊', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤篷漂泊</span><br><span style="color:#E0D6C8;font-size:12px">年年来去孤篷里<br/>身世飘零·辗转往复</span>' } },
+      { name: '钟声晚笳', category: 3, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声晚笳</span><br><span style="color:#E0D6C8;font-size:12px">卧听钟声间晚笳<br/>暮钟晚笳·超然物外</span>' } }
+    ]);
+  }
+  if (/盆松/i.test(p.title)) {
+    return base.concat([
+      { name: '盆松', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">盆松</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生种<br/>谁将到此盆</span>' } },
+      { name: '青苍撮土', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">青苍撮土</span><br><span style="color:#E0D6C8;font-size:12px">青苍一撮土<br/>蟠郁百年根</span>' } },
+      { name: '斧痕创鳞', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">斧痕创鳞</span><br><span style="color:#E0D6C8;font-size:12px">宿黛含霜气<br/>创鳞见斧痕</span>' } },
+      { name: '梁栋之材', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">梁栋之材</span><br><span style="color:#E0D6C8;font-size:12px">等闲怜托处<br/>梁栋与谁论</span>' } },
+      { name: '孤寂感怀', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤寂感怀</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生<br/>托身盆中·谁与论</span>' } }
+    ]);
+  }
+  // 吕四 / 落日
+  return base.concat([
+    { name: '落日', category: 1, symbolSize: 38,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">落日</span><br><span style="color:#E0D6C8;font-size:12px">如初日之新生<br/>分光助月·散彩弥天</span>' } },
+    { name: '海天', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">海天</span><br><span style="color:#E0D6C8;font-size:12px">东西照海圆<br/>天海一色·万象包容</span>' } },
+    { name: '丹霞翠霭', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">丹霞翠霭</span><br><span style="color:#E0D6C8;font-size:12px">野迥丹霞错<br/>山明翠霭偏</span>' } },
+    { name: '豪迈情怀', category: 2, symbolSize: 36,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">豪迈情怀</span><br><span style="color:#E0D6C8;font-size:12px">落日如初日的壮阔<br/>老而弥坚的雄心</span>' } },
+    { name: '桑榆晚境', category: 3, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">桑榆晚境</span><br><span style="color:#E0D6C8;font-size:12px">或云风雨候<br/>不得画诗传</span>' } }
+  ]);
+}
+
+function getGraphLinks(p) {
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '三元宫', label: '登临参访' },
+      { source: '张謇', target: '长老', label: '悼念挽歌' },
+      { source: '长老', target: '佛门', label: '护法宗门' },
+      { source: '长老', target: '俭德', label: '德行传世' },
+      { source: '张謇', target: '俭德', label: '赞叹褒扬' },
+{ source: '张謇', target: '江月', label: '即景抒怀' }
+    ];
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '排河观', label: '途径参访' },
+      { source: '排河观', target: '钟声', label: '听觉意象' },
+      { source: '排河观', target: '河势', label: '周边地理' },
+      { source: '排河观', target: '佛圯尘龛', label: '颓败之景' },
+      { source: '排河观', target: '沧海桑田', label: '历史变迁' },
+      { source: '张謇', target: '兴衰之叹', label: '直抒胸臆' },
+      { source: '兴衰之叹', target: '沧海桑田', label: '抚今追昔' },
+      { source: '兴衰之叹', target: '佛圯尘龛', label: '触景生情' }
+    ];
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千龄观', label: '消寒雅集' },
+      { source: '千龄观', target: '泥饮连朝', label: '觥筹交错' },
+      { source: '千龄观', target: '兰亭雅集', label: '以古喻今' },
+      { source: '张謇', target: '粤事稍平', label: '闻讯释怀' },
+      { source: '粤事稍平', target: '忧世情怀', label: '时局牵心' },
+      { source: '张謇', target: '忧世情怀', label: '家国忧思' },
+      { source: '千龄观', target: '春星遗火', label: '暮色春景' },
+      { source: '泥饮连朝', target: '粤事稍平', label: '借酒释怀' }
+    ];
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '沧园', label: '祭墓饮客' },
+      { source: '沧园', target: '燕子春暮', label: '园中春景' },
+      { source: '沧园', target: '龙孙斜日', label: '竹影斜阳' },
+      { source: '沧园', target: '江客张生', label: '同游之友' },
+      { source: '张謇', target: '寒食追思', label: '祭扫感怀' },
+      { source: '寒食追思', target: '沧桑兴替', label: '抚今追昔' },
+      { source: '张謇', target: '沧桑兴替', label: '直抒感慨' },
+      { source: '沧桑兴替', target: '沧园', label: '物是人非' }
+    ];
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '曼寿堂', label: '月夜独处' },
+      { source: '张謇', target: '未圆之月', label: '观照吟咏' },
+      { source: '未圆之月', target: '月下哲思', label: '启悟哲思' },
+      { source: '张謇', target: '独对相亲', label: '直抒心境' },
+      { source: '独对相亲', target: '未圆之月', label: '以月为友' },
+      { source: '曼寿堂', target: '树镂波笼', label: '堂前景致' },
+      { source: '张謇', target: '啼螀倚阑', label: '静夜听虫' },
+      { source: '啼螀倚阑', target: '独对相亲', label: '虫鸣助寂' }
+    ];
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千佛寺', label: '行经参访' },
+      { source: '千佛寺', target: '回汀烟寒', label: '水畔之景' },
+      { source: '千佛寺', target: '暮鸦楸榆', label: '暮色苍茫' },
+      { source: '千佛寺', target: '病僧夕阳', label: '寺中人事' },
+      { source: '张謇', target: '孤篷漂泊', label: '自伤身世' },
+      { source: '张謇', target: '钟声晚笳', label: '卧听感悟' },
+      { source: '钟声晚笳', target: '千佛寺', label: '寺中传出' },
+      { source: '孤篷漂泊', target: '病僧夕阳', label: '同病相怜' }
+    ];
+  }
+  if (/盆松/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '盆松', label: '托物言志' },
+      { source: '盆松', target: '青苍撮土', label: '身寄方寸' },
+      { source: '盆松', target: '斧痕创鳞', label: '历经磨难' },
+      { source: '盆松', target: '梁栋之材', label: '本可为梁栋' },
+      { source: '盆松', target: '孤寂感怀', label: '寄托自伤' },
+      { source: '张謇', target: '梁栋之材', label: '自况抱负' },
+      { source: '张謇', target: '孤寂感怀', label: '直抒胸臆' }
+    ];
+  }
+  // 吕四 / 落日
+  return [
+    { source: '张謇', target: '落日', label: '创作吟咏' },
+    { source: '落日', target: '海天', label: '映照其中' },
+    { source: '落日', target: '丹霞翠霭', label: '渲染铺陈' },
+    { source: '落日', target: '豪迈情怀', label: '寄托抒发' },
+    { source: '张謇', target: '豪迈情怀', label: '直抒胸臆' },
+    { source: '豪迈情怀', target: '桑榆晚境', label: '晚年回响' }
+  ];
+}
+
+/* ═══════ 填充卡片内容 ═══════ */
+function fillCard(p) {
+  document.getElementById('d-title').textContent = p.title;
+  document.getElementById('d-loc').textContent   = p.location;
+
+  // 音频
+  const audEl = document.getElementById('d-audio');
+  audEl.innerHTML = p.audioUrl
+    ? `<audio controls src="${p.audioUrl}"></audio>`
+    : `<div class="placeholder-box" style="height:50px;font-size:11px">[ 音频待上传 ]</div>`;
+
+  // 知识图谱 —— ECharts
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  const gphEl = document.getElementById('d-graph');
+  gphEl.innerHTML = '';
+  chartInstance = echarts.init(gphEl);
+  chartInstance.setOption(buildGraphOption(p));
+
+  // 图谱原图（若有预制的知识图谱PNG则展示）
+  const imgWrap = document.getElementById('d-graph-img-wrap');
+  const imgEl   = document.getElementById('d-graph-img');
+  if (p.graphImage) {
+    imgWrap.style.display = 'block';
+    imgEl.src = p.graphImage;
+  } else {
+    imgWrap.style.display = 'none';
+    imgEl.src = '';
+  }
+
+  // 诗句（图谱下方）
+  document.getElementById('d-lines-text').innerHTML = p.lines.replace(/\n/g, '<br>');
+}
+
+/* ═══════ 标签页切换 ═══════ */
+function switchTab(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === key));
+  document.querySelectorAll('.pane').forEach(pn => pn.classList.remove('on'));
+  document.getElementById('pane-' + key)?.classList.add('on');
+
+  // 视频懒加载 / 销毁
+  const vidEl = document.getElementById('d-video');
+  if (key === 'vid') {
+    const p = POEMS.find(x => x.id === activeId);
+    if (p && p.videoFile) {
+      vidEl.innerHTML = `<video controls style="position:absolute;top:0;left:0;width:100%;height:100%;background:#000"
+        src="${p.videoFile}"></video>`;
+    } else if (p && p.videoUrl) {
+      vidEl.innerHTML = p.videoUrl;
+    } else {
+      vidEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+           color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 视频待配置 ]</div>`;
+    }
+  } else {
+    vidEl.innerHTML = ''; // 释放资源
+  }
+  // 切换到知识图谱时重绘图表
+  if (key === 'gph' && chartInstance) {
+    setTimeout(() => chartInstance.resize(), 50);
+  }
+}
+
+/* ═══════ 关闭卡片 ═══════ */
+document.getElementById('close-btn').addEventListener('click', () => {
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('d-video').innerHTML = ''; // 释放视频
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+});
+
+/* ═══════ 弹框拖拽缩放 ═══════ */
+(function(){
+  const detail = document.getElementById('detail');
+  const handle = detail.querySelector('.resize-handle');
+  const mapWrap = document.getElementById('map-wrap');
+  let dragging = false;
+
+  handle.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    dragging = true;
+    handle.classList.add('dragging');
+    detail.style.transition = 'none';
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+  handle.addEventListener('touchstart', function(e) {
+    dragging = true;
+    handle.classList.add('dragging');
+    detail.style.transition = 'none';
+    document.body.style.userSelect = 'none';
+  }, {passive: true});
+
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    const r = mapWrap.getBoundingClientRect();
+    const y = e.clientY;
+    let hPct = ((r.bottom - y) / r.height) * 100;
+    hPct = Math.max(16, Math.min(85, hPct));
+    detail.style.height = hPct + '%';
+  });
+  document.addEventListener('touchmove', function(e) {
+    if (!dragging) return;
+    const r = mapWrap.getBoundingClientRect();
+    const y = e.touches[0].clientY;
+    let hPct = ((r.bottom - y) / r.height) * 100;
+    hPct = Math.max(16, Math.min(85, hPct));
+    detail.style.height = hPct + '%';
+  }, {passive: true});
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    // 面板大小变化后重绘图表
+    if (chartInstance) { setTimeout(() => chartInstance.resize(), 100); }
+  }
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+})();
+
+/* ═══════ tab点击事件代理 ═══════ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
+});
+</script>
+</body>
+</html>
