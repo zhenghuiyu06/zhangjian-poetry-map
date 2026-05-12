@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>通吕运河 · 张謇时空罗盘</title>
-<!-- Leaflet: 国内 BootCDN 镜像，不可用时回落 unpkg -->
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.css"
-  onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
-<script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.js"
-  onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';document.head.appendChild(s);"></script>
-<!-- ECharts: 国内 BootCDN 镜像 -->
-<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
-  onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
+<!-- Leaflet CSS: 360 CDN 国内镜像 -->
+<link rel="stylesheet" href="https://lib.baomitu.com/leaflet/1.9.4/leaflet.css"
+  onerror="this.onerror=null;var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);">
+<!-- Leaflet JS -->
+<script src="https://lib.baomitu.com/leaflet/1.9.4/leaflet.js"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';document.head.appendChild(s);"></script>
+<!-- ECharts: 360 CDN 国内镜像 -->
+<script src="https://lib.baomitu.com/echarts/5.5.0/echarts.min.js"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
 <style>
 :root {
   --zhu: #A0522D;
@@ -45,6 +46,60 @@ body {
   border-right: 1px solid var(--jin-border);
   z-index: 900;
   position: relative;
+  transition: width 0.38s cubic-bezier(0.4,0,0.2,1),
+              min-width 0.38s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  overflow: visible;
+}
+#panel.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── PANEL TOGGLE BUTTON (child of body, positioned at panel-map seam) ── */
+#panel-toggle {
+  position: fixed;
+  left: calc(var(--panel-w) - 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 64px;
+  background: rgba(22,14,6,0.92);
+  border: 1px solid var(--jin-border);
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  z-index: 910;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.38s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.3s,
+              background 0.3s;
+}
+#panel-toggle:hover {
+  background: rgba(30,18,8,0.95);
+  border-color: var(--jin);
+}
+#panel-toggle .tog-arrow {
+  font-size: 11px;
+  color: var(--jin);
+  letter-spacing: 0;
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  user-select: none;
+}
+/* when panel is collapsed, toggle slides to left edge */
+body.panel-folded #panel-toggle {
+  left: 8px;
+  border-left: 1px solid var(--jin-border);
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+}
+body.panel-folded #panel-toggle .tog-arrow {
+  transform: scaleX(-1);
 }
 
 /* decorative top corner lines */
@@ -201,11 +256,13 @@ body {
 }
 #map {
   position: absolute;
+  background: radial-gradient(ellipse at center, #3a2a15 0%, #1a1208 100%);
   top: 0; left: 0; right: 0; bottom: 0;
 }
 
-/* Leaflet tile sepia filter for "古地图" feel */
-.leaflet-tile-pane { filter: sepia(0.3) saturate(0.8) brightness(0.9); }
+/* Leaflet tile filter for "古地图" feel — light sepia over Gaode tiles */
+.leaflet-tile-pane { filter: sepia(0.15) saturate(0.85) brightness(0.95); }
+.leaflet-container { background: #2a1a0a !important; }
 
 /* ── DETAIL CARD (slides up from bottom, draggable resize) ── */
 #detail {
@@ -566,11 +623,12 @@ body {
   </div>
 
   <div class="panel-footer">点击诗题 · 循迹而往</div>
+
 </div>
 
 <!-- ══════════════ MAP ══════════════ -->
 <div id="map-wrap">
-  <div id="map"></div>
+  <div id="map"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(242,234,216,0.15);font-size:14px;letter-spacing:3px;pointer-events:none">通吕运河 · 张謇诗歌足迹</div></div>
 
   <!-- DETAIL CARD -->
   <div id="detail">
@@ -616,10 +674,25 @@ body {
   </div>
 </div>
 
+  <!-- panel toggle button -->
+  <div id="panel-toggle" title="收起/展开目录">
+    <span class="tog-arrow">◀</span>
+  </div>
+
 <script>
 /* ══════════════════════════════════════════
    核心数据 —— 后续只需维护此数组
    ══════════════════════════════════════════ */
+
+// 安全检测：确保关键库已加载，失败时在页面显示可见提示
+if (typeof L === 'undefined') {
+  console.warn('Leaflet 未能加载，地图功能不可用');
+  var mapEl = document.getElementById('map');
+  if (mapEl) mapEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#C5A028;font-size:14px;letter-spacing:2px;font-family:serif;z-index:1">Leaflet 库加载失败<br><span style="font-size:11px;color:rgba(197,160,40,0.5);margin-top:8px">请检查网络连接</span></div>';
+}
+if (typeof echarts === 'undefined') {
+  console.warn('ECharts 未能加载，知识图谱功能不可用');
+}
 const POEMS = [
   {
     id: 1,
@@ -643,9 +716,9 @@ const POEMS = [
     lng: 121.60266,
     lines: "落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。",
     videoUrl:   "",
-    videoFile:  "",
-    audioUrl:   "",
-    graphImage: ""
+    videoFile:  "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.mp4",
+    audioUrl:   "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.wav",
+    graphImage: "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.png"
   },
   {
     id: 3,
@@ -732,40 +805,55 @@ const HAN = ['一','二','三','四','五','六','七','八','九','十',
              '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
 
 /* ═══════ 地图初始化 ═══════ */
-const map = L.map('map', {
-  center: [31.97, 120.89],
-  zoom: 11,
-  zoomControl: true,
-  attributionControl: false
-});
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 18
-}).addTo(map);
+let map = null;
+try {
+  if (typeof L !== 'undefined') {
+    map = L.map('map', {
+      center: [31.97, 120.89],
+      zoom: 11,
+      zoomControl: true,
+      attributionControl: false
+    });
+    // 兜底瓦片（OSM 底色，以防高德不加载时全黑）
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18
+    }).addTo(map);
+    // 高德瓦片（HTTP，webrd 旧版服务器兼容性最好，国内速度优先）
+    L.tileLayer('http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      maxZoom: 18
+    }).addTo(map);
+  }
+} catch(e) {
+  console.warn('地图初始化失败:', e.message);
+  map = null;
+}
 
 /* ═══════ 通吕运河路线 ═══════ */
-const canalRoute = L.polyline([
-  [32.0788, 121.0745],  // 金沙沧园
-  [32.0599, 121.6027],  // 吕四
-  [32.051,  121.095],   // 排河观
-  [32.02,   120.87],    // 曼寿堂
-  [32.0055, 120.8853],  // 千龄观
-  [31.9744, 120.8674],  // 千佛寺
-  [31.9493, 120.8881],  // 狼山
-  [31.9331, 121.2515],  // 常乐镇盆松
-], {
-  color: '#C5A028',
-  weight: 2.5,
-  opacity: 0.55,
-  dashArray: '10, 6',
-  lineCap: 'round',
-  lineJoin: 'round'
-}).addTo(map);
-canalRoute.bindTooltip('通吕运河', {
-  permanent: false,
-  direction: 'center',
-  className: 'canal-tooltip',
-  offset: [0, 0]
-});
+if (map) {
+  const canalRoute = L.polyline([
+    [32.0788, 121.0745],  // 金沙沧园
+    [32.0599, 121.6027],  // 吕四
+    [32.051,  121.095],   // 排河观
+    [32.02,   120.87],    // 曼寿堂
+    [32.0055, 120.8853],  // 千龄观
+    [31.9744, 120.8674],  // 千佛寺
+    [31.9493, 120.8881],  // 狼山
+    [31.9331, 121.2515],  // 常乐镇盆松
+  ], {
+    color: '#C5A028',
+    weight: 2.5,
+    opacity: 0.55,
+    dashArray: '10, 6',
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+  canalRoute.bindTooltip('通吕运河', {
+    permanent: false,
+    direction: 'center',
+    className: 'canal-tooltip',
+    offset: [0, 0]
+  });
+}
 
 // CSS-in-JS for tooltip
 const canalStyle = document.createElement('style');
@@ -778,7 +866,7 @@ let chartInstance = null;
 const markers = {};
 
 /* ═══════ 自定义标记图标：垂签 ═══════ */
-function mkIcon(lit, char) {
+function mkIcon(lit, char) { if (typeof L === 'undefined') return null; 
   return L.divIcon({
     className: '',
     html: `<div class="mk-tag${lit ? ' lit' : ''}">
@@ -812,15 +900,14 @@ POEMS.forEach((p, i) => {
 document.getElementById('pc-0').addEventListener('click', () => {
   setActivePoem(0);
   updateHash(0);
-  map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 });
+  if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
   document.getElementById('d-title').textContent = '张謇诗歌宇宙';
   document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
   document.getElementById('d-audio').innerHTML = '<div class="placeholder-box" style="height:50px;font-size:11px">[ 全局总览无音频 ]</div>';
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
   const gphEl = document.getElementById('d-graph');
   gphEl.innerHTML = '';
-  chartInstance = echarts.init(gphEl);
-  chartInstance.setOption(buildGlobalGraphOption());
+    if (typeof echarts !== 'undefined') { try { chartInstance = echarts.init(gphEl); chartInstance.setOption(buildGlobalGraphOption()); } catch(e) { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>'; } } else { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>'; }
   document.getElementById('d-graph-img-wrap').style.display = 'none';
   document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
   document.getElementById('detail').classList.add('open');
@@ -833,20 +920,22 @@ function getChar(p) {
 }
 
 /* ═══════ 添加地图标记 ═══════ */
-POEMS.forEach(p => {
-  const m = L.marker([p.lat, p.lng], { icon: mkIcon(false, getChar(p)) }).addTo(map);
-  m.on('click', () => openCard(p));
-  markers[p.id] = m;
-});
+if (map) {
+  POEMS.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: mkIcon(false, getChar(p)) }).addTo(map);
+    m.on('click', () => openCard(p));
+    markers[p.id] = m;
+  });
+}
 
-/* ═══════ 点击左侧诗卡：飞行定位 ═══════ */
+/* ═══════ 点击左侧诗卡：飞行定位 + 自动弹出卡片 ═══════ */
 function flyToPoem(p) {
   setActivePoem(p.id);
   updateHash(p.id);
-  map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 });
-  if (document.getElementById('detail').classList.contains('open')) {
-    fillCard(p);
-  }
+  if (map) { map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 }); }
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
 }
 
 /* ═══════ 点击地图标记：打开卡片 ═══════ */
@@ -1241,8 +1330,7 @@ function fillCard(p) {
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
   const gphEl = document.getElementById('d-graph');
   gphEl.innerHTML = '';
-  chartInstance = echarts.init(gphEl);
-  chartInstance.setOption(buildGraphOption(p));
+  if (typeof echarts !== 'undefined') { try { chartInstance = echarts.init(gphEl); chartInstance.setOption(buildGraphOption(p)); } catch(e) { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>'; } } else { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>'; }
 
   // 图谱原图（若有预制的知识图谱PNG则展示）
   const imgWrap = document.getElementById('d-graph-img-wrap');
@@ -1378,6 +1466,18 @@ window.addEventListener('hashchange', handleHash);
 if (window.location.hash) {
   setTimeout(handleHash, 400);
 }
+
+/* ═══════ 左侧面板收缩/展开 ═══════ */
+const panelToggle = document.getElementById('panel-toggle');
+const panel = document.getElementById('panel');
+panelToggle.addEventListener('click', () => {
+  panel.classList.toggle('collapsed');
+  document.body.classList.toggle('panel-folded');
+  // 面板展开/收缩后刷新地图尺寸
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 400);
+  }
+});
 </script>
 </body>
 </html>
