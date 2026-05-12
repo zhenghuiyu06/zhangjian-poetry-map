@@ -693,6 +693,9 @@ if (typeof L === 'undefined') {
 if (typeof echarts === 'undefined') {
   console.warn('ECharts 未能加载，知识图谱功能不可用');
 }
+// jsDelivr CDN 加速：将 GitHub 上的媒体文件通过 CDN 分发，国内访问更快
+// 若 CDN 不可用，设为空字符串 '' 即可切回相对路径
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/zhenghuiyu06/zhangjian-poetry-map@main/';
 const POEMS = [
   {
     id: 1,
@@ -1323,7 +1326,7 @@ function fillCard(p) {
   // 音频
   const audEl = document.getElementById('d-audio');
   audEl.innerHTML = p.audioUrl
-    ? `<audio controls src="${p.audioUrl}"></audio>`
+    ? `<audio controls src="${CDN_BASE}${p.audioUrl}"></audio>`
     : `<div class="placeholder-box" style="height:50px;font-size:11px">[ 音频待上传 ]</div>`;
 
   // 知识图谱 —— ECharts
@@ -1337,7 +1340,7 @@ function fillCard(p) {
   const imgEl   = document.getElementById('d-graph-img');
   if (p.graphImage) {
     imgWrap.style.display = 'block';
-    imgEl.src = p.graphImage;
+    imgEl.src = CDN_BASE + p.graphImage;
   } else {
     imgWrap.style.display = 'none';
     imgEl.src = '';
@@ -1359,7 +1362,7 @@ function switchTab(key) {
     const p = POEMS.find(x => x.id === activeId);
     if (p && p.videoFile) {
       vidEl.innerHTML = `<video controls style="position:absolute;top:0;left:0;width:100%;height:100%;background:#000"
-        src="${p.videoFile}"></video>`;
+        src="${CDN_BASE}${p.videoFile}"></video>`;
     } else if (p && p.videoUrl) {
       vidEl.innerHTML = p.videoUrl;
     } else {
