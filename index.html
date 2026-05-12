@@ -4,10 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>通吕运河 · 张謇时空罗盘</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Leaflet: 国内 BootCDN 镜像，不可用时回落 unpkg -->
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.css"
+  onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
+<script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.js"
+  onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';document.head.appendChild(s);"></script>
+<!-- ECharts: 国内 BootCDN 镜像 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
+  onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
 <style>
 :root {
   --zhu: #A0522D;
@@ -26,7 +30,7 @@
 html, body { height: 100%; overflow: hidden; }
 
 body {
-  font-family: 'Noto Serif SC', 'KaiTi', 'STKaiti', '楷体', serif;
+  font-family: 'STSong', 'Songti SC', 'Noto Serif SC', 'KaiTi', 'STKaiti', '楷体', '宋体', serif;
   display: flex;
   background: #0D0806;
 }
@@ -196,8 +200,8 @@ body {
   overflow: hidden;
 }
 #map {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
 }
 
 /* Leaflet tile sepia filter for "古地图" feel */
@@ -483,7 +487,7 @@ body {
   pointer-events: none;
 }
 .mk-tag-char {
-  font-family: 'Noto Serif SC', 'KaiTi', serif;
+  font-family: 'Songti SC', 'STKaiti', 'KaiTi', '楷体', serif;
   font-size: 18px;
   font-weight: 700;
   color: #C5A028;
@@ -765,7 +769,7 @@ canalRoute.bindTooltip('通吕运河', {
 
 // CSS-in-JS for tooltip
 const canalStyle = document.createElement('style');
-canalStyle.textContent = '.canal-tooltip { background:rgba(22,14,6,0.9); border:1px solid #C5A028; color:#C5A028; font-family:"Noto Serif SC","KaiTi",serif; font-size:12px; letter-spacing:3px; padding:4px 12px; border-radius:2px; } .canal-tooltip::before { border-top-color: #C5A028 !important; }';
+canalStyle.textContent = '.canal-tooltip { background:rgba(22,14,6,0.9); border:1px solid #C5A028; color:#C5A028; font-family:"Songti SC","STKaiti","KaiTi","楷体",serif; font-size:12px; letter-spacing:3px; padding:4px 12px; border-radius:2px; } .canal-tooltip::before { border-top-color: #C5A028 !important; }';
 document.head.appendChild(canalStyle);
 
 /* ═══════ 状态 ═══════ */
@@ -879,7 +883,7 @@ function buildGraphOption(p) {
       backgroundColor: 'rgba(20,10,6,0.95)',
       borderColor: 'rgba(212,175,55,0.4)',
       borderWidth: 1,
-      textStyle: { color: '#E0D6C8', fontFamily: "'Noto Serif SC','KaiTi',serif", fontSize: 13 }
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
     },
     series: [{
       type: 'graph',
@@ -902,7 +906,7 @@ function buildGraphOption(p) {
         color: '#E0D6C8',
         fontSize: 13,
         fontWeight: 'bold',
-        fontFamily: "'Noto Serif SC','KaiTi',serif",
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
         distance: 8,
         letterSpacing: 2,
         textShadowColor: 'rgba(0,0,0,0.6)',
@@ -913,7 +917,7 @@ function buildGraphOption(p) {
         color: '#E0D6C8',
         fontSize: 10,
         fontWeight: 'bold',
-        fontFamily: "'Noto Serif SC','KaiTi',serif",
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
         letterSpacing: 1,
         textShadowColor: 'rgba(0,0,0,0.5)',
         textShadowBlur: 3
@@ -1191,14 +1195,14 @@ function buildGlobalGraphOption() {
       backgroundColor: 'rgba(20,10,6,0.95)',
       borderColor: 'rgba(212,175,55,0.4)',
       borderWidth: 1,
-      textStyle: { color: '#E0D6C8', fontFamily: "'Noto Serif SC','KaiTi',serif", fontSize: 13 }
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
     },
     series: [{
       type: 'graph', layout: 'force', roam: true, draggable: true,
       force: { repulsion: 350, edgeLength: [120, 220], gravity: 0.08 },
       emphasis: { focus: 'adjacency', lineStyle: { width: 3 }, itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' } },
-      label: { show: true, position: 'bottom', color: '#E0D6C8', fontSize: 12, fontWeight: 'bold', fontFamily: "'Noto Serif SC','KaiTi',serif", distance: 6 },
-      edgeLabel: { show: true, color: '#E0D6C8', fontSize: 9, fontWeight: 'bold', fontFamily: "'Noto Serif SC','KaiTi',serif", letterSpacing: 1 },
+      label: { show: true, position: 'bottom', color: '#E0D6C8', fontSize: 12, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", distance: 6 },
+      edgeLabel: { show: true, color: '#E0D6C8', fontSize: 9, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", letterSpacing: 1 },
       edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 6,
       lineStyle: { color: 'rgba(224,214,200,0.4)', width: 1.5, curveness: 0.2 },
       categories: [
