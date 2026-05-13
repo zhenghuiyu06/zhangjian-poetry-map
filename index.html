@@ -693,6 +693,27 @@ if (typeof L === 'undefined') {
 if (typeof echarts === 'undefined') {
   console.warn('ECharts 未能加载，知识图谱功能不可用');
 }
+
+/* ═══════ ECharts 初始化 + 自动重试（处理 CDN 异步回落） ═══════ */
+function initGraphWithRetry(gphEl, buildFn, attempt) {
+  attempt = attempt || 0;
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  gphEl.innerHTML = '';
+  if (typeof echarts !== 'undefined') {
+    try {
+      chartInstance = echarts.init(gphEl);
+      chartInstance.setOption(buildFn());
+    } catch(e) {
+      gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>';
+    }
+  } else if (attempt < 4) {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 加载中… ]</div>';
+    setTimeout(function() { initGraphWithRetry(gphEl, buildFn, attempt + 1); }, 2000);
+  } else {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>';
+  }
+}
+
 // jsDelivr CDN 加速：将 GitHub 上的媒体文件通过 CDN 分发，国内访问更快
 // 若 CDN 不可用，设为空字符串 '' 即可切回相对路径
 const CDN_BASE = 'https://cdn.jsdelivr.net/gh/zhenghuiyu06/zhangjian-poetry-map@main/';
@@ -907,10 +928,7 @@ document.getElementById('pc-0').addEventListener('click', () => {
   document.getElementById('d-title').textContent = '张謇诗歌宇宙';
   document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
   document.getElementById('d-audio').innerHTML = '<div class="placeholder-box" style="height:50px;font-size:11px">[ 全局总览无音频 ]</div>';
-  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
-  const gphEl = document.getElementById('d-graph');
-  gphEl.innerHTML = '';
-    if (typeof echarts !== 'undefined') { try { chartInstance = echarts.init(gphEl); chartInstance.setOption(buildGlobalGraphOption()); } catch(e) { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>'; } } else { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>'; }
+  initGraphWithRetry(document.getElementById('d-graph'), buildGlobalGraphOption);
   document.getElementById('d-graph-img-wrap').style.display = 'none';
   document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
   document.getElementById('detail').classList.add('open');
@@ -1329,11 +1347,8 @@ function fillCard(p) {
     ? `<audio controls src="${CDN_BASE}${p.audioUrl}"></audio>`
     : `<div class="placeholder-box" style="height:50px;font-size:11px">[ 音频待上传 ]</div>`;
 
-  // 知识图谱 —— ECharts
-  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
-  const gphEl = document.getElementById('d-graph');
-  gphEl.innerHTML = '';
-  if (typeof echarts !== 'undefined') { try { chartInstance = echarts.init(gphEl); chartInstance.setOption(buildGraphOption(p)); } catch(e) { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>'; } } else { gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>'; }
+  // 知识图谱 —— ECharts（带重试）
+  initGraphWithRetry(document.getElementById('d-graph'), function() { return buildGraphOption(p); });
 
   // 图谱原图（若有预制的知识图谱PNG则展示）
   const imgWrap = document.getElementById('d-graph-img-wrap');
