@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>通吕运河 · 张謇时空罗盘</title>
-<!-- Leaflet CSS: BootCDN 国内镜像，回落 unpkg -->
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.css"
+<!-- Leaflet CSS: 360 CDN 国内镜像 -->
+<link rel="stylesheet" href="https://lib.baomitu.com/leaflet/1.9.4/leaflet.css"
   onerror="this.onerror=null;var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);">
 <!-- Leaflet JS -->
-<script src="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.js"
+<script src="https://lib.baomitu.com/leaflet/1.9.4/leaflet.js"
   onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';document.head.appendChild(s);"></script>
-<!-- ECharts: BootCDN 国内镜像，回落 jsdelivr -->
+<!-- ECharts: BootCDN 国内镜像 -->
 <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
   onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
 <style>
@@ -714,9 +714,6 @@ function initGraphWithRetry(gphEl, buildFn, attempt) {
   }
 }
 
-// jsDelivr CDN 加速：将 GitHub 上的媒体文件通过 CDN 分发，国内访问更快
-// 若 CDN 不可用，设为空字符串 '' 即可切回相对路径
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/zhenghuiyu06/zhangjian-poetry-map@main/';
 const POEMS = [
   {
     id: 1,
@@ -726,8 +723,7 @@ const POEMS = [
     lat: 31.94928,
     lng: 120.88813,
     lines: "山寺禅房列，三元长老尊。\n遗徒通世学，护佛广宗门。\n焚象衰时及。斋鱼俭德存。\n空堂照遗拂，江月白翻翻。",
-    videoUrl:   "",
-    videoFile:  "《狼山三元宫近圻僧挽词》/《狼山三元宫近圻僧挽词》.mp4",
+    bilibiliBvid: "BV1re556jEyr",
     audioUrl:   "《狼山三元宫近圻僧挽词》/《狼山三元宫近圻僧挽词》.wav",
     graphImage: "《狼山三元宫近圻僧挽词》/《狼山三元宫近斥僧挽词》.png"
   },
@@ -739,8 +735,7 @@ const POEMS = [
     lat: 32.05992,
     lng: 121.60266,
     lines: "落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。",
-    videoUrl:   "",
-    videoFile:  "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.mp4",
+    bilibiliBvid: "BV1u85C6kEbF",
     audioUrl:   "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.wav",
     graphImage: "《落日九月十五归自吕四途中》/《落日九月十五归自吕四途中》.png"
   },
@@ -752,8 +747,7 @@ const POEMS = [
     lat: 31.9331,
     lng: 121.2515,
     lines: "山泽孤生种，谁将到此盆？\n青苍一撮土，蟠郁百年根。\n宿黛含霜气，创鳞见斧痕。\n等闲怜托处，梁栋与谁论。",
-    videoUrl:   "",
-    videoFile:  "盆松/盆松.mov",
+    bilibiliBvid: "BV1we5567EwM",
     audioUrl:   "盆松/盆松播客.wav",
     graphImage: "盆松/盆松.png"
   },
@@ -765,8 +759,7 @@ const POEMS = [
     lat: 32.051,
     lng: 121.095,
     lines: "沧海成田后，蔚然一寺开。\n钟声随鸟远，河势趁林回。\n佛圯尘龛在，僧贫圭挫颓。\n兴衰何处问，夕暖上经台。",
-    videoUrl:   "",
-    videoFile:  "过排河观/过排河观.mp4",
+    bilibiliBvid: "BV1ce5567E8t",
     audioUrl:   "过排河观/過排河觀.wav",
     graphImage: "过排河观/过排河观.png"
   },
@@ -778,8 +771,7 @@ const POEMS = [
     lat: 31.974351,
     lng: 120.867435,
     lines: "复泣回汀水一涯，招提是处并行查。\n烟寒荫霁繁茅屋，风静楸榆点暮鸦。\n衰草城边游客渡，夕阳野外病僧家。\n年年来去孤篷里，卧听钟声间晚笳。",
-    videoUrl:   "",
-    videoFile:  "千佛寺/千佛寺.mp4",
+    bilibiliBvid: "BV1zB556CEPp",
     audioUrl:   "千佛寺/千佛寺.wav",
     graphImage: "千佛寺/千佛寺.png"
   },
@@ -791,8 +783,7 @@ const POEMS = [
     lat: 32.02,
     lng: 120.87,
     lines: "已自东天出，都疑下界新。\n未圆怜更好，独对故相亲。\n树镂移阴叶，波笼久坐巾。\n啼螀尔何意，宁伴倚阑人？",
-    videoUrl:   "",
-    videoFile:  "八月十三夜曼寿堂看月/八月十三夜曼寿堂看月.mp4",
+    bilibiliBvid: "BV1re556jE8i",
     audioUrl:   "八月十三夜曼寿堂看月/八月十三夜曼寿堂赏月.wav",
     graphImage: "八月十三夜曼寿堂看月/八月十三夜曼寿堂看月.jpg"
   },
@@ -804,8 +795,7 @@ const POEMS = [
     lat: 32.0787752,
     lng: 121.0744572,
     lines: "沧园栏楯尚清华，载槛重停隔水车。\n燕子不来春不住，龙孙方纵日方斜。\n荒疏江客调笙曲，辛苦张生课菊花。\n惆怅百年寒食节，冬青无恙几人家？",
-    videoUrl:   "",
-    videoFile:  "金沙祭墓饮客沧园/金沙祭墓饮客沧园.mp4",
+    bilibiliBvid: "BV1re556jEtj",
     audioUrl:   "金沙祭墓饮客沧园/金沙祭墓饮客沧园.wav",
     graphImage: "金沙祭墓饮客沧园/金沙祭墓饮客沧园.jpg"
   },
@@ -817,8 +807,7 @@ const POEMS = [
     lat: 32.005538,
     lng: 120.885269,
     lines: "未嫌寒气尚逡巡，泥饮连朝选主宾。\n小醉大醒悬酒户，遥开缓落衔花辰。\n相随少长兰亭集，渐次龙蛇桂海删。\n遗火春星看不厌，疏缝人语况濠濛。",
-    videoUrl:   "",
-    videoFile:  "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.mp4",
+    bilibiliBvid: "BV1ub5C6VEXQ",
     audioUrl:   "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.wav",
     graphImage: "千龄观消寒第五集闻粤事稍平/千龄观消寒第五集闻粤事稍平.jpg"
   },
@@ -838,12 +827,8 @@ try {
       zoomControl: true,
       attributionControl: false
     });
-    // 兜底瓦片（OSM 底色，以防高德不加载时全黑）
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18
-    }).addTo(map);
-    // 高德瓦片（HTTP，webrd 旧版服务器兼容性最好，国内速度优先）
-    L.tileLayer('http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+    // 高德地图瓦片 —— 单一域名，避免子域名解析问题
+    L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
       maxZoom: 18
     }).addTo(map);
   }
@@ -928,7 +913,10 @@ document.getElementById('pc-0').addEventListener('click', () => {
   document.getElementById('d-title').textContent = '张謇诗歌宇宙';
   document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
   document.getElementById('d-audio').innerHTML = '<div class="placeholder-box" style="height:50px;font-size:11px">[ 全局总览无音频 ]</div>';
-  initGraphWithRetry(document.getElementById('d-graph'), buildGlobalGraphOption);
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  const gphEl = document.getElementById('d-graph');
+  gphEl.innerHTML = '';
+    initGraphWithRetry(gphEl, buildGlobalGraphOption);
   document.getElementById('d-graph-img-wrap').style.display = 'none';
   document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
   document.getElementById('detail').classList.add('open');
@@ -1344,18 +1332,21 @@ function fillCard(p) {
   // 音频
   const audEl = document.getElementById('d-audio');
   audEl.innerHTML = p.audioUrl
-    ? `<audio controls src="${CDN_BASE}${p.audioUrl}"></audio>`
+    ? `<audio controls src="${encodeURI(p.audioUrl)}"><p>您的浏览器不支持音频播放</p></audio>`
     : `<div class="placeholder-box" style="height:50px;font-size:11px">[ 音频待上传 ]</div>`;
 
-  // 知识图谱 —— ECharts（带重试）
-  initGraphWithRetry(document.getElementById('d-graph'), function() { return buildGraphOption(p); });
+  // 知识图谱 —— ECharts
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  const gphEl = document.getElementById('d-graph');
+  gphEl.innerHTML = '';
+  initGraphWithRetry(gphEl, function() { return buildGraphOption(p); });
 
   // 图谱原图（若有预制的知识图谱PNG则展示）
   const imgWrap = document.getElementById('d-graph-img-wrap');
   const imgEl   = document.getElementById('d-graph-img');
   if (p.graphImage) {
     imgWrap.style.display = 'block';
-    imgEl.src = CDN_BASE + p.graphImage;
+    imgEl.src = p.graphImage;
   } else {
     imgWrap.style.display = 'none';
     imgEl.src = '';
@@ -1371,18 +1362,19 @@ function switchTab(key) {
   document.querySelectorAll('.pane').forEach(pn => pn.classList.remove('on'));
   document.getElementById('pane-' + key)?.classList.add('on');
 
-  // 视频懒加载 / 销毁
+  // 视频懒加载 / 销毁 —— B站 iframe 嵌入
   const vidEl = document.getElementById('d-video');
   if (key === 'vid') {
     const p = POEMS.find(x => x.id === activeId);
-    if (p && p.videoFile) {
-      vidEl.innerHTML = `<video controls style="position:absolute;top:0;left:0;width:100%;height:100%;background:#000"
-        src="${CDN_BASE}${p.videoFile}"></video>`;
-    } else if (p && p.videoUrl) {
-      vidEl.innerHTML = p.videoUrl;
+    if (p && p.bilibiliBvid) {
+      vidEl.innerHTML = `<iframe src="https://player.bilibili.com/player.html?bvid=${p.bilibiliBvid}&page=1&high_quality=1&danmaku=0"
+        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+    } else if (activeId === 0) {
+      vidEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+           color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 总览页面无单诗视频 ]</div>`;
     } else {
       vidEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-           color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 视频待配置 ]</div>`;
+           color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 视频待配置 · 请提供B站BV号 ]</div>`;
     }
   } else {
     vidEl.innerHTML = ''; // 释放资源
