@@ -607,6 +607,206 @@ body.panel-folded #panel-toggle .tog-arrow {
   0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0.8; }
   100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
 }
+
+/* ── MOBILE (< 768px) ── */
+@media (max-width: 767px) {
+
+  /* vertical stack */
+  body {
+    flex-direction: column;
+  }
+
+  /* ── panel → top strip ── */
+  #panel {
+    width: 100%;
+    min-width: 100%;
+    max-height: 38vh;
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--jin-border);
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1),
+                opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  }
+  #panel.collapsed {
+    width: 100%;
+    min-width: 100%;
+    max-height: 52px;
+    border-bottom: 1px solid var(--jin-border);
+    opacity: 1;
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  /* decorative line → top border already via ::before */
+
+  .panel-head {
+    padding: 10px 40px 4px 14px;  /* right padding for toggle */
+  }
+  .panel-title {
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+  .panel-sub {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+  body.panel-folded .panel-head {
+    padding: 8px 40px 4px 14px;
+  }
+  body.panel-folded .panel-sub {
+    display: none;
+  }
+
+  .panel-divider {
+    padding: 6px 14px 4px;
+  }
+  .panel-divider span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  /* poem list → horizontal scroll */
+  #poem-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 12px 10px;
+    gap: 7px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  #poem-list::-webkit-scrollbar { height: 2px; }
+  #poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.15); border-radius: 1px; }
+
+  .poem-card {
+    min-width: 132px;
+    max-width: 160px;
+    flex-shrink: 0;
+    padding: 10px 11px;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+  }
+  .poem-card.overview-card {
+    min-width: 80px;
+    max-width: 100px;
+    margin-right: 2px;
+    margin-bottom: 0 !important;  /* override inline style */
+  }
+  .poem-seq { font-size: 9px; letter-spacing: 1px; }
+  .poem-name { font-size: 13px; letter-spacing: 1px; }
+  .poem-place { font-size: 10px; }
+
+  .poem-arrow { display: none; } /* hide arrow on mobile, save space */
+
+  .panel-footer {
+    display: none; /* save space on mobile */
+  }
+
+  /* ── panel toggle: top-right of panel header ── */
+  #panel-toggle {
+    position: absolute;
+    left: auto;
+    right: 8px;
+    top: 10px;
+    bottom: auto;
+    transform: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+    background: rgba(22,14,6,0.95);
+    z-index: 920;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #panel-toggle .tog-arrow {
+    transform: rotate(90deg);
+    font-size: 10px;
+  }
+  body.panel-folded #panel-toggle {
+    right: 8px;
+    top: 8px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+  }
+  body.panel-folded #panel-toggle .tog-arrow {
+    transform: rotate(-90deg);
+  }
+
+  /* ── map ── */
+  #map-wrap {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* ── detail card ── */
+  #detail {
+    height: 58%;
+    max-height: 75vh;
+  }
+  #detail.open {
+    /* keep transform translateY(0) */
+  }
+
+  .detail-head {
+    padding: 10px 16px 8px;
+  }
+  .detail-title {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  .detail-loc {
+    font-size: 10px;
+  }
+
+  .close-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  /* tabs — larger touch targets */
+  .tabs {
+    padding: 0 12px;
+  }
+  .tab {
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .detail-body {
+    padding: 14px 16px 16px;
+  }
+
+  /* poem lines text */
+  .poem-lines-text {
+    font-size: 13px;
+    line-height: 2.1;
+    letter-spacing: 2px;
+  }
+
+  /* resize handle → bigger touch zone */
+  .resize-handle {
+    height: 22px;
+  }
+
+  /* graph container */
+  .graph-wrap {
+    min-height: 220px;
+  }
+
+  /* Leaflet zoom control — bigger on mobile */
+  .leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -680,13 +880,13 @@ body.panel-folded #panel-toggle .tog-arrow {
         </div>
       </div>
     </div>
-  </div>
-</div>
-
   <!-- panel toggle button -->
   <div id="panel-toggle" title="收起/展开目录">
     <span class="tog-arrow">◀</span>
   </div>
+
+  </div>
+</div>
 
 <script>
 /* ══════════════════════════════════════════
@@ -930,6 +1130,11 @@ document.getElementById('pc-0').addEventListener('click', () => {
   document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
   document.getElementById('detail').classList.add('open');
   switchTab('gph');
+  if (window.innerWidth < 768) {
+    document.getElementById('panel').classList.add('collapsed');
+    document.body.classList.add('panel-folded');
+    if (map) { setTimeout(() => map.invalidateSize(), 420); }
+  }
 });
 
 /* ═══════ 取标记字符：优先使用 emoji 字段 ═══════ */
@@ -954,6 +1159,12 @@ function flyToPoem(p) {
   fillCard(p);
   document.getElementById('detail').classList.add('open');
   switchTab('gph');
+  // 移动端：点击诗卡后自动收起面板以展示地图
+  if (window.innerWidth < 768) {
+    document.getElementById('panel').classList.add('collapsed');
+    document.body.classList.add('panel-folded');
+    if (map) { setTimeout(() => map.invalidateSize(), 420); }
+  }
 }
 
 /* ═══════ 点击地图标记：打开卡片 ═══════ */
@@ -963,6 +1174,11 @@ function openCard(p) {
   fillCard(p);
   document.getElementById('detail').classList.add('open');
   switchTab('gph');
+  if (window.innerWidth < 768) {
+    document.getElementById('panel').classList.add('collapsed');
+    document.body.classList.add('panel-folded');
+    if (map) { setTimeout(() => map.invalidateSize(), 420); }
+  }
 }
 
 /* ═══════ 设置当前激活诗歌 ═══════ */
