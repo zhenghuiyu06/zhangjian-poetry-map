@@ -283,8 +283,8 @@ body.panel-folded #panel-toggle .tog-arrow {
   border-top: 1px solid var(--jin-border);
   z-index: 800;
   transform: translateY(100%);
-  transition: transform 0.42s cubic-bezier(0.4,0,0.2,1);
-  height: 45%;
+  transition: transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease;
+  height: 55%;
   display: flex;
   flex-direction: column;
 }
@@ -745,8 +745,8 @@ body.panel-folded #panel-toggle .tog-arrow {
 
   /* ── detail card ── */
   #detail {
-    height: 58%;
-    max-height: 75vh;
+    height: 62%;
+    max-height: 82vh;
   }
   #detail.open {
     /* keep transform translateY(0) */
@@ -1617,12 +1617,13 @@ document.getElementById('close-btn').addEventListener('click', () => {
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
 });
 
-/* ═══════ 弹框拖拽缩放 ═══════ */
+/* ═══════ 弹框拖拽缩放 + 悬停自动放大 ═══════ */
 (function(){
   const detail = document.getElementById('detail');
   const handle = detail.querySelector('.resize-handle');
   const mapWrap = document.getElementById('map-wrap');
   let dragging = false;
+  let hoverSavedHeight = null;
 
   handle.addEventListener('mousedown', function(e) {
     e.preventDefault();
@@ -1646,6 +1647,7 @@ document.getElementById('close-btn').addEventListener('click', () => {
     let hPct = ((r.bottom - y) / r.height) * 100;
     hPct = Math.max(16, Math.min(85, hPct));
     detail.style.height = hPct + '%';
+    hoverSavedHeight = hPct + '%';
   });
   document.addEventListener('touchmove', function(e) {
     if (!dragging) return;
@@ -1654,20 +1656,35 @@ document.getElementById('close-btn').addEventListener('click', () => {
     let hPct = ((r.bottom - y) / r.height) * 100;
     hPct = Math.max(16, Math.min(85, hPct));
     detail.style.height = hPct + '%';
+    hoverSavedHeight = hPct + '%';
   }, {passive: true});
 
   function endDrag() {
     if (!dragging) return;
     dragging = false;
     handle.classList.remove('dragging');
-    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
-    // 面板大小变化后重绘图表
     if (chartInstance) { setTimeout(() => chartInstance.resize(), 100); }
   }
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
+
+  /* hover auto-expand */
+  detail.addEventListener('mouseenter', function() {
+    if (dragging) return;
+    hoverSavedHeight = detail.style.height || getComputedStyle(detail).height;
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
+    detail.style.height = '75%';
+  });
+  detail.addEventListener('mouseleave', function() {
+    if (dragging) return;
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
+    detail.style.height = hoverSavedHeight || '';
+    hoverSavedHeight = null;
+    if (chartInstance) { setTimeout(() => chartInstance.resize(), 150); }
+  });
 })();
 
 /* ═══════ tab点击事件代理 ═══════ */
