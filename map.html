@@ -1671,19 +1671,28 @@ document.getElementById('close-btn').addEventListener('click', () => {
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
 
-  /* hover auto-expand */
+  /* hover: 根据鼠标在卡片内的位置动态调整高度 */
   detail.addEventListener('mouseenter', function() {
     if (dragging) return;
     hoverSavedHeight = detail.style.height || getComputedStyle(detail).height;
-    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
-    detail.style.height = '75%';
+  });
+  detail.addEventListener('mousemove', function(e) {
+    if (dragging) return;
+    var cardRect = detail.getBoundingClientRect();
+    var ratio = (e.clientY - cardRect.top) / cardRect.height;
+    ratio = Math.max(0, Math.min(1, ratio));
+    // 鼠标在卡片顶部 → 最大 80%，在底部 → 最小 32%
+    var minH = 32, maxH = 80;
+    var targetH = maxH - ratio * (maxH - minH);
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.22s ease-out';
+    detail.style.height = targetH + '%';
   });
   detail.addEventListener('mouseleave', function() {
     if (dragging) return;
     detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
     detail.style.height = hoverSavedHeight || '';
     hoverSavedHeight = null;
-    if (chartInstance) { setTimeout(() => chartInstance.resize(), 150); }
+    if (chartInstance) { setTimeout(function() { if (chartInstance) chartInstance.resize(); }, 150); }
   });
 })();
 
