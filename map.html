@@ -1078,9 +1078,26 @@ const canalStyle = document.createElement('style');
 canalStyle.textContent = '.canal-tooltip { background:rgba(22,14,6,0.9); border:1px solid #C5A028; color:#C5A028; font-family:"Songti SC","STKaiti","KaiTi","楷体",serif; font-size:12px; letter-spacing:3px; padding:4px 12px; border-radius:2px; } .canal-tooltip::before { border-top-color: #C5A028 !important; }';
 document.head.appendChild(canalStyle);
 
+/* ═══════ 地图点击：缩小知识卡片 ═══════ */
+if (map) {
+  map.on('click', function(e) {
+    var d = document.getElementById('detail');
+    if (!d.classList.contains('open')) return;
+    // 排除点击标记的情况
+    if (e.originalEvent.target.closest('.mk-tag') ||
+        e.originalEvent.target.closest('.leaflet-marker-icon') ||
+        e.originalEvent.target.closest('.leaflet-control')) return;
+    cardMinimized = true;
+    d.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
+    d.style.height = '14%';
+    hoverSavedHeight = '14%';
+  });
+}
+
 /* ═══════ 状态 ═══════ */
 let activeId  = null;
 let chartInstance = null;
+let cardMinimized = false;
 const markers = {};
 
 /* ═══════ 自定义标记图标：垂签 ═══════ */
@@ -1116,6 +1133,9 @@ POEMS.forEach((p, i) => {
 
 // Overview card click handler
 document.getElementById('pc-0').addEventListener('click', () => {
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
   setActivePoem(0);
   updateHash(0);
   if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
@@ -1153,6 +1173,9 @@ if (map) {
 
 /* ═══════ 点击左侧诗卡：飞行定位 + 自动弹出卡片 ═══════ */
 function flyToPoem(p) {
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
   setActivePoem(p.id);
   updateHash(p.id);
   if (map) { map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 }); }
@@ -1169,6 +1192,9 @@ function flyToPoem(p) {
 
 /* ═══════ 点击地图标记：打开卡片 ═══════ */
 function openCard(p) {
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
   setActivePoem(p.id);
   updateHash(p.id);
   fillCard(p);
@@ -1612,10 +1638,13 @@ function switchTab(key) {
 
 /* ═══════ 关闭卡片 ═══════ */
 document.getElementById('close-btn').addEventListener('click', () => {
+  cardMinimized = false;
   document.getElementById('detail').classList.remove('open');
   document.getElementById('d-video').innerHTML = ''; // 释放视频
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
 });
+
+let hoverSavedHeight = null;
 
 /* ═══════ 弹框拖拽缩放 + 悬停自动放大 ═══════ */
 (function(){
@@ -1623,7 +1652,6 @@ document.getElementById('close-btn').addEventListener('click', () => {
   const handle = detail.querySelector('.resize-handle');
   const mapWrap = document.getElementById('map-wrap');
   let dragging = false;
-  let hoverSavedHeight = null;
 
   handle.addEventListener('mousedown', function(e) {
     e.preventDefault();
@@ -1662,6 +1690,7 @@ document.getElementById('close-btn').addEventListener('click', () => {
   function endDrag() {
     if (!dragging) return;
     dragging = false;
+    cardMinimized = false;
     handle.classList.remove('dragging');
     detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
     document.body.style.cursor = '';
@@ -1671,13 +1700,13 @@ document.getElementById('close-btn').addEventListener('click', () => {
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
 
-  /* hover: 根据鼠标在卡片内的位置动态调整高度 */
+  /* hover: 根据鼠标在卡片内的位置动态调整高度（最小化时暂停） */
   detail.addEventListener('mouseenter', function() {
-    if (dragging) return;
+    if (dragging || cardMinimized) return;
     hoverSavedHeight = detail.style.height || getComputedStyle(detail).height;
   });
   detail.addEventListener('mousemove', function(e) {
-    if (dragging) return;
+    if (dragging || cardMinimized) return;
     var cardRect = detail.getBoundingClientRect();
     var ratio = (e.clientY - cardRect.top) / cardRect.height;
     ratio = Math.max(0, Math.min(1, ratio));
@@ -1688,11 +1717,27 @@ document.getElementById('close-btn').addEventListener('click', () => {
     detail.style.height = targetH + '%';
   });
   detail.addEventListener('mouseleave', function() {
-    if (dragging) return;
+    if (dragging || cardMinimized) return;
     detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
     detail.style.height = hoverSavedHeight || '';
     hoverSavedHeight = null;
     if (chartInstance) { setTimeout(function() { if (chartInstance) chartInstance.resize(); }, 150); }
+  });
+
+  /* 点击知识卡片：从最小化状态展开 */
+  detail.addEventListener('click', function(e) {
+    if (!cardMinimized) return;
+    // 排除交互元素
+    if (e.target.closest('.close-btn') ||
+        e.target.closest('.tab') ||
+        e.target.closest('.resize-handle') ||
+        e.target.closest('audio') ||
+        e.target.closest('button')) return;
+    cardMinimized = false;
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
+    detail.style.height = '58%';
+    hoverSavedHeight = '58%';
+    if (chartInstance) { setTimeout(function() { chartInstance.resize(); }, 150); }
   });
 })();
 
