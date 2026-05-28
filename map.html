@@ -1147,7 +1147,8 @@ document.getElementById('pc-0').addEventListener('click', () => {
   if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
   document.getElementById('d-title').textContent = '张謇诗歌宇宙';
   document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
-  document.getElementById('d-audio').innerHTML = '<div class="placeholder-box" style="height:50px;font-size:11px">[ 全局总览无音频 ]</div>';
+  document.getElementById('d-audio').innerHTML = '';
+  document.querySelector('.tab[data-tab="aud"]').style.display = 'none';
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
   const gphEl = document.getElementById('d-graph');
   gphEl.innerHTML = '';
@@ -1223,6 +1224,10 @@ function setActivePoem(id) {
   document.querySelectorAll('.poem-card').forEach(c => c.classList.remove('active'));
   document.getElementById('pc-' + id)?.classList.add('active');
   POEMS.forEach(p => markers[p.id]?.setIcon(mkIcon(p.id === id, getChar(p))));
+  // Show audio tab for individual poems, hide for overview
+  if (id !== 0) {
+    document.querySelector('.tab[data-tab="aud"]').style.display = '';
+  }
 }
 
 /* ═══════ ECharts Graph 配置 ═══════ */
@@ -1631,8 +1636,8 @@ function switchTab(key) {
       vidEl.innerHTML = `<iframe src="https://player.bilibili.com/player.html?bvid=${p.bilibiliBvid}&page=1&high_quality=1&danmaku=0"
         scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
     } else if (activeId === 0) {
-      vidEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-           color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 总览页面无单诗视频 ]</div>`;
+      vidEl.innerHTML = `<iframe src="https://player.bilibili.com/player.html?bvid=BV18aG96PEeX&page=1&high_quality=1&danmaku=0"
+        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
     } else {
       vidEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
            color:rgba(242,234,216,0.25);font-size:12px;letter-spacing:3px">[ 视频待配置 · 请提供B站BV号 ]</div>`;
