@@ -1,289 +1,2688 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>张謇时空罗盘 · 通吕运河诗歌数字人文平台</title>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FMC9SWY95"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-4FMC9SWY95');
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-primary: #080808;
-      --gold: #C9A84C;
-      --gold-dim: rgba(201, 168, 76, 0.25);
-      --gold-glow: rgba(201, 168, 76, 0.04);
-      --text-primary: #e8e0d0;
-      --text-white: #ffffff;
-      --text-muted: rgba(232, 224, 208, 0.5);
-      --font-serif: 'Noto Serif SC', serif;
-      --font-sans: 'Noto Sans SC', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob: https:; script-src 'self' 'unsafe-inline' https://lib.baomitu.com https://unpkg.com https://cdn.bootcdn.net https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://lib.baomitu.com https://unpkg.com; img-src 'self' file: data: blob: https://webrd01.is.autonavi.com; media-src 'self' file: data: blob:; frame-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<title>通吕运河 · 张謇时空罗盘</title>
+<!-- Leaflet CSS: 360 CDN 国内镜像 -->
+<link rel="stylesheet" href="https://lib.baomitu.com/leaflet/1.9.4/leaflet.css"
+  integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous"
+  onerror="this.onerror=null;var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';l.integrity='sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H';l.crossOrigin='anonymous';document.head.appendChild(l);">
+<!-- Leaflet JS -->
+<script src="https://lib.baomitu.com/leaflet/1.9.4/leaflet.js"
+  integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.integrity='sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH';s.crossOrigin='anonymous';document.head.appendChild(s);"></script>
+<!-- ECharts: BootCDN 国内镜像 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
+  integrity="sha384-o5uz97et3bErHvpKfD4Jz4n0JfhJDWABFuF4NP+iEEDxE1VwMWJ19QGR0lqFZnr6" crossorigin="anonymous"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';s.integrity='sha384-o5uz97et3bErHvpKfD4Jz4n0JfhJDWABFuF4NP+iEEDxE1VwMWJ19QGR0lqFZnr6';s.crossOrigin='anonymous';document.head.appendChild(s);"></script>
+<style>
+:root {
+  --zhu: #A0522D;
+  --hong: #6B1A1A;
+  --jin: #C5A028;
+  --jin-light: rgba(197,160,40,0.15);
+  --jin-border: rgba(197,160,40,0.25);
+  --mi: #F2EAD8;
+  --mi-dim: rgba(242,234,216,0.55);
+  --mi-faint: rgba(242,234,216,0.25);
+  --panel-bg: #160E06;
+  --card-bg: rgba(16,9,4,0.97);
+  --panel-w: 288px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+html, body { height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior:none; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'STSong', 'Songti SC', 'Noto Serif SC', 'KaiTi', 'STKaiti', '楷体', '宋体', serif;
+  display: flex;
+  background: #0D0806;
+}
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg-primary);
-      font-family: var(--font-sans);
-      color: var(--text-primary);
-      -webkit-font-smoothing: antialiased;
-      background-color: var(--bg-primary);
-      background-image:
-        repeating-linear-gradient(0deg, var(--gold-glow) 0px, var(--gold-glow) 1px, transparent 1px, transparent 50px),
-        repeating-linear-gradient(90deg, var(--gold-glow) 0px, var(--gold-glow) 1px, transparent 1px, transparent 50px);
-    }
+/* ── LEFT PANEL ── */
+#panel {
+  width: var(--panel-w);
+  min-width: var(--panel-w);
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--jin-border);
+  z-index: 900;
+  position: relative;
+  transition: width 0.38s cubic-bezier(0.4,0,0.2,1),
+              min-width 0.38s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  overflow: visible;
+}
+#panel.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+}
 
-    .splash {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
+/* ── PANEL TOGGLE BUTTON (child of body, positioned at panel-map seam) ── */
+#panel-toggle {
+  position: fixed;
+  left: calc(var(--panel-w) - 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 64px;
+  background: rgba(22,14,6,0.92);
+  border: 1px solid var(--jin-border);
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  padding: 0;
+  appearance: none;
+  z-index: 910;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.38s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.3s,
+              background 0.3s;
+}
+#panel-toggle:hover {
+  background: rgba(30,18,8,0.95);
+  border-color: var(--jin);
+}
+#panel-toggle .tog-arrow {
+  font-size: 11px;
+  color: var(--jin);
+  letter-spacing: 0;
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  user-select: none;
+}
+/* when panel is collapsed, toggle slides to left edge */
+body.panel-folded #panel-toggle {
+  left: 8px;
+  border-left: 1px solid var(--jin-border);
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+}
+body.panel-folded #panel-toggle .tog-arrow {
+  transform: scaleX(-1);
+}
 
-    /* Corner gold border */
-    .splash::after {
-      content: '';
-      position: absolute;
-      inset: 24px;
-      border: 1px solid var(--gold-dim);
-      pointer-events: none;
-      z-index: 100;
-    }
+/* decorative top corner lines */
+#panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
 
-    /* SVG canal decoration */
-    .canal-svg {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40%;
-      height: 100%;
-      opacity: 0.7;
-      pointer-events: none;
-      z-index: 0;
-    }
+.panel-head {
+  padding: 28px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--jin-border);
+  position: relative;
+}
 
-    .splash-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(2rem, 6vw, 6rem);
-      max-width: 1100px;
-      padding: 0 clamp(1rem, 4vw, 4rem);
-      text-align: center;
-    }
+.panel-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 5px;
+  line-height: 1.5;
+}
 
-    .photo-circle {
-      width: clamp(120px, 18vw, 180px);
-      height: clamp(120px, 18vw, 180px);
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 2px solid var(--gold-dim);
-      animation: floatIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-    .photo-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+.panel-sub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 3px;
+}
 
-    .splash-text {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-    }
+.panel-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 10px;
+}
+.panel-divider span {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+.panel-divider::before,
+.panel-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--jin-border);
+}
 
-    .splash-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 5.5vw, 5rem);
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      line-height: 1.2;
-      text-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
-    }
+/* ── SEARCH ── */
+.search-box {
+  padding: 0 14px 12px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  height: 34px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--jin-border);
+  border-radius: 3px;
+  outline: none;
+  background: rgba(242,234,216,0.04);
+  color: var(--mi);
+  font: 12px 'STSong','Songti SC','Noto Serif SC',serif;
+  letter-spacing: 1px;
+}
+.search-box input::placeholder { color: var(--mi-faint); }
+.search-box input:focus { border-color: rgba(197,160,40,0.65); background: var(--jin-light); }
+.search-icon {
+  position: absolute;
+  right: 25px;
+  top: 9px;
+  color: var(--jin);
+  font-size: 15px;
+  pointer-events: none;
+}
+.panel-actions { display:block; }
+.search-empty {
+  display: none;
+  padding: 16px 8px;
+  color: var(--mi-faint);
+  font-size: 12px;
+  line-height: 1.8;
+  text-align: center;
+}
+.timeline-toggle {
+  width: 100%; height: 30px; margin-top: 8px;
+  border: 1px solid var(--jin-border); border-radius: 3px;
+  background: rgba(197,160,40,0.08); color: var(--jin); cursor: pointer;
+  font: 11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing: 2px;
+}
+.timeline-toggle:hover { background: var(--jin-light); border-color: rgba(197,160,40,0.6); }
+#timeline-panel {
+  position: absolute; left: 26px; top: 26px; width: min(560px, calc(100% - 52px));
+  max-height: calc(100% - 52px); overflow-y: auto; padding: 24px;
+  background: rgba(22,14,6,0.96); border: 1px solid var(--jin-border);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45); z-index: 850; display: none;
+}
+#timeline-panel.open { display: block; }
+.timeline-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.timeline-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.timeline-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.timeline-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:18px; }
+.timeline-list { position:relative; padding-left:20px; }
+.timeline-list::before { content:''; position:absolute; left:5px; top:5px; bottom:5px; width:1px; background:var(--jin-border); }
+.timeline-item { position:relative; padding:0 0 15px 16px; cursor:pointer; }
+.timeline-item { width:100%; border:0; background:transparent; text-align:left; font:inherit; }
+.timeline-item::before { content:''; position:absolute; left:-19px; top:4px; width:8px; height:8px; border:1px solid var(--jin); border-radius:50%; background:var(--panel-bg); }
+.timeline-item:hover .timeline-item-title { color:var(--jin); }
+.timeline-item-time { color:rgba(197,160,40,0.75); font-size:10px; letter-spacing:1px; }
+.timeline-item-title { color:var(--mi); font-size:13px; margin-top:3px; letter-spacing:1px; }
+.timeline-item-meta { color:var(--mi-faint); font-size:10px; margin-top:3px; }
+.people-toggle {
+  width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border);
+  border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer;
+  font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px;
+}
+.people-toggle:hover { background:var(--jin-light); color:var(--jin); }
+#people-panel { position:absolute; right:26px; top:26px; width:min(420px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.96); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#people-panel.open { display:block; }
+.people-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.people-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.people-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.people-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:18px; }
+.people-node { border:1px solid var(--jin-border); padding:14px; margin-bottom:10px; background:rgba(197,160,40,0.05); }
+.people-node-name { color:var(--jin); font-size:16px; letter-spacing:3px; }
+.people-node-role { color:var(--mi); font-size:12px; margin-top:6px; }
+.people-node-rel { color:var(--mi-faint); font-size:11px; line-height:1.7; margin-top:8px; }
+.people-work-list { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:12px; }
+.people-work { min-width:0; padding:8px 9px; border:1px solid rgba(197,160,40,0.24); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:11px/1.45 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.people-work:hover, .people-work:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.people-source { color:rgba(197,160,40,0.62); font-size:10px; line-height:1.7; margin-top:15px; }
+.viz-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.viz-toggle:hover { background:var(--jin-light); color:var(--jin); }
+#viz-panel { position:absolute; left:50%; top:26px; transform:translateX(-50%); width:min(620px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.96); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#viz-panel.open { display:block; }
+.viz-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.viz-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.viz-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.viz-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:15px; }
+.viz-stats { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-bottom:14px; }
+.viz-stat { border:1px solid var(--jin-border); padding:10px 6px; text-align:center; background:rgba(197,160,40,0.05); }
+.viz-stat-num { color:var(--jin); font-size:20px; }
+.viz-stat-label { color:var(--mi-faint); font-size:10px; margin-top:4px; }
+#viz-chart { width:100%; height:230px; }
+.viz-subtitle { color:var(--mi); font-size:12px; letter-spacing:2px; margin:16px 0 9px; }
+.viz-theme-list { display:flex; flex-wrap:wrap; gap:7px; }
+.viz-theme-btn { border:1px solid rgba(197,160,40,0.28); border-radius:999px; padding:6px 10px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:10px 'STSong','Songti SC','Noto Serif SC',serif; }
+.viz-theme-btn:hover, .viz-theme-btn:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.viz-note { color:var(--mi-faint); font-size:10px; line-height:1.7; margin-top:8px; }
+@media (max-width: 600px) { .viz-stats { grid-template-columns:repeat(3,1fr); } .people-work-list { grid-template-columns:1fr; } #viz-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); } }
+.qa-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.08); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.qa-toggle:hover { background:var(--jin-light); }
+#qa-panel { position:absolute; right:26px; bottom:26px; width:min(450px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.97); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#qa-panel.open { display:block; }
+.qa-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.qa-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.qa-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.qa-badge { display:inline-block; color:rgba(197,160,40,0.75); font-size:10px; letter-spacing:1px; margin-bottom:12px; }
+.qa-form { display:flex; gap:8px; }
+.qa-form input { flex:1; min-width:0; height:36px; padding:0 10px; border:1px solid var(--jin-border); border-radius:3px; outline:none; background:rgba(242,234,216,0.04); color:var(--mi); font:12px 'STSong','Songti SC','Noto Serif SC',serif; }
+.qa-form input:focus { border-color:rgba(197,160,40,0.65); }
+.qa-form button { width:58px; border:1px solid var(--jin-border); border-radius:3px; background:var(--jin-light); color:var(--jin); cursor:pointer; font:11px serif; }
+.qa-answer { min-height:70px; margin-top:14px; padding:12px; border-left:2px solid var(--jin); background:rgba(197,160,40,0.05); color:var(--mi-dim); font-size:12px; line-height:1.9; white-space:pre-line; }
+.qa-result-list { display:grid; gap:7px; margin-top:10px; }
+.qa-result { width:100%; padding:9px 10px; border:1px solid rgba(197,160,40,0.25); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi); cursor:pointer; font:11px/1.55 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.qa-result:hover, .qa-result:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.qa-result small { display:block; color:var(--mi-faint); margin-top:2px; }
+.qa-footnote { color:var(--mi-faint); font-size:10px; line-height:1.7; margin-top:10px; }
+.location-toggle { width:100%; height:30px; margin-top:8px; border:1px solid rgba(107,155,106,0.48); border-radius:3px; background:rgba(107,155,106,0.08); color:#9DBD9C; cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.location-toggle:hover, .location-toggle:focus-visible { color:#C4D9C3; border-color:#9DBD9C; background:rgba(107,155,106,0.16); }
+.location-toggle:disabled { cursor:wait; opacity:0.7; }
+.location-result { margin-top:8px; padding:9px 10px; border-left:2px solid #6B9B6A; background:rgba(107,155,106,0.07); color:var(--mi-dim); font-size:10px; line-height:1.65; }
+.location-result[hidden] { display:none; }
+.location-result-head { color:#9DBD9C; }
+.location-privacy { display:block; margin-top:3px; color:var(--mi-faint); }
+.nearest-poem-btn { width:100%; min-height:32px; margin-top:7px; padding:5px 8px; border:1px solid rgba(107,155,106,0.4); border-radius:3px; background:transparent; color:#9DBD9C; cursor:pointer; font:10px 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.nearest-poem-btn:hover, .nearest-poem-btn:focus-visible { background:rgba(107,155,106,0.14); border-color:#9DBD9C; }
+.detail-actions { display:flex; align-items:center; gap:8px; }
+.favorite-btn { border:1px solid var(--jin-border); border-radius:3px; background:transparent; color:var(--mi-dim); cursor:pointer; padding:6px 8px; font:11px serif; }
+.favorite-btn:hover, .favorite-btn.saved { color:var(--jin); background:var(--jin-light); border-color:rgba(197,160,40,0.6); }
+.favorites-filter { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:transparent; color:var(--mi-dim); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; }
+.favorites-filter:hover, .favorites-filter.active { color:var(--jin); background:var(--jin-light); border-color:rgba(197,160,40,0.6); }
+.poem-card.saved .poem-seq::after { content:'  ★'; color:var(--jin); }
+button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
 
-    .splash-subtitle {
-      font-family: var(--font-sans);
-      font-size: clamp(0.85rem, 1.4vw, 1.3rem);
-      color: var(--text-primary);
-      margin-top: clamp(0.5rem, 1.5vh, 1.2rem);
-      letter-spacing: 0.12em;
-      font-weight: 300;
-    }
+#poem-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 14px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.2) transparent;
+}
+#poem-list::-webkit-scrollbar { width: 3px; }
+#poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.2); border-radius: 2px; }
 
-    .gold-divider {
-      width: 50%;
-      max-width: 500px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--gold) 25%, var(--gold) 75%, transparent 100%);
-      margin: clamp(0.8rem, 2vh, 1.5rem) auto;
-    }
+.poem-card {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--jin-border);
+  border-radius: 3px;
+  padding: 13px 15px;
+  margin-bottom: 9px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+.poem-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: var(--hong);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.25s;
+}
+.poem-card:hover { background: var(--jin-light); border-color: rgba(197,160,40,0.4); }
+.poem-card.active { background: var(--jin-light); border-color: rgba(197,160,40,0.5); }
+.poem-card:hover::after, .poem-card.active::after { transform: scaleY(1); }
 
-    .splash-cta {
-      margin-top: clamp(1.2rem, 3vh, 2rem);
-      font-family: var(--font-sans);
-      font-size: clamp(0.8rem, 1vw, 1rem);
-      color: var(--gold);
-      letter-spacing: 0.2em;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.5s forwards, pulse 2.5s ease-in-out 2.5s infinite;
-      border: 1px solid var(--gold-dim);
-      padding: clamp(8px, 1.5vh, 14px) clamp(28px, 4vw, 48px);
-      border-radius: 2px;
-      background: rgba(201, 168, 76, 0.04);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .splash-cta:hover {
-      background: rgba(201, 168, 76, 0.12);
-      border-color: var(--gold);
-      text-shadow: 0 0 16px rgba(201, 168, 76, 0.3);
-    }
+.poem-seq {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.poem-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mi);
+  letter-spacing: 3px;
+  transition: color 0.2s;
+}
+.poem-card.active .poem-name { color: var(--jin); }
+.poem-place {
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 1px;
+}
+.poem-place::before { content: '▪ '; }
 
-    .splash-footer {
-      position: absolute;
-      bottom: clamp(2rem, 4vh, 3.5rem);
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--font-sans);
-      font-size: clamp(0.6rem, 0.8vw, 0.8rem);
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      z-index: 2;
-      text-align: center;
-      animation: fadeUp 0.8s ease 1.8s both;
-    }
+/* fly arrow indicator */
+.poem-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--jin);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.poem-card:hover .poem-arrow, .poem-card.active .poem-arrow { opacity: 1; }
 
-    .splash-url {
-      font-family: var(--font-sans);
-      font-size: clamp(0.65rem, 0.8vw, 0.8rem);
-      color: var(--gold);
-      letter-spacing: 0.2em;
-      margin-top: clamp(0.4rem, 1vh, 0.8rem);
-    }
+/* overview card — golden accent */
+.poem-card.overview-card {
+  border-color: rgba(212,175,55,0.35);
+  background: rgba(212,175,55,0.06);
+}
+.poem-card.overview-card:hover {
+  background: rgba(212,175,55,0.14);
+  border-color: rgba(212,175,55,0.55);
+}
+.poem-card.overview-card .poem-name {
+  color: #D4AF37;
+}
+.poem-card.overview-card .poem-seq {
+  color: rgba(212,175,55,0.55);
+}
 
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.92); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.55; }
-    }
+.panel-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--jin-border);
+  font-size: 10px;
+  color: var(--mi-faint);
+  text-align: center;
+  letter-spacing: 2px;
+}
 
-    /* Responsive */
-    @media (max-width: 700px) {
-      .splash-content {
-        flex-direction: column;
-        gap: clamp(1rem, 3vh, 2rem);
-      }
-      .photo-circle {
-        width: 120px;
-        height: 120px;
-      }
-      .splash::after { inset: 14px; }
-    }
+/* ── MAP ── */
+#map-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+#map {
+  position: absolute;
+  background: radial-gradient(ellipse at center, #3a2a15 0%, #1a1208 100%);
+  top: 0; left: 0; right: 0; bottom: 0;
+}
 
-    @media (max-height: 600px) {
-      .splash::after { inset: 10px; }
-      .photo-circle {
-        width: 90px;
-        height: 90px;
-      }
-    }
+/* Leaflet tile filter for "古地图" feel — light sepia over Gaode tiles */
+.leaflet-tile-pane { filter: sepia(0.15) saturate(0.85) brightness(0.95); }
+.leaflet-container { background: #2a1a0a !important; }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; }
-    }
-  </style>
+/* ── DETAIL CARD (slides up from bottom, draggable resize) ── */
+#detail {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(20,10,6,0.88);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border-top: 1px solid var(--jin-border);
+  z-index: 800;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease;
+  height: 55%;
+  display: flex;
+  flex-direction: column;
+}
+#detail.open { transform: translateY(0); }
+
+/* ── Resize Handle (drag bar at top of detail card) ── */
+.resize-handle {
+  height: 16px;
+  cursor: ns-resize;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  z-index: 10;
+  position: relative;
+  margin-top: -1px;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 16px; right: 16px;
+  top: 50%; transform: translateY(-50%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197,160,40,0.2), transparent);
+  transition: background 0.2s;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: rgba(197,160,40,0.08);
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
+.resize-grip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+.resize-grip span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(197,160,40,0.2);
+  transition: all 0.2s;
+}
+.resize-handle:hover .resize-grip span,
+.resize-handle.dragging .resize-grip span {
+  background: var(--jin);
+  width: 36px;
+}
+
+/* top decorative line */
+#detail::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jin), var(--hong), transparent);
+  flex-shrink: 0;
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 10px;
+  border-bottom: 1px solid var(--jin-border);
+  flex-shrink: 0;
+}
+.detail-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 3px;
+}
+.detail-loc {
+  font-size: 11px;
+  color: var(--mi-dim);
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
+.detail-meta { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.detail-chip { display:inline-flex; align-items:center; min-height:20px; padding:2px 7px; border:1px solid var(--jin-border); border-radius:999px; color:var(--mi-dim); background:rgba(197,160,40,0.06); font-size:9px; letter-spacing:1px; }
+.close-btn {
+  background: none;
+  border: 1px solid var(--jin-border);
+  color: var(--mi-dim);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+.close-btn:hover { border-color: var(--jin); color: var(--jin); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--jin-border);
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--mi-faint);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 9px 14px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--mi); }
+.tab.on {
+  color: #D4AF37;
+  border-bottom-color: #D4AF37;
+  font-weight: 700;
+}
+
+/* ── TAB BODY ── */
+.detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.15) transparent;
+}
+
+.pane { display: none; }
+.pane.on { display: block; }
+
+.placeholder-box {
+  width: 100%;
+  height: 160px;
+  border: 1px dashed rgba(197,160,40,0.25);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mi-faint);
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+/* video tab */
+.video-ratio {
+  position: relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  background: #000;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.video-ratio video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-ratio video { object-fit:contain; background:#000; }
+
+/* audio tab */
+.audio-wrap {
+  background: rgba(197,160,40,0.05);
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  padding: 20px;
+}
+.audio-label {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.audio-wrap audio {
+  width: 100%;
+  accent-color: var(--jin);
+}
+
+/* graph tab — ECharts container */
+.graph-wrap {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  background: rgba(10,6,3,0.6);
+}
+.graph-wrap canvas {
+  display: block;
+}
+
+/* graph image (pre-made knowledge graph PNG) */
+.graph-img-wrap {
+  margin-top: 14px;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(10,6,3,0.4);
+}
+.graph-img-wrap img {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+.graph-img-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid rgba(197,160,40,0.12);
+}
+
+/* poem lines under graph */
+.poem-lines {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-left: 2px solid var(--hong);
+  background: rgba(107,26,26,0.07);
+  position: relative;
+}
+.poem-lines-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.poem-lines-text {
+  font-size: 15px;
+  color: #E0D6C8;
+  line-height: 2.5;
+  letter-spacing: 4px;
+}
+
+/* full-screen image viewer */
+#image-lightbox {
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:54px 20px 20px;
+  background:rgba(5,3,2,0.96);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+#image-lightbox[hidden] { display:none; }
+#lightbox-image { max-width:100%; max-height:100%; object-fit:contain; touch-action:pinch-zoom; }
+.lightbox-close { position:absolute; top:calc(10px + env(safe-area-inset-top)); right:14px; min-width:44px; min-height:44px; border:1px solid var(--jin-border); border-radius:50%; background:rgba(22,14,6,0.9); color:var(--mi); cursor:pointer; font-size:24px; }
+
+/* ── CUSTOM LEAFLET MARKER: 垂签 ── */
+.mk-tag {
+  position: relative;
+  width: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 6px rgba(107,26,26,0.5));
+  transition: filter 0.3s;
+}
+.mk-tag-body {
+  width: 36px;
+  height: 46px;
+  background: var(--hong, #6B1A1A);
+  border: 1.5px solid #C5A028;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.mk-tag-body::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(197,160,40,0.3);
+  border-radius: 2px 2px 0 0;
+  pointer-events: none;
+}
+.mk-tag-char {
+  font-family: 'Songti SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #C5A028;
+  line-height: 1;
+  user-select: none;
+}
+.mk-tag-tip {
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #C5A028;
+  margin-top: -1px;
+}
+.mk-tag-hole {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(197,160,40,0.6);
+  border: 1px solid #C5A028;
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* active: glow + pulse ring */
+.mk-tag.lit {
+  filter: drop-shadow(0 0 10px rgba(197,160,40,0.7)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.mk-tag.lit .mk-tag-body {
+  background: #8B2500;
+  border-color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-char {
+  color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-tip {
+  border-top-color: #F2EAD8;
+}
+.mk-tag.lit::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(197,160,40,0.6);
+  animation: pulse-ring 1.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse-ring {
+  0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
+}
+
+/* ── MOBILE / TOUCH TABLET (≤ 900px) ── */
+@media (max-width: 900px) {
+
+  /* vertical stack */
+  body {
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    touch-action: manipulation;
+  }
+
+  /* ── panel → top strip ── */
+  #panel {
+    width: 100%;
+    min-width: 100%;
+    height: min(38dvh, 310px);
+    max-height: none;
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--jin-border);
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1),
+                opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  }
+  #panel.collapsed {
+    width: 100%;
+    min-width: 100%;
+    height: 52px;
+    max-height: none;
+    border-bottom: 1px solid var(--jin-border);
+    opacity: 1;
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  /* decorative line → top border already via ::before */
+
+  .panel-head {
+    padding: 10px 40px 4px 14px;  /* right padding for toggle */
+  }
+  .panel-title {
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+  .panel-sub {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+  body.panel-folded .panel-head {
+    padding: 8px 40px 4px 14px;
+  }
+  body.panel-folded .panel-sub {
+    display: none;
+  }
+
+  .panel-divider {
+    display: none;
+  }
+  .panel-divider span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  /* poem list → horizontal scroll */
+  #poem-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 7px 12px 10px;
+    gap: 7px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  #poem-list::-webkit-scrollbar { height: 2px; }
+  #poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.15); border-radius: 1px; }
+  .search-empty { min-width:180px; align-self:center; padding:12px; }
+
+  .poem-card {
+    min-width: 132px;
+    max-width: 160px;
+    min-height: 72px;
+    flex-shrink: 0;
+    padding: 10px 11px;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+  }
+  .poem-card.overview-card {
+    min-width: 80px;
+    max-width: 100px;
+    margin-right: 2px;
+    margin-bottom: 0 !important;  /* override inline style */
+  }
+  .poem-seq { font-size: 9px; letter-spacing: 1px; }
+  .poem-name { font-size: 13px; letter-spacing: 1px; }
+  .poem-place { font-size: 10px; }
+
+  .poem-arrow { display: none; } /* hide arrow on mobile, save space */
+
+  .panel-footer {
+    display: none; /* save space on mobile */
+  }
+
+  .search-box {
+    padding: 7px 12px 2px;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    height: 42px;
+    font-size: 16px; /* prevent iOS input zoom */
+  }
+  .search-icon { right: 25px; top: 19px; }
+  .panel-actions {
+    display:flex;
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .panel-actions::-webkit-scrollbar { display:none; }
+  .panel-actions > button {
+    width:auto;
+    min-width:max-content;
+    height:40px;
+    margin-top:0;
+    padding:0 12px;
+    flex:0 0 auto;
+  }
+  .location-result {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 9px;
+  }
+  .location-result-copy { min-width:0; flex:1; }
+  .location-privacy { display:none; }
+  .nearest-poem-btn { width:auto; min-width:max-content; min-height:40px; margin-top:0; }
+
+  /* ── panel toggle: top-right of panel header ── */
+  #panel-toggle {
+    position: absolute;
+    left: auto;
+    right: 8px;
+    top: 10px;
+    bottom: auto;
+    transform: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+    background: rgba(22,14,6,0.95);
+    z-index: 920;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #panel-toggle .tog-arrow {
+    transform: rotate(90deg);
+    font-size: 10px;
+  }
+  body.panel-folded #panel-toggle {
+    right: 8px;
+    top: 8px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+  }
+  body.panel-folded #panel-toggle .tog-arrow {
+    transform: rotate(-90deg);
+  }
+
+  /* ── map ── */
+  #map-wrap {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* dialogs → mobile sheets inside the map area */
+  #timeline-panel,
+  #people-panel,
+  #viz-panel,
+  #qa-panel {
+    position:absolute;
+    inset:8px;
+    width:auto;
+    max-height:none;
+    transform:none;
+    padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+    border-radius:6px;
+    overscroll-behavior:contain;
+    z-index:1100;
+  }
+  .timeline-close, .people-close, .viz-close, .qa-close {
+    min-width:44px;
+    min-height:44px;
+    margin:-10px -8px 0 0;
+    font-size:24px;
+  }
+  .timeline-title, .people-title, .viz-title, .qa-title {
+    font-size:16px;
+    letter-spacing:2px;
+  }
+  .timeline-item, .people-work, .viz-theme-btn, .qa-result {
+    min-height:44px;
+  }
+  .qa-form input {
+    height:44px;
+    font-size:16px;
+  }
+  .qa-form button { width:64px; min-height:44px; }
+  .viz-stats { grid-template-columns:repeat(3,1fr); }
+  .viz-stat { min-height:62px; display:flex; flex-direction:column; justify-content:center; }
+  #viz-chart { height:210px; }
+
+  /* ── detail card ── */
+  #detail {
+    height: 70%;
+    max-height: calc(100% - 8px);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-radius:8px 8px 0 0;
+  }
+  #detail.open {
+    /* keep transform translateY(0) */
+  }
+
+  .detail-head {
+    padding: 10px 16px 8px;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .detail-head > div:first-child { min-width:0; }
+  .detail-title {
+    font-size: 15px;
+    letter-spacing: 2px;
+    line-height:1.45;
+    overflow-wrap:anywhere;
+  }
+  .detail-loc {
+    font-size: 10px;
+  }
+
+  .close-btn {
+    min-height:44px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .detail-actions { flex-shrink:0; gap:5px; }
+  .favorite-btn { min-height:44px; padding:6px 9px; }
+  .detail-chip { min-height:32px; padding:4px 9px; }
+
+  /* tabs — larger touch targets */
+  .tabs {
+    padding: 0 8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    min-height:44px;
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .detail-body {
+    padding: 12px 14px calc(18px + env(safe-area-inset-bottom));
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* poem lines text */
+  .poem-lines-text {
+    font-size: 13px;
+    line-height: 2.1;
+    letter-spacing: 2px;
+  }
+
+  /* resize handle → bigger touch zone */
+  .resize-handle {
+    height: 28px;
+    touch-action:none;
+  }
+
+  /* graph container */
+  .graph-wrap {
+    min-height: 240px;
+  }
+
+  .audio-wrap { padding:14px 10px; }
+  .video-ratio { min-height:0; aspect-ratio:16 / 9; }
+
+  #image-lightbox {
+    padding:calc(58px + env(safe-area-inset-top)) 8px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* Leaflet zoom control — bigger on mobile */
+  .leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #panel { height:min(40dvh, 300px); }
+  .panel-title { font-size:15px; }
+  .poem-card { min-width:124px; max-width:145px; }
+  .detail-head { flex-wrap:wrap; }
+  .detail-actions { width:100%; justify-content:flex-end; }
+  .viz-stats { grid-template-columns:repeat(2,1fr); }
+  #viz-chart { height:190px; }
+}
+
+@media (max-height: 520px) and (max-width: 900px) {
+  #panel { height:46dvh; }
+  #panel.collapsed { height:48px; }
+  #detail { height:78%; }
+  .panel-sub { display:none; }
+}
+</style>
 </head>
 <body>
 
-  <div class="splash" id="splash" title="点击进入地图">
-    <!-- SVG canal decoration -->
-    <svg class="canal-svg" viewBox="0 0 600 900" preserveAspectRatio="none">
-      <path d="M300,0 C200,250 420,350 250,550 C150,680 380,750 220,900"
-            fill="none" stroke="rgba(201,168,76,0.10)" stroke-width="2.5" />
-      <path d="M360,0 C480,280 180,380 310,580 C380,680 240,780 330,900"
-            fill="none" stroke="rgba(201,168,76,0.07)" stroke-width="3.5" />
-      <path d="M240,0 C140,320 400,420 200,620 C80,730 320,800 180,900"
-            fill="none" stroke="rgba(201,168,76,0.13)" stroke-width="1.8" />
-      <path d="M420,0 C520,220 280,380 420,520 C500,620 300,750 380,900"
-            fill="none" stroke="rgba(201,168,76,0.05)" stroke-width="4.5" />
-    </svg>
+<!-- ══════════════ LEFT PANEL ══════════════ -->
+<div id="panel">
+  <div class="panel-head">
+    <div class="panel-title">张謇时空罗盘</div>
+    <div class="panel-sub">通吕运河 · 诗歌足迹</div>
+  </div>
 
-    <div class="splash-content">
-      <div class="photo-circle">
-        <img src="zhangjian-photo.png" alt="张謇">
+  <div class="panel-divider"><span>诗 卷</span></div>
+  <div class="search-box">
+    <input id="poem-search" type="search" placeholder="搜索诗名、地点、诗句…" aria-label="搜索诗歌、地点和诗句">
+    <span class="search-icon">⌕</span>
+    <div class="panel-actions" aria-label="功能入口">
+      <button class="timeline-toggle" id="timeline-toggle" type="button" aria-expanded="false" aria-controls="timeline-panel">查看时序线索</button>
+      <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">人物关系（已核关系）</button>
+      <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">数据可视化</button>
+      <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">本地资料问答（不联网）</button>
+      <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
+      <button class="favorites-filter" id="favorites-filter" type="button" aria-pressed="false">☆ 只看收藏（0）</button>
+    </div>
+    <div class="location-result" id="location-result" role="status" aria-live="polite" hidden>
+      <div class="location-result-copy">
+        <div class="location-result-head" id="location-result-text"></div>
+        <span class="location-privacy">坐标只在当前页面内计算，不保存、不上传。</span>
       </div>
-      <div class="splash-text">
-        <h1 class="splash-title">张謇时空罗盘</h1>
-        <p class="splash-subtitle">通吕运河 · 诗歌数字人文平台</p>
-        <div class="gold-divider"></div>
-        <p class="splash-url">loveeti.top</p>
-        <div class="splash-cta">点 击 进 入</div>
+      <button class="nearest-poem-btn" id="nearest-poem-btn" type="button" hidden>查看最近诗踪</button>
+    </div>
+  </div>
+
+  <div id="poem-list">
+    <!-- 全局总览入口 -->
+    <button class="poem-card overview-card" id="pc-0" type="button" style="margin-bottom:14px">
+      <div class="poem-seq">总 览</div>
+      <div class="poem-name">张謇诗歌宇宙</div>
+      <div class="poem-place">八诗纵横 · 通吕运河</div>
+      <span class="poem-arrow">→</span>
+    </button>
+    <!-- JS rendered -->
+  </div>
+
+  <div class="panel-footer">点击诗题 · 循迹而往</div>
+
+</div>
+
+<!-- ══════════════ MAP ══════════════ -->
+<div id="map-wrap">
+  <div id="map"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(242,234,216,0.15);font-size:14px;letter-spacing:3px;pointer-events:none">通吕运河 · 张謇诗歌足迹</div></div>
+
+  <section id="timeline-panel" role="dialog" aria-modal="true" aria-label="诗歌时序线索">
+    <div class="timeline-head">
+      <div class="timeline-title">诗歌时序线索</div>
+      <button class="timeline-close" id="timeline-close" type="button" aria-label="关闭时间轴">×</button>
+    </div>
+    <div class="timeline-intro">本轴只呈现诗题或文本中明确出现的时间线索；没有可靠创作年代的作品保留“年代待考”，不按诗卷顺序推定先后。</div>
+    <div class="timeline-list" id="timeline-list"></div>
+  </section>
+  <section id="people-panel" role="dialog" aria-modal="true" aria-label="人物关系">
+    <div class="people-head">
+      <div class="people-title">人物关系</div>
+      <button class="people-close" id="people-close" type="button" aria-label="关闭人物关系">×</button>
+    </div>
+    <div class="people-intro">这里只显示当前项目数据可以直接确认的人物关系。诗中出现但尚未核实身份的称谓，不自动扩展为历史人物。</div>
+    <div class="people-node">
+      <div class="people-node-name">张謇</div>
+      <div class="people-node-role">作者 · 项目八首诗的共同作者</div>
+      <div class="people-node-rel">关联作品：八首诗歌。点击下方任一诗歌即可回到地图与诗歌详情。</div>
+      <div class="people-work-list" id="people-work-list"></div>
+    </div>
+    <div class="people-source">待核：三元宫长老、僧人、江客张生、宾客等文本称谓，暂不建立历史人物档案。</div>
+  </section>
+  <section id="viz-panel" role="dialog" aria-modal="true" aria-label="数据可视化">
+    <div class="viz-head">
+      <div class="viz-title">数据可视化</div>
+      <button class="viz-close" id="viz-close" type="button" aria-label="关闭数据可视化">×</button>
+    </div>
+    <div class="viz-intro">以下数据均来自当前网站的八首诗歌记录和资源字段，只展示已存在的内容覆盖情况。</div>
+    <div class="viz-stats">
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-poems">—</div><div class="viz-stat-label">诗歌</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-places">—</div><div class="viz-stat-label">地点</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-themes">—</div><div class="viz-stat-label">主题</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-time">—</div><div class="viz-stat-label">明确时间线索</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-audios">—</div><div class="viz-stat-label">音频</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-videos">—</div><div class="viz-stat-label">视频</div></div>
+    </div>
+    <div id="viz-chart"></div>
+    <div class="viz-subtitle">按主题筛选诗歌</div>
+    <div class="viz-theme-list" id="viz-theme-list"></div>
+    <div class="viz-note">全部统计均直接读取八首诗的地点、主题、时间线索和媒体字段；“年代待考”不会计入明确时间线索。点击主题可联动左侧诗歌列表。</div>
+  </section>
+  <section id="qa-panel" role="dialog" aria-modal="true" aria-label="本地资料问答">
+    <div class="qa-head">
+      <div class="qa-title">本地资料问答</div>
+      <button class="qa-close" id="qa-close" type="button" aria-label="关闭本地资料问答">×</button>
+    </div>
+    <div class="qa-badge">本地资料检索 · 不联网 · 不调用外部 API</div>
+    <form class="qa-form" id="qa-form">
+      <input id="qa-input" type="text" placeholder="例如：哪些诗歌与狼山有关？" aria-label="请输入问题">
+      <button type="submit">提问</button>
+    </form>
+    <div class="qa-answer" id="qa-answer">这里会根据网站现有诗歌、地点和诗句回答，不会自行补充未经核验的历史信息。</div>
+    <div class="qa-footnote">回答仅来自当前网站已有的诗名、地点和诗句；资料中没有依据的问题，将保持未回答。</div>
+  </section>
+
+  <!-- DETAIL CARD -->
+  <div id="detail">
+    <div class="resize-handle">
+      <div class="resize-grip"><span></span><span></span></div>
+    </div>
+    <div class="detail-head">
+      <div>
+        <div class="detail-title" id="d-title">—</div>
+        <div class="detail-loc" id="d-loc">—</div>
+        <div class="detail-meta" id="d-meta"></div>
+      </div>
+      <div class="detail-actions">
+        <button class="favorite-btn" id="favorite-btn" type="button" aria-label="收藏当前诗歌">☆ 收藏</button>
+        <button class="close-btn" id="close-btn">× 收 起</button>
       </div>
     </div>
 
-    <p class="splash-footer">南通大学 · 数字人文专业</p>
+    <div class="tabs">
+      <button class="tab on" data-tab="gph">知识图谱</button>
+      <button class="tab" data-tab="vid">视 频</button>
+      <button class="tab" data-tab="aud">音 频</button>
+    </div>
+
+    <div class="detail-body">
+      <div class="pane on" id="pane-gph">
+        <div class="graph-wrap" id="d-graph"></div>
+        <div class="graph-img-wrap" id="d-graph-img-wrap" style="display:none">
+          <div class="graph-img-label">图谱原图</div>
+          <img id="d-graph-img" src="" alt="知识图谱" loading="lazy" decoding="async" />
+        </div>
+        <div class="poem-lines" id="d-lines">
+          <div class="poem-lines-label">诗 文</div>
+          <div class="poem-lines-text" id="d-lines-text"></div>
+        </div>
+      </div>
+      <div class="pane" id="pane-vid">
+        <div class="video-ratio" id="d-video"></div>
+      </div>
+      <div class="pane" id="pane-aud">
+        <div class="audio-wrap">
+          <div class="audio-label">相关音频</div>
+          <div id="d-audio"></div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <script>
-    (function() {
-      var visited = sessionStorage.getItem('splash-seen');
-      if (visited) {
-        window.location.replace('map.html');
-        return;
-      }
-      sessionStorage.setItem('splash-seen', '1');
+<div id="image-lightbox" role="dialog" aria-modal="true" aria-label="知识图谱大图" hidden>
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="关闭大图">×</button>
+  <img id="lightbox-image" src="" alt="知识图谱大图">
+</div>
 
-      var splash = document.getElementById('splash');
-      splash.addEventListener('click', function(e) {
-        splash.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        splash.style.opacity = '0';
-        splash.style.transform = 'scale(1.03)';
-        setTimeout(function() {
-          window.location.href = 'map.html';
-        }, 500);
+<!-- panel toggle button -->
+  <button id="panel-toggle" type="button" title="收起/展开目录" aria-label="收起目录" aria-expanded="true">
+    <span class="tog-arrow">◀</span>
+  </button>
+
+<script>
+window.addEventListener('load', function () {
+/* ══════════════════════════════════════════
+   核心数据 —— 后续只需维护此数组
+   ══════════════════════════════════════════ */
+
+// 安全检测：确保关键库已加载，失败时在页面显示可见提示
+if (typeof L === 'undefined') {
+  console.warn('Leaflet 未能加载，地图功能不可用');
+  var mapEl = document.getElementById('map');
+  if (mapEl) mapEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#C5A028;font-size:14px;letter-spacing:2px;font-family:serif;z-index:1">Leaflet 库加载失败<br><span style="font-size:11px;color:rgba(197,160,40,0.5);margin-top:8px">请检查网络连接</span></div>';
+}
+if (typeof echarts === 'undefined') {
+  console.warn('ECharts 未能加载，知识图谱功能不可用');
+}
+
+/* ═══════ ECharts 初始化 + 自动重试（处理 CDN 异步回落） ═══════ */
+function initGraphWithRetry(gphEl, buildFn, attempt) {
+  attempt = attempt || 0;
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  gphEl.innerHTML = '';
+  if (typeof echarts !== 'undefined') {
+    try {
+      chartInstance = echarts.init(gphEl);
+      chartInstance.setOption(buildFn());
+    } catch(e) {
+      gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ 知识图谱加载失败 ]</div>';
+    }
+  } else if (attempt < 4) {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 加载中… ]</div>';
+    setTimeout(function() { initGraphWithRetry(gphEl, buildFn, attempt + 1); }, 2000);
+  } else {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>';
+  }
+}
+
+const WEB_ASSET_BASE = "assets/";
+const POEMS = [
+  {
+    id: 1,
+    title: "《狼山三元宫近斥僧挽词》",
+    emoji: "🐺",
+    location: "狼山 · 南通",
+    timeClue: "年代待考",
+    theme: "佛寺禅意",
+    lat: 31.94928,
+    lng: 120.88813,
+    lines: "山寺禅房列，三元长老尊。\n遗徒通世学，护佛广宗门。\n焚象衰时及。斋鱼俭德存。\n空堂照遗拂，江月白翻翻。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-1.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-1.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-1.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-1.webp"
+  },
+  {
+    id: 2,
+    title: "《落日九月十五歸自吕四途中》",
+    emoji: "🌅",
+    location: "吕四 · 南通",
+    timeClue: "九月十五（题名明确）",
+    theme: "壮阔海天",
+    lat: 32.05992,
+    lng: 121.60266,
+    lines: "落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-2.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-2.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-2.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-2.webp"
+  },
+  {
+    id: 3,
+    title: "《盆松》",
+    emoji: "🌲",
+    location: "常乐镇 · 海门",
+    timeClue: "年代待考",
+    theme: "托物言志",
+    lat: 31.9331,
+    lng: 121.2515,
+    lines: "山泽孤生种，谁将到此盆？\n青苍一撮土，蟠郁百年根。\n宿黛含霜气，创鳞见斧痕。\n等闲怜托处，梁栋与谁论。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-3.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-3.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-3.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-3.webp"
+  },
+  {
+    id: 4,
+    title: "《过排河观》",
+    emoji: "⛩",
+    location: "排河观 · 金沙镇 · 通州",
+    timeClue: "年代待考",
+    theme: "沧桑变迁",
+    lat: 32.051,
+    lng: 121.095,
+    lines: "沧海成田后，蔚然一寺开。\n钟声随鸟远，河势趁林回。\n佛圯尘龛在，僧贫圭挫颓。\n兴衰何处问，夕暖上经台。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-4.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-4.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-4.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-4.webp"
+  },
+  {
+    id: 5,
+    title: "《千佛寺》",
+    emoji: "🙏",
+    location: "千佛寺 · 南通",
+    timeClue: "年代待考",
+    theme: "暮色苍凉",
+    lat: 31.974351,
+    lng: 120.867435,
+    lines: "复泣回汀水一涯，招提是处并行查。\n烟寒荫霁繁茅屋，风静楸榆点暮鸦。\n衰草城边游客渡，夕阳野外病僧家。\n年年来去孤篷里，卧听钟声间晚笳。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-5.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-5.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-5.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-5.webp"
+  },
+  {
+    id: 6,
+    title: "《八月十三夜曼寿堂看月》",
+    emoji: "🌙",
+    location: "曼寿堂 · 南通",
+    timeClue: "八月十三夜（题名明确）",
+    theme: "月下哲思",
+    lat: 32.02,
+    lng: 120.87,
+    lines: "已自东天出，都疑下界新。\n未圆怜更好，独对故相亲。\n树镂移阴叶，波笼久坐巾。\n啼螀尔何意，宁伴倚阑人？",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-6.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-6.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-6.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-6.webp"
+  },
+  {
+    id: 7,
+    title: "《金沙祭墓饮客沧园》",
+    emoji: "🎋",
+    location: "金沙 · 沧园 · 通州",
+    timeClue: "寒食节（诗句明确）",
+    theme: "寒食追思",
+    lat: 32.0787752,
+    lng: 121.0744572,
+    lines: "沧园栏楯尚清华，载槛重停隔水车。\n燕子不来春不住，龙孙方纵日方斜。\n荒疏江客调笙曲，辛苦张生课菊花。\n惆怅百年寒食节，冬青无恙几人家？",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-7.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-7.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-7.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-7.webp"
+  },
+  {
+    id: 8,
+    title: "《千龄观消寒第五集闻粤事稍平》",
+    emoji: "🍶",
+    location: "千龄观 · 南通",
+    timeClue: "消寒期间（题名明确）",
+    theme: "雅集忧世",
+    lat: 32.005538,
+    lng: 120.885269,
+    lines: "未嫌寒气尚逡巡，泥饮连朝选主宾。\n小醉大醒悬酒户，遥开缓落衔花辰。\n相随少长兰亭集，渐次龙蛇桂海删。\n遗火春星看不厌，疏缝人语况濠濛。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-8.mp3",
+    videoUrl:   "",
+    videoPoster: "",
+    graphImage: WEB_ASSET_BASE + "images/poem-8.webp"
+  },
+];
+
+/* ═══════ 汉字序号 ═══════ */
+const HAN = ['一','二','三','四','五','六','七','八','九','十',
+             '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
+
+/* ═══════ 地图初始化 ═══════ */
+let map = null;
+try {
+  if (typeof L !== 'undefined') {
+    map = L.map('map', {
+      center: [31.97, 120.89],
+      zoom: 11,
+      zoomControl: true,
+      attributionControl: false
+    });
+    // 高德地图瓦片 —— 单一域名，避免子域名解析问题
+    L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      maxZoom: 18
+    }).addTo(map);
+  }
+} catch(e) {
+  console.warn('地图初始化失败:', e.message);
+  map = null;
+}
+
+/* ═══════ 通吕运河路线 ═══════ */
+if (map) {
+  const canalRoute = L.polyline([
+    [32.0788, 121.0745],  // 金沙沧园
+    [32.0599, 121.6027],  // 吕四
+    [32.051,  121.095],   // 排河观
+    [32.02,   120.87],    // 曼寿堂
+    [32.0055, 120.8853],  // 千龄观
+    [31.9744, 120.8674],  // 千佛寺
+    [31.9493, 120.8881],  // 狼山
+    [31.9331, 121.2515],  // 常乐镇盆松
+  ], {
+    color: '#C5A028',
+    weight: 2.5,
+    opacity: 0.55,
+    dashArray: '10, 6',
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+  canalRoute.bindTooltip('通吕运河', {
+    permanent: false,
+    direction: 'center',
+    className: 'canal-tooltip',
+    offset: [0, 0]
+  });
+}
+
+// CSS-in-JS for tooltip
+const canalStyle = document.createElement('style');
+canalStyle.textContent = '.canal-tooltip { background:rgba(22,14,6,0.9); border:1px solid #C5A028; color:#C5A028; font-family:"Songti SC","STKaiti","KaiTi","楷体",serif; font-size:12px; letter-spacing:3px; padding:4px 12px; border-radius:2px; } .canal-tooltip::before { border-top-color: #C5A028 !important; }';
+document.head.appendChild(canalStyle);
+
+/* ═══════ 地图点击：缩小知识卡片 ═══════ */
+if (map) {
+  map.on('click', function(e) {
+    var d = document.getElementById('detail');
+    if (!d.classList.contains('open')) return;
+    // 排除点击标记的情况
+    const clickTarget = e.originalEvent && e.originalEvent.target;
+    if (clickTarget instanceof Element && (
+        clickTarget.closest('.mk-tag') ||
+        clickTarget.closest('.leaflet-marker-icon') ||
+        clickTarget.closest('.leaflet-control'))) return;
+    cardMinimized = true;
+    cardLocked = false;
+    trackingMode = false;
+    d.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
+    const minimizedHeight = window.innerWidth <= 900 ? '28%' : '14%';
+    d.style.height = minimizedHeight;
+    hoverSavedHeight = minimizedHeight;
+  });
+}
+
+/* ═══════ 状态 ═══════ */
+let activeId  = null;
+let chartInstance = null;
+let cardMinimized = false;
+let cardLocked = false;
+let trackingMode = false;
+const markers = {};
+let favoriteIds = new Set();
+let nearestLocatedPoem = null;
+let userLocationMarker = null;
+try {
+  const storedFavorites = JSON.parse(localStorage.getItem('zhangjian-favorites') || '[]');
+  favoriteIds = new Set(Array.isArray(storedFavorites)
+    ? storedFavorites.map(Number).filter(id => POEMS.some(p => p.id === id))
+    : []);
+} catch (e) { favoriteIds = new Set(); }
+
+/* ═══════ 本机定位：只计算最近诗歌地点，不保存坐标 ═══════ */
+function distanceInKm(lat1, lng1, lat2, lng2) {
+  const toRad = value => value * Math.PI / 180;
+  const earthRadiusKm = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function formatLocalDistance(km) {
+  if (km < 1) return `${Math.max(1, Math.round(km * 1000))} 米`;
+  if (km < 100) return `${km.toFixed(1)} 公里`;
+  return `${Math.round(km)} 公里`;
+}
+
+const locationToggle = document.getElementById('location-toggle');
+const locationResult = document.getElementById('location-result');
+const locationResultText = document.getElementById('location-result-text');
+const nearestPoemButton = document.getElementById('nearest-poem-btn');
+
+function showLocationMessage(message, hasNearestPoem = false) {
+  locationResult.hidden = false;
+  locationResultText.textContent = message;
+  nearestPoemButton.hidden = !hasNearestPoem;
+}
+
+locationToggle.addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    showLocationMessage('当前浏览器不支持定位，仍可通过地图标记浏览全部诗歌地点。');
+    return;
+  }
+  locationToggle.disabled = true;
+  locationToggle.setAttribute('aria-busy', 'true');
+  locationToggle.textContent = '正在定位…';
+  showLocationMessage('正在请求浏览器定位权限…');
+  navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    const ranked = POEMS.map(p => ({
+      poem: p,
+      distance: distanceInKm(latitude, longitude, p.lat, p.lng)
+    })).sort((a, b) => a.distance - b.distance);
+    const nearest = ranked[0];
+    nearestLocatedPoem = nearest.poem;
+    showLocationMessage(`最近诗踪：${nearest.poem.location}，直线距离约 ${formatLocalDistance(nearest.distance)}。`, true);
+    nearestPoemButton.textContent = `查看 ${nearest.poem.title}`;
+    locationToggle.textContent = '重新定位';
+    if (map && typeof L !== 'undefined') {
+      if (userLocationMarker) userLocationMarker.remove();
+      userLocationMarker = L.circleMarker([latitude, longitude], {
+        radius: 7,
+        color: '#F2EAD8',
+        weight: 2,
+        fillColor: '#6B9B6A',
+        fillOpacity: 0.9
+      }).addTo(map).bindTooltip('我的位置 · 仅本机使用', {
+        direction: 'top',
+        className: 'canal-tooltip'
       });
+    }
+    locationToggle.disabled = false;
+    locationToggle.removeAttribute('aria-busy');
+  }, error => {
+    const messages = {
+      1: '未获得定位权限。你仍可通过地图标记浏览全部诗歌地点。',
+      2: '暂时无法获取当前位置，请检查设备定位服务后重试。',
+      3: '定位等待超时，请在信号较好的位置重试。'
+    };
+    nearestLocatedPoem = null;
+    showLocationMessage(messages[error.code] || '定位失败，请稍后重试。');
+    locationToggle.textContent = '重新定位';
+    locationToggle.disabled = false;
+    locationToggle.removeAttribute('aria-busy');
+  }, {
+    enableHighAccuracy: false,
+    timeout: 10000,
+    maximumAge: 300000
+  });
+});
 
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          splash.click();
+nearestPoemButton.addEventListener('click', () => {
+  if (nearestLocatedPoem) flyToPoem(nearestLocatedPoem);
+});
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+}
+
+/* ═══════ 自定义标记图标：垂签 ═══════ */
+function mkIcon(lit, char) { if (typeof L === 'undefined') return null; 
+  return L.divIcon({
+    className: '',
+    html: `<div class="mk-tag${lit ? ' lit' : ''}">
+      <div class="mk-tag-hole"></div>
+      <div class="mk-tag-body">
+        <span class="mk-tag-char">${escapeHTML(char || '詩')}</span>
+      </div>
+      <div class="mk-tag-tip"></div>
+    </div>`,
+    iconSize: [36, 60],
+    iconAnchor: [18, 56]
+  });
+}
+
+/* ═══════ 渲染左侧列表 ═══════ */
+const list = document.getElementById('poem-list');
+POEMS.forEach((p, i) => {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.className = 'poem-card';
+  el.id = 'pc-' + p.id;
+  el.dataset.poemId = String(p.id);
+  el.innerHTML = `
+    <div class="poem-seq">其${HAN[i]}</div>
+    <div class="poem-name">${escapeHTML(p.title)}</div>
+    <div class="poem-place">${escapeHTML(p.location)}</div>
+    <span class="poem-arrow">→</span>`;
+  el.addEventListener('click', () => flyToPoem(p));
+  list.appendChild(el);
+});
+
+/* ═══════ 基于现有项目数据的搜索 ═══════ */
+const poemSearch = document.getElementById('poem-search');
+const searchEmpty = document.createElement('div');
+searchEmpty.className = 'search-empty';
+searchEmpty.textContent = '未找到相符的诗歌';
+list.appendChild(searchEmpty);
+const favoritesFilter = document.getElementById('favorites-filter');
+let showFavoritesOnly = false;
+function applyPoemFilters() {
+  const q = poemSearch.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('#poem-list .poem-card:not(.overview-card)').forEach(card => {
+    const id = Number(card.dataset.poemId);
+    const p = POEMS.find(poem => poem.id === id);
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines].join(' ').toLowerCase();
+    const match = (!q || haystack.includes(q)) && (!showFavoritesOnly || favoriteIds.has(id));
+    card.style.display = match ? '' : 'none';
+    card.classList.toggle('saved', favoriteIds.has(id));
+    if (match) visible++;
+  });
+  document.getElementById('pc-0').style.display = q || showFavoritesOnly ? 'none' : '';
+  searchEmpty.textContent = showFavoritesOnly && !favoriteIds.size ? '还没有收藏诗歌' : '未找到相符的诗歌';
+  searchEmpty.style.display = (q || showFavoritesOnly) && !visible ? 'block' : 'none';
+  favoritesFilter.textContent = `${showFavoritesOnly ? '★' : '☆'} 只看收藏（${favoriteIds.size}）`;
+  favoritesFilter.classList.toggle('active', showFavoritesOnly);
+  favoritesFilter.setAttribute('aria-pressed', String(showFavoritesOnly));
+}
+poemSearch.addEventListener('input', applyPoemFilters);
+favoritesFilter.addEventListener('click', () => {
+  showFavoritesOnly = !showFavoritesOnly;
+  applyPoemFilters();
+});
+applyPoemFilters();
+
+/* ═══════ 时序线索轴：只展示诗题中的明确时间信息 ═══════ */
+const timelineList = document.getElementById('timeline-list');
+const overlayPanelIds = ['timeline-panel', 'people-panel', 'viz-panel', 'qa-panel'];
+const panelToggleIds = {
+  'timeline-panel': 'timeline-toggle',
+  'people-panel': 'people-toggle',
+  'viz-panel': 'viz-toggle',
+  'qa-panel': 'qa-toggle'
+};
+function closeOverlayPanels(exceptId = '') {
+  overlayPanelIds.forEach(id => {
+    if (id === exceptId) return;
+    document.getElementById(id).classList.remove('open');
+    document.getElementById(panelToggleIds[id]).setAttribute('aria-expanded', 'false');
+  });
+}
+function openOverlayPanel(id) {
+  closeOverlayPanels(id);
+  const panelEl = document.getElementById(id);
+  panelEl.classList.add('open');
+  document.getElementById(panelToggleIds[id]).setAttribute('aria-expanded', 'true');
+  panelEl.querySelector('button, input')?.focus();
+}
+function closeOverlayPanel(id, restoreFocus = true) {
+  document.getElementById(id).classList.remove('open');
+  const toggle = document.getElementById(panelToggleIds[id]);
+  toggle.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) toggle.focus();
+}
+POEMS.forEach(p => {
+  const item = document.createElement('button');
+  item.type = 'button';
+  item.className = 'timeline-item';
+  item.innerHTML = `<div class="timeline-item-time">${escapeHTML(p.timeClue || '')}</div>
+    <div class="timeline-item-title">${escapeHTML(p.title)}</div>
+    <div class="timeline-item-meta">${escapeHTML(p.location)} · ${escapeHTML(p.theme)}</div>`;
+  item.addEventListener('click', () => {
+    closeOverlayPanel('timeline-panel', false);
+    flyToPoem(p);
+  });
+  timelineList.appendChild(item);
+});
+document.getElementById('timeline-toggle').addEventListener('click', () => openOverlayPanel('timeline-panel'));
+document.getElementById('timeline-close').addEventListener('click', () => closeOverlayPanel('timeline-panel'));
+const peopleWorkList = document.getElementById('people-work-list');
+POEMS.forEach(p => {
+  const workButton = document.createElement('button');
+  workButton.type = 'button';
+  workButton.className = 'people-work';
+  workButton.textContent = p.title;
+  workButton.title = `${p.location} · ${p.theme}`;
+  workButton.addEventListener('click', () => {
+    closeOverlayPanel('people-panel', false);
+    flyToPoem(p);
+  });
+  peopleWorkList.appendChild(workButton);
+});
+document.getElementById('people-toggle').addEventListener('click', () => openOverlayPanel('people-panel'));
+document.getElementById('people-close').addEventListener('click', () => closeOverlayPanel('people-panel'));
+
+/* ═══════ 数据可视化：仅统计现有网站数据 ═══════ */
+let vizInstance = null;
+const vizThemeList = document.getElementById('viz-theme-list');
+const themeCounts = POEMS.reduce((counts, p) => {
+  counts[p.theme] = (counts[p.theme] || 0) + 1;
+  return counts;
+}, {});
+Object.entries(themeCounts).forEach(([theme, count]) => {
+  const themeButton = document.createElement('button');
+  themeButton.type = 'button';
+  themeButton.className = 'viz-theme-btn';
+  themeButton.textContent = `${theme} · ${count}`;
+  themeButton.addEventListener('click', () => {
+    closeOverlayPanel('viz-panel', false);
+    showFavoritesOnly = false;
+    poemSearch.value = theme;
+    applyPoemFilters();
+    if (panel.classList.contains('collapsed')) panelToggle.click();
+    poemSearch.focus();
+  });
+  vizThemeList.appendChild(themeButton);
+});
+function renderDataViz() {
+  const places = new Set(POEMS.map(p => p.location)).size;
+  const themes = new Set(POEMS.map(p => p.theme)).size;
+  const explicitTime = POEMS.filter(p => p.timeClue && p.timeClue !== '年代待考').length;
+  document.getElementById('stat-poems').textContent = POEMS.length;
+  document.getElementById('stat-places').textContent = places;
+  document.getElementById('stat-themes').textContent = themes;
+  document.getElementById('stat-time').textContent = explicitTime;
+  document.getElementById('stat-audios').textContent = POEMS.filter(p => p.audioUrl).length;
+  document.getElementById('stat-videos').textContent = POEMS.filter(p => p.videoUrl).length;
+  if (typeof echarts === 'undefined') return;
+  const el = document.getElementById('viz-chart');
+  if (vizInstance) vizInstance.dispose();
+  vizInstance = echarts.init(el);
+  vizInstance.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger:'axis', axisPointer:{type:'shadow'}, formatter: params => `${escapeHTML(params[0].name)}：${params[0].value} / ${POEMS.length}`, backgroundColor:'rgba(20,10,6,0.95)', borderColor:'rgba(212,175,55,0.4)', textStyle:{color:'#E0D6C8'} },
+    grid: { left: '8%', right: '5%', top: '16%', bottom: '16%' },
+    xAxis: { type:'category', data:['诗歌','地点','主题','明确时间','音频','视频','图谱'], axisLine:{lineStyle:{color:'rgba(197,160,40,0.35)'}}, axisLabel:{color:'#E0D6C8',fontFamily:'serif',fontSize:10,interval:0} },
+    yAxis: { type:'value', min:0, max:POEMS.length, interval:2, axisLine:{show:false}, splitLine:{lineStyle:{color:'rgba(197,160,40,0.12)'}}, axisLabel:{color:'rgba(242,234,216,0.55)'} },
+    series: [{ type:'bar', barWidth:'42%', data:[
+      {value:POEMS.length,itemStyle:{color:'#C5A028'}},
+      {value:places,itemStyle:{color:'#6B9B6A'}},
+      {value:themes,itemStyle:{color:'#E07B39'}},
+      {value:explicitTime,itemStyle:{color:'#C47B3B'}},
+      {value:POEMS.filter(p=>p.audioUrl).length,itemStyle:{color:'#6B9B6A'}},
+      {value:POEMS.filter(p=>p.videoUrl).length,itemStyle:{color:'#D64545'}},
+      {value:POEMS.filter(p=>p.graphImage).length,itemStyle:{color:'#8B7BBE'}}
+    ], label:{show:true,position:'top',color:'#D4AF37'} }]
+  });
+}
+document.getElementById('viz-toggle').addEventListener('click', () => {
+  openOverlayPanel('viz-panel');
+  setTimeout(renderDataViz, 30);
+});
+document.getElementById('viz-close').addEventListener('click', () => closeOverlayPanel('viz-panel'));
+
+/* ═══════ 本地资料问答：不联网、不调用 API ═══════ */
+function answerLocalQuestion(question) {
+  const q = question.trim().toLowerCase();
+  if (!q) return '请先输入一个问题。';
+  if ((q.includes('时间') || q.includes('年代')) && (q.includes('明确') || q.includes('确定') || q.includes('有时间'))) {
+    const matches = POEMS.filter(p => p.timeClue && p.timeClue !== '年代待考');
+    return { matches, message: `当前网站中有 ${matches.length} 首诗带有明确的文本时间线索，其余作品不据此推定创作年代。` };
+  }
+  if (q.includes('待考') || q.includes('时间不明') || q.includes('年代不明') || q.includes('未知年代')) {
+    const matches = POEMS.filter(p => p.timeClue === '年代待考');
+    return { matches, message: `当前网站中有 ${matches.length} 首诗标记为“年代待考”。` };
+  }
+  if (q.includes('主题') && (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部'))) {
+    return { matches: POEMS, message: `当前八首诗共记录 ${new Set(POEMS.map(p => p.theme)).size} 个主题，具体如下。` };
+  }
+  if (q.includes('地点') && (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部'))) {
+    return { matches: POEMS, message: `当前八首诗共关联 ${new Set(POEMS.map(p => p.location)).size} 条地点记录，具体如下。` };
+  }
+  const stopPhrases = ['哪些诗歌','哪些诗','哪一首诗','哪首诗','有什么诗','有没有诗','在哪里','在什么地方','写到了','写到','提到了','提到','有关','相关','请问','可以告诉我','是什么','有哪些'];
+  let cleaned = q.replace(/[？?。！!，,、\s]+/g, '');
+  stopPhrases.forEach(word => { cleaned = cleaned.split(word).join(''); });
+  cleaned = cleaned.replace(/^[与和的在是有了]+|[与和的在是有了]+$/g, '');
+  if (!cleaned) return '请先输入一个具体问题。';
+  const matches = POEMS.filter(p => {
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines].join(' ').toLowerCase();
+    const bareTitle = p.title.replace(/[《》]/g, '').toLowerCase();
+    const placeTerms = p.location.toLowerCase().split(/[·\s]+/).filter(term => term.length > 1);
+    return haystack.includes(cleaned) || q.includes(bareTitle) || placeTerms.some(term => q.includes(term));
+  });
+  if (matches.length) {
+    return { matches, message: `在当前网站资料中，找到 ${matches.length} 首相关诗歌。` };
+  }
+  return { matches: [], message: '当前网站资料中没有找到可以支持这个问题的内容。暂不补充推测性答案；等接入经过核验的资料后再回答。' };
+}
+function renderLocalAnswer(question) {
+  const answerEl = document.getElementById('qa-answer');
+  const result = answerLocalQuestion(question);
+  if (typeof result === 'string') {
+    answerEl.textContent = result;
+    return;
+  }
+  answerEl.replaceChildren();
+  const message = document.createElement('div');
+  message.textContent = result.message;
+  answerEl.appendChild(message);
+  if (!result.matches.length) return;
+  const resultList = document.createElement('div');
+  resultList.className = 'qa-result-list';
+  result.matches.forEach(p => {
+    const resultButton = document.createElement('button');
+    resultButton.type = 'button';
+    resultButton.className = 'qa-result';
+    const title = document.createElement('span');
+    title.textContent = p.title;
+    const meta = document.createElement('small');
+    meta.textContent = `${p.location} · ${p.theme} · ${p.timeClue}`;
+    resultButton.append(title, meta);
+    resultButton.addEventListener('click', () => {
+      closeOverlayPanel('qa-panel', false);
+      flyToPoem(p);
+    });
+    resultList.appendChild(resultButton);
+  });
+  answerEl.appendChild(resultList);
+}
+document.getElementById('qa-toggle').addEventListener('click', () => openOverlayPanel('qa-panel'));
+document.getElementById('qa-close').addEventListener('click', () => closeOverlayPanel('qa-panel'));
+document.getElementById('qa-form').addEventListener('submit', e => {
+  e.preventDefault();
+  renderLocalAnswer(document.getElementById('qa-input').value);
+});
+const detailGraphImage = document.getElementById('d-graph-img');
+const imageLightbox = document.getElementById('image-lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxClose = document.getElementById('lightbox-close');
+function closeImageLightbox() {
+  imageLightbox.hidden = true;
+  lightboxImage.removeAttribute('src');
+  detailGraphImage.focus?.();
+}
+detailGraphImage.tabIndex = 0;
+detailGraphImage.setAttribute('role', 'button');
+detailGraphImage.setAttribute('aria-label', '打开知识图谱大图');
+function openImageLightbox() {
+  if (!detailGraphImage.src) return;
+  lightboxImage.src = detailGraphImage.src;
+  lightboxImage.alt = detailGraphImage.alt;
+  imageLightbox.hidden = false;
+  lightboxClose.focus();
+}
+detailGraphImage.addEventListener('click', openImageLightbox);
+detailGraphImage.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    openImageLightbox();
+  }
+});
+lightboxClose.addEventListener('click', closeImageLightbox);
+imageLightbox.addEventListener('click', e => {
+  if (e.target === imageLightbox) closeImageLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!imageLightbox.hidden) {
+    closeImageLightbox();
+    return;
+  }
+  const openPanel = overlayPanelIds.find(id => document.getElementById(id).classList.contains('open'));
+  if (openPanel) {
+    closeOverlayPanel(openPanel);
+    return;
+  }
+  if (document.getElementById('detail').classList.contains('open')) {
+    document.getElementById('close-btn').click();
+  } else if (poemSearch.value) {
+    poemSearch.value = '';
+    poemSearch.dispatchEvent(new Event('input'));
+  } else if (showFavoritesOnly) {
+    showFavoritesOnly = false;
+    applyPoemFilters();
+  }
+});
+
+// Overview card click handler
+document.getElementById('pc-0').addEventListener('click', () => {
+  closeOverlayPanels();
+  cardMinimized = false;
+  cardLocked = false;
+  trackingMode = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
+  setActivePoem(0);
+  updateHash(0);
+  if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
+  document.getElementById('d-title').textContent = '张謇诗歌宇宙';
+  document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
+  document.getElementById('d-meta').innerHTML = '<span class="detail-chip">8 首诗歌</span><span class="detail-chip">8 个地点</span><span class="detail-chip">8 个主题</span>';
+  document.getElementById('d-audio').innerHTML = '';
+  document.querySelector('.tab[data-tab="aud"]').style.display = 'none';
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  const gphEl = document.getElementById('d-graph');
+  gphEl.innerHTML = '';
+    initGraphWithRetry(gphEl, buildGlobalGraphOption);
+  document.getElementById('d-graph-img-wrap').style.display = 'none';
+  document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+});
+
+/* ═══════ 取标记字符：优先使用 emoji 字段 ═══════ */
+function getChar(p) {
+  return p.emoji || p.title.replace(/[《》]/g, '')[0] || '詩';
+}
+
+/* ═══════ 添加地图标记 ═══════ */
+if (map) {
+  POEMS.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: mkIcon(false, getChar(p)) }).addTo(map);
+    m.on('click', () => openCard(p));
+    markers[p.id] = m;
+  });
+}
+
+/* ═══════ 点击左侧诗卡：飞行定位 + 自动弹出卡片 ═══════ */
+function flyToPoem(p) {
+  closeOverlayPanels();
+  cardMinimized = false;
+  cardLocked = false;
+  trackingMode = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
+  setActivePoem(p.id);
+  updateHash(p.id);
+  if (map) { map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 }); }
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  // 移动端：点击诗卡后自动收起面板以展示地图
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+}
+
+/* ═══════ 点击地图标记：打开卡片 ═══════ */
+function openCard(p) {
+  closeOverlayPanels();
+  cardMinimized = false;
+  cardLocked = false;
+  trackingMode = false;
+  document.getElementById('detail').style.height = '';
+  hoverSavedHeight = null;
+  setActivePoem(p.id);
+  updateHash(p.id);
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+}
+
+/* ═══════ 设置当前激活诗歌 ═══════ */
+function setActivePoem(id) {
+  activeId = id;
+  document.querySelectorAll('.poem-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('pc-' + id)?.classList.add('active');
+  POEMS.forEach(p => markers[p.id]?.setIcon(mkIcon(p.id === id, getChar(p))));
+  // 总览不展示单篇媒体；单篇诗歌保留视频入口，缺少素材时显示待补充。
+  document.querySelector('.tab[data-tab="aud"]').style.display = id === 0 ? 'none' : '';
+  document.querySelector('.tab[data-tab="vid"]').style.display = id === 0 ? 'none' : '';
+  updateFavoriteButton(id);
+}
+
+function updateFavoriteButton(id) {
+  const btn = document.getElementById('favorite-btn');
+  if (!btn) return;
+  const saved = id !== 0 && favoriteIds.has(id);
+  btn.style.display = id === 0 ? 'none' : '';
+  btn.classList.toggle('saved', saved);
+  btn.textContent = saved ? '★ 已收藏' : '☆ 收藏';
+}
+
+/* ═══════ ECharts Graph 配置 ═══════ */
+function buildGraphOption(p) {
+  return {
+    backgroundColor: 'transparent',
+    animationDuration: 1200,
+    animationEasingUpdate: 'quinticInOut',
+    tooltip: {
+      trigger: 'item',
+      formatter: function(params) {
+        if (params.dataType === 'edge') {
+          return '<span style="color:#D4AF37;font-size:13px;letter-spacing:2px">' + escapeHTML(params.data.label || '') + '</span>';
         }
-      });
-    })();
-  </script>
+        return '<span style="color:#D4AF37;font-size:14px;font-weight:bold;letter-spacing:2px">' + escapeHTML(params.name) + '</span>';
+      },
+      backgroundColor: 'rgba(20,10,6,0.95)',
+      borderColor: 'rgba(212,175,55,0.4)',
+      borderWidth: 1,
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
+    },
+    series: [{
+      type: 'graph',
+      layout: 'force',
+      roam: true,
+      draggable: true,
+      force: {
+        repulsion: 280,
+        edgeLength: [100, 180],
+        gravity: 0.06
+      },
+      emphasis: {
+        focus: 'adjacency',
+        lineStyle: { width: 3 },
+        itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' }
+      },
+      label: {
+        show: true,
+        position: 'bottom',
+        color: '#E0D6C8',
+        fontSize: 13,
+        fontWeight: 'bold',
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
+        distance: 8,
+        letterSpacing: 2,
+        textShadowColor: 'rgba(0,0,0,0.6)',
+        textShadowBlur: 4
+      },
+      edgeLabel: {
+        show: true,
+        color: '#E0D6C8',
+        fontSize: 10,
+        fontWeight: 'bold',
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
+        letterSpacing: 1,
+        textShadowColor: 'rgba(0,0,0,0.5)',
+        textShadowBlur: 3
+      },
+      edgeSymbol: ['none', 'arrow'],
+      edgeSymbolSize: 8,
+      lineStyle: {
+        color: 'rgba(224,214,200,0.45)',
+        width: 1.8,
+        curveness: 0.25
+      },
+      categories: [
+        { name: '作者', itemStyle: { color: '#D64545' }, symbol: 'diamond', symbolSize: 46,
+          label: { color: '#D4AF37', fontSize: 15, fontWeight: 700 } },
+        { name: '意象', itemStyle: { color: '#6B9B6A' }, symbol: 'circle', symbolSize: 28 },
+        { name: '情感', itemStyle: { color: '#E07B39' }, symbol: 'roundRect', symbolSize: 34 },
+        { name: '哲思', itemStyle: { color: '#8B7BBE' }, symbol: 'triangle', symbolSize: 32 }
+      ],
+      data: getGraphData(p),
+      links: getGraphLinks(p)
+    }]
+  };
+}
 
+function getGraphData(p) {
+  const base = [
+    { name: '张謇', category: 0, symbolSize: 52,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:15px;font-weight:bold">张謇</span><br><span style="color:#E0D6C8;font-size:12px">近代实业家·教育家</span>' } }
+  ];
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return base.concat([
+      { name: '三元宫', category: 1, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">三元宫</span><br><span style="color:#E0D6C8;font-size:12px">狼山古刹<br/>禅房山寺列</span>' } },
+      { name: '长老', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">长老</span><br><span style="color:#E0D6C8;font-size:12px">三元长老尊<br/>遗徒通世学</span>' } },
+      { name: '佛门', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛门</span><br><span style="color:#E0D6C8;font-size:12px">护佛广宗门</span>' } },
+{ name: '俭德', category: 3, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">俭德</span><br><span style="color:#E0D6C8;font-size:12px">斋鱼俭德存</span>' } },
+      { name: '江月', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江月</span><br><span style="color:#E0D6C8;font-size:12px">空堂照遗拂<br/>江月白翻翻</span>' } }
+    ]);
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return base.concat([
+      { name: '排河观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">排河观</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>蔚然一寺开</span>' } },
+      { name: '钟声', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声</span><br><span style="color:#E0D6C8;font-size:12px">钟声随鸟远<br/>悠远空灵</span>' } },
+      { name: '河势', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">河势</span><br><span style="color:#E0D6C8;font-size:12px">河势趁林回<br/>通吕运河蜿蜒</span>' } },
+      { name: '佛圯尘龛', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛圯尘龛</span><br><span style="color:#E0D6C8;font-size:12px">佛圯尘龛在<br/>僧贫圭挫颓</span>' } },
+      { name: '兴衰之叹', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兴衰之叹</span><br><span style="color:#E0D6C8;font-size:12px">兴衰何处问<br/>夕暖上经台</span>' } },
+      { name: '沧海桑田', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧海桑田</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>世事无常·时光流转</span>' } }
+    ]);
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return base.concat([
+      { name: '千龄观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千龄观</span><br><span style="color:#E0D6C8;font-size:12px">消寒第五集<br/>闻粤事稍平</span>' } },
+      { name: '泥饮连朝', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">泥饮连朝</span><br><span style="color:#E0D6C8;font-size:12px">未嫌寒气尚逡巡<br/>泥饮连朝选主宾</span>' } },
+      { name: '兰亭雅集', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兰亭雅集</span><br><span style="color:#E0D6C8;font-size:12px">相随少长兰亭集<br/>酒中聚友·以古为喻</span>' } },
+      { name: '粤事稍平', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">粤事稍平</span><br><span style="color:#E0D6C8;font-size:12px">渐次龙蛇桂海删<br/>岭南动乱渐息</span>' } },
+      { name: '春星遗火', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">春星遗火</span><br><span style="color:#E0D6C8;font-size:12px">遗火春星看不厌<br/>疏缝人语况濠濛</span>' } },
+      { name: '忧世情怀', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">忧世情怀</span><br><span style="color:#E0D6C8;font-size:12px">饮中闻时局<br/>杯酒难消家国忧</span>' } }
+    ]);
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return base.concat([
+      { name: '沧园', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧园</span><br><span style="color:#E0D6C8;font-size:12px">沧园栏楯尚清华<br/>载槛重停隔水车</span>' } },
+      { name: '燕子春暮', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">燕子春暮</span><br><span style="color:#E0D6C8;font-size:12px">燕子不来春不住<br/>春光将尽·燕归何处</span>' } },
+      { name: '龙孙斜日', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">龙孙斜日</span><br><span style="color:#E0D6C8;font-size:12px">龙孙方纵日方斜<br/>竹笋怒长·日影西沉</span>' } },
+      { name: '江客张生', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江客张生</span><br><span style="color:#E0D6C8;font-size:12px">荒疏江客调笙曲<br/>辛苦张生课菊花</span>' } },
+      { name: '寒食追思', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">寒食追思</span><br><span style="color:#E0D6C8;font-size:12px">惆怅百年寒食节<br/>祭墓思亲·百年惆怅</span>' } },
+      { name: '沧桑兴替', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧桑兴替</span><br><span style="color:#E0D6C8;font-size:12px">冬青无恙几人家<br/>物是人非·世事变迁</span>' } }
+    ]);
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return base.concat([
+      { name: '曼寿堂', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">曼寿堂</span><br><span style="color:#E0D6C8;font-size:12px">八月十三夜<br/>月下看月之所</span>' } },
+      { name: '未圆之月', category: 1, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">未圆之月</span><br><span style="color:#E0D6C8;font-size:12px">未圆怜更好<br/>将满未满·最是动人</span>' } },
+      { name: '树镂波笼', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">树镂波笼</span><br><span style="color:#E0D6C8;font-size:12px">树镂移阴叶<br/>波笼久坐巾</span>' } },
+      { name: '独对相亲', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">独对相亲</span><br><span style="color:#E0D6C8;font-size:12px">独对故相亲<br/>与月为友·清寂自得</span>' } },
+      { name: '啼螀倚阑', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">啼螀倚阑</span><br><span style="color:#E0D6C8;font-size:12px">啼螀尔何意<br/>宁伴倚阑人</span>' } },
+      { name: '月下哲思', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">月下哲思</span><br><span style="color:#E0D6C8;font-size:12px">已自东天出<br/>都疑下界新</span>' } }
+    ]);
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return base.concat([
+      { name: '千佛寺', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千佛寺</span><br><span style="color:#E0D6C8;font-size:12px">招提是处并行查<br/>南通名刹·千佛之寺</span>' } },
+      { name: '回汀烟寒', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">回汀烟寒</span><br><span style="color:#E0D6C8;font-size:12px">烟寒荫霁繁茅屋<br/>水畔寒烟·茅屋掩映</span>' } },
+      { name: '暮鸦楸榆', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">暮鸦楸榆</span><br><span style="color:#E0D6C8;font-size:12px">风静楸榆点暮鸦<br/>日暮归鸦·萧瑟苍凉</span>' } },
+      { name: '病僧夕阳', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">病僧夕阳</span><br><span style="color:#E0D6C8;font-size:12px">衰草城边游客渡<br/>夕阳野外病僧家</span>' } },
+      { name: '孤篷漂泊', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤篷漂泊</span><br><span style="color:#E0D6C8;font-size:12px">年年来去孤篷里<br/>身世飘零·辗转往复</span>' } },
+      { name: '钟声晚笳', category: 3, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声晚笳</span><br><span style="color:#E0D6C8;font-size:12px">卧听钟声间晚笳<br/>暮钟晚笳·超然物外</span>' } }
+    ]);
+  }
+  if (/盆松/i.test(p.title)) {
+    return base.concat([
+      { name: '盆松', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">盆松</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生种<br/>谁将到此盆</span>' } },
+      { name: '青苍撮土', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">青苍撮土</span><br><span style="color:#E0D6C8;font-size:12px">青苍一撮土<br/>蟠郁百年根</span>' } },
+      { name: '斧痕创鳞', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">斧痕创鳞</span><br><span style="color:#E0D6C8;font-size:12px">宿黛含霜气<br/>创鳞见斧痕</span>' } },
+      { name: '梁栋之材', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">梁栋之材</span><br><span style="color:#E0D6C8;font-size:12px">等闲怜托处<br/>梁栋与谁论</span>' } },
+      { name: '孤寂感怀', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤寂感怀</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生<br/>托身盆中·谁与论</span>' } }
+    ]);
+  }
+  // 吕四 / 落日
+  return base.concat([
+    { name: '落日', category: 1, symbolSize: 38,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">落日</span><br><span style="color:#E0D6C8;font-size:12px">如初日之新生<br/>分光助月·散彩弥天</span>' } },
+    { name: '海天', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">海天</span><br><span style="color:#E0D6C8;font-size:12px">东西照海圆<br/>天海一色·万象包容</span>' } },
+    { name: '丹霞翠霭', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">丹霞翠霭</span><br><span style="color:#E0D6C8;font-size:12px">野迥丹霞错<br/>山明翠霭偏</span>' } },
+    { name: '豪迈情怀', category: 2, symbolSize: 36,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">豪迈情怀</span><br><span style="color:#E0D6C8;font-size:12px">落日如初日的壮阔<br/>老而弥坚的雄心</span>' } },
+    { name: '桑榆晚境', category: 3, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">桑榆晚境</span><br><span style="color:#E0D6C8;font-size:12px">或云风雨候<br/>不得画诗传</span>' } }
+  ]);
+}
+
+function getGraphLinks(p) {
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '三元宫', label: '登临参访' },
+      { source: '张謇', target: '长老', label: '悼念挽歌' },
+      { source: '长老', target: '佛门', label: '护法宗门' },
+      { source: '长老', target: '俭德', label: '德行传世' },
+      { source: '张謇', target: '俭德', label: '赞叹褒扬' },
+{ source: '张謇', target: '江月', label: '即景抒怀' }
+    ];
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '排河观', label: '途径参访' },
+      { source: '排河观', target: '钟声', label: '听觉意象' },
+      { source: '排河观', target: '河势', label: '周边地理' },
+      { source: '排河观', target: '佛圯尘龛', label: '颓败之景' },
+      { source: '排河观', target: '沧海桑田', label: '历史变迁' },
+      { source: '张謇', target: '兴衰之叹', label: '直抒胸臆' },
+      { source: '兴衰之叹', target: '沧海桑田', label: '抚今追昔' },
+      { source: '兴衰之叹', target: '佛圯尘龛', label: '触景生情' }
+    ];
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千龄观', label: '消寒雅集' },
+      { source: '千龄观', target: '泥饮连朝', label: '觥筹交错' },
+      { source: '千龄观', target: '兰亭雅集', label: '以古喻今' },
+      { source: '张謇', target: '粤事稍平', label: '闻讯释怀' },
+      { source: '粤事稍平', target: '忧世情怀', label: '时局牵心' },
+      { source: '张謇', target: '忧世情怀', label: '家国忧思' },
+      { source: '千龄观', target: '春星遗火', label: '暮色春景' },
+      { source: '泥饮连朝', target: '粤事稍平', label: '借酒释怀' }
+    ];
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '沧园', label: '祭墓饮客' },
+      { source: '沧园', target: '燕子春暮', label: '园中春景' },
+      { source: '沧园', target: '龙孙斜日', label: '竹影斜阳' },
+      { source: '沧园', target: '江客张生', label: '同游之友' },
+      { source: '张謇', target: '寒食追思', label: '祭扫感怀' },
+      { source: '寒食追思', target: '沧桑兴替', label: '抚今追昔' },
+      { source: '张謇', target: '沧桑兴替', label: '直抒感慨' },
+      { source: '沧桑兴替', target: '沧园', label: '物是人非' }
+    ];
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '曼寿堂', label: '月夜独处' },
+      { source: '张謇', target: '未圆之月', label: '观照吟咏' },
+      { source: '未圆之月', target: '月下哲思', label: '启悟哲思' },
+      { source: '张謇', target: '独对相亲', label: '直抒心境' },
+      { source: '独对相亲', target: '未圆之月', label: '以月为友' },
+      { source: '曼寿堂', target: '树镂波笼', label: '堂前景致' },
+      { source: '张謇', target: '啼螀倚阑', label: '静夜听虫' },
+      { source: '啼螀倚阑', target: '独对相亲', label: '虫鸣助寂' }
+    ];
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千佛寺', label: '行经参访' },
+      { source: '千佛寺', target: '回汀烟寒', label: '水畔之景' },
+      { source: '千佛寺', target: '暮鸦楸榆', label: '暮色苍茫' },
+      { source: '千佛寺', target: '病僧夕阳', label: '寺中人事' },
+      { source: '张謇', target: '孤篷漂泊', label: '自伤身世' },
+      { source: '张謇', target: '钟声晚笳', label: '卧听感悟' },
+      { source: '钟声晚笳', target: '千佛寺', label: '寺中传出' },
+      { source: '孤篷漂泊', target: '病僧夕阳', label: '同病相怜' }
+    ];
+  }
+  if (/盆松/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '盆松', label: '托物言志' },
+      { source: '盆松', target: '青苍撮土', label: '身寄方寸' },
+      { source: '盆松', target: '斧痕创鳞', label: '历经磨难' },
+      { source: '盆松', target: '梁栋之材', label: '本可为梁栋' },
+      { source: '盆松', target: '孤寂感怀', label: '寄托自伤' },
+      { source: '张謇', target: '梁栋之材', label: '自况抱负' },
+      { source: '张謇', target: '孤寂感怀', label: '直抒胸臆' }
+    ];
+  }
+  // 吕四 / 落日
+  return [
+    { source: '张謇', target: '落日', label: '创作吟咏' },
+    { source: '落日', target: '海天', label: '映照其中' },
+    { source: '落日', target: '丹霞翠霭', label: '渲染铺陈' },
+    { source: '落日', target: '豪迈情怀', label: '寄托抒发' },
+    { source: '张謇', target: '豪迈情怀', label: '直抒胸臆' },
+    { source: '豪迈情怀', target: '桑榆晚境', label: '晚年回响' }
+  ];
+}
+
+/* ═══════ Global Graph ═══════ */
+function buildGlobalGraphOption() {
+  const poemNodes = POEMS.map(p => ({
+    name: p.title.replace(/[《》]/g, ''),
+    category: 1,
+    symbolSize: 30,
+    detailTooltip: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">' + escapeHTML(p.title) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">地点：' + escapeHTML(p.location) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">主题：' + escapeHTML(p.theme) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">时间：' + escapeHTML(p.timeClue) + '</span>'
+  }));
+  const themes = [...new Set(POEMS.map(p => p.theme).filter(Boolean))];
+  const themeColors = ['#6B9B6A','#E07B39','#8B7BBE','#D64545','#D4AF37','#C5A028','#5B8C5A','#C47B3B'];
+  const themeNodes = themes.map((t, index) => ({
+    name: t, category: 3, symbolSize: 28,
+    itemStyle: { color: themeColors[index] || '#6B9B6A' }
+  }));
+
+  return {
+    backgroundColor: 'transparent',
+    animationDuration: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    tooltip: {
+      trigger: 'item',
+      formatter: function(p) {
+        if (p.dataType === 'edge') return '<span style="color:#D4AF37;font-size:12px;letter-spacing:2px">' + escapeHTML(p.data.label || '') + '</span>';
+        if (p.data && p.data.detailTooltip) return p.data.detailTooltip;
+        return '<span style="color:#D4AF37;font-size:14px;font-weight:bold;letter-spacing:2px">' + escapeHTML(p.name) + '</span>';
+      },
+      backgroundColor: 'rgba(20,10,6,0.95)',
+      borderColor: 'rgba(212,175,55,0.4)',
+      borderWidth: 1,
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
+    },
+    series: [{
+      type: 'graph', layout: 'force', roam: true, draggable: true,
+      force: { repulsion: 350, edgeLength: [120, 220], gravity: 0.08 },
+      emphasis: { focus: 'adjacency', lineStyle: { width: 3 }, itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' } },
+      label: { show: true, position: 'bottom', color: '#E0D6C8', fontSize: 12, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", distance: 6 },
+      edgeLabel: { show: true, color: '#E0D6C8', fontSize: 9, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", letterSpacing: 1 },
+      edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 6,
+      lineStyle: { color: 'rgba(224,214,200,0.4)', width: 1.5, curveness: 0.2 },
+      categories: [
+        { name: '作者', itemStyle: { color: '#D64545' }, symbol: 'diamond', symbolSize: 52, label: { color: '#D4AF37', fontSize: 16, fontWeight: 700 } },
+        { name: '诗作', itemStyle: { color: '#C5A028' }, symbol: 'roundRect', symbolSize: 32 },
+        { name: '地点', itemStyle: { color: '#6B9B6A' }, symbol: 'circle', symbolSize: 18 },
+        { name: '主题', itemStyle: { color: '#E07B39' }, symbol: 'triangle', symbolSize: 30 }
+      ],
+      data: [
+        { name: '张謇', category: 0, symbolSize: 56 },
+        ...poemNodes,
+        ...POEMS.map(p => ({ name: p.location, category: 2, symbolSize: 18 })),
+        ...themeNodes
+      ],
+      links: [
+        ...POEMS.map(p => ({ source: '张謇', target: p.title.replace(/[《》]/g, ''), label: '诗作' })),
+        ...POEMS.map(p => ({ source: p.title.replace(/[《》]/g, ''), target: p.location, label: '地点' })),
+        ...POEMS.filter(p => p.theme).map(p => ({ source: p.title.replace(/[《》]/g, ''), target: p.theme, label: '主题' }))
+      ]
+    }]
+  };
+}
+
+/* ═══════ 填充卡片内容 ═══════ */
+function renderDetailMeta(p) {
+  const metaEl = document.getElementById('d-meta');
+  metaEl.replaceChildren();
+  [
+    { label: p.theme, value: p.theme },
+    { label: p.timeClue, value: p.timeClue },
+    { label: p.location, value: p.location.split('·')[0].trim() }
+  ].filter(item => item.label).forEach(item => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'detail-chip';
+    chip.textContent = item.label;
+    chip.title = `筛选：${item.value}`;
+    chip.addEventListener('click', () => {
+      showFavoritesOnly = false;
+      poemSearch.value = item.value;
+      applyPoemFilters();
+      if (panel.classList.contains('collapsed')) panelToggle.click();
+      poemSearch.focus();
+    });
+    metaEl.appendChild(chip);
+  });
+}
+
+function fillCard(p) {
+  document.getElementById('d-title').textContent = p.title;
+  document.getElementById('d-loc').textContent   = p.location;
+  renderDetailMeta(p);
+
+  // 音频
+  const audEl = document.getElementById('d-audio');
+  audEl.replaceChildren();
+  if (p.audioUrl) {
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.preload = 'metadata';
+    audio.src = encodeURI(p.audioUrl);
+    audio.addEventListener('error', () => {
+      const msg = document.createElement('div');
+      msg.className = 'placeholder-box';
+      msg.style.cssText = 'height:50px;font-size:11px';
+      msg.textContent = '[ 音频暂时无法加载 ]';
+      audEl.replaceChildren(msg);
+    }, { once: true });
+    audEl.appendChild(audio);
+  } else {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder-box';
+    placeholder.style.cssText = 'height:50px;font-size:11px';
+    placeholder.textContent = '[ 音频待上传 ]';
+    audEl.appendChild(placeholder);
+  }
+
+  // 知识图谱 —— ECharts
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  const gphEl = document.getElementById('d-graph');
+  gphEl.innerHTML = '';
+  initGraphWithRetry(gphEl, function() { return buildGraphOption(p); });
+
+  // 图谱原图（若有预制的知识图谱PNG则展示）
+  const imgWrap = document.getElementById('d-graph-img-wrap');
+  const imgEl   = document.getElementById('d-graph-img');
+  if (p.graphImage) {
+    imgWrap.style.display = 'none';
+    imgEl.onload = () => { imgWrap.style.display = 'block'; };
+    imgEl.onerror = () => { imgWrap.style.display = 'none'; imgEl.removeAttribute('src'); };
+    imgEl.alt = `${p.title}知识图谱`;
+    imgEl.src = encodeURI(p.graphImage);
+  } else {
+    imgWrap.style.display = 'none';
+    imgEl.onload = null;
+    imgEl.onerror = null;
+    imgEl.src = '';
+  }
+
+  // 诗句（图谱下方）
+  document.getElementById('d-lines-text').innerHTML = escapeHTML(p.lines).replace(/\n/g, '<br>');
+}
+
+/* ═══════ 标签页切换 ═══════ */
+function switchTab(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === key));
+  document.querySelectorAll('.pane').forEach(pn => pn.classList.remove('on'));
+  document.getElementById('pane-' + key)?.classList.add('on');
+
+  // 视频按需创建，直接读取本地网页资源，不经过第三方视频平台。
+  const vidEl = document.getElementById('d-video');
+  if (key === 'vid') {
+    const p = POEMS.find(x => x.id === activeId);
+    if (p?.videoUrl) {
+      vidEl.replaceChildren();
+      const video = document.createElement('video');
+      video.src = encodeURI(p.videoUrl);
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.setAttribute('aria-label', `${p.title}本地视频`);
+      if (p.videoPoster) video.poster = encodeURI(p.videoPoster);
+      video.addEventListener('error', () => {
+        const message = document.createElement('div');
+        message.className = 'placeholder-box';
+        message.style.height = '100%';
+        message.textContent = '[ 视频暂时无法加载 ]';
+        vidEl.replaceChildren(message);
+      });
+      vidEl.appendChild(video);
+    } else {
+      vidEl.replaceChildren();
+      const message = document.createElement('div');
+      message.className = 'placeholder-box';
+      message.style.height = '100%';
+      message.textContent = '[ 本地视频待补充 ]';
+      vidEl.appendChild(message);
+    }
+  } else {
+    vidEl.innerHTML = ''; // 释放资源
+  }
+  // 切换到知识图谱时重绘图表
+  if (key === 'gph' && chartInstance) {
+    setTimeout(() => chartInstance.resize(), 50);
+  }
+}
+
+/* ═══════ 关闭卡片 ═══════ */
+document.getElementById('close-btn').addEventListener('click', () => {
+  cardMinimized = false;
+  cardLocked = false;
+  trackingMode = false;
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('d-video').innerHTML = ''; // 释放视频
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  if (window.location.hash) {
+    try { history.replaceState(null, '', window.location.pathname + window.location.search); }
+    catch (e) { window.location.hash = ''; }
+  }
+});
+
+document.getElementById('favorite-btn').addEventListener('click', () => {
+  if (!activeId || activeId === 0) return;
+  if (favoriteIds.has(activeId)) favoriteIds.delete(activeId);
+  else favoriteIds.add(activeId);
+  try { localStorage.setItem('zhangjian-favorites', JSON.stringify([...favoriteIds])); } catch (e) {}
+  updateFavoriteButton(activeId);
+  applyPoemFilters();
+});
+
+let hoverSavedHeight = null;
+
+/* ═══════ 弹框拖拽缩放 + 悬停自动放大 ═══════ */
+(function(){
+  const detail = document.getElementById('detail');
+  const handle = detail.querySelector('.resize-handle');
+  const mapWrap = document.getElementById('map-wrap');
+  let dragging = false;
+
+  handle.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    dragging = true;
+    handle.classList.add('dragging');
+    detail.style.transition = 'none';
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+  handle.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    dragging = true;
+    handle.classList.add('dragging');
+    detail.style.transition = 'none';
+    document.body.style.userSelect = 'none';
+  }, {passive: false});
+
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    const r = mapWrap.getBoundingClientRect();
+    const y = e.clientY;
+    let hPct = ((r.bottom - y) / r.height) * 100;
+    hPct = Math.max(window.innerWidth <= 900 ? 28 : 16, Math.min(85, hPct));
+    detail.style.height = hPct + '%';
+    hoverSavedHeight = hPct + '%';
+  });
+  document.addEventListener('touchmove', function(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    const r = mapWrap.getBoundingClientRect();
+    const y = e.touches[0].clientY;
+    let hPct = ((r.bottom - y) / r.height) * 100;
+    hPct = Math.max(window.innerWidth <= 900 ? 28 : 16, Math.min(85, hPct));
+    detail.style.height = hPct + '%';
+    hoverSavedHeight = hPct + '%';
+  }, {passive: false});
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    cardMinimized = false;
+    cardLocked = false;
+    trackingMode = false;
+    handle.classList.remove('dragging');
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    if (chartInstance) { setTimeout(() => chartInstance.resize(), 100); }
+  }
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+
+  /* 点击知识卡片：进入鼠标跟随模式，初始展开到 80% */
+  detail.addEventListener('click', function(e) {
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    // 排除交互元素
+    if (e.target.closest('.close-btn') ||
+        e.target.closest('.tab') ||
+        e.target.closest('.resize-handle') ||
+        e.target.closest('audio') ||
+        e.target.closest('button')) return;
+    // 已经是跟随模式则不做任何事
+    if (trackingMode && !cardLocked) return;
+    // 进入跟随模式
+    cardMinimized = false;
+    cardLocked = false;
+    trackingMode = true;
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
+    detail.style.height = '80%';
+    hoverSavedHeight = '80%';
+    if (chartInstance) { setTimeout(function() { chartInstance.resize(); }, 150); }
+  });
+
+  /* 跟随模式：鼠标在卡片内上下移动控制高度，到达 80% 自动锁定 */
+  detail.addEventListener('mousemove', function(e) {
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (dragging || !trackingMode || cardLocked || cardMinimized) return;
+    var cardRect = detail.getBoundingClientRect();
+    var ratio = (e.clientY - cardRect.top) / cardRect.height;
+    ratio = Math.max(0, Math.min(1, ratio));
+    var minH = 32, maxH = 80;
+    var targetH = maxH - ratio * (maxH - minH);
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.18s ease-out';
+    detail.style.height = targetH + '%';
+    // 鼠标推到顶部附近（≥79%）→ 锁定在 80%
+    if (targetH >= 79) {
+      cardLocked = true;
+      trackingMode = false;
+      detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
+      detail.style.height = '80%';
+      hoverSavedHeight = '80%';
+    }
+  });
+})();
+
+/* ═══════ tab点击事件代理 ═══════ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
+});
+
+/* ═══════ URL Hash 路由 ═══════ */
+function updateHash(id) {
+  if (id === 0) {
+    window.location.hash = 'overview';
+  } else {
+    window.location.hash = 'poem-' + id;
+  }
+}
+
+function handleHash() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'overview') {
+    document.getElementById('pc-0')?.click();
+  } else if (hash.startsWith('poem-')) {
+    const id = parseInt(hash.replace('poem-', ''));
+    const p = POEMS.find(x => x.id === id);
+    if (p) flyToPoem(p);
+  }
+}
+
+window.addEventListener('hashchange', handleHash);
+
+// 页面加载时读取 hash
+if (window.location.hash) {
+  setTimeout(handleHash, 400);
+}
+
+/* ═══════ 左侧面板收缩/展开 ═══════ */
+const panelToggle = document.getElementById('panel-toggle');
+const panel = document.getElementById('panel');
+function setPanelExpanded(expanded) {
+  panel.classList.toggle('collapsed', !expanded);
+  document.body.classList.toggle('panel-folded', !expanded);
+  panelToggle.setAttribute('aria-expanded', String(expanded));
+  panelToggle.setAttribute('aria-label', expanded ? '收起目录' : '展开目录');
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 400);
+  }
+}
+panelToggle.addEventListener('click', () => {
+  setPanelExpanded(panel.classList.contains('collapsed'));
+});
+let layoutWasMobile = window.innerWidth <= 900;
+window.addEventListener('resize', () => {
+  const layoutIsMobile = window.innerWidth <= 900;
+  if (layoutWasMobile && !layoutIsMobile) setPanelExpanded(true);
+  layoutWasMobile = layoutIsMobile;
+  if (map) map.invalidateSize();
+  if (chartInstance) chartInstance.resize();
+  if (vizInstance) vizInstance.resize();
+});
+});
+</script>
 </body>
 </html>
