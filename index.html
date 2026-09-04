@@ -1162,7 +1162,7 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
       <button class="timeline-toggle" id="timeline-toggle" type="button" aria-expanded="false" aria-controls="timeline-panel">查看时序线索</button>
       <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">人物关系（已核关系）</button>
       <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">数据可视化</button>
-      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（3处已核 · 2项周边）</button>
+      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（3处已核 · 4项周边）</button>
       <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">本地资料问答（不联网）</button>
       <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
       <button class="favorites-filter" id="favorites-filter" type="button" aria-pressed="false">☆ 只看收藏（0）</button>
@@ -1507,7 +1507,29 @@ const POEMS = [
     audioUrl:   WEB_ASSET_BASE + "audio/poem-6.mp3",
     videoUrl:   WEB_ASSET_BASE + "videos/poem-6.mp4",
     videoPoster: WEB_ASSET_BASE + "posters/poem-6.jpg",
-    graphImage: WEB_ASSET_BASE + "images/poem-6.webp"
+    graphImage: WEB_ASSET_BASE + "images/poem-6.webp",
+    nearby: [
+      {
+        name: "濠河风景区",
+        category: "周边景区",
+        relationType: "主城区文旅延伸",
+        contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        description: "南通市档案馆资料将濠河介绍为以古护城河为纽带、以城市为中心的开放式景区。此处仅作主城区现代行程衔接，不将其表述为诗歌地点或创作原址。",
+        credit: "实景照片待授权",
+        sourceLabel: "南通市档案馆 · 濠河风景区",
+        sourceUrl: "https://daj.nantong.gov.cn/ntsdaj/dfwh/content/384b788b-b114-4d20-95be-a509ec3072cf.html"
+      },
+      {
+        name: "南大街商圈",
+        category: "逛街购物",
+        relationType: "主城区商圈延伸",
+        contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        description: "崇川区人民政府资料明确使用“南大街商圈”名称。网页仅将其作为诗歌地点之后的现代逛街行程，不推断诗歌历史关系。",
+        credit: "实景照片待授权",
+        sourceLabel: "崇川区人民政府 · 南大街商圈",
+        sourceUrl: "https://www.chongchuan.gov.cn/xccqrmzf/bmdt/content/638a3af6-92bd-420d-b3cc-835d66338d06.html"
+      }
+    ]
   },
   {
     id: 7,
@@ -2033,22 +2055,34 @@ function answerLocalQuestion(question) {
     return { matches: POEMS, message: `当前八首诗共记录 ${new Set(POEMS.map(p => p.theme)).size} 个主题，具体如下。` };
   }
   if (q.includes('大有境') || q.includes('cbd') || q.includes('商场') || q.includes('逛街') || q.includes('购物')) {
-    const matches = POEMS.filter(p => p.nearby?.some(site =>
-      site.category === '逛街购物' || [site.name, site.description].join(' ').toLowerCase().includes(q)
-    ));
+    const allShopping = POEMS.flatMap(poem =>
+      (poem.nearby || []).filter(site => site.category === '逛街购物').map(site => ({ poem, site }))
+    );
+    const selected = q.includes('大有境') || q.includes('cbd')
+      ? allShopping.filter(item => item.site.name.includes('大有境'))
+      : (q.includes('南大街') ? allShopping.filter(item => item.site.name.includes('南大街')) : allShopping);
+    const matches = [...new Map(selected.map(item => [item.poem.id, item.poem])).values()];
+    const labels = selected.map(item => `${item.site.name}（${item.poem.title}周边）`);
     return {
       matches,
       message: matches.length
-        ? '当前已核的逛街购物推荐为南通CBD大有境，挂接在《千佛寺》的现代周边行程中；它是城市核心商圈，不属于诗歌历史地点。实景照片尚未获得授权，因此暂不展示网络图片。'
+        ? `当前已核的逛街购物推荐为：${labels.join('、')}。它们只属于现代周边行程，不属于诗歌历史地点；实景照片尚未获得授权，因此暂不展示网络图片。`
         : '当前网站资料中没有找到已核且可展示的逛街购物推荐。'
     };
   }
   if ((q.includes('附近') || q.includes('最近')) && (q.includes('景区') || q.includes('景点') || q.includes('旅游'))) {
-    const matches = POEMS.filter(p => p.nearby?.some(site => site.category === '最近景区'));
+    const allScenic = POEMS.flatMap(poem =>
+      (poem.nearby || []).filter(site => site.category?.includes('景区')).map(site => ({ poem, site }))
+    );
+    const selected = q.includes('狼山')
+      ? allScenic.filter(item => item.site.name.includes('狼山'))
+      : (q.includes('濠河') ? allScenic.filter(item => item.site.name.includes('濠河')) : allScenic);
+    const matches = [...new Map(selected.map(item => [item.poem.id, item.poem])).values()];
+    const labels = selected.map(item => `${item.site.name}（${item.poem.title}周边${item.site.distanceLabel ? `，${item.site.distanceLabel}` : ''}）`);
     return {
       matches,
       message: matches.length
-        ? '从《千佛寺》站内地点坐标出发，最近的已核景区是狼山国家森林公园，直线距离约 3.4 公里。直线距离仅供参考，实际路线以导航为准。'
+        ? `当前已核的附近景区推荐为：${labels.join('、')}。它们属于现代行程推荐，不代表诗歌历史地点；标注的直线距离仅供参考，实际路线以导航为准。`
         : '当前网站资料中没有可支持的最近景区数据。'
     };
   }
