@@ -263,6 +263,38 @@ body.panel-folded #panel-toggle .tog-arrow {
 .viz-theme-btn:hover, .viz-theme-btn:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
 .viz-note { color:var(--mi-faint); font-size:10px; line-height:1.7; margin-top:8px; }
 @media (max-width: 600px) { .viz-stats { grid-template-columns:repeat(3,1fr); } .people-work-list { grid-template-columns:1fr; } #viz-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); } }
+.tourism-toggle { width:100%; height:30px; margin-top:8px; border:1px solid rgba(122,153,111,0.52); border-radius:3px; background:rgba(122,153,111,0.1); color:#B7CEAE; cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.tourism-toggle:hover, .tourism-toggle:focus-visible { color:#D7E6D1; border-color:#A9C59E; background:rgba(122,153,111,0.2); }
+#tourism-panel { position:absolute; left:50%; top:26px; transform:translateX(-50%); width:min(760px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.97); border:1px solid rgba(122,153,111,0.42); box-shadow:0 18px 50px rgba(0,0,0,0.48); z-index:850; display:none; }
+#tourism-panel.open { display:block; }
+.tourism-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.tourism-title { color:#B7CEAE; font-size:17px; letter-spacing:4px; }
+.tourism-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.tourism-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:16px; }
+.tourism-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.tourism-card { min-width:0; border:1px solid rgba(122,153,111,0.35); border-radius:4px; overflow:hidden; background:rgba(122,153,111,0.06); }
+.tourism-photo-wrap { position:relative; aspect-ratio:16 / 9; overflow:hidden; background:rgba(242,234,216,0.04); }
+.tourism-photo { width:100%; height:100%; display:block; object-fit:cover; cursor:zoom-in; transition:transform 0.35s ease; }
+.tourism-card:hover .tourism-photo { transform:scale(1.025); }
+.tourism-photo-badge { position:absolute; left:10px; bottom:9px; padding:4px 7px; border:1px solid rgba(242,234,216,0.25); border-radius:999px; background:rgba(13,8,6,0.8); color:#E5EEDF; font-size:9px; letter-spacing:1px; pointer-events:none; }
+.tourism-card-body { padding:13px 14px 15px; }
+.tourism-card-name { color:#D7E6D1; font-size:15px; letter-spacing:2px; line-height:1.45; }
+.tourism-card-poem { color:var(--jin); font-size:11px; line-height:1.6; margin-top:5px; }
+.tourism-card-relation { display:inline-block; margin-top:8px; padding:3px 7px; border:1px solid rgba(122,153,111,0.38); border-radius:999px; color:#B7CEAE; font-size:9px; letter-spacing:1px; }
+.tourism-card-desc { color:var(--mi-dim); font-size:11px; line-height:1.75; margin-top:8px; }
+.tourism-card-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px 10px; margin-top:10px; color:var(--mi-faint); font-size:9px; line-height:1.6; }
+.tourism-card-source { color:#AFC9A5; text-decoration:none; border-bottom:1px solid rgba(175,201,165,0.35); }
+.tourism-card-source:hover, .tourism-card-source:focus-visible { color:#D7E6D1; border-bottom-color:#D7E6D1; }
+.tourism-open-poem { width:100%; min-height:38px; margin-top:11px; border:1px solid rgba(197,160,40,0.35); border-radius:3px; background:rgba(197,160,40,0.07); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; }
+.tourism-open-poem:hover, .tourism-open-poem:focus-visible { border-color:rgba(197,160,40,0.68); background:var(--jin-light); }
+.tourism-disclaimer { margin-top:14px; padding:10px 12px; border-left:2px solid rgba(122,153,111,0.7); background:rgba(122,153,111,0.06); color:var(--mi-faint); font-size:10px; line-height:1.75; }
+.tourism-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.tourism-detail-grid:has(.tourism-card:only-child) { grid-template-columns:minmax(0,620px); justify-content:center; }
+.tourism-image-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:18px; color:var(--mi-faint); font-size:11px; letter-spacing:2px; text-align:center; }
+@media (max-width:600px) {
+  .tourism-grid, .tourism-detail-grid { grid-template-columns:1fr; }
+  #tourism-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); }
+}
 .qa-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.08); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
 .qa-toggle:hover { background:var(--jin-light); }
 #qa-panel { position:absolute; right:26px; bottom:26px; width:min(450px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.97); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
@@ -434,8 +466,14 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
 
 /* ── Resize Handle (drag bar at top of detail card) ── */
 .resize-handle {
+  width: 100%;
   height: 16px;
   cursor: ns-resize;
+  border: 0;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  touch-action: none;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -959,6 +997,7 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
   #timeline-panel,
   #people-panel,
   #viz-panel,
+  #tourism-panel,
   #qa-panel {
     position:absolute;
     inset:8px;
@@ -970,17 +1009,17 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
     overscroll-behavior:contain;
     z-index:1100;
   }
-  .timeline-close, .people-close, .viz-close, .qa-close {
+  .timeline-close, .people-close, .viz-close, .tourism-close, .qa-close {
     min-width:44px;
     min-height:44px;
     margin:-10px -8px 0 0;
     font-size:24px;
   }
-  .timeline-title, .people-title, .viz-title, .qa-title {
+  .timeline-title, .people-title, .viz-title, .tourism-title, .qa-title {
     font-size:16px;
     letter-spacing:2px;
   }
-  .timeline-item, .people-work, .viz-theme-btn, .qa-result {
+  .timeline-item, .people-work, .viz-theme-btn, .tourism-open-poem, .qa-result {
     min-height:44px;
   }
   .qa-form input {
@@ -1068,6 +1107,8 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
 
   .audio-wrap { padding:14px 10px; }
   .video-ratio { min-height:0; aspect-ratio:16 / 9; }
+  .tourism-card-body { padding:12px; }
+  .tourism-card-name { font-size:14px; }
 
   #image-lightbox {
     padding:calc(58px + env(safe-area-inset-top)) 8px calc(12px + env(safe-area-inset-bottom));
@@ -1111,12 +1152,13 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
 
   <div class="panel-divider"><span>诗 卷</span></div>
   <div class="search-box">
-    <input id="poem-search" type="search" placeholder="搜索诗名、地点、诗句…" aria-label="搜索诗歌、地点和诗句">
+    <input id="poem-search" type="search" placeholder="搜索诗名、地点、景点、诗句…" aria-label="搜索诗歌、地点、已核景点和诗句">
     <span class="search-icon">⌕</span>
     <div class="panel-actions" aria-label="功能入口">
       <button class="timeline-toggle" id="timeline-toggle" type="button" aria-expanded="false" aria-controls="timeline-panel">查看时序线索</button>
       <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">人物关系（已核关系）</button>
       <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">数据可视化</button>
+      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（2处已核）</button>
       <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">本地资料问答（不联网）</button>
       <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
       <button class="favorites-filter" id="favorites-filter" type="button" aria-pressed="false">☆ 只看收藏（0）</button>
@@ -1190,6 +1232,15 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
     <div class="viz-theme-list" id="viz-theme-list"></div>
     <div class="viz-note">全部统计均直接读取八首诗的地点、主题、时间线索和媒体字段；“年代待考”不会计入明确时间线索。点击主题可联动左侧诗歌列表。</div>
   </section>
+  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="诗踪文旅实景">
+    <div class="tourism-head">
+      <div class="tourism-title">诗踪文旅 · 今日实景</div>
+      <button class="tourism-close" id="tourism-close" type="button" aria-label="关闭诗踪文旅">×</button>
+    </div>
+    <div class="tourism-intro">以诗歌地点为线索连接今日南通实景。首期只展示地点关系和图片授权均已确认的景点。</div>
+    <div class="tourism-grid" id="tourism-list"></div>
+    <div class="tourism-disclaimer">说明：照片呈现的是今日实景，不代表诗作年代的历史原貌；“同镇关联”也不等同于诗歌创作原址。</div>
+  </section>
   <section id="qa-panel" role="dialog" aria-modal="true" aria-label="本地资料问答">
     <div class="qa-head">
       <div class="qa-title">本地资料问答</div>
@@ -1201,14 +1252,14 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
       <button type="submit">提问</button>
     </form>
     <div class="qa-answer" id="qa-answer">这里会根据网站现有诗歌、地点和诗句回答，不会自行补充未经核验的历史信息。</div>
-    <div class="qa-footnote">回答仅来自当前网站已有的诗名、地点和诗句；资料中没有依据的问题，将保持未回答。</div>
+    <div class="qa-footnote">回答仅来自当前网站已有的诗名、地点、诗句和已核文旅景点；资料中没有依据的问题，将保持未回答。</div>
   </section>
 
   <!-- DETAIL CARD -->
   <div id="detail">
-    <div class="resize-handle">
+    <button class="resize-handle" type="button" aria-label="拖动调整知识卡片高度" title="按住拖动调整高度">
       <div class="resize-grip"><span></span><span></span></div>
-    </div>
+    </button>
     <div class="detail-head">
       <div>
         <div class="detail-title" id="d-title">—</div>
@@ -1223,6 +1274,7 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
 
     <div class="tabs">
       <button class="tab on" data-tab="gph">知识图谱</button>
+      <button class="tab" data-tab="scenic" style="display:none">实 景</button>
       <button class="tab" data-tab="vid">视 频</button>
       <button class="tab" data-tab="aud">音 频</button>
     </div>
@@ -1232,12 +1284,15 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
         <div class="graph-wrap" id="d-graph"></div>
         <div class="graph-img-wrap" id="d-graph-img-wrap" style="display:none">
           <div class="graph-img-label">图谱原图</div>
-          <img id="d-graph-img" src="" alt="知识图谱" loading="lazy" decoding="async" />
+          <img id="d-graph-img" class="zoomable-image" src="" alt="知识图谱" loading="lazy" decoding="async" />
         </div>
         <div class="poem-lines" id="d-lines">
           <div class="poem-lines-label">诗 文</div>
           <div class="poem-lines-text" id="d-lines-text"></div>
         </div>
+      </div>
+      <div class="pane" id="pane-scenic">
+        <div class="tourism-detail-grid" id="d-scenic"></div>
       </div>
       <div class="pane" id="pane-vid">
         <div class="video-ratio" id="d-video"></div>
@@ -1252,9 +1307,9 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
   </div>
 </div>
 
-<div id="image-lightbox" role="dialog" aria-modal="true" aria-label="知识图谱大图" hidden>
+<div id="image-lightbox" role="dialog" aria-modal="true" aria-label="图片预览" hidden>
   <button class="lightbox-close" id="lightbox-close" type="button" aria-label="关闭大图">×</button>
-  <img id="lightbox-image" src="" alt="知识图谱大图">
+  <img id="lightbox-image" src="" alt="图片预览">
 </div>
 
 <!-- panel toggle button -->
@@ -1313,7 +1368,18 @@ const POEMS = [
     audioUrl:   WEB_ASSET_BASE + "audio/poem-1.mp3",
     videoUrl:   WEB_ASSET_BASE + "videos/poem-1.mp4",
     videoPoster: WEB_ASSET_BASE + "posters/poem-1.jpg",
-    graphImage: WEB_ASSET_BASE + "images/poem-1.webp"
+    graphImage: WEB_ASSET_BASE + "images/poem-1.webp",
+    tourism: [{
+      name: "狼山国家森林公园",
+      image: WEB_ASSET_BASE + "scenic/langshan.webp",
+      imageAlt: "狼山国家森林公园今日实景",
+      imagePosition: "50% 50%",
+      relationType: "诗歌地点直接对应",
+      description: "诗歌地点记录为狼山；照片展示今日狼山实景，不代表诗作年代原貌。",
+      credit: "项目资料授权使用",
+      sourceLabel: "南通市人民政府 · 风景名胜",
+      sourceUrl: "https://www.nantong.gov.cn/ntsrmzf/fjms2018/content/a63b4b34-da31-4522-8598-fae910934e77.html"
+    }]
   },
   {
     id: 2,
@@ -1343,7 +1409,18 @@ const POEMS = [
     audioUrl:   WEB_ASSET_BASE + "audio/poem-3.mp3",
     videoUrl:   WEB_ASSET_BASE + "videos/poem-3.mp4",
     videoPoster: WEB_ASSET_BASE + "posters/poem-3.jpg",
-    graphImage: WEB_ASSET_BASE + "images/poem-3.webp"
+    graphImage: WEB_ASSET_BASE + "images/poem-3.webp",
+    tourism: [{
+      name: "张謇纪念馆",
+      image: WEB_ASSET_BASE + "scenic/zhangjian-memorial.webp",
+      imageAlt: "海门常乐镇张謇纪念馆入口实景",
+      imagePosition: "50% 24%",
+      relationType: "同镇人文景点",
+      description: "纪念馆位于海门区常乐镇，与《盆松》的地点记录同镇；不将其表述为诗歌创作原址。",
+      credit: "项目资料授权使用",
+      sourceLabel: "海门区人民政府 · 张謇文化旅游景区",
+      sourceUrl: "https://www.haimen.gov.cn/hmsrmzf/fjms/content/48c31a44-c3e8-4c90-81c0-9085ae2f6366.html"
+    }]
   },
   {
     id: 4,
@@ -1490,12 +1567,9 @@ if (map) {
         clickTarget.closest('.leaflet-marker-icon') ||
         clickTarget.closest('.leaflet-control'))) return;
     cardMinimized = true;
-    cardLocked = false;
-    trackingMode = false;
     d.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
     const minimizedHeight = window.innerWidth <= 900 ? '28%' : '14%';
     d.style.height = minimizedHeight;
-    hoverSavedHeight = minimizedHeight;
   });
 }
 
@@ -1503,8 +1577,6 @@ if (map) {
 let activeId  = null;
 let chartInstance = null;
 let cardMinimized = false;
-let cardLocked = false;
-let trackingMode = false;
 const markers = {};
 let favoriteIds = new Set();
 let nearestLocatedPoem = null;
@@ -1646,13 +1718,18 @@ searchEmpty.textContent = '未找到相符的诗歌';
 list.appendChild(searchEmpty);
 const favoritesFilter = document.getElementById('favorites-filter');
 let showFavoritesOnly = false;
+function getTourismSearchText(p) {
+  return (p.tourism || []).map(item => [
+    item.name, item.relationType, item.description, item.sourceLabel
+  ].join(' ')).join(' ');
+}
 function applyPoemFilters() {
   const q = poemSearch.value.trim().toLowerCase();
   let visible = 0;
   document.querySelectorAll('#poem-list .poem-card:not(.overview-card)').forEach(card => {
     const id = Number(card.dataset.poemId);
     const p = POEMS.find(poem => poem.id === id);
-    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines].join(' ').toLowerCase();
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines, getTourismSearchText(p)].join(' ').toLowerCase();
     const match = (!q || haystack.includes(q)) && (!showFavoritesOnly || favoriteIds.has(id));
     card.style.display = match ? '' : 'none';
     card.classList.toggle('saved', favoriteIds.has(id));
@@ -1674,11 +1751,12 @@ applyPoemFilters();
 
 /* ═══════ 时序线索轴：只展示诗题中的明确时间信息 ═══════ */
 const timelineList = document.getElementById('timeline-list');
-const overlayPanelIds = ['timeline-panel', 'people-panel', 'viz-panel', 'qa-panel'];
+const overlayPanelIds = ['timeline-panel', 'people-panel', 'viz-panel', 'tourism-panel', 'qa-panel'];
 const panelToggleIds = {
   'timeline-panel': 'timeline-toggle',
   'people-panel': 'people-toggle',
   'viz-panel': 'viz-toggle',
+  'tourism-panel': 'tourism-toggle',
   'qa-panel': 'qa-toggle'
 };
 function closeOverlayPanels(exceptId = '') {
@@ -1701,6 +1779,91 @@ function closeOverlayPanel(id, restoreFocus = true) {
   toggle.setAttribute('aria-expanded', 'false');
   if (restoreFocus) toggle.focus();
 }
+
+/* ═══════ 诗踪文旅：只展示已核地点关系与授权实景 ═══════ */
+const tourismEntries = POEMS.flatMap(poem =>
+  (poem.tourism || []).map(site => ({ poem, site }))
+);
+const tourismList = document.getElementById('tourism-list');
+const tourismToggle = document.getElementById('tourism-toggle');
+tourismToggle.textContent = `诗踪文旅（${tourismEntries.length}处已核）`;
+
+function createTourismCard(poem, site, includeAction = false) {
+  const card = document.createElement('article');
+  card.className = 'tourism-card';
+
+  const photoWrap = document.createElement('div');
+  photoWrap.className = 'tourism-photo-wrap';
+  const image = document.createElement('img');
+  image.className = 'tourism-photo zoomable-image';
+  image.src = encodeURI(site.image);
+  image.alt = site.imageAlt;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  image.tabIndex = 0;
+  image.setAttribute('role', 'button');
+  image.setAttribute('aria-label', `打开${site.name}实景大图`);
+  image.style.objectPosition = site.imagePosition || '50% 50%';
+  image.addEventListener('error', () => {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'tourism-image-placeholder';
+    placeholder.textContent = '[ 实景照片暂时无法加载 ]';
+    photoWrap.replaceChildren(placeholder);
+  }, { once: true });
+  const badge = document.createElement('span');
+  badge.className = 'tourism-photo-badge';
+  badge.textContent = '今日实景';
+  photoWrap.append(image, badge);
+
+  const body = document.createElement('div');
+  body.className = 'tourism-card-body';
+  const name = document.createElement('div');
+  name.className = 'tourism-card-name';
+  name.textContent = site.name;
+  const poemName = document.createElement('div');
+  poemName.className = 'tourism-card-poem';
+  poemName.textContent = `关联诗歌：${poem.title}`;
+  const relation = document.createElement('div');
+  relation.className = 'tourism-card-relation';
+  relation.textContent = site.relationType;
+  const desc = document.createElement('p');
+  desc.className = 'tourism-card-desc';
+  desc.textContent = site.description;
+  const meta = document.createElement('div');
+  meta.className = 'tourism-card-meta';
+  const credit = document.createElement('span');
+  credit.textContent = `图片：${site.credit}`;
+  const source = document.createElement('a');
+  source.className = 'tourism-card-source';
+  source.href = site.sourceUrl;
+  source.target = '_blank';
+  source.rel = 'noopener noreferrer';
+  source.textContent = `核验：${site.sourceLabel}`;
+  meta.append(credit, source);
+  body.append(name, poemName, relation, desc, meta);
+
+  if (includeAction) {
+    const openButton = document.createElement('button');
+    openButton.type = 'button';
+    openButton.className = 'tourism-open-poem';
+    openButton.textContent = '在地图中查看诗歌与实景';
+    openButton.addEventListener('click', () => {
+      closeOverlayPanel('tourism-panel', false);
+      flyToPoem(poem);
+      switchTab('scenic');
+    });
+    body.appendChild(openButton);
+  }
+
+  card.append(photoWrap, body);
+  return card;
+}
+
+tourismEntries.forEach(({ poem, site }) => {
+  tourismList.appendChild(createTourismCard(poem, site, true));
+});
+document.getElementById('tourism-toggle').addEventListener('click', () => openOverlayPanel('tourism-panel'));
+document.getElementById('tourism-close').addEventListener('click', () => closeOverlayPanel('tourism-panel'));
 POEMS.forEach(p => {
   const item = document.createElement('button');
   item.type = 'button';
@@ -1809,13 +1972,22 @@ function answerLocalQuestion(question) {
   if (q.includes('地点') && (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部'))) {
     return { matches: POEMS, message: `当前八首诗共关联 ${new Set(POEMS.map(p => p.location)).size} 条地点记录，具体如下。` };
   }
+  if ((q.includes('景点') || q.includes('文旅') || q.includes('旅游') || q.includes('实景')) &&
+      (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部') || q.includes('有'))) {
+    const matches = POEMS.filter(p => p.tourism?.length);
+    const siteNames = matches.flatMap(p => p.tourism.map(site => site.name));
+    return {
+      matches,
+      message: `当前网站有 ${siteNames.length} 处已核诗踪文旅景点：${siteNames.join('、')}。照片均为今日实景，不代表诗作年代原貌。`
+    };
+  }
   const stopPhrases = ['哪些诗歌','哪些诗','哪一首诗','哪首诗','有什么诗','有没有诗','在哪里','在什么地方','写到了','写到','提到了','提到','有关','相关','请问','可以告诉我','是什么','有哪些'];
   let cleaned = q.replace(/[？?。！!，,、\s]+/g, '');
   stopPhrases.forEach(word => { cleaned = cleaned.split(word).join(''); });
   cleaned = cleaned.replace(/^[与和的在是有了]+|[与和的在是有了]+$/g, '');
   if (!cleaned) return '请先输入一个具体问题。';
   const matches = POEMS.filter(p => {
-    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines].join(' ').toLowerCase();
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines, getTourismSearchText(p)].join(' ').toLowerCase();
     const bareTitle = p.title.replace(/[《》]/g, '').toLowerCase();
     const placeTerms = p.location.toLowerCase().split(/[·\s]+/).filter(term => term.length > 1);
     return haystack.includes(cleaned) || q.includes(bareTitle) || placeTerms.some(term => q.includes(term));
@@ -1839,6 +2011,7 @@ function renderLocalAnswer(question) {
   if (!result.matches.length) return;
   const resultList = document.createElement('div');
   resultList.className = 'qa-result-list';
+  const wantsTourism = /景点|文旅|旅游|实景/.test(question);
   result.matches.forEach(p => {
     const resultButton = document.createElement('button');
     resultButton.type = 'button';
@@ -1846,11 +2019,13 @@ function renderLocalAnswer(question) {
     const title = document.createElement('span');
     title.textContent = p.title;
     const meta = document.createElement('small');
-    meta.textContent = `${p.location} · ${p.theme} · ${p.timeClue}`;
+    const tourismNames = (p.tourism || []).map(site => site.name).join('、');
+    meta.textContent = `${p.location} · ${p.theme} · ${p.timeClue}${tourismNames ? ` · ${tourismNames}` : ''}`;
     resultButton.append(title, meta);
     resultButton.addEventListener('click', () => {
       closeOverlayPanel('qa-panel', false);
       flyToPoem(p);
+      if (wantsTourism && p.tourism?.length) switchTab('scenic');
     });
     resultList.appendChild(resultButton);
   });
@@ -1866,26 +2041,34 @@ const detailGraphImage = document.getElementById('d-graph-img');
 const imageLightbox = document.getElementById('image-lightbox');
 const lightboxImage = document.getElementById('lightbox-image');
 const lightboxClose = document.getElementById('lightbox-close');
+let lightboxTrigger = null;
 function closeImageLightbox() {
   imageLightbox.hidden = true;
   lightboxImage.removeAttribute('src');
-  detailGraphImage.focus?.();
+  lightboxTrigger?.focus?.();
+  lightboxTrigger = null;
 }
 detailGraphImage.tabIndex = 0;
 detailGraphImage.setAttribute('role', 'button');
 detailGraphImage.setAttribute('aria-label', '打开知识图谱大图');
-function openImageLightbox() {
-  if (!detailGraphImage.src) return;
-  lightboxImage.src = detailGraphImage.src;
-  lightboxImage.alt = detailGraphImage.alt;
+function openImageLightbox(image) {
+  if (!image?.src) return;
+  lightboxTrigger = image;
+  lightboxImage.src = image.src;
+  lightboxImage.alt = image.alt || '图片预览';
   imageLightbox.hidden = false;
   lightboxClose.focus();
 }
-detailGraphImage.addEventListener('click', openImageLightbox);
-detailGraphImage.addEventListener('keydown', e => {
+document.addEventListener('click', e => {
+  const image = e.target.closest?.('img.zoomable-image');
+  if (image) openImageLightbox(image);
+});
+document.addEventListener('keydown', e => {
+  const image = e.target.closest?.('img.zoomable-image');
+  if (!image) return;
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
-    openImageLightbox();
+    openImageLightbox(image);
   }
 });
 lightboxClose.addEventListener('click', closeImageLightbox);
@@ -1918,10 +2101,7 @@ document.addEventListener('keydown', e => {
 document.getElementById('pc-0').addEventListener('click', () => {
   closeOverlayPanels();
   cardMinimized = false;
-  cardLocked = false;
-  trackingMode = false;
   document.getElementById('detail').style.height = '';
-  hoverSavedHeight = null;
   setActivePoem(0);
   updateHash(0);
   if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
@@ -1929,6 +2109,7 @@ document.getElementById('pc-0').addEventListener('click', () => {
   document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
   document.getElementById('d-meta').innerHTML = '<span class="detail-chip">8 首诗歌</span><span class="detail-chip">8 个地点</span><span class="detail-chip">8 个主题</span>';
   document.getElementById('d-audio').innerHTML = '';
+  document.getElementById('d-scenic').replaceChildren();
   document.querySelector('.tab[data-tab="aud"]').style.display = 'none';
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
   const gphEl = document.getElementById('d-graph');
@@ -1961,10 +2142,7 @@ if (map) {
 function flyToPoem(p) {
   closeOverlayPanels();
   cardMinimized = false;
-  cardLocked = false;
-  trackingMode = false;
   document.getElementById('detail').style.height = '';
-  hoverSavedHeight = null;
   setActivePoem(p.id);
   updateHash(p.id);
   if (map) { map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 }); }
@@ -1981,10 +2159,7 @@ function flyToPoem(p) {
 function openCard(p) {
   closeOverlayPanels();
   cardMinimized = false;
-  cardLocked = false;
-  trackingMode = false;
   document.getElementById('detail').style.height = '';
-  hoverSavedHeight = null;
   setActivePoem(p.id);
   updateHash(p.id);
   fillCard(p);
@@ -2004,6 +2179,8 @@ function setActivePoem(id) {
   // 总览不展示单篇媒体；单篇诗歌保留视频入口，缺少素材时显示待补充。
   document.querySelector('.tab[data-tab="aud"]').style.display = id === 0 ? 'none' : '';
   document.querySelector('.tab[data-tab="vid"]').style.display = id === 0 ? 'none' : '';
+  const activePoem = POEMS.find(p => p.id === id);
+  document.querySelector('.tab[data-tab="scenic"]').style.display = activePoem?.tourism?.length ? '' : 'none';
   updateFavoriteButton(id);
 }
 
@@ -2401,10 +2578,19 @@ function renderDetailMeta(p) {
   });
 }
 
+function renderTourismDetail(p) {
+  const scenicEl = document.getElementById('d-scenic');
+  scenicEl.replaceChildren();
+  (p.tourism || []).forEach(site => {
+    scenicEl.appendChild(createTourismCard(p, site, false));
+  });
+}
+
 function fillCard(p) {
   document.getElementById('d-title').textContent = p.title;
   document.getElementById('d-loc').textContent   = p.location;
   renderDetailMeta(p);
+  renderTourismDetail(p);
 
   // 音频
   const audEl = document.getElementById('d-audio');
@@ -2503,8 +2689,6 @@ function switchTab(key) {
 /* ═══════ 关闭卡片 ═══════ */
 document.getElementById('close-btn').addEventListener('click', () => {
   cardMinimized = false;
-  cardLocked = false;
-  trackingMode = false;
   document.getElementById('detail').classList.remove('open');
   document.getElementById('d-video').innerHTML = ''; // 释放视频
   if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
@@ -2523,106 +2707,84 @@ document.getElementById('favorite-btn').addEventListener('click', () => {
   applyPoemFilters();
 });
 
-let hoverSavedHeight = null;
-
-/* ═══════ 弹框拖拽缩放 + 悬停自动放大 ═══════ */
+/* ═══════ 知识卡片缩放：仅在按住拖动条后改变高度 ═══════ */
 (function(){
   const detail = document.getElementById('detail');
   const handle = detail.querySelector('.resize-handle');
   const mapWrap = document.getElementById('map-wrap');
   let dragging = false;
+  let activePointerId = null;
 
-  handle.addEventListener('mousedown', function(e) {
+  function limits() {
+    return { min: window.innerWidth <= 900 ? 28 : 16, max: 85 };
+  }
+
+  function currentHeightPercent() {
+    const mapHeight = mapWrap.getBoundingClientRect().height || 1;
+    return (detail.getBoundingClientRect().height / mapHeight) * 100;
+  }
+
+  function applyHeight(percent) {
+    const { min, max } = limits();
+    const next = Math.max(min, Math.min(max, percent));
+    detail.style.height = next + '%';
+    handle.setAttribute('aria-label', `拖动调整知识卡片高度，当前约${Math.round(next)}%`);
+  }
+
+  handle.addEventListener('pointerdown', function(e) {
+    if (e.button !== undefined && e.button !== 0) return;
     e.preventDefault();
     dragging = true;
+    activePointerId = e.pointerId;
+    cardMinimized = false;
+    handle.setPointerCapture?.(e.pointerId);
     handle.classList.add('dragging');
     detail.style.transition = 'none';
     document.body.style.cursor = 'ns-resize';
     document.body.style.userSelect = 'none';
   });
-  handle.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    dragging = true;
-    handle.classList.add('dragging');
-    detail.style.transition = 'none';
-    document.body.style.userSelect = 'none';
-  }, {passive: false});
 
-  document.addEventListener('mousemove', function(e) {
-    if (!dragging) return;
-    const r = mapWrap.getBoundingClientRect();
-    const y = e.clientY;
-    let hPct = ((r.bottom - y) / r.height) * 100;
-    hPct = Math.max(window.innerWidth <= 900 ? 28 : 16, Math.min(85, hPct));
-    detail.style.height = hPct + '%';
-    hoverSavedHeight = hPct + '%';
-  });
-  document.addEventListener('touchmove', function(e) {
-    if (!dragging) return;
+  window.addEventListener('pointermove', function(e) {
+    if (!dragging || e.pointerId !== activePointerId) return;
     e.preventDefault();
-    const r = mapWrap.getBoundingClientRect();
-    const y = e.touches[0].clientY;
-    let hPct = ((r.bottom - y) / r.height) * 100;
-    hPct = Math.max(window.innerWidth <= 900 ? 28 : 16, Math.min(85, hPct));
-    detail.style.height = hPct + '%';
-    hoverSavedHeight = hPct + '%';
-  }, {passive: false});
+    const rect = mapWrap.getBoundingClientRect();
+    applyHeight(((rect.bottom - e.clientY) / rect.height) * 100);
+  }, { passive: false });
 
-  function endDrag() {
-    if (!dragging) return;
+  function endDrag(e) {
+    if (!dragging || (e.pointerId !== undefined && e.pointerId !== activePointerId)) return;
+    const pointerId = activePointerId;
     dragging = false;
-    cardMinimized = false;
-    cardLocked = false;
-    trackingMode = false;
+    activePointerId = null;
+    if (pointerId !== null && handle.hasPointerCapture?.(pointerId)) {
+      handle.releasePointerCapture(pointerId);
+    }
     handle.classList.remove('dragging');
     detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
-    if (chartInstance) { setTimeout(() => chartInstance.resize(), 100); }
+    if (chartInstance) setTimeout(() => chartInstance.resize(), 100);
   }
-  document.addEventListener('mouseup', endDrag);
-  document.addEventListener('touchend', endDrag);
 
-  /* 点击知识卡片：进入鼠标跟随模式，初始展开到 80% */
-  detail.addEventListener('click', function(e) {
-    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
-    // 排除交互元素
-    if (e.target.closest('.close-btn') ||
-        e.target.closest('.tab') ||
-        e.target.closest('.resize-handle') ||
-        e.target.closest('audio') ||
-        e.target.closest('button')) return;
-    // 已经是跟随模式则不做任何事
-    if (trackingMode && !cardLocked) return;
-    // 进入跟随模式
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+  handle.addEventListener('lostpointercapture', endDrag);
+  window.addEventListener('blur', () => endDrag({}));
+
+  handle.addEventListener('keydown', function(e) {
+    const controls = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!controls.includes(e.key)) return;
+    e.preventDefault();
+    const { min, max } = limits();
+    let next = currentHeightPercent();
+    if (e.key === 'ArrowUp') next += 6;
+    if (e.key === 'ArrowDown') next -= 6;
+    if (e.key === 'Home') next = min;
+    if (e.key === 'End') next = max;
+    detail.style.transition = 'height 0.2s ease';
+    applyHeight(next);
     cardMinimized = false;
-    cardLocked = false;
-    trackingMode = true;
-    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
-    detail.style.height = '80%';
-    hoverSavedHeight = '80%';
-    if (chartInstance) { setTimeout(function() { chartInstance.resize(); }, 150); }
-  });
-
-  /* 跟随模式：鼠标在卡片内上下移动控制高度，到达 80% 自动锁定 */
-  detail.addEventListener('mousemove', function(e) {
-    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
-    if (dragging || !trackingMode || cardLocked || cardMinimized) return;
-    var cardRect = detail.getBoundingClientRect();
-    var ratio = (e.clientY - cardRect.top) / cardRect.height;
-    ratio = Math.max(0, Math.min(1, ratio));
-    var minH = 32, maxH = 80;
-    var targetH = maxH - ratio * (maxH - minH);
-    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.18s ease-out';
-    detail.style.height = targetH + '%';
-    // 鼠标推到顶部附近（≥79%）→ 锁定在 80%
-    if (targetH >= 79) {
-      cardLocked = true;
-      trackingMode = false;
-      detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
-      detail.style.height = '80%';
-      hoverSavedHeight = '80%';
-    }
+    if (chartInstance) setTimeout(() => chartInstance.resize(), 220);
   });
 })();
 
@@ -2633,10 +2795,12 @@ document.querySelectorAll('.tab').forEach(t => {
 
 /* ═══════ URL Hash 路由 ═══════ */
 function updateHash(id) {
-  if (id === 0) {
-    window.location.hash = 'overview';
-  } else {
-    window.location.hash = 'poem-' + id;
+  const nextHash = id === 0 ? 'overview' : 'poem-' + id;
+  if (window.location.hash === '#' + nextHash) return;
+  try {
+    history.pushState(null, '', window.location.pathname + window.location.search + '#' + nextHash);
+  } catch (e) {
+    window.location.hash = nextHash;
   }
 }
 
@@ -2652,6 +2816,7 @@ function handleHash() {
 }
 
 window.addEventListener('hashchange', handleHash);
+window.addEventListener('popstate', handleHash);
 
 // 页面加载时读取 hash
 if (window.location.hash) {
