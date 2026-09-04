@@ -1158,7 +1158,7 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
       <button class="timeline-toggle" id="timeline-toggle" type="button" aria-expanded="false" aria-controls="timeline-panel">查看时序线索</button>
       <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">人物关系（已核关系）</button>
       <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">数据可视化</button>
-      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（2处已核）</button>
+      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（3处已核）</button>
       <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">本地资料问答（不联网）</button>
       <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
       <button class="favorites-filter" id="favorites-filter" type="button" aria-pressed="false">☆ 只看收藏（0）</button>
@@ -1232,14 +1232,14 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
     <div class="viz-theme-list" id="viz-theme-list"></div>
     <div class="viz-note">全部统计均直接读取八首诗的地点、主题、时间线索和媒体字段；“年代待考”不会计入明确时间线索。点击主题可联动左侧诗歌列表。</div>
   </section>
-  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="诗踪文旅实景">
+  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="诗踪文旅">
     <div class="tourism-head">
-      <div class="tourism-title">诗踪文旅 · 今日实景</div>
+      <div class="tourism-title">诗踪文旅 · 南通行旅</div>
       <button class="tourism-close" id="tourism-close" type="button" aria-label="关闭诗踪文旅">×</button>
     </div>
-    <div class="tourism-intro">以诗歌地点为线索连接今日南通实景。首期只展示地点关系和图片授权均已确认的景点。</div>
+    <div class="tourism-intro">以诗歌地点为线索连接今日南通文旅空间。地点关系经核验后展示；实景照片仅在授权确认后使用。</div>
     <div class="tourism-grid" id="tourism-list"></div>
-    <div class="tourism-disclaimer">说明：照片呈现的是今日实景，不代表诗作年代的历史原貌；“同镇关联”也不等同于诗歌创作原址。</div>
+    <div class="tourism-disclaimer">说明：现代景点与诗歌地点分级标注；“同镇关联”与“地区文旅延伸”均不等同于诗歌创作原址。已展示照片为今日实景，不代表诗作年代的历史原貌。</div>
   </section>
   <section id="qa-panel" role="dialog" aria-modal="true" aria-label="本地资料问答">
     <div class="qa-head">
@@ -1394,7 +1394,15 @@ const POEMS = [
     audioUrl:   WEB_ASSET_BASE + "audio/poem-2.mp3",
     videoUrl:   WEB_ASSET_BASE + "videos/poem-2.mp4",
     videoPoster: WEB_ASSET_BASE + "posters/poem-2.jpg",
-    graphImage: WEB_ASSET_BASE + "images/poem-2.webp"
+    graphImage: WEB_ASSET_BASE + "images/poem-2.webp",
+    tourism: [{
+      name: "吕四渔港",
+      relationType: "吕四地区文旅延伸",
+      description: "诗题记录吕四归途；吕四渔港属于同一吕四地区。南通市水利局将其列为启东沿江沿海生态带的东端，并纳入江海文化、文旅融合与自驾体验叙述；不将其表述为诗歌创作原址或已评定景区。",
+      credit: "实景照片待授权",
+      sourceLabel: "南通市水利局 · 追江赶海自驾游",
+      sourceUrl: "https://slj.nantong.gov.cn/ntslj/bmdt/content/c96fbbbb-f0d7-4e0f-9784-cac8cd3e8b98.html"
+    }]
   },
   {
     id: 3,
@@ -1780,7 +1788,7 @@ function closeOverlayPanel(id, restoreFocus = true) {
   if (restoreFocus) toggle.focus();
 }
 
-/* ═══════ 诗踪文旅：只展示已核地点关系与授权实景 ═══════ */
+/* ═══════ 诗踪文旅：展示已核地点关系，照片须经授权 ═══════ */
 const tourismEntries = POEMS.flatMap(poem =>
   (poem.tourism || []).map(site => ({ poem, site }))
 );
@@ -1794,26 +1802,34 @@ function createTourismCard(poem, site, includeAction = false) {
 
   const photoWrap = document.createElement('div');
   photoWrap.className = 'tourism-photo-wrap';
-  const image = document.createElement('img');
-  image.className = 'tourism-photo zoomable-image';
-  image.src = encodeURI(site.image);
-  image.alt = site.imageAlt;
-  image.loading = 'lazy';
-  image.decoding = 'async';
-  image.tabIndex = 0;
-  image.setAttribute('role', 'button');
-  image.setAttribute('aria-label', `打开${site.name}实景大图`);
-  image.style.objectPosition = site.imagePosition || '50% 50%';
-  image.addEventListener('error', () => {
-    const placeholder = document.createElement('div');
-    placeholder.className = 'tourism-image-placeholder';
-    placeholder.textContent = '[ 实景照片暂时无法加载 ]';
-    photoWrap.replaceChildren(placeholder);
-  }, { once: true });
   const badge = document.createElement('span');
   badge.className = 'tourism-photo-badge';
-  badge.textContent = '今日实景';
-  photoWrap.append(image, badge);
+  if (site.image) {
+    const image = document.createElement('img');
+    image.className = 'tourism-photo zoomable-image';
+    image.src = encodeURI(site.image);
+    image.alt = site.imageAlt;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', `打开${site.name}实景大图`);
+    image.style.objectPosition = site.imagePosition || '50% 50%';
+    image.addEventListener('error', () => {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'tourism-image-placeholder';
+      placeholder.textContent = '[ 实景照片暂时无法加载 ]';
+      photoWrap.replaceChildren(placeholder);
+    }, { once: true });
+    badge.textContent = '今日实景';
+    photoWrap.append(image, badge);
+  } else {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'tourism-image-placeholder';
+    placeholder.textContent = '[ 实景照片待授权 ]';
+    badge.textContent = '资料已核 · 照片待补';
+    photoWrap.append(placeholder, badge);
+  }
 
   const body = document.createElement('div');
   body.className = 'tourism-card-body';
@@ -1832,7 +1848,7 @@ function createTourismCard(poem, site, includeAction = false) {
   const meta = document.createElement('div');
   meta.className = 'tourism-card-meta';
   const credit = document.createElement('span');
-  credit.textContent = `图片：${site.credit}`;
+  credit.textContent = `图片：${site.credit || '待补充授权实景照片'}`;
   const source = document.createElement('a');
   source.className = 'tourism-card-source';
   source.href = site.sourceUrl;
@@ -1976,9 +1992,10 @@ function answerLocalQuestion(question) {
       (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部') || q.includes('有'))) {
     const matches = POEMS.filter(p => p.tourism?.length);
     const siteNames = matches.flatMap(p => p.tourism.map(site => site.name));
+    const photoCount = matches.flatMap(p => p.tourism).filter(site => site.image).length;
     return {
       matches,
-      message: `当前网站有 ${siteNames.length} 处已核诗踪文旅景点：${siteNames.join('、')}。照片均为今日实景，不代表诗作年代原貌。`
+      message: `当前网站有 ${siteNames.length} 处已核诗踪文旅地点：${siteNames.join('、')}。其中 ${photoCount} 处已有授权实景照片；其余只展示已核事实，不使用未授权图片。今日实景不代表诗作年代原貌。`
     };
   }
   const stopPhrases = ['哪些诗歌','哪些诗','哪一首诗','哪首诗','有什么诗','有没有诗','在哪里','在什么地方','写到了','写到','提到了','提到','有关','相关','请问','可以告诉我','是什么','有哪些'];
@@ -2180,7 +2197,9 @@ function setActivePoem(id) {
   document.querySelector('.tab[data-tab="aud"]').style.display = id === 0 ? 'none' : '';
   document.querySelector('.tab[data-tab="vid"]').style.display = id === 0 ? 'none' : '';
   const activePoem = POEMS.find(p => p.id === id);
-  document.querySelector('.tab[data-tab="scenic"]').style.display = activePoem?.tourism?.length ? '' : 'none';
+  const scenicTab = document.querySelector('.tab[data-tab="scenic"]');
+  scenicTab.style.display = activePoem?.tourism?.length ? '' : 'none';
+  scenicTab.textContent = activePoem?.tourism?.some(site => site.image) ? '实 景' : '文 旅';
   updateFavoriteButton(id);
 }
 
