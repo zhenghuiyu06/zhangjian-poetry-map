@@ -270,27 +270,50 @@ body.panel-folded #panel-toggle .tog-arrow {
 .tourism-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
 .tourism-title { color:#B7CEAE; font-size:17px; letter-spacing:4px; }
 .tourism-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
-.tourism-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:16px; }
-.tourism-section-title { display:flex; align-items:center; gap:10px; margin:18px 0 10px; color:#D7E6D1; font-size:12px; letter-spacing:2px; }
+.tourism-intro { color:var(--mi-dim); font-size:14px; line-height:1.8; margin-bottom:16px; }
+.tourism-daily { margin:4px 0 18px; padding:15px; border:1px solid rgba(197,160,40,0.38); background:linear-gradient(135deg,rgba(197,160,40,0.12),rgba(122,153,111,0.06)); }
+.tourism-daily-kicker { color:var(--jin); font-size:12px; letter-spacing:3px; }
+.tourism-daily-name { margin-top:8px; color:#F0E5C7; font-size:18px; letter-spacing:2px; line-height:1.45; }
+.tourism-daily-copy { margin-top:7px; color:var(--mi-dim); font-size:14px; line-height:1.75; }
+.tourism-daily-action { min-height:44px; margin-top:12px; padding:0 14px; border:1px solid rgba(197,160,40,0.48); border-radius:3px; background:rgba(197,160,40,0.1); color:var(--jin); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-daily-action:hover, .tourism-daily-action:focus-visible { background:rgba(197,160,40,0.2); border-color:var(--jin); }
+.tourism-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
+.tourism-filter { min-height:40px; padding:0 14px; border:1px solid rgba(122,153,111,0.35); border-radius:999px; background:rgba(122,153,111,0.04); color:var(--mi-dim); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-filter.on, .tourism-filter:hover, .tourism-filter:focus-visible { color:#E5EEDF; border-color:#9AB490; background:rgba(122,153,111,0.2); }
+.tourism-section-title { display:flex; align-items:center; gap:10px; margin:18px 0 10px; color:#D7E6D1; font-size:14px; letter-spacing:2px; }
 .tourism-section-title::after { content:""; flex:1; height:1px; background:rgba(122,153,111,0.28); }
-.tourism-nearby-note { margin:-2px 0 12px; color:var(--mi-faint); font-size:10px; line-height:1.7; }
+.tourism-nearby-note { margin:-2px 0 12px; color:var(--mi-faint); font-size:12px; line-height:1.7; }
 .tourism-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.tourism-card { min-width:0; border:1px solid rgba(122,153,111,0.35); border-radius:4px; overflow:hidden; background:rgba(122,153,111,0.06); }
+.tourism-card { min-width:0; align-self:start; border:1px solid rgba(122,153,111,0.35); border-radius:4px; overflow:hidden; background:rgba(122,153,111,0.06); }
+.tourism-card[hidden] { display:none; }
 .tourism-photo-wrap { position:relative; aspect-ratio:16 / 9; overflow:hidden; background:rgba(242,234,216,0.04); }
-.tourism-photo { width:100%; height:100%; display:block; object-fit:cover; cursor:zoom-in; transition:transform 0.35s ease; }
-.tourism-card:hover .tourism-photo { transform:scale(1.025); }
-.tourism-photo-badge { position:absolute; left:10px; bottom:9px; padding:4px 7px; border:1px solid rgba(242,234,216,0.25); border-radius:999px; background:rgba(13,8,6,0.8); color:#E5EEDF; font-size:9px; letter-spacing:1px; pointer-events:none; }
-.tourism-card-body { padding:13px 14px 15px; }
-.tourism-card-name { color:#D7E6D1; font-size:15px; letter-spacing:2px; line-height:1.45; }
-.tourism-card-poem { color:var(--jin); font-size:11px; line-height:1.6; margin-top:5px; }
-.tourism-card-relation { display:inline-block; margin-top:8px; padding:3px 7px; border:1px solid rgba(122,153,111,0.38); border-radius:999px; color:#B7CEAE; font-size:9px; letter-spacing:1px; }
-.tourism-card-desc { color:var(--mi-dim); font-size:11px; line-height:1.75; margin-top:8px; }
-.tourism-card-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px 10px; margin-top:10px; color:var(--mi-faint); font-size:9px; line-height:1.6; }
+.tourism-photo { width:100%; height:100%; display:block; object-fit:cover; cursor:zoom-in; }
+.tourism-photo-badge { position:absolute; left:10px; bottom:9px; padding:4px 8px; border:1px solid rgba(242,234,216,0.25); border-radius:999px; background:rgba(13,8,6,0.8); color:#E5EEDF; font-size:12px; letter-spacing:1px; pointer-events:none; }
+.tourism-card-toggle { width:100%; min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; font-family:'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-card-toggle:hover, .tourism-card-toggle:focus-visible { background:rgba(122,153,111,0.1); outline:none; }
+.tourism-card-summary { min-width:0; }
+.tourism-card-chevron { flex:none; color:#B7CEAE; font-size:18px; transition:transform 0.2s ease; }
+.tourism-card.expanded .tourism-card-chevron { transform:rotate(180deg); }
+.tourism-card-details { padding:0 14px 15px; border-top:1px solid rgba(122,153,111,0.22); }
+.tourism-card-details[hidden] { display:none; }
+.tourism-card-name { display:block; color:#D7E6D1; font-size:16px; letter-spacing:2px; line-height:1.45; }
+.tourism-card-poem { display:block; color:var(--jin); font-size:13px; line-height:1.65; margin-top:5px; }
+.tourism-card-relation { display:inline-block; margin-top:8px; padding:4px 8px; border:1px solid rgba(122,153,111,0.38); border-radius:999px; color:#B7CEAE; font-size:12px; letter-spacing:1px; }
+.tourism-archive-section { margin-top:14px; }
+.tourism-archive-label { color:#B7CEAE; font-size:12px; letter-spacing:2px; }
+.tourism-archive-text { margin:6px 0 0; color:var(--mi-dim); font-size:14px; line-height:1.8; }
+.tourism-poem-quote { padding:10px 12px; border-left:2px solid var(--jin); background:rgba(197,160,40,0.06); color:#E8D8AC; }
+.tourism-field-prompt { padding:10px 12px; border-left:2px solid #7A996F; background:rgba(122,153,111,0.08); }
+.tourism-card-desc { color:var(--mi-dim); font-size:14px; line-height:1.8; margin-top:8px; }
+.tourism-card-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px 12px; margin-top:12px; color:var(--mi-faint); font-size:12px; line-height:1.7; }
 .tourism-card-source { color:#AFC9A5; text-decoration:none; border-bottom:1px solid rgba(175,201,165,0.35); }
 .tourism-card-source:hover, .tourism-card-source:focus-visible { color:#D7E6D1; border-bottom-color:#D7E6D1; }
-.tourism-open-poem { width:100%; min-height:38px; margin-top:11px; border:1px solid rgba(197,160,40,0.35); border-radius:3px; background:rgba(197,160,40,0.07); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; }
+.tourism-card-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:13px; }
+.tourism-open-poem, .tourism-visit { width:100%; min-height:44px; border:1px solid rgba(197,160,40,0.35); border-radius:3px; background:rgba(197,160,40,0.07); color:var(--jin); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; }
 .tourism-open-poem:hover, .tourism-open-poem:focus-visible { border-color:rgba(197,160,40,0.68); background:var(--jin-light); }
-.tourism-disclaimer { margin-top:14px; padding:10px 12px; border-left:2px solid rgba(122,153,111,0.7); background:rgba(122,153,111,0.06); color:var(--mi-faint); font-size:10px; line-height:1.75; }
+.tourism-visit { border-color:rgba(122,153,111,0.45); background:rgba(122,153,111,0.08); color:#B7CEAE; }
+.tourism-visit.on, .tourism-visit:hover, .tourism-visit:focus-visible { border-color:#9AB490; background:rgba(122,153,111,0.2); color:#E5EEDF; }
+.tourism-disclaimer { margin-top:14px; padding:10px 12px; border-left:2px solid rgba(122,153,111,0.7); background:rgba(122,153,111,0.06); color:var(--mi-faint); font-size:12px; line-height:1.75; }
 .tourism-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .tourism-detail-grid > .tourism-section-title { grid-column:1 / -1; margin:4px 0 -2px; }
 .tourism-detail-grid:has(.tourism-card:only-child) { grid-template-columns:minmax(0,620px); justify-content:center; }
@@ -298,6 +321,8 @@ body.panel-folded #panel-toggle .tog-arrow {
 @media (max-width:600px) {
   .tourism-grid, .tourism-detail-grid { grid-template-columns:1fr; }
   #tourism-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); }
+  .tourism-card-actions { grid-template-columns:1fr; }
+  .tourism-daily { padding:13px; }
 }
 .qa-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.08); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
 .qa-toggle:hover { background:var(--jin-light); }
@@ -1162,7 +1187,7 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
       <button class="timeline-toggle" id="timeline-toggle" type="button" aria-expanded="false" aria-controls="timeline-panel">查看时序线索</button>
       <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">人物关系（已核关系）</button>
       <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">数据可视化</button>
-      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">诗踪文旅（3处已核 · 4项周边）</button>
+      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">今日诗境（7项已核）</button>
       <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">本地资料问答（不联网）</button>
       <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
       <button class="favorites-filter" id="favorites-filter" type="button" aria-pressed="false">☆ 只看收藏（0）</button>
@@ -1236,17 +1261,22 @@ button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outlin
     <div class="viz-theme-list" id="viz-theme-list"></div>
     <div class="viz-note">全部统计均直接读取八首诗的地点、主题、时间线索和媒体字段；“年代待考”不会计入明确时间线索。点击主题可联动左侧诗歌列表。</div>
   </section>
-  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="诗踪文旅">
+  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="今日诗境">
     <div class="tourism-head">
-      <div class="tourism-title">诗踪文旅 · 南通行旅</div>
-      <button class="tourism-close" id="tourism-close" type="button" aria-label="关闭诗踪文旅">×</button>
+      <div class="tourism-title">今日诗境 · 南通行旅</div>
+      <button class="tourism-close" id="tourism-close" type="button" aria-label="关闭今日诗境">×</button>
     </div>
-    <div class="tourism-intro">以诗歌地点为线索连接今日南通文旅空间。地点关系经核验后展示；实景照片仅在授权确认后使用。</div>
-    <div class="tourism-section-title">诗歌地点关联</div>
+    <div class="tourism-intro">从一行诗进入一处地点：阅读诗中所见，辨明地点关系，再用今天的眼睛完成一次现场观察。</div>
+    <div class="tourism-daily" id="tourism-daily" aria-live="polite"></div>
+    <div class="tourism-section-title">诗境档案</div>
+    <div class="tourism-filters" id="tourism-filters" aria-label="筛选诗境档案">
+      <button class="tourism-filter on" type="button" data-filter="all" aria-pressed="true">全部</button>
+      <button class="tourism-filter" type="button" data-filter="direct" aria-pressed="false">诗歌地点</button>
+      <button class="tourism-filter" type="button" data-filter="extension" aria-pressed="false">人文延伸</button>
+      <button class="tourism-filter" type="button" data-filter="modernNearby" aria-pressed="false">现代周边</button>
+    </div>
+    <div class="tourism-nearby-note" id="tourism-filter-summary">共7项已核关系记录。点击卡片展开数字档案；现场观察任务不属于历史事实。</div>
     <div class="tourism-grid" id="tourism-list"></div>
-    <div class="tourism-section-title">周边推荐 · 从诗歌地点继续出发</div>
-    <div class="tourism-nearby-note">“最近景区”按站内诗歌地点坐标计算直线距离；购物推荐依据已核公开资料，均不属于诗歌历史地点关系。</div>
-    <div class="tourism-grid" id="nearby-list"></div>
     <div class="tourism-disclaimer">说明：现代景点、现代商圈与诗歌地点分级标注；“同镇关联”“地区文旅延伸”和“周边推荐”均不等同于诗歌创作原址。直线距离仅供行程参考，实际路线以导航为准。已展示照片为今日实景，不代表诗作年代的历史原貌。</div>
   </section>
   <section id="qa-panel" role="dialog" aria-modal="true" aria-label="本地资料问答">
@@ -1378,11 +1408,16 @@ const POEMS = [
     videoPoster: WEB_ASSET_BASE + "posters/poem-1.jpg",
     graphImage: WEB_ASSET_BASE + "images/poem-1.webp",
     tourism: [{
+      siteId: "langshan",
       name: "狼山国家森林公园",
       image: WEB_ASSET_BASE + "scenic/langshan.webp",
       imageAlt: "狼山国家森林公园今日实景",
       imagePosition: "50% 50%",
+      relationLevel: "direct",
       relationType: "诗歌地点直接对应",
+      poemExcerpt: "空堂照遗拂，江月白翻翻。",
+      fieldPrompt: "观察山、水与江面天光，寻找一处能与你对“江月白翻翻”的理解产生呼应的今日景象。",
+      verifiedAt: "2026-09-10",
       description: "诗歌地点记录为狼山；照片展示今日狼山实景，不代表诗作年代原貌。",
       credit: "项目资料授权使用",
       sourceLabel: "南通市人民政府 · 风景名胜",
@@ -1404,8 +1439,13 @@ const POEMS = [
     videoPoster: WEB_ASSET_BASE + "posters/poem-2.jpg",
     graphImage: WEB_ASSET_BASE + "images/poem-2.webp",
     tourism: [{
+      siteId: "lvsi-fishing-port",
       name: "吕四渔港",
+      relationLevel: "regionalExtension",
       relationType: "吕四地区文旅延伸",
+      poemExcerpt: "分光还助月，散彩欲弥天。",
+      fieldPrompt: "观察海面、船只与天光，记录今天的色彩如何让你联想到“散彩欲弥天”。",
+      verifiedAt: "2026-09-10",
       description: "诗题记录吕四归途；吕四渔港属于同一吕四地区。南通市水利局将其列为启东沿江沿海生态带的东端，并纳入江海文化、文旅融合与自驾体验叙述；不将其表述为诗歌创作原址或已评定景区。",
       credit: "实景照片待授权",
       sourceLabel: "南通市水利局 · 追江赶海自驾游",
@@ -1427,11 +1467,16 @@ const POEMS = [
     videoPoster: WEB_ASSET_BASE + "posters/poem-3.jpg",
     graphImage: WEB_ASSET_BASE + "images/poem-3.webp",
     tourism: [{
+      siteId: "zhangjian-memorial",
       name: "张謇纪念馆",
       image: WEB_ASSET_BASE + "scenic/zhangjian-memorial.webp",
       imageAlt: "海门常乐镇张謇纪念馆入口实景",
       imagePosition: "50% 24%",
+      relationLevel: "sameTown",
       relationType: "同镇人文景点",
+      poemExcerpt: "等闲怜托处，梁栋与谁论。",
+      fieldPrompt: "从松、木构或庭院细节中选择一处，思考它如何帮助你理解“梁栋与谁论”。",
+      verifiedAt: "2026-09-10",
       description: "纪念馆位于海门区常乐镇，与《盆松》的地点记录同镇；不将其表述为诗歌创作原址。",
       credit: "项目资料授权使用",
       sourceLabel: "海门区人民政府 · 张謇文化旅游景区",
@@ -1469,24 +1514,34 @@ const POEMS = [
     graphImage: WEB_ASSET_BASE + "images/poem-5.webp",
     nearby: [
       {
+        siteId: "langshan",
         name: "狼山国家森林公园",
         category: "最近景区",
+        relationLevel: "modernNearby",
         relationType: "最近已核景区",
         contextLabel: "从《千佛寺》地点继续出发",
         distanceLabel: "站内坐标直线约 3.4 公里",
         image: WEB_ASSET_BASE + "scenic/langshan.webp",
         imageAlt: "狼山国家森林公园今日实景",
         imagePosition: "50% 50%",
+        poemExcerpt: "烟寒荫霁繁茅屋，风静楸榆点暮鸦。",
+        fieldPrompt: "在今日狼山观察山、水、寺及城市边界的空间关系，并与诗中的暮色景象进行对照。",
+        verifiedAt: "2026-09-10",
         description: "按当前网站诗歌地点坐标计算，狼山是距离《千佛寺》最近的已核景区。直线距离仅供行程参考，实际路线以导航为准。",
         credit: "项目资料授权使用",
         sourceLabel: "南通市人民政府 · 风景名胜",
         sourceUrl: "https://www.nantong.gov.cn/ntsrmzf/fjms2018/content/a63b4b34-da31-4522-8598-fae910934e77.html"
       },
       {
+        siteId: "nantong-cbd-dayoujing",
         name: "南通CBD大有境",
         category: "逛街购物",
+        relationLevel: "modernNearby",
         relationType: "主城区购物延伸",
         contextLabel: "从《千佛寺》地点继续出发",
+        poemExcerpt: "衰草城边游客渡，夕阳野外病僧家。",
+        fieldPrompt: "记录从诗歌地点到当代商业空间的环境变化，选择一个最能体现城市生活节奏的细节。",
+        verifiedAt: "2026-09-10",
         description: "南通市人民政府资料将其称为城市核心商圈，适合安排逛街、美食、休闲与社交等现代城市行程。",
         credit: "实景照片待授权",
         sourceLabel: "南通市人民政府 · 南通夜市经济",
@@ -1510,20 +1565,30 @@ const POEMS = [
     graphImage: WEB_ASSET_BASE + "images/poem-6.webp",
     nearby: [
       {
+        siteId: "haohe-scenic-area",
         name: "濠河风景区",
         category: "周边景区",
+        relationLevel: "modernNearby",
         relationType: "主城区文旅延伸",
         contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        poemExcerpt: "树镂移阴叶，波笼久坐巾。",
+        fieldPrompt: "在今日濠河寻找树影、水波或月色，记录一处能让你联想到“波笼久坐巾”的景象。",
+        verifiedAt: "2026-09-10",
         description: "南通市档案馆资料将濠河介绍为以古护城河为纽带、以城市为中心的开放式景区。此处仅作主城区现代行程衔接，不将其表述为诗歌地点或创作原址。",
         credit: "实景照片待授权",
         sourceLabel: "南通市档案馆 · 濠河风景区",
         sourceUrl: "https://daj.nantong.gov.cn/ntsdaj/dfwh/content/384b788b-b114-4d20-95be-a509ec3072cf.html"
       },
       {
+        siteId: "nanda-street-business-district",
         name: "南大街商圈",
         category: "逛街购物",
+        relationLevel: "modernNearby",
         relationType: "主城区商圈延伸",
         contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        poemExcerpt: "未圆怜更好，独对故相亲。",
+        fieldPrompt: "观察历史叙事与现代商业空间在同一城市中的并置，记录最明显的一处反差。",
+        verifiedAt: "2026-09-10",
         description: "崇川区人民政府资料明确使用“南大街商圈”名称。网页仅将其作为诗歌地点之后的现代逛街行程，不推断诗歌历史关系。",
         credit: "实景照片待授权",
         sourceLabel: "崇川区人民政府 · 南大街商圈",
@@ -1782,10 +1847,17 @@ searchEmpty.textContent = '未找到相符的诗歌';
 list.appendChild(searchEmpty);
 const favoritesFilter = document.getElementById('favorites-filter');
 let showFavoritesOnly = false;
+const relationLevelLabels = {
+  direct: '诗歌地点直接对应',
+  sameTown: '同镇人文关联',
+  regionalExtension: '地区文旅延伸',
+  modernNearby: '现代周边推荐'
+};
 function getTourismSearchText(p) {
   return [...(p.tourism || []), ...(p.nearby || [])].map(item => [
     item.name, item.category, item.relationType, item.contextLabel,
-    item.distanceLabel, item.description, item.sourceLabel
+    item.distanceLabel, item.description, item.sourceLabel,
+    item.poemExcerpt, item.fieldPrompt, relationLevelLabels[item.relationLevel]
   ].join(' ')).join(' ');
 }
 function applyPoemFilters() {
@@ -1845,21 +1917,65 @@ function closeOverlayPanel(id, restoreFocus = true) {
   if (restoreFocus) toggle.focus();
 }
 
-/* ═══════ 诗踪文旅：展示已核地点关系，照片须经授权 ═══════ */
-const tourismEntries = POEMS.flatMap(poem =>
-  (poem.tourism || []).map(site => ({ poem, site }))
-);
-const nearbyEntries = POEMS.flatMap(poem =>
-  (poem.nearby || []).map(site => ({ poem, site }))
-);
+/* ═══════ 今日诗境：数字人文档案、关系分级与本地到访印记 ═══════ */
+const TOURISM_VISITS_KEY = 'zhangjian-scenic-visits-v1';
+const tourismEntries = POEMS.flatMap(poem => [
+  ...(poem.tourism || []).map(site => ({ poem, site })),
+  ...(poem.nearby || []).map(site => ({ poem, site }))
+]).map((entry, index) => ({ ...entry, entryKey: `${entry.poem.id}-${entry.site.siteId || index}` }));
 const tourismList = document.getElementById('tourism-list');
-const nearbyList = document.getElementById('nearby-list');
 const tourismToggle = document.getElementById('tourism-toggle');
-tourismToggle.textContent = `诗踪文旅（${tourismEntries.length}处已核 · ${nearbyEntries.length}项周边）`;
+const tourismFilterSummary = document.getElementById('tourism-filter-summary');
+tourismToggle.textContent = `今日诗境（${tourismEntries.length}项已核）`;
+let expandedTourismCard = null;
+let scenicVisits = {};
+try {
+  const storedVisits = JSON.parse(localStorage.getItem(TOURISM_VISITS_KEY) || '{}');
+  if (storedVisits && typeof storedVisits === 'object' && !Array.isArray(storedVisits)) scenicVisits = storedVisits;
+} catch (e) {}
 
-function createTourismCard(poem, site, includeAction = false) {
+function getBeijingDateKey() {
+  try {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  } catch (e) {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+function getDailyTourismEntry() {
+  const [year, month, day] = getBeijingDateKey().split('-').map(Number);
+  const dayNumber = Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+  return tourismEntries[((dayNumber % tourismEntries.length) + tourismEntries.length) % tourismEntries.length];
+}
+
+function setTourismCardExpanded(card, expanded) {
+  if (expanded && expandedTourismCard && expandedTourismCard !== card) {
+    setTourismCardExpanded(expandedTourismCard, false);
+  }
+  const details = card.querySelector('.tourism-card-details');
+  const toggle = card.querySelector('.tourism-card-toggle');
+  card.classList.toggle('expanded', expanded);
+  details.hidden = !expanded;
+  toggle.setAttribute('aria-expanded', String(expanded));
+  expandedTourismCard = expanded ? card : (expandedTourismCard === card ? null : expandedTourismCard);
+}
+
+function updateVisitButton(button, siteId) {
+  const visited = Boolean(scenicVisits[siteId]);
+  button.classList.toggle('on', visited);
+  button.setAttribute('aria-pressed', String(visited));
+  button.textContent = visited ? `✓ 已于 ${scenicVisits[siteId]} 留下印记` : '留下到访印记';
+}
+
+function createTourismCard(poem, site, includeAction = false, entryKey = '') {
   const card = document.createElement('article');
   card.className = 'tourism-card';
+  card.dataset.relationLevel = site.relationLevel || 'modernNearby';
+  card.dataset.entryKey = entryKey || `${poem.id}-${site.siteId}`;
 
   const photoWrap = document.createElement('div');
   photoWrap.className = 'tourism-photo-wrap';
@@ -1892,20 +2008,43 @@ function createTourismCard(poem, site, includeAction = false) {
     photoWrap.append(placeholder, badge);
   }
 
-  const body = document.createElement('div');
-  body.className = 'tourism-card-body';
-  const name = document.createElement('div');
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'tourism-card-toggle';
+  toggle.setAttribute('aria-expanded', 'false');
+  const summary = document.createElement('span');
+  summary.className = 'tourism-card-summary';
+  const name = document.createElement('span');
   name.className = 'tourism-card-name';
   name.textContent = site.name;
-  const poemName = document.createElement('div');
+  const poemName = document.createElement('span');
   poemName.className = 'tourism-card-poem';
   poemName.textContent = site.contextLabel || `关联诗歌：${poem.title}`;
-  const relation = document.createElement('div');
+  const relation = document.createElement('span');
   relation.className = 'tourism-card-relation';
-  relation.textContent = site.category ? `${site.category} · ${site.relationType}` : site.relationType;
-  const desc = document.createElement('p');
-  desc.className = 'tourism-card-desc';
-  desc.textContent = site.description;
+  relation.textContent = relationLevelLabels[site.relationLevel] || site.relationType;
+  summary.append(name, poemName, relation);
+  const chevron = document.createElement('span');
+  chevron.className = 'tourism-card-chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.textContent = '⌄';
+  toggle.append(summary, chevron);
+
+  const details = document.createElement('div');
+  details.className = 'tourism-card-details';
+  details.hidden = true;
+  const poemSection = document.createElement('div');
+  poemSection.className = 'tourism-archive-section';
+  poemSection.innerHTML = `<div class="tourism-archive-label">诗中所见</div><p class="tourism-archive-text tourism-poem-quote">${escapeHTML(site.poemExcerpt || '诗句资料待补')}</p>`;
+  const relationSection = document.createElement('div');
+  relationSection.className = 'tourism-archive-section';
+  relationSection.innerHTML = `<div class="tourism-archive-label">地点关系</div><p class="tourism-archive-text">${escapeHTML(site.description)}</p>`;
+  const todaySection = document.createElement('div');
+  todaySection.className = 'tourism-archive-section';
+  todaySection.innerHTML = `<div class="tourism-archive-label">今日所见</div><p class="tourism-archive-text">${site.image ? '已展示项目资料授权的今日实景；它不代表诗作年代的历史原貌。' : '地点资料已经核验，实景照片尚未获得授权，因此暂不展示网络图片。'}</p>`;
+  const promptSection = document.createElement('div');
+  promptSection.className = 'tourism-archive-section tourism-field-prompt';
+  promptSection.innerHTML = `<div class="tourism-archive-label">现场观察任务</div><p class="tourism-archive-text">${escapeHTML(site.fieldPrompt || '选择一处现场细节，记录它与你阅读诗歌时产生的联系。')}</p>`;
   const meta = document.createElement('div');
   meta.className = 'tourism-card-meta';
   if (site.distanceLabel) {
@@ -1913,6 +2052,8 @@ function createTourismCard(poem, site, includeAction = false) {
     distance.textContent = site.distanceLabel;
     meta.appendChild(distance);
   }
+  const verified = document.createElement('span');
+  verified.textContent = `核验日期：${site.verifiedAt || '待补'}`;
   const credit = document.createElement('span');
   credit.textContent = `图片：${site.credit || '待补充授权实景照片'}`;
   const source = document.createElement('a');
@@ -1920,33 +2061,88 @@ function createTourismCard(poem, site, includeAction = false) {
   source.href = site.sourceUrl;
   source.target = '_blank';
   source.rel = 'noopener noreferrer';
-  source.textContent = `核验：${site.sourceLabel}`;
-  meta.append(credit, source);
-  body.append(name, poemName, relation, desc, meta);
+  source.textContent = `来源：${site.sourceLabel}`;
+  meta.append(verified, credit, source);
+  details.append(poemSection, relationSection, todaySection, promptSection, meta);
 
+  const actions = document.createElement('div');
+  actions.className = 'tourism-card-actions';
+  const visitButton = document.createElement('button');
+  visitButton.type = 'button';
+  visitButton.className = 'tourism-visit';
+  updateVisitButton(visitButton, site.siteId);
+  visitButton.addEventListener('click', () => {
+    if (scenicVisits[site.siteId]) delete scenicVisits[site.siteId];
+    else scenicVisits[site.siteId] = getBeijingDateKey();
+    try { localStorage.setItem(TOURISM_VISITS_KEY, JSON.stringify(scenicVisits)); } catch (e) {}
+    document.querySelectorAll('.tourism-visit').forEach(button => {
+      if (button.dataset.siteId === site.siteId) updateVisitButton(button, site.siteId);
+    });
+  });
+  visitButton.dataset.siteId = site.siteId;
+  actions.appendChild(visitButton);
   if (includeAction) {
     const openButton = document.createElement('button');
     openButton.type = 'button';
     openButton.className = 'tourism-open-poem';
-    openButton.textContent = site.contextLabel ? '回到对应诗歌地点' : '在地图中查看诗歌与实景';
+    openButton.textContent = '在地图中查看对应诗歌';
     openButton.addEventListener('click', () => {
       closeOverlayPanel('tourism-panel', false);
       flyToPoem(poem);
       switchTab('scenic');
     });
-    body.appendChild(openButton);
+    actions.prepend(openButton);
   }
-
-  card.append(photoWrap, body);
+  details.appendChild(actions);
+  toggle.addEventListener('click', () => setTourismCardExpanded(card, !card.classList.contains('expanded')));
+  card.append(photoWrap, toggle, details);
   return card;
 }
 
-tourismEntries.forEach(({ poem, site }) => {
-  tourismList.appendChild(createTourismCard(poem, site, true));
+tourismEntries.forEach(({ poem, site, entryKey }) => {
+  tourismList.appendChild(createTourismCard(poem, site, true, entryKey));
 });
-nearbyEntries.forEach(({ poem, site }) => {
-  nearbyList.appendChild(createTourismCard(poem, site, true));
+
+function applyTourismFilter(filter) {
+  let visibleCount = 0;
+  tourismList.querySelectorAll('.tourism-card').forEach(card => {
+    const level = card.dataset.relationLevel;
+    const visible = filter === 'all' || level === filter || (filter === 'extension' && ['sameTown', 'regionalExtension'].includes(level));
+    card.hidden = !visible;
+    if (!visible && card.classList.contains('expanded')) setTourismCardExpanded(card, false);
+    if (visible) visibleCount += 1;
+  });
+  tourismFilterSummary.textContent = `当前显示 ${visibleCount} 项已核关系记录。点击卡片展开数字档案；现场观察任务不属于历史事实。`;
+}
+
+document.getElementById('tourism-filters').addEventListener('click', event => {
+  const button = event.target.closest('.tourism-filter');
+  if (!button) return;
+  document.querySelectorAll('.tourism-filter').forEach(item => {
+    const selected = item === button;
+    item.classList.toggle('on', selected);
+    item.setAttribute('aria-pressed', String(selected));
+  });
+  applyTourismFilter(button.dataset.filter);
 });
+
+const dailyEntry = getDailyTourismEntry();
+const tourismDaily = document.getElementById('tourism-daily');
+tourismDaily.innerHTML = `<div class="tourism-daily-kicker">每日一景 · ${escapeHTML(getBeijingDateKey())}</div><div class="tourism-daily-name">${escapeHTML(dailyEntry.site.name)}</div><div class="tourism-daily-copy">${escapeHTML(dailyEntry.site.poemExcerpt)}<br>${escapeHTML(relationLevelLabels[dailyEntry.site.relationLevel] || dailyEntry.site.relationType)}</div>`;
+const dailyButton = document.createElement('button');
+dailyButton.type = 'button';
+dailyButton.className = 'tourism-daily-action';
+dailyButton.textContent = '展开今日诗境档案';
+dailyButton.addEventListener('click', () => {
+  const allFilter = document.querySelector('.tourism-filter[data-filter="all"]');
+  allFilter.click();
+  const target = tourismList.querySelector(`[data-entry-key="${dailyEntry.entryKey}"]`);
+  if (!target) return;
+  setTourismCardExpanded(target, true);
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  target.querySelector('.tourism-card-toggle')?.focus({ preventScroll: true });
+});
+tourismDaily.appendChild(dailyButton);
 document.getElementById('tourism-toggle').addEventListener('click', () => openOverlayPanel('tourism-panel'));
 document.getElementById('tourism-close').addEventListener('click', () => closeOverlayPanel('tourism-panel'));
 POEMS.forEach(p => {
@@ -2043,6 +2239,35 @@ document.getElementById('viz-close').addEventListener('click', () => closeOverla
 function answerLocalQuestion(question) {
   const q = question.trim().toLowerCase();
   if (!q) return '请先输入一个问题。';
+  if (q.includes('今日诗境') || q.includes('每日一景') || q.includes('今天的景点')) {
+    const entry = getDailyTourismEntry();
+    return {
+      matches: [entry.poem],
+      message: `今天的诗境是${entry.site.name}，对应${entry.poem.title}。地点关系为“${relationLevelLabels[entry.site.relationLevel] || entry.site.relationType}”。现场观察任务：${entry.site.fieldPrompt}`
+    };
+  }
+  if ((q.includes('到访') || q.includes('印记') || q.includes('去过')) && (q.includes('哪些') || q.includes('什么') || q.includes('我'))) {
+    const visitedEntries = tourismEntries.filter(({ site }) => scenicVisits[site.siteId]);
+    const uniqueSites = [...new Map(visitedEntries.map(({ site }) => [site.siteId, site])).values()];
+    const matches = [...new Map(visitedEntries.map(({ poem }) => [poem.id, poem])).values()];
+    return {
+      matches,
+      message: uniqueSites.length
+        ? `本机保存了 ${uniqueSites.length} 处到访印记：${uniqueSites.map(site => `${site.name}（${scenicVisits[site.siteId]}）`).join('、')}。这些记录只保存在当前浏览器。`
+        : '当前浏览器还没有保存到访印记。你可以在“今日诗境”的档案卡中留下记录。'
+    };
+  }
+  if ((q.includes('现代周边') || q.includes('历史地点') || q.includes('诗歌地点')) && (q.includes('哪些') || q.includes('区别') || q.includes('什么'))) {
+    const wantsModern = q.includes('现代周边');
+    const selected = tourismEntries.filter(({ site }) => wantsModern ? site.relationLevel === 'modernNearby' : site.relationLevel === 'direct');
+    const matches = [...new Map(selected.map(({ poem }) => [poem.id, poem])).values()];
+    return {
+      matches,
+      message: selected.length
+        ? `${wantsModern ? '现代周边' : '诗歌地点直接对应'}包括：${selected.map(({ site }) => site.name).join('、')}。${wantsModern ? '它们用于当代行程衔接，不代表诗歌历史地点。' : '直接对应只说明诗歌地点记录与该地点相符，不据此推定具体创作位置。'}`
+        : '当前网站资料中没有符合该关系等级的记录。'
+    };
+  }
   if ((q.includes('时间') || q.includes('年代')) && (q.includes('明确') || q.includes('确定') || q.includes('有时间'))) {
     const matches = POEMS.filter(p => p.timeClue && p.timeClue !== '年代待考');
     return { matches, message: `当前网站中有 ${matches.length} 首诗带有明确的文本时间线索，其余作品不据此推定创作年代。` };
@@ -2091,12 +2316,12 @@ function answerLocalQuestion(question) {
   }
   if ((q.includes('景点') || q.includes('文旅') || q.includes('旅游') || q.includes('实景')) &&
       (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部') || q.includes('有'))) {
-    const matches = POEMS.filter(p => p.tourism?.length);
-    const siteNames = matches.flatMap(p => p.tourism.map(site => site.name));
-    const photoCount = matches.flatMap(p => p.tourism).filter(site => site.image).length;
+    const matches = [...new Map(tourismEntries.map(({ poem }) => [poem.id, poem])).values()];
+    const siteNames = [...new Set(tourismEntries.map(({ site }) => site.name))];
+    const photoCount = [...new Map(tourismEntries.filter(({ site }) => site.image).map(({ site }) => [site.siteId, site])).values()].length;
     return {
       matches,
-      message: `当前网站有 ${siteNames.length} 处已核诗踪文旅地点：${siteNames.join('、')}。其中 ${photoCount} 处已有授权实景照片；其余只展示已核事实，不使用未授权图片。今日实景不代表诗作年代原貌。`
+      message: `当前“今日诗境”收录 ${tourismEntries.length} 项已核关系记录，涉及 ${siteNames.length} 个地点：${siteNames.join('、')}。其中 ${photoCount} 个地点已有授权实景照片；其余只展示已核事实，不使用未授权图片。现代实景不代表诗作年代原貌。`
     };
   }
   const stopPhrases = ['哪些诗歌','哪些诗','哪一首诗','哪首诗','有什么诗','有没有诗','在哪里','在什么地方','写到了','写到','提到了','提到','有关','相关','请问','可以告诉我','是什么','有哪些'];
