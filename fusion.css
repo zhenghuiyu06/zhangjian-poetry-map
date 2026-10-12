@@ -1,0 +1,41 @@
+/* 同一作品的两种阅读入口：轻量漫游与完整资料地图。 */
+.topnav .topnav-research{
+  color:var(--river);border:1px solid rgba(21,57,79,.24);border-radius:999px;
+  padding:7px 13px;background:rgba(255,253,248,.7);white-space:nowrap
+}
+.topnav .topnav-research:hover{background:var(--river);color:#fff}
+.mode-section{background:linear-gradient(150deg,#f9f6ee 0%,#edf1ed 100%);border-bottom:1px solid var(--line)}
+.mode-section .section-head{margin-bottom:32px}
+.mode-grid{max-width:1280px;margin:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.mode-card{
+  position:relative;isolation:isolate;overflow:hidden;min-width:0;min-height:330px;
+  display:flex;flex-direction:column;align-items:flex-start;padding:clamp(24px,3.1vw,42px);
+  border:1px solid rgba(23,36,44,.14);border-radius:9px;text-decoration:none;
+  box-shadow:0 15px 40px rgba(35,58,65,.07);transition:transform .2s,box-shadow .2s,border-color .2s
+}
+.mode-card:hover{transform:translateY(-3px);border-color:rgba(21,57,79,.34);box-shadow:0 22px 48px rgba(35,58,65,.13)}
+.mode-card-walk{background:linear-gradient(115deg,rgba(250,247,237,.98) 0%,rgba(250,247,237,.9) 56%,rgba(250,247,237,.66) 100%),url('assets/scenic/langshan.webp') center 48%/cover,#eee9dc}
+.mode-card-research{background:radial-gradient(circle at 85% 20%,transparent 0 34px,rgba(21,57,79,.09) 35px 36px,transparent 37px 74px,rgba(21,57,79,.07) 75px 76px,transparent 77px),linear-gradient(145deg,#e5eeec,#f6f4e9 78%)}
+.mode-card-research::after{content:"";position:absolute;right:7%;bottom:-74px;width:270px;height:270px;border:1px solid rgba(21,57,79,.11);border-radius:50%;box-shadow:0 0 0 46px rgba(21,57,79,.025),0 0 0 94px rgba(21,57,79,.025);z-index:-1}
+.mode-card-number{color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.14em}
+.mode-card h3{font-family:var(--serif);font-size:clamp(30px,3vw,43px);font-weight:600;line-height:1.25;margin:16px 0 10px;color:var(--ink)}
+.mode-card p{max-width:530px;margin:0 0 20px;color:#44565c;font-size:15px;line-height:1.8}
+.mode-card-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.mode-card-tags span{display:inline-flex;align-items:center;min-height:27px;padding:3px 10px;border-radius:999px;border:1px solid rgba(21,57,79,.18);background:rgba(255,253,248,.62);color:#385360;font-size:12px;line-height:1.3}
+.mode-card strong{margin-top:auto;display:inline-flex;align-items:center;gap:9px;color:var(--river);font-size:14px}
+.mode-card strong span{font-size:19px;line-height:1}
+.research-poem-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;margin-top:14px;padding:11px 15px;border:1px solid rgba(21,57,79,.18);border-radius:6px;background:#eaf0ef;color:var(--river);font-size:13px;font-weight:700;line-height:1.45;text-decoration:none}
+.research-poem-link:hover{background:#dce9e8;border-color:rgba(21,57,79,.38)}
+.research-poem-link span{flex:0 0 auto;font-size:18px}
+@media(max-width:900px){
+  .mode-grid{gap:12px}
+  .mode-card{min-height:360px}
+}
+@media(max-width:760px){
+  .mode-section{padding-top:70px;padding-bottom:75px}
+  .mode-grid{grid-template-columns:1fr}
+  .mode-card{min-height:0;padding:25px 23px}
+  .mode-card h3{font-size:32px}
+  .mode-card p{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.mode-card:hover{transform:none}}

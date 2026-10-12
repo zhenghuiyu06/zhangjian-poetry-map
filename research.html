@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f2e9">
+  <meta name="description" content="张謇诗路诗歌地图：沿诗歌地点与人物线索漫游南通。">
+  <title>诗歌地图｜张謇诗路 · 南通漫游</title>
+  <style>
+    :root{--paper:#f6f2e9;--ink:#17252b;--river:#15394f;--line:rgba(23,37,43,.16);--serif:"Songti SC","STSong","Noto Serif SC",serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0}
+    body{min-height:100dvh;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+    a{color:inherit}a:focus-visible{outline:3px solid #a64634;outline-offset:3px}
+    .skip{position:absolute;top:-70px;left:14px;z-index:3;padding:10px 14px;background:var(--river);color:white;border-radius:4px}.skip:focus{top:12px}
+    .research-header{z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:72px;padding:11px clamp(16px,3.5vw,52px);border-bottom:1px solid var(--line);background:#f8f6ef}
+    .brand{display:flex;align-items:center;gap:11px;min-width:0;text-decoration:none;font-family:var(--serif);font-size:17px;font-weight:700;letter-spacing:.07em;white-space:nowrap}
+    .seal{flex:0 0 auto;display:grid;place-items:center;width:34px;height:34px;border-radius:4px;background:#a64634;color:#fff7e8;font-size:12px;line-height:1.05;text-align:center}
+    .research-actions{display:flex;align-items:center;gap:9px}
+    .research-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:7px 16px;border:1px solid rgba(21,57,79,.24);border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap}
+    .research-actions a:first-child{background:var(--river);border-color:var(--river);color:white}.research-actions a:first-child:hover{background:#245970}
+    .research-actions a:last-child{background:white;color:var(--river)}.research-actions a:last-child:hover{background:#e4eeed}
+    .research-context{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:50px;padding:8px clamp(16px,3.5vw,52px);background:#eaf0ed;border-bottom:1px solid var(--line);font-size:13px}
+    .research-context strong{font-family:var(--serif);font-size:16px;color:var(--river)}
+    .research-context span{color:#52636a}
+    iframe{display:block;flex:1 1 auto;width:100%;min-height:0;border:0;background:#160e06}
+    @media(max-width:680px){
+      .research-header{min-height:66px;gap:8px;padding:8px 12px}
+      .brand{font-size:13px;gap:7px;letter-spacing:0}
+      .seal{width:30px;height:30px;font-size:11px}
+      .research-actions{gap:5px}
+      .research-actions a{min-height:40px;padding:6px 9px;font-size:12px}
+      .research-context{padding:6px 12px;min-height:42px}
+      .research-context span{display:none}
+    }
+    @media(max-width:390px){.brand-label{display:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#classic-frame">跳到诗歌地图</a>
+  <header class="research-header">
+    <a class="brand" href="index.html#two-views" aria-label="返回张謇诗路首页"><span class="seal" aria-hidden="true">謇<br>迹</span><span class="brand-label">张謇诗路 · 南通漫游</span></a>
+    <nav class="research-actions" aria-label="页面切换"><a href="index.html#archive">← 返回漫游体验</a><a id="open-classic" href="classic/网站.html?v=20261013-poem-relations" target="_blank" rel="noopener noreferrer">单独打开地图 ↗</a></nav>
+  </header>
+  <div class="research-context"><strong>诗歌地图</strong><span>找地点 · 读人物 · 看主题 · 问诗路</span></div>
+  <iframe id="classic-frame" title="张謇诗歌地图" src="classic/网站.html?v=20261013-poem-relations" loading="eager"></iframe>
+  <script>
+    const frame=document.getElementById('classic-frame');
+    const openClassic=document.getElementById('open-classic');
+    function routePoem(){
+      const hash=window.location.hash;
+      const match=/^#poem-([1-8])$/.exec(hash);
+      if(hash&&!match)return; // “跳到资料地图”等页内锚点不应清除当前诗歌。
+      const target='classic/网站.html?v=20261013-poem-relations'+(match?match[0]:'');
+      openClassic.href=target;
+      if(frame.getAttribute('src')!==target)frame.setAttribute('src',target);
+    }
+    window.addEventListener('hashchange',routePoem);
+    routePoem();
+  </script>
+</body>
+</html>

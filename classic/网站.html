@@ -1,0 +1,3510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob: https:; script-src 'self' 'unsafe-inline' https://lib.baomitu.com https://unpkg.com https://cdn.bootcdn.net https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://lib.baomitu.com https://unpkg.com; img-src 'self' file: data: blob: https://webrd01.is.autonavi.com; media-src 'self' file: data: blob:; frame-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<title>通吕运河 · 张謇时空罗盘</title>
+<!-- Leaflet CSS: 360 CDN 国内镜像 -->
+<link rel="stylesheet" href="https://lib.baomitu.com/leaflet/1.9.4/leaflet.css"
+  integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous"
+  onerror="this.onerror=null;var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';l.integrity='sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H';l.crossOrigin='anonymous';document.head.appendChild(l);">
+<!-- Leaflet JS -->
+<script src="https://lib.baomitu.com/leaflet/1.9.4/leaflet.js"
+  integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.integrity='sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH';s.crossOrigin='anonymous';document.head.appendChild(s);"></script>
+<!-- ECharts: BootCDN 国内镜像 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
+  integrity="sha384-o5uz97et3bErHvpKfD4Jz4n0JfhJDWABFuF4NP+iEEDxE1VwMWJ19QGR0lqFZnr6" crossorigin="anonymous"
+  onerror="var t=this;t.onerror=null;var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';s.integrity='sha384-o5uz97et3bErHvpKfD4Jz4n0JfhJDWABFuF4NP+iEEDxE1VwMWJ19QGR0lqFZnr6';s.crossOrigin='anonymous';document.head.appendChild(s);"></script>
+<style>
+:root {
+  --zhu: #A0522D;
+  --hong: #6B1A1A;
+  --jin: #C5A028;
+  --jin-light: rgba(197,160,40,0.15);
+  --jin-border: rgba(197,160,40,0.25);
+  --mi: #F2EAD8;
+  --mi-dim: rgba(242,234,216,0.55);
+  --mi-faint: rgba(242,234,216,0.25);
+  --panel-bg: #160E06;
+  --card-bg: rgba(16,9,4,0.97);
+  --panel-w: 288px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+html, body { height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior:none; }
+
+body {
+  font-family: 'STSong', 'Songti SC', 'Noto Serif SC', 'KaiTi', 'STKaiti', '楷体', '宋体', serif;
+  display: flex;
+  background: #0D0806;
+}
+
+/* ── LEFT PANEL ── */
+#panel {
+  width: var(--panel-w);
+  min-width: var(--panel-w);
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--jin-border);
+  z-index: 900;
+  position: relative;
+  transition: width 0.38s cubic-bezier(0.4,0,0.2,1),
+              min-width 0.38s cubic-bezier(0.4,0,0.2,1),
+              opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  overflow: visible;
+}
+#panel.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── PANEL TOGGLE BUTTON (child of body, positioned at panel-map seam) ── */
+#panel-toggle {
+  position: fixed;
+  left: calc(var(--panel-w) - 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 64px;
+  background: rgba(22,14,6,0.92);
+  border: 1px solid var(--jin-border);
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  padding: 0;
+  appearance: none;
+  z-index: 910;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.38s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.3s,
+              background 0.3s;
+}
+#panel-toggle:hover {
+  background: rgba(30,18,8,0.95);
+  border-color: var(--jin);
+}
+#panel-toggle .tog-arrow {
+  font-size: 11px;
+  color: var(--jin);
+  letter-spacing: 0;
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  user-select: none;
+}
+/* when panel is collapsed, toggle slides to left edge */
+body.panel-folded #panel-toggle {
+  left: 8px;
+  border-left: 1px solid var(--jin-border);
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+}
+body.panel-folded #panel-toggle .tog-arrow {
+  transform: scaleX(-1);
+}
+
+/* decorative top corner lines */
+#panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
+
+.panel-head {
+  padding: 28px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--jin-border);
+  position: relative;
+}
+
+.panel-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 5px;
+  line-height: 1.5;
+}
+
+.panel-sub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 3px;
+}
+
+.panel-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 10px;
+}
+.panel-divider span {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+.panel-divider::before,
+.panel-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--jin-border);
+}
+
+/* ── SEARCH ── */
+.search-box {
+  padding: 0 14px 12px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  height: 34px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--jin-border);
+  border-radius: 3px;
+  outline: none;
+  background: rgba(242,234,216,0.04);
+  color: var(--mi);
+  font: 12px 'STSong','Songti SC','Noto Serif SC',serif;
+  letter-spacing: 1px;
+}
+.search-box input::placeholder { color: var(--mi-faint); }
+.search-box input:focus { border-color: rgba(197,160,40,0.65); background: var(--jin-light); }
+.search-icon {
+  position: absolute;
+  right: 25px;
+  top: 9px;
+  color: var(--jin);
+  font-size: 15px;
+  pointer-events: none;
+}
+.panel-actions { display:block; }
+.search-empty {
+  display: none;
+  padding: 16px 8px;
+  color: var(--mi-faint);
+  font-size: 12px;
+  line-height: 1.8;
+  text-align: center;
+}
+.people-toggle {
+  width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border);
+  border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer;
+  font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px;
+}
+.people-toggle:hover { background:var(--jin-light); color:var(--jin); }
+#people-panel { position:absolute; right:26px; top:26px; width:min(420px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.96); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#people-panel.open { display:block; }
+.people-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.people-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.people-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.people-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:18px; }
+.people-node { border:1px solid var(--jin-border); padding:14px; margin-bottom:10px; background:rgba(197,160,40,0.05); }
+.people-node-name { color:var(--jin); font-size:16px; letter-spacing:3px; }
+.people-node-role { color:var(--mi); font-size:12px; margin-top:6px; }
+.people-node-rel { color:var(--mi-faint); font-size:11px; line-height:1.7; margin-top:8px; }
+.people-work-list { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:12px; }
+.people-work { min-width:0; padding:8px 9px; border:1px solid rgba(197,160,40,0.24); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:11px/1.45 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.people-work:hover, .people-work:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.people-source { color:rgba(197,160,40,0.62); font-size:10px; line-height:1.7; margin-top:15px; }
+.viz-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.viz-toggle:hover { background:var(--jin-light); color:var(--jin); }
+#viz-panel { position:absolute; left:50%; top:26px; transform:translateX(-50%); width:min(620px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.96); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#viz-panel.open { display:block; }
+.viz-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.viz-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.viz-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.viz-intro { color:var(--mi-dim); font-size:11px; line-height:1.8; margin-bottom:15px; }
+.viz-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.viz-stat { border:1px solid var(--jin-border); padding:10px 6px; text-align:center; background:rgba(197,160,40,0.05); }
+.viz-stat-num { color:var(--jin); font-size:20px; }
+.viz-stat-label { color:var(--mi-faint); font-size:10px; margin-top:4px; }
+#viz-chart { width:100%; height:230px; }
+.viz-subtitle { color:var(--mi); font-size:12px; letter-spacing:2px; margin:16px 0 9px; }
+.viz-theme-list { display:flex; flex-wrap:wrap; gap:7px; }
+.viz-theme-btn { border:1px solid rgba(197,160,40,0.28); border-radius:999px; padding:6px 10px; background:rgba(197,160,40,0.04); color:var(--mi-dim); cursor:pointer; font:10px 'STSong','Songti SC','Noto Serif SC',serif; }
+.viz-theme-btn:hover, .viz-theme-btn:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.viz-note { color:var(--mi-faint); font-size:10px; line-height:1.7; margin-top:8px; }
+@media (max-width: 600px) { .viz-stats { grid-template-columns:repeat(2,1fr); } .people-work-list { grid-template-columns:1fr; } #viz-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); } }
+.tourism-toggle { width:100%; height:30px; margin-top:8px; border:1px solid rgba(122,153,111,0.52); border-radius:3px; background:rgba(122,153,111,0.1); color:#B7CEAE; cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.tourism-toggle:hover, .tourism-toggle:focus-visible { color:#D7E6D1; border-color:#A9C59E; background:rgba(122,153,111,0.2); }
+#tourism-panel { position:absolute; left:50%; top:26px; transform:translateX(-50%); width:min(760px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.97); border:1px solid rgba(122,153,111,0.42); box-shadow:0 18px 50px rgba(0,0,0,0.48); z-index:850; display:none; }
+#tourism-panel.open { display:block; }
+.tourism-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.tourism-title { color:#B7CEAE; font-size:17px; letter-spacing:4px; }
+.tourism-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.tourism-intro { color:var(--mi-dim); font-size:14px; line-height:1.8; margin-bottom:16px; }
+.tourism-daily { margin:4px 0 18px; padding:15px; border:1px solid rgba(197,160,40,0.38); background:linear-gradient(135deg,rgba(197,160,40,0.12),rgba(122,153,111,0.06)); }
+.tourism-daily-kicker { color:var(--jin); font-size:12px; letter-spacing:3px; }
+.tourism-daily-name { margin-top:8px; color:#F0E5C7; font-size:18px; letter-spacing:2px; line-height:1.45; }
+.tourism-daily-copy { margin-top:7px; color:var(--mi-dim); font-size:14px; line-height:1.75; }
+.tourism-daily-action { min-height:44px; margin-top:12px; padding:0 14px; border:1px solid rgba(197,160,40,0.48); border-radius:3px; background:rgba(197,160,40,0.1); color:var(--jin); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-daily-action:hover, .tourism-daily-action:focus-visible { background:rgba(197,160,40,0.2); border-color:var(--jin); }
+.tourism-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
+.tourism-filter { min-height:40px; padding:0 14px; border:1px solid rgba(122,153,111,0.35); border-radius:999px; background:rgba(122,153,111,0.04); color:var(--mi-dim); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-filter.on, .tourism-filter:hover, .tourism-filter:focus-visible { color:#E5EEDF; border-color:#9AB490; background:rgba(122,153,111,0.2); }
+.tourism-section-title { display:flex; align-items:center; gap:10px; margin:18px 0 10px; color:#D7E6D1; font-size:14px; letter-spacing:2px; }
+.tourism-section-title::after { content:""; flex:1; height:1px; background:rgba(122,153,111,0.28); }
+.tourism-nearby-note { margin:-2px 0 12px; color:var(--mi-faint); font-size:12px; line-height:1.7; }
+.tourism-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.tourism-card { min-width:0; align-self:start; border:1px solid rgba(122,153,111,0.35); border-radius:4px; overflow:hidden; background:rgba(122,153,111,0.06); }
+.tourism-card[hidden] { display:none; }
+.tourism-photo-wrap { position:relative; aspect-ratio:16 / 9; overflow:hidden; background:rgba(242,234,216,0.04); }
+.tourism-photo { width:100%; height:100%; display:block; object-fit:cover; cursor:zoom-in; }
+.tourism-photo-badge { position:absolute; left:10px; bottom:9px; padding:4px 8px; border:1px solid rgba(242,234,216,0.25); border-radius:999px; background:rgba(13,8,6,0.8); color:#E5EEDF; font-size:12px; letter-spacing:1px; pointer-events:none; }
+.tourism-photo-credit { position:absolute; right:10px; bottom:9px; max-width:calc(100% - 112px); padding:4px 7px; border-radius:3px; background:rgba(13,8,6,0.82); color:#F2EAD8; font-size:11px; line-height:1.4; text-align:right; text-decoration:none; }
+.tourism-photo-credit:hover, .tourism-photo-credit:focus-visible { color:#fff; text-decoration:underline; }
+.tourism-card.no-photo-card { grid-column:1 / -1; }
+.tourism-card.no-photo-card .tourism-photo-wrap { display:none; }
+.tourism-card-toggle { width:100%; min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; font-family:'STSong','Songti SC','Noto Serif SC',serif; }
+.tourism-card-toggle:hover, .tourism-card-toggle:focus-visible { background:rgba(122,153,111,0.1); outline:none; }
+.tourism-card-summary { min-width:0; }
+.tourism-card-chevron { flex:none; color:#B7CEAE; font-size:18px; transition:transform 0.2s ease; }
+.tourism-card.expanded .tourism-card-chevron { transform:rotate(180deg); }
+.tourism-card-details { padding:0 14px 15px; border-top:1px solid rgba(122,153,111,0.22); }
+.tourism-card-details[hidden] { display:none; }
+.tourism-card-name { display:block; color:#D7E6D1; font-size:16px; letter-spacing:2px; line-height:1.45; }
+.tourism-card-poem { display:block; color:var(--jin); font-size:13px; line-height:1.65; margin-top:5px; }
+.tourism-card-relation { display:inline-block; margin-top:8px; padding:4px 8px; border:1px solid rgba(122,153,111,0.38); border-radius:999px; color:#B7CEAE; font-size:12px; letter-spacing:1px; }
+.tourism-archive-section { margin-top:14px; }
+.tourism-archive-label { color:#B7CEAE; font-size:12px; letter-spacing:2px; }
+.tourism-archive-text { margin:6px 0 0; color:var(--mi-dim); font-size:14px; line-height:1.8; }
+.tourism-poem-quote { padding:10px 12px; border-left:2px solid var(--jin); background:rgba(197,160,40,0.06); color:#E8D8AC; }
+.tourism-field-prompt { padding:10px 12px; border-left:2px solid #7A996F; background:rgba(122,153,111,0.08); }
+.tourism-card-desc { color:var(--mi-dim); font-size:14px; line-height:1.8; margin-top:8px; }
+.tourism-card-meta { display:flex; flex-wrap:wrap; align-items:center; gap:7px 12px; margin-top:12px; color:var(--mi-faint); font-size:12px; line-height:1.7; }
+.tourism-card-source { color:#AFC9A5; text-decoration:none; border-bottom:1px solid rgba(175,201,165,0.35); }
+.tourism-card-source:hover, .tourism-card-source:focus-visible { color:#D7E6D1; border-bottom-color:#D7E6D1; }
+.tourism-card-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:13px; }
+.tourism-open-poem, .tourism-visit { width:100%; min-height:44px; border:1px solid rgba(197,160,40,0.35); border-radius:3px; background:rgba(197,160,40,0.07); color:var(--jin); cursor:pointer; font:14px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; }
+.tourism-open-poem:hover, .tourism-open-poem:focus-visible { border-color:rgba(197,160,40,0.68); background:var(--jin-light); }
+.tourism-visit { border-color:rgba(122,153,111,0.45); background:rgba(122,153,111,0.08); color:#B7CEAE; }
+.tourism-visit.on, .tourism-visit:hover, .tourism-visit:focus-visible { border-color:#9AB490; background:rgba(122,153,111,0.2); color:#E5EEDF; }
+.tourism-disclaimer { margin-top:14px; padding:10px 12px; border-left:2px solid rgba(122,153,111,0.7); background:rgba(122,153,111,0.06); color:var(--mi-faint); font-size:12px; line-height:1.75; }
+.tourism-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.tourism-detail-grid > .tourism-section-title { grid-column:1 / -1; margin:4px 0 -2px; }
+.tourism-detail-grid:has(.tourism-card:only-child) { grid-template-columns:minmax(0,620px); justify-content:center; }
+.tourism-photo-wrap.no-photo { background:radial-gradient(circle at 78% 24%,rgba(197,160,40,0.18),transparent 29%),linear-gradient(140deg,#25392f,#17241e); }
+.tourism-image-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:18px; color:#D7E6D1; font:22px/1.5 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; text-align:center; }
+@media (max-width:600px) {
+  .tourism-grid, .tourism-detail-grid { grid-template-columns:1fr; }
+  #tourism-panel { top:16px; width:calc(100% - 32px); max-height:calc(100% - 32px); }
+  .tourism-card-actions { grid-template-columns:1fr; }
+  .tourism-daily { padding:13px; }
+}
+.qa-toggle { width:100%; height:30px; margin-top:8px; border:1px solid var(--jin-border); border-radius:3px; background:rgba(197,160,40,0.08); color:var(--jin); cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.qa-toggle:hover { background:var(--jin-light); }
+#qa-panel { position:absolute; right:26px; bottom:26px; width:min(450px,calc(100% - 52px)); max-height:calc(100% - 52px); overflow-y:auto; padding:24px; background:rgba(22,14,6,0.97); border:1px solid var(--jin-border); box-shadow:0 18px 50px rgba(0,0,0,0.45); z-index:850; display:none; }
+#qa-panel.open { display:block; }
+.qa-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+.qa-title { color:var(--jin); font-size:17px; letter-spacing:4px; }
+.qa-close { border:0; background:transparent; color:var(--mi-dim); cursor:pointer; font-size:20px; line-height:1; }
+.qa-badge { display:inline-block; color:rgba(197,160,40,0.75); font-size:10px; letter-spacing:1px; margin-bottom:12px; }
+.qa-form { display:flex; gap:8px; }
+.qa-form input { flex:1; min-width:0; height:36px; padding:0 10px; border:1px solid var(--jin-border); border-radius:3px; outline:none; background:rgba(242,234,216,0.04); color:var(--mi); font:12px 'STSong','Songti SC','Noto Serif SC',serif; }
+.qa-form input:focus { border-color:rgba(197,160,40,0.65); }
+.qa-form button { width:58px; border:1px solid var(--jin-border); border-radius:3px; background:var(--jin-light); color:var(--jin); cursor:pointer; font:11px serif; }
+.qa-answer { min-height:70px; margin-top:14px; padding:12px; border-left:2px solid var(--jin); background:rgba(197,160,40,0.05); color:var(--mi-dim); font-size:12px; line-height:1.9; white-space:pre-line; }
+.qa-result-list { display:grid; gap:7px; margin-top:10px; }
+.qa-result { width:100%; padding:9px 10px; border:1px solid rgba(197,160,40,0.25); border-radius:3px; background:rgba(197,160,40,0.04); color:var(--mi); cursor:pointer; font:11px/1.55 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.qa-result:hover, .qa-result:focus-visible { color:var(--jin); border-color:rgba(197,160,40,0.62); background:var(--jin-light); }
+.qa-result small { display:block; color:var(--mi-faint); margin-top:2px; }
+.qa-footnote { color:var(--mi-faint); font-size:10px; line-height:1.7; margin-top:10px; }
+.location-toggle { width:100%; height:30px; margin-top:8px; border:1px solid rgba(107,155,106,0.48); border-radius:3px; background:rgba(107,155,106,0.08); color:#9DBD9C; cursor:pointer; font:11px 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.location-toggle:hover, .location-toggle:focus-visible { color:#C4D9C3; border-color:#9DBD9C; background:rgba(107,155,106,0.16); }
+.location-toggle:disabled { cursor:wait; opacity:0.7; }
+.location-result { margin-top:8px; padding:9px 10px; border-left:2px solid #6B9B6A; background:rgba(107,155,106,0.07); color:var(--mi-dim); font-size:10px; line-height:1.65; }
+.location-result[hidden] { display:none; }
+.location-result-head { color:#9DBD9C; }
+.location-privacy { display:block; margin-top:3px; color:var(--mi-faint); }
+.nearest-poem-btn { width:100%; min-height:32px; margin-top:7px; padding:5px 8px; border:1px solid rgba(107,155,106,0.4); border-radius:3px; background:transparent; color:#9DBD9C; cursor:pointer; font:10px 'STSong','Songti SC','Noto Serif SC',serif; text-align:left; }
+.nearest-poem-btn:hover, .nearest-poem-btn:focus-visible { background:rgba(107,155,106,0.14); border-color:#9DBD9C; }
+.detail-actions { display:flex; align-items:center; gap:8px; }
+.favorite-btn { border:1px solid var(--jin-border); border-radius:3px; background:transparent; color:var(--mi-dim); cursor:pointer; padding:6px 8px; font:11px serif; }
+.favorite-btn:hover, .favorite-btn.saved { color:var(--jin); background:var(--jin-light); border-color:rgba(197,160,40,0.6); }
+.poem-card.saved .poem-seq::after { content:'  ★'; color:var(--jin); }
+button:focus-visible, input:focus-visible { outline:2px solid var(--jin); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
+
+#poem-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 14px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.2) transparent;
+}
+#poem-list::-webkit-scrollbar { width: 3px; }
+#poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.2); border-radius: 2px; }
+
+.poem-card {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--jin-border);
+  border-radius: 3px;
+  padding: 13px 15px;
+  margin-bottom: 9px;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+.poem-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: var(--hong);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.25s;
+}
+.poem-card:hover { background: var(--jin-light); border-color: rgba(197,160,40,0.4); }
+.poem-card.active { background: var(--jin-light); border-color: rgba(197,160,40,0.5); }
+.poem-card:hover::after, .poem-card.active::after { transform: scaleY(1); }
+
+.poem-seq {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.poem-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mi);
+  letter-spacing: 3px;
+  transition: color 0.2s;
+}
+.poem-card.active .poem-name { color: var(--jin); }
+.poem-place {
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--mi-faint);
+  letter-spacing: 1px;
+}
+.poem-place::before { content: '▪ '; }
+
+/* fly arrow indicator */
+.poem-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--jin);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.poem-card:hover .poem-arrow, .poem-card.active .poem-arrow { opacity: 1; }
+
+/* overview card — golden accent */
+.poem-card.overview-card {
+  border-color: rgba(212,175,55,0.35);
+  background: rgba(212,175,55,0.06);
+}
+.poem-card.overview-card:hover {
+  background: rgba(212,175,55,0.14);
+  border-color: rgba(212,175,55,0.55);
+}
+.poem-card.overview-card .poem-name {
+  color: #D4AF37;
+}
+.poem-card.overview-card .poem-seq {
+  color: rgba(212,175,55,0.55);
+}
+
+.panel-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--jin-border);
+  font-size: 10px;
+  color: var(--mi-faint);
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ── MAP ── */
+#map-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+#map {
+  position: absolute;
+  background: radial-gradient(ellipse at center, #3a2a15 0%, #1a1208 100%);
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/* Leaflet tile filter for "古地图" feel — light sepia over Gaode tiles */
+.leaflet-tile-pane { filter: sepia(0.15) saturate(0.85) brightness(0.95); }
+.leaflet-container { background: #2a1a0a !important; }
+
+/* ── DETAIL CARD (slides up from bottom, draggable resize) ── */
+#detail {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(20,10,6,0.88);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border-top: 1px solid var(--jin-border);
+  z-index: 800;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease;
+  height: 68%;
+  display: flex;
+  flex-direction: column;
+}
+#detail.open { transform: translateY(0); }
+
+/* ── Resize Handle (drag bar at top of detail card) ── */
+.resize-handle {
+  width: 100%;
+  height: 16px;
+  cursor: ns-resize;
+  border: 0;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  touch-action: none;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  z-index: 10;
+  position: relative;
+  margin-top: -1px;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 16px; right: 16px;
+  top: 50%; transform: translateY(-50%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197,160,40,0.2), transparent);
+  transition: background 0.2s;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: rgba(197,160,40,0.08);
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  background: linear-gradient(90deg, transparent, var(--jin), transparent);
+}
+.resize-grip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+.resize-grip span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(197,160,40,0.2);
+  transition: all 0.2s;
+}
+.resize-handle:hover .resize-grip span,
+.resize-handle.dragging .resize-grip span {
+  background: var(--jin);
+  width: 36px;
+}
+
+/* top decorative line */
+#detail::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jin), var(--hong), transparent);
+  flex-shrink: 0;
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 10px;
+  border-bottom: 1px solid var(--jin-border);
+  flex-shrink: 0;
+}
+.detail-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--jin);
+  letter-spacing: 3px;
+}
+.detail-loc {
+  font-size: 11px;
+  color: var(--mi-dim);
+  letter-spacing: 2px;
+  margin-top: 3px;
+}
+.detail-meta { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.detail-chip { display:inline-flex; align-items:center; min-height:20px; padding:2px 7px; border:1px solid var(--jin-border); border-radius:999px; color:var(--mi-dim); background:rgba(197,160,40,0.06); font-size:9px; letter-spacing:1px; }
+.close-btn {
+  background: none;
+  border: 1px solid var(--jin-border);
+  color: var(--mi-dim);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+.close-btn:hover { border-color: var(--jin); color: var(--jin); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--jin-border);
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--mi-faint);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 9px 14px;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--mi); }
+.tab.on {
+  color: #D4AF37;
+  border-bottom-color: #D4AF37;
+  font-weight: 700;
+}
+
+/* ── TAB BODY ── */
+.detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197,160,40,0.15) transparent;
+}
+
+.pane { display: none; }
+.pane.on { display: block; }
+
+.placeholder-box {
+  width: 100%;
+  height: 160px;
+  border: 1px dashed rgba(197,160,40,0.25);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mi-faint);
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+/* video tab */
+.video-ratio {
+  position: relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  background: #000;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.video-ratio video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-ratio video { object-fit:contain; background:#000; }
+
+/* audio tab */
+.audio-wrap {
+  background: rgba(197,160,40,0.05);
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  padding: 20px;
+}
+.audio-label {
+  font-size: 11px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.audio-wrap audio {
+  width: 100%;
+  accent-color: var(--jin);
+}
+
+/* graph tab — ECharts container */
+.graph-wrap {
+  width: 100%;
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--jin-border);
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 49%, rgba(197,160,40,.11) 0 1px, transparent 2px 82px, rgba(197,160,40,.09) 83px 84px, transparent 85px 153px, rgba(197,160,40,.055) 154px 155px, transparent 156px), linear-gradient(145deg,#241d17,#15120f 68%,#20241d);
+}
+.graph-wrap::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.25; background-image:linear-gradient(rgba(218,193,139,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(218,193,139,.12) 1px,transparent 1px); background-size:36px 36px; mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent); }
+.graph-explorer-head { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin:2px 0 10px; }
+.graph-explorer-head strong { display:block; color:#E8D8AC; font:20px/1.35 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:2px; }
+.graph-explorer-head small { display:block; margin-top:5px; color:var(--mi-faint); font-size:12px; line-height:1.5; }
+.graph-explorer-hint { color:#AFC9A5; font-size:12px; white-space:nowrap; }
+.graph-explorer-tools { display:flex; align-items:center; gap:9px; }
+.graph-expand { min-height:36px; padding:6px 10px; border:1px solid rgba(175,201,165,.38); border-radius:5px; background:rgba(122,153,111,.1); color:#D7E6D1; cursor:pointer; font-size:12px; white-space:nowrap; }
+.graph-expand:hover, .graph-expand:focus-visible { border-color:#B7CEAE; background:rgba(122,153,111,.22); outline:none; }
+#detail.graph-expanded { height:min(88%,900px) !important; }
+.graph-filters { display:flex; gap:7px; flex-wrap:wrap; margin:0 0 10px; }
+.graph-stage { display:grid; grid-template-columns:minmax(0,1fr) minmax(235px,31%); gap:12px; align-items:stretch; }
+.graph-filter { min-height:36px; padding:6px 12px; border:1px solid rgba(197,160,40,.26); border-radius:999px; background:rgba(197,160,40,.04); color:#C9BFAE; cursor:pointer; font:12px 'PingFang SC','Microsoft YaHei',sans-serif; }
+.graph-filter:hover, .graph-filter:focus-visible, .graph-filter[aria-pressed="true"] { border-color:#C5A028; background:rgba(197,160,40,.18); color:#F5E6C1; outline:none; }
+.graph-network { position:relative; width:100%; height:350px; }
+.graph-network-lines { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.graph-network-lines line { stroke:rgba(177,192,147,.42); stroke-width:1.4; transition:opacity .2s,stroke .2s,stroke-width .2s; }
+.graph-network-lines line.is-active { stroke:#D7BC73; stroke-width:2.5; }
+.graph-network-lines line.is-muted { opacity:.15; }
+.graph-network-lines line.is-overview { stroke-dasharray:4 6; }
+.graph-center { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:142px; min-height:70px; display:grid; place-items:center; padding:9px; border:1px solid rgba(233,203,139,.75); border-radius:9px; background:linear-gradient(135deg,#855337,#5A3027); box-shadow:0 0 0 7px rgba(197,160,40,.08),0 14px 30px rgba(0,0,0,.25); color:#FFF3D6; font:17px/1.35 'STSong','Songti SC',serif; text-align:center; letter-spacing:2px; z-index:2; }
+.graph-center small { display:block; color:#F4D7B0; font:10px/1.3 'PingFang SC',sans-serif; letter-spacing:1px; }
+.graph-node { position:absolute; z-index:2; transform:translate(-50%,-50%); min-width:112px; max-width:148px; min-height:46px; padding:8px 10px; border:1px solid var(--node-border,rgba(129,169,141,.65)); border-radius:8px; background:var(--node-bg,#2C4037); color:#F3EDE0; box-shadow:0 8px 18px rgba(0,0,0,.24); cursor:pointer; font:13px/1.3 'STSong','Songti SC','Noto Serif SC',serif; letter-spacing:1px; text-align:center; transition:transform .18s,opacity .18s,border-color .18s,box-shadow .18s; }
+.graph-node[data-category="0"] { --node-bg:#693C34; --node-border:#BD8770; }
+.graph-node[data-category="1"] { --node-bg:#2C483E; --node-border:#82AD91; }
+.graph-node[data-category="2"] { --node-bg:#604639; --node-border:#D5A778; }
+.graph-node[data-category="3"] { --node-bg:#4D425A; --node-border:#A89AC0; }
+.graph-node:hover, .graph-node:focus-visible, .graph-node[aria-pressed="true"] { transform:translate(-50%,-50%) scale(1.06); border-color:#F0D48E; box-shadow:0 0 0 3px rgba(220,184,103,.18),0 12px 24px rgba(0,0,0,.3); outline:none; }
+.graph-node.is-muted { opacity:.32; }
+.graph-node-kind { display:block; margin-bottom:3px; opacity:.75; font:10px/1.2 'PingFang SC',sans-serif; letter-spacing:1px; }
+.graph-focus { min-width:0; padding:15px 17px; border:1px solid rgba(197,160,40,.25); border-radius:6px; background:linear-gradient(125deg,rgba(197,160,40,.09),rgba(122,153,111,.07)); }
+.graph-focus-kicker { color:#B9CDAE; font:11px/1.4 'PingFang SC',sans-serif; letter-spacing:2px; }
+.graph-focus h3 { margin:6px 0; color:#E8D8AC; font:19px/1.5 'STSong','Songti SC',serif; }
+.graph-focus p { margin:0; color:#D4C9B9; font-size:13px; line-height:1.75; }
+.graph-quote { margin:13px 0 0; padding:10px 13px; border-left:2px solid #D7BC73; background:rgba(241,222,166,.07); color:#F4E6C2; font:15px/1.8 'STSong','Songti SC',serif; }
+.graph-quote small { display:block; margin-bottom:3px; color:#B9CDAE; font:11px/1.5 'PingFang SC',sans-serif; }
+.graph-relation-label { margin-top:13px; color:#B9CDAE; font-size:11px; letter-spacing:1px; }
+.poem-lines mark { background:rgba(222,187,103,.27); color:#FFF0CC; border-radius:2px; }
+.graph-focus-links { display:flex; flex-wrap:wrap; gap:7px; margin-top:11px; }
+.graph-focus-links button, .graph-focus-action { min-height:36px; padding:6px 10px; border:1px solid rgba(175,201,165,.35); border-radius:5px; background:rgba(122,153,111,.08); color:#D7E6D1; cursor:pointer; font-size:12px; }
+.graph-focus-links button:hover, .graph-focus-links button:focus-visible, .graph-focus-action:hover, .graph-focus-action:focus-visible { border-color:#B7CEAE; background:rgba(122,153,111,.2); outline:none; }
+.graph-focus-action { margin-top:12px; border-color:rgba(197,160,40,.45); color:#E8D8AC; }
+
+/* graph image (pre-made knowledge graph PNG) */
+.graph-img-wrap {
+  margin-top: 14px;
+  border: 1px solid var(--jin-border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(10,6,3,0.4);
+}
+.graph-img-wrap img {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+.graph-img-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.5);
+  letter-spacing: 3px;
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid rgba(197,160,40,0.12);
+}
+.graph-img-wrap summary { padding:11px 14px; color:#D6C394; cursor:pointer; font-size:12px; list-style-position:inside; }
+.graph-img-wrap summary:hover, .graph-img-wrap summary:focus-visible { background:rgba(197,160,40,.1); outline:none; }
+.graph-img-wrap img { max-height:700px; object-fit:contain; }
+@media (max-width:900px) {
+  .graph-stage { grid-template-columns:1fr; }
+  .graph-focus { margin-top:0; }
+}
+@media (max-width:600px) {
+  .graph-explorer-head strong { font-size:17px; }
+  .graph-explorer-hint { display:none; }
+  .graph-explorer-head { align-items:flex-start; }
+  .graph-explorer-tools { flex:0 0 auto; }
+  #detail.graph-expanded { height:94% !important; }
+  .graph-filter { min-height:40px; }
+  .graph-network { height:520px; }
+  .graph-wrap { min-height:0; }
+  .graph-node { width:42%; min-width:0; min-height:50px; padding:6px; font-size:12px; }
+  .graph-center { width:132px; min-height:62px; font-size:15px; }
+  .graph-focus { padding:13px; }
+}
+
+/* poem lines under graph */
+.poem-lines {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-left: 2px solid var(--hong);
+  background: rgba(107,26,26,0.07);
+  position: relative;
+}
+.poem-lines-label {
+  font-size: 10px;
+  color: rgba(197,160,40,0.45);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.poem-lines-text {
+  font-size: 15px;
+  color: #E0D6C8;
+  line-height: 2.5;
+  letter-spacing: 4px;
+}
+
+/* full-screen image viewer */
+#image-lightbox {
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:54px 20px 20px;
+  background:rgba(5,3,2,0.96);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+#image-lightbox[hidden] { display:none; }
+#lightbox-image { max-width:100%; max-height:100%; object-fit:contain; touch-action:pinch-zoom; }
+.lightbox-close { position:absolute; top:calc(10px + env(safe-area-inset-top)); right:14px; min-width:44px; min-height:44px; border:1px solid var(--jin-border); border-radius:50%; background:rgba(22,14,6,0.9); color:var(--mi); cursor:pointer; font-size:24px; }
+
+/* ── CUSTOM LEAFLET MARKER: 垂签 ── */
+.mk-tag {
+  position: relative;
+  width: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 6px rgba(107,26,26,0.5));
+  transition: filter 0.3s;
+}
+.mk-tag-body {
+  width: 36px;
+  height: 46px;
+  background: var(--hong, #6B1A1A);
+  border: 1.5px solid #C5A028;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.mk-tag-body::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(197,160,40,0.3);
+  border-radius: 2px 2px 0 0;
+  pointer-events: none;
+}
+.mk-tag-char {
+  font-family: 'Songti SC', 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #C5A028;
+  line-height: 1;
+  user-select: none;
+}
+.mk-tag-tip {
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #C5A028;
+  margin-top: -1px;
+}
+.mk-tag-hole {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(197,160,40,0.6);
+  border: 1px solid #C5A028;
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* active: glow + pulse ring */
+.mk-tag.lit {
+  filter: drop-shadow(0 0 10px rgba(197,160,40,0.7)) drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+.mk-tag.lit .mk-tag-body {
+  background: #8B2500;
+  border-color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-char {
+  color: #F2EAD8;
+}
+.mk-tag.lit .mk-tag-tip {
+  border-top-color: #F2EAD8;
+}
+.mk-tag.lit::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(197,160,40,0.6);
+  animation: pulse-ring 1.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse-ring {
+  0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(2.2); opacity: 0; }
+}
+
+/* ── MOBILE / TOUCH TABLET (≤ 900px) ── */
+@media (max-width: 900px) {
+
+  /* vertical stack */
+  body {
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    touch-action: manipulation;
+  }
+
+  /* ── panel → top strip ── */
+  #panel {
+    width: 100%;
+    min-width: 100%;
+    height: min(38dvh, 310px);
+    max-height: none;
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--jin-border);
+    overflow: hidden;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1),
+                opacity 0.38s cubic-bezier(0.4,0,0.2,1);
+  }
+  #panel.collapsed {
+    width: 100%;
+    min-width: 100%;
+    height: 52px;
+    max-height: none;
+    border-bottom: 1px solid var(--jin-border);
+    opacity: 1;
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  /* decorative line → top border already via ::before */
+
+  .panel-head {
+    padding: 10px 40px 4px 14px;  /* right padding for toggle */
+  }
+  .panel-title {
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+  .panel-sub {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+  body.panel-folded .panel-head {
+    padding: 8px 40px 4px 14px;
+  }
+  body.panel-folded .panel-sub {
+    display: none;
+  }
+
+  .panel-divider {
+    display: none;
+  }
+  .panel-divider span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  /* poem list → horizontal scroll */
+  #poem-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 7px 12px 10px;
+    gap: 7px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  #poem-list::-webkit-scrollbar { height: 2px; }
+  #poem-list::-webkit-scrollbar-thumb { background: rgba(197,160,40,0.15); border-radius: 1px; }
+  .search-empty { min-width:180px; align-self:center; padding:12px; }
+
+  .poem-card {
+    min-width: 132px;
+    max-width: 160px;
+    min-height: 72px;
+    flex-shrink: 0;
+    padding: 10px 11px;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+  }
+  .poem-card.overview-card {
+    min-width: 80px;
+    max-width: 100px;
+    margin-right: 2px;
+    margin-bottom: 0 !important;  /* override inline style */
+  }
+  .poem-seq { font-size: 9px; letter-spacing: 1px; }
+  .poem-name { font-size: 13px; letter-spacing: 1px; }
+  .poem-place { font-size: 10px; }
+
+  .poem-arrow { display: none; } /* hide arrow on mobile, save space */
+
+  .panel-footer {
+    display: none; /* save space on mobile */
+  }
+
+  .search-box {
+    padding: 7px 12px 2px;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    height: 42px;
+    font-size: 16px; /* prevent iOS input zoom */
+  }
+  .search-icon { right: 25px; top: 19px; }
+  .panel-actions {
+    display:flex;
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .panel-actions::-webkit-scrollbar { display:none; }
+  .panel-actions > button {
+    width:auto;
+    min-width:max-content;
+    height:40px;
+    margin-top:0;
+    padding:0 12px;
+    flex:0 0 auto;
+  }
+  .location-result {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 9px;
+  }
+  .location-result-copy { min-width:0; flex:1; }
+  .location-privacy { display:none; }
+  .nearest-poem-btn { width:auto; min-width:max-content; min-height:40px; margin-top:0; }
+
+  /* ── panel toggle: top-right of panel header ── */
+  #panel-toggle {
+    position: absolute;
+    left: auto;
+    right: 8px;
+    top: 10px;
+    bottom: auto;
+    transform: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+    background: rgba(22,14,6,0.95);
+    z-index: 920;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #panel-toggle .tog-arrow {
+    transform: rotate(90deg);
+    font-size: 10px;
+  }
+  body.panel-folded #panel-toggle {
+    right: 8px;
+    top: 8px;
+    border-radius: 3px;
+    border: 1px solid var(--jin-border);
+  }
+  body.panel-folded #panel-toggle .tog-arrow {
+    transform: rotate(-90deg);
+  }
+
+  /* ── map ── */
+  #map-wrap {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* dialogs → mobile sheets inside the map area */
+  #people-panel,
+  #viz-panel,
+  #tourism-panel,
+  #qa-panel {
+    position:absolute;
+    inset:8px;
+    width:auto;
+    max-height:none;
+    transform:none;
+    padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+    border-radius:6px;
+    overscroll-behavior:contain;
+    z-index:1100;
+  }
+  .people-close, .viz-close, .tourism-close, .qa-close {
+    min-width:44px;
+    min-height:44px;
+    margin:-10px -8px 0 0;
+    font-size:24px;
+  }
+  .people-title, .viz-title, .tourism-title, .qa-title {
+    font-size:16px;
+    letter-spacing:2px;
+  }
+  .people-work, .viz-theme-btn, .tourism-open-poem, .qa-result {
+    min-height:44px;
+  }
+  .qa-form input {
+    height:44px;
+    font-size:16px;
+  }
+  .qa-form button { width:64px; min-height:44px; }
+  .viz-stats { grid-template-columns:repeat(3,1fr); }
+  .viz-stat { min-height:62px; display:flex; flex-direction:column; justify-content:center; }
+  #viz-chart { height:210px; }
+
+  /* ── detail card ── */
+  #detail {
+    height: 70%;
+    max-height: calc(100% - 8px);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-radius:8px 8px 0 0;
+  }
+  #detail.open {
+    /* keep transform translateY(0) */
+  }
+
+  .detail-head {
+    padding: 10px 16px 8px;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .detail-head > div:first-child { min-width:0; }
+  .detail-title {
+    font-size: 15px;
+    letter-spacing: 2px;
+    line-height:1.45;
+    overflow-wrap:anywhere;
+  }
+  .detail-loc {
+    font-size: 10px;
+  }
+
+  .close-btn {
+    min-height:44px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .detail-actions { flex-shrink:0; gap:5px; }
+  .favorite-btn { min-height:44px; padding:6px 9px; }
+  .detail-chip { min-height:32px; padding:4px 9px; }
+
+  /* tabs — larger touch targets */
+  .tabs {
+    padding: 0 8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    min-height:44px;
+    padding: 10px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .detail-body {
+    padding: 12px 14px calc(18px + env(safe-area-inset-bottom));
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* poem lines text */
+  .poem-lines-text {
+    font-size: 13px;
+    line-height: 2.1;
+    letter-spacing: 2px;
+  }
+
+  /* resize handle → bigger touch zone */
+  .resize-handle {
+    height: 28px;
+    touch-action:none;
+  }
+
+  /* graph container */
+  .graph-wrap {
+    min-height: 240px;
+  }
+
+  .audio-wrap { padding:14px 10px; }
+  .video-ratio { min-height:0; aspect-ratio:16 / 9; }
+  .tourism-card-body { padding:12px; }
+  .tourism-card-name { font-size:14px; }
+
+  #image-lightbox {
+    padding:calc(58px + env(safe-area-inset-top)) 8px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  /* Leaflet zoom control — bigger on mobile */
+  .leaflet-control-zoom a {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #panel { height:min(40dvh, 300px); }
+  .panel-title { font-size:15px; }
+  .poem-card { min-width:124px; max-width:145px; }
+  .detail-head { flex-wrap:wrap; }
+  .detail-actions { width:100%; justify-content:flex-end; }
+  .viz-stats { grid-template-columns:repeat(2,1fr); }
+  #viz-chart { height:190px; }
+}
+
+@media (max-height: 520px) and (max-width: 900px) {
+  #panel { height:46dvh; }
+  #panel.collapsed { height:48px; }
+  #detail { height:78%; }
+  .panel-sub { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LEFT PANEL ══════════════ -->
+<div id="panel">
+  <div class="panel-head">
+    <div class="panel-title">张謇时空罗盘</div>
+    <div class="panel-sub">通吕运河 · 诗歌足迹</div>
+  </div>
+
+  <div class="panel-divider"><span>诗 卷</span></div>
+  <div class="search-box">
+    <input id="poem-search" type="search" placeholder="搜索诗名、地点、景点、诗句…" aria-label="搜索诗歌、地点、景点和诗句">
+    <span class="search-icon">⌕</span>
+    <div class="panel-actions" aria-label="功能入口">
+      <button class="people-toggle" id="people-toggle" type="button" aria-expanded="false" aria-controls="people-panel">诗中人物</button>
+      <button class="viz-toggle" id="viz-toggle" type="button" aria-expanded="false" aria-controls="viz-panel">诗歌主题</button>
+      <button class="tourism-toggle" id="tourism-toggle" type="button" aria-expanded="false" aria-controls="tourism-panel">今日诗境</button>
+      <button class="qa-toggle" id="qa-toggle" type="button" aria-expanded="false" aria-controls="qa-panel">诗路问答</button>
+      <button class="location-toggle" id="location-toggle" type="button">定位最近诗踪</button>
+    </div>
+    <div class="location-result" id="location-result" role="status" aria-live="polite" hidden>
+      <div class="location-result-copy">
+        <div class="location-result-head" id="location-result-text"></div>
+        <span class="location-privacy">坐标只在当前页面内计算，不保存、不上传。</span>
+      </div>
+      <button class="nearest-poem-btn" id="nearest-poem-btn" type="button" hidden>查看最近诗踪</button>
+    </div>
+  </div>
+
+  <div id="poem-list">
+    <!-- 全局总览入口 -->
+    <button class="poem-card overview-card" id="pc-0" type="button" style="margin-bottom:14px">
+      <div class="poem-seq">总 览</div>
+      <div class="poem-name">张謇诗歌宇宙</div>
+      <div class="poem-place">八诗纵横 · 通吕运河</div>
+      <span class="poem-arrow">→</span>
+    </button>
+    <!-- JS rendered -->
+  </div>
+
+  <div class="panel-footer">点击诗题 · 循迹而往</div>
+
+</div>
+
+<!-- ══════════════ MAP ══════════════ -->
+<div id="map-wrap">
+  <div id="map"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(242,234,216,0.15);font-size:14px;letter-spacing:3px;pointer-events:none">通吕运河 · 张謇诗歌足迹</div></div>
+
+  <section id="people-panel" role="dialog" aria-modal="true" aria-label="人物关系">
+    <div class="people-head">
+      <div class="people-title">诗中人物</div>
+      <button class="people-close" id="people-close" type="button" aria-label="关闭人物关系">×</button>
+    </div>
+    <div class="people-intro">从诗中认识张謇。身份尚不明确的称谓，不与具体历史人物对应。</div>
+    <div class="people-node">
+      <div class="people-node-name">张謇</div>
+      <div class="people-node-role">诗歌作者</div>
+      <div class="people-node-rel">点击下方诗题，可回到地图阅读诗文。</div>
+      <div class="people-work-list" id="people-work-list"></div>
+    </div>
+    <div class="people-source">诗中的长老、僧人、江客张生、宾客等称谓，暂不与具体历史人物对应。</div>
+  </section>
+  <section id="viz-panel" role="dialog" aria-modal="true" aria-label="诗歌主题">
+    <div class="viz-head">
+      <div class="viz-title">诗歌主题</div>
+      <button class="viz-close" id="viz-close" type="button" aria-label="关闭诗歌主题">×</button>
+    </div>
+    <div class="viz-intro">看看诗歌写到了南通哪些地方，再选一个主题继续读。</div>
+    <div class="viz-stats">
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-poems">—</div><div class="viz-stat-label">诗歌</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-places">—</div><div class="viz-stat-label">地点</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-regions">—</div><div class="viz-stat-label">地区</div></div>
+      <div class="viz-stat"><div class="viz-stat-num" id="stat-time">—</div><div class="viz-stat-label">明确时间线索</div></div>
+    </div>
+    <div class="viz-subtitle">诗歌地点分布</div>
+    <div id="viz-chart"></div>
+    <div class="viz-subtitle">选择主题，查看诗歌</div>
+    <div class="viz-theme-list" id="viz-theme-list"></div>
+    <div class="viz-note">时间线索来自诗题或诗句；“年代待考”不等于推定创作年份。</div>
+  </section>
+  <section id="tourism-panel" role="dialog" aria-modal="true" aria-label="今日诗境">
+    <div class="tourism-head">
+      <div class="tourism-title">今日诗境 · 南通行旅</div>
+      <button class="tourism-close" id="tourism-close" type="button" aria-label="关闭今日诗境">×</button>
+    </div>
+    <div class="tourism-intro">从一行诗进入一处地点：阅读诗中所见，辨明地点关系，再用今天的眼睛完成一次现场观察。</div>
+    <div class="tourism-daily" id="tourism-daily" aria-live="polite"></div>
+    <div class="tourism-section-title">诗与今日景点</div>
+    <div class="tourism-filters" id="tourism-filters" aria-label="筛选今日景点">
+      <button class="tourism-filter on" type="button" data-filter="all" aria-pressed="true">全部</button>
+      <button class="tourism-filter" type="button" data-filter="direct" aria-pressed="false">诗歌地点</button>
+      <button class="tourism-filter" type="button" data-filter="extension" aria-pressed="false">人文延伸</button>
+      <button class="tourism-filter" type="button" data-filter="modernNearby" aria-pressed="false">现代周边</button>
+    </div>
+    <div class="tourism-nearby-note" id="tourism-filter-summary" hidden></div>
+    <div class="tourism-grid" id="tourism-list"></div>
+    <div class="tourism-disclaimer">诗歌地点、同镇关联和现代周边各有区别，不能据此推定诗作原址。照片呈现今日实景，不是诗作年代的原貌；直线距离仅供参考，实际路线以导航为准。</div>
+  </section>
+  <section id="qa-panel" role="dialog" aria-modal="true" aria-label="诗路问答">
+    <div class="qa-head">
+      <div class="qa-title">诗路问答</div>
+      <button class="qa-close" id="qa-close" type="button" aria-label="关闭诗路问答">×</button>
+    </div>
+    <form class="qa-form" id="qa-form">
+      <input id="qa-input" type="text" placeholder="例如：哪些诗歌与狼山有关？" aria-label="请输入问题">
+      <button type="submit">提问</button>
+    </form>
+    <div class="qa-answer" id="qa-answer">试试问：“哪些诗歌与狼山有关？”</div>
+    <div class="qa-footnote">回答依据本站的诗歌与景点资料；找不到依据时会如实告知。</div>
+  </section>
+
+  <!-- DETAIL CARD -->
+  <div id="detail">
+    <button class="resize-handle" type="button" aria-label="拖动调整知识卡片高度" title="按住拖动调整高度">
+      <div class="resize-grip"><span></span><span></span></div>
+    </button>
+    <div class="detail-head">
+      <div>
+        <div class="detail-title" id="d-title">—</div>
+        <div class="detail-loc" id="d-loc">—</div>
+        <div class="detail-meta" id="d-meta"></div>
+      </div>
+      <div class="detail-actions">
+        <button class="favorite-btn" id="favorite-btn" type="button" aria-label="收藏当前诗歌">☆ 收藏</button>
+        <button class="close-btn" id="close-btn">× 收 起</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="gph">诗句关系</button>
+      <button class="tab" data-tab="scenic" style="display:none">实 景</button>
+      <button class="tab" data-tab="vid">视 频</button>
+      <button class="tab" data-tab="aud">音 频</button>
+    </div>
+
+    <div class="detail-body">
+      <div class="pane on" id="pane-gph">
+        <div class="graph-explorer-head"><div><strong id="graph-heading">诗句关系</strong><small id="graph-subtitle">点击线索，看看它如何与诗句相连</small></div><div class="graph-explorer-tools"><span class="graph-explorer-hint">轻点探索 · 无需拖动</span><button class="graph-expand" id="graph-expand" type="button" aria-pressed="false">展开图谱</button></div></div>
+        <div class="graph-filters" id="graph-filters" role="group" aria-label="筛选图谱线索"></div>
+        <div class="graph-stage"><div class="graph-wrap" id="d-graph" aria-label="诗句关系图"></div><div class="graph-focus" id="graph-focus" aria-live="polite"></div></div>
+        <details class="graph-img-wrap" id="d-graph-img-wrap" style="display:none">
+          <summary>查看图谱原图</summary>
+          <img id="d-graph-img" class="zoomable-image" src="" alt="诗句关系图" loading="lazy" decoding="async" />
+        </details>
+        <div class="poem-lines" id="d-lines">
+          <div class="poem-lines-label">诗 文</div>
+          <div class="poem-lines-text" id="d-lines-text"></div>
+        </div>
+      </div>
+      <div class="pane" id="pane-scenic">
+        <div class="tourism-detail-grid" id="d-scenic"></div>
+      </div>
+      <div class="pane" id="pane-vid">
+        <div class="video-ratio" id="d-video"></div>
+      </div>
+      <div class="pane" id="pane-aud">
+        <div class="audio-wrap">
+          <div class="audio-label">相关音频</div>
+          <div id="d-audio"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="image-lightbox" role="dialog" aria-modal="true" aria-label="图片预览" hidden>
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="关闭大图">×</button>
+  <img id="lightbox-image" src="" alt="图片预览">
+</div>
+
+<!-- panel toggle button -->
+  <button id="panel-toggle" type="button" title="收起/展开目录" aria-label="收起目录" aria-expanded="true">
+    <span class="tog-arrow">◀</span>
+  </button>
+
+<script>
+window.addEventListener('load', function () {
+/* ══════════════════════════════════════════
+   核心数据 —— 后续只需维护此数组
+   ══════════════════════════════════════════ */
+
+// 安全检测：确保关键库已加载，失败时在页面显示可见提示
+if (typeof L === 'undefined') {
+  console.warn('Leaflet 未能加载，地图功能不可用');
+  var mapEl = document.getElementById('map');
+  if (mapEl) mapEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#C5A028;font-size:14px;letter-spacing:2px;font-family:serif;z-index:1">Leaflet 库加载失败<br><span style="font-size:11px;color:rgba(197,160,40,0.5);margin-top:8px">请检查网络连接</span></div>';
+}
+if (typeof echarts === 'undefined') {
+  console.warn('ECharts 未能加载，诗歌主题图表暂不可用；诗句关系图仍可使用');
+}
+
+/* ═══════ ECharts 初始化 + 自动重试（处理 CDN 异步回落） ═══════ */
+function initGraphWithRetry(gphEl, buildFn, attempt) {
+  attempt = attempt || 0;
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  gphEl.innerHTML = '';
+  if (typeof echarts !== 'undefined') {
+    try {
+      chartInstance = echarts.init(gphEl);
+      chartInstance.setOption(buildFn());
+    } catch(e) {
+      gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">诗句关系暂时无法显示</div>';
+    }
+  } else if (attempt < 4) {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 加载中… ]</div>';
+    setTimeout(function() { initGraphWithRetry(gphEl, buildFn, attempt + 1); }, 2000);
+  } else {
+    gphEl.innerHTML = '<div class="placeholder-box" style="height:200px">[ ECharts 库未加载 ]</div>';
+  }
+}
+
+const WEB_ASSET_BASE = "../assets/";
+const POEMS = [
+  {
+    id: 1,
+    title: "《狼山三元宫近斥僧挽词》",
+    emoji: "🐺",
+    location: "狼山 · 南通",
+    timeClue: "年代待考",
+    theme: "佛寺禅意",
+    lat: 31.94928,
+    lng: 120.88813,
+    lines: "山寺禅房列，三元长老尊。\n遗徒通世学，护佛广宗门。\n焚象衰时及。斋鱼俭德存。\n空堂照遗拂，江月白翻翻。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-1.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-1.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-1.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-1.webp",
+    tourism: [{
+      siteId: "langshan",
+      name: "狼山国家森林公园",
+      image: WEB_ASSET_BASE + "scenic/langshan.webp",
+      imageAlt: "狼山国家森林公园今日实景",
+      imagePosition: "50% 50%",
+      relationLevel: "direct",
+      relationType: "诗歌地点直接对应",
+      poemExcerpt: "空堂照遗拂，江月白翻翻。",
+      fieldPrompt: "观察山、水与江面天光，寻找一处能与你对“江月白翻翻”的理解产生呼应的今日景象。",
+      verifiedAt: "2026-09-10",
+      description: "诗歌地点记录为狼山；照片展示今日狼山实景，不代表诗作年代原貌。",
+      sourceLabel: "南通市人民政府 · 风景名胜",
+      sourceUrl: "https://www.nantong.gov.cn/ntsrmzf/fjms2018/content/a63b4b34-da31-4522-8598-fae910934e77.html"
+    }]
+  },
+  {
+    id: 2,
+    title: "《落日九月十五歸自吕四途中》",
+    emoji: "🌅",
+    location: "吕四 · 南通",
+    timeClue: "九月十五（题名明确）",
+    theme: "壮阔海天",
+    lat: 32.05992,
+    lng: 121.60266,
+    lines: "落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-2.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-2.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-2.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-2.webp",
+    tourism: [{
+      siteId: "lvsi-fishing-port",
+      name: "吕四渔港",
+      relationLevel: "regionalExtension",
+      relationType: "吕四地区文旅延伸",
+      poemExcerpt: "分光还助月，散彩欲弥天。",
+      fieldPrompt: "观察海面、船只与天光，记录今天的色彩如何让你联想到“散彩欲弥天”。",
+      verifiedAt: "2026-09-10",
+      description: "诗题写到吕四归途，吕四渔港可作为同地区的今日行旅去处；不能据此认定它是诗作原址，也不将它称为已评定景区。",
+      sourceLabel: "南通市水利局 · 追江赶海自驾游",
+      sourceUrl: "https://slj.nantong.gov.cn/ntslj/bmdt/content/c96fbbbb-f0d7-4e0f-9784-cac8cd3e8b98.html"
+    }]
+  },
+  {
+    id: 3,
+    title: "《盆松》",
+    emoji: "🌲",
+    location: "常乐镇 · 海门",
+    timeClue: "年代待考",
+    theme: "托物言志",
+    lat: 31.9331,
+    lng: 121.2515,
+    lines: "山泽孤生种，谁将到此盆？\n青苍一撮土，蟠郁百年根。\n宿黛含霜气，创鳞见斧痕。\n等闲怜托处，梁栋与谁论。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-3.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-3.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-3.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-3.webp",
+    tourism: [{
+      siteId: "zhangjian-memorial",
+      name: "张謇纪念馆",
+      image: WEB_ASSET_BASE + "scenic/zhangjian-memorial.webp",
+      imageAlt: "海门常乐镇张謇纪念馆入口实景",
+      imagePosition: "50% 24%",
+      relationLevel: "sameTown",
+      relationType: "同镇人文景点",
+      poemExcerpt: "等闲怜托处，梁栋与谁论。",
+      fieldPrompt: "从松、木构或庭院细节中选择一处，思考它如何帮助你理解“梁栋与谁论”。",
+      verifiedAt: "2026-09-10",
+      description: "纪念馆位于海门区常乐镇，与《盆松》的地点记录同镇；不将其表述为诗歌创作原址。",
+      sourceLabel: "海门区人民政府 · 张謇文化旅游景区",
+      sourceUrl: "https://www.haimen.gov.cn/hmsrmzf/fjms/content/48c31a44-c3e8-4c90-81c0-9085ae2f6366.html"
+    }]
+  },
+  {
+    id: 4,
+    title: "《过排河观》",
+    emoji: "⛩",
+    location: "排河观 · 金沙镇 · 通州",
+    timeClue: "年代待考",
+    theme: "沧桑变迁",
+    lat: 32.051,
+    lng: 121.095,
+    lines: "沧海成田后，蔚然一寺开。\n钟声随鸟远，河势趁林回。\n佛圯尘龛在，僧贫圭挫颓。\n兴衰何处问，夕暖上经台。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-4.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-4.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-4.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-4.webp"
+  },
+  {
+    id: 5,
+    title: "《千佛寺》",
+    emoji: "🙏",
+    location: "千佛寺 · 南通",
+    timeClue: "年代待考",
+    theme: "暮色苍凉",
+    lat: 31.974351,
+    lng: 120.867435,
+    lines: "复泣回汀水一涯，招提是处并行查。\n烟寒荫霁繁茅屋，风静楸榆点暮鸦。\n衰草城边游客渡，夕阳野外病僧家。\n年年来去孤篷里，卧听钟声间晚笳。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-5.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-5.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-5.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-5.webp",
+    nearby: [
+      {
+        siteId: "langshan",
+        name: "狼山国家森林公园",
+        category: "最近景区",
+        relationLevel: "modernNearby",
+        relationType: "附近景区",
+        contextLabel: "从《千佛寺》地点继续出发",
+        distanceLabel: "站内坐标直线约 3.4 公里",
+        image: WEB_ASSET_BASE + "scenic/langshan.webp",
+        imageAlt: "狼山国家森林公园今日实景",
+        imagePosition: "50% 50%",
+        poemExcerpt: "烟寒荫霁繁茅屋，风静楸榆点暮鸦。",
+        fieldPrompt: "在今日狼山观察山、水、寺及城市边界的空间关系，并与诗中的暮色景象进行对照。",
+        verifiedAt: "2026-09-10",
+        description: "从《千佛寺》的地点出发，狼山是较近的今日景区。直线距离仅供行程参考，实际路线以导航为准。",
+        sourceLabel: "南通市人民政府 · 风景名胜",
+        sourceUrl: "https://www.nantong.gov.cn/ntsrmzf/fjms2018/content/a63b4b34-da31-4522-8598-fae910934e77.html"
+      },
+      {
+        siteId: "nantong-cbd-dayoujing",
+        name: "南通CBD大有境",
+        category: "逛街购物",
+        photoPending: true,
+        relationLevel: "modernNearby",
+        relationType: "主城区购物延伸",
+        contextLabel: "从《千佛寺》地点继续出发",
+        poemExcerpt: "衰草城边游客渡，夕阳野外病僧家。",
+        fieldPrompt: "记录从诗歌地点到当代商业空间的环境变化，选择一个最能体现城市生活节奏的细节。",
+        verifiedAt: "2026-09-10",
+        description: "南通CBD大有境是今日城市商圈，可安排逛街、美食与休闲；它不属于诗歌历史地点。",
+        sourceLabel: "南通市人民政府 · 南通夜市经济",
+        sourceUrl: "https://www.nantong.gov.cn/ntsrmzf/ntxw/content/21864039-931b-4c2d-9115-87709b8fcb9f.html"
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "《八月十三夜曼寿堂看月》",
+    emoji: "🌙",
+    location: "曼寿堂 · 南通",
+    timeClue: "八月十三夜（题名明确）",
+    theme: "月下哲思",
+    lat: 32.02,
+    lng: 120.87,
+    lines: "已自东天出，都疑下界新。\n未圆怜更好，独对故相亲。\n树镂移阴叶，波笼久坐巾。\n啼螀尔何意，宁伴倚阑人？",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-6.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-6.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-6.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-6.webp",
+    nearby: [
+      {
+        siteId: "haohe-scenic-area",
+        name: "濠河风景区",
+        category: "周边景区",
+        image: WEB_ASSET_BASE + "scenic/haohe-evening.jpg",
+        imageAlt: "2007年拍摄的南通濠河夜景，桥下水面与灯光倒影",
+        imagePosition: "50% 50%",
+        credit: "大眼夹",
+        imageLicense: "CC BY-SA 3.0；网页缩放压缩",
+        imageLicenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Hao_River_in_The_Evening.JPG",
+        relationLevel: "modernNearby",
+        relationType: "主城区文旅延伸",
+        contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        poemExcerpt: "树镂移阴叶，波笼久坐巾。",
+        fieldPrompt: "在今日濠河寻找树影、水波或月色，记录一处能让你联想到“波笼久坐巾”的景象。",
+        verifiedAt: "2026-09-10",
+        description: "南通市档案馆资料将濠河介绍为以古护城河为纽带、以城市为中心的开放式景区。此处仅作主城区现代行程衔接，不将其表述为诗歌地点或创作原址。",
+        sourceLabel: "南通市档案馆 · 濠河风景区",
+        sourceUrl: "https://daj.nantong.gov.cn/ntsdaj/dfwh/content/384b788b-b114-4d20-95be-a509ec3072cf.html"
+      },
+      {
+        siteId: "nanda-street-business-district",
+        name: "南大街商圈",
+        category: "逛街购物",
+        image: WEB_ASSET_BASE + "scenic/nanda-street.jpg",
+        imageAlt: "2026年拍摄的南通南大街街景，观光巴士经过沿街商铺",
+        imagePosition: "50% 50%",
+        credit: "4084470 0.smil",
+        imageLicense: "CC BY 4.0；网页缩放压缩",
+        imageLicenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+        imageSourceUrl: "https://commons.wikimedia.org/wiki/File:Nantong_Bus_Route_G1_at_Nan_Dajie_in_Jiangsu,_China_20260219.jpg",
+        relationLevel: "modernNearby",
+        relationType: "主城区商圈延伸",
+        contextLabel: "从《八月十三夜曼寿堂看月》地点继续出发",
+        poemExcerpt: "未圆怜更好，独对故相亲。",
+        fieldPrompt: "观察历史叙事与现代商业空间在同一城市中的并置，记录最明显的一处反差。",
+        verifiedAt: "2026-09-10",
+        description: "南大街商圈适合作为读诗后的现代逛街行程，不推断它与诗歌地点存在历史关系。",
+        sourceLabel: "崇川区人民政府 · 南大街商圈",
+        sourceUrl: "https://www.chongchuan.gov.cn/xccqrmzf/bmdt/content/638a3af6-92bd-420d-b3cc-835d66338d06.html"
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: "《金沙祭墓饮客沧园》",
+    emoji: "🎋",
+    location: "金沙 · 沧园 · 通州",
+    timeClue: "寒食节（诗句明确）",
+    theme: "寒食追思",
+    lat: 32.0787752,
+    lng: 121.0744572,
+    lines: "沧园栏楯尚清华，载槛重停隔水车。\n燕子不来春不住，龙孙方纵日方斜。\n荒疏江客调笙曲，辛苦张生课菊花。\n惆怅百年寒食节，冬青无恙几人家？",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-7.mp3",
+    videoUrl:   WEB_ASSET_BASE + "videos/poem-7.mp4",
+    videoPoster: WEB_ASSET_BASE + "posters/poem-7.jpg",
+    graphImage: WEB_ASSET_BASE + "images/poem-7.webp"
+  },
+  {
+    id: 8,
+    title: "《千龄观消寒第五集闻粤事稍平》",
+    emoji: "🍶",
+    location: "千龄观 · 南通",
+    timeClue: "消寒期间（题名明确）",
+    theme: "雅集忧世",
+    lat: 32.005538,
+    lng: 120.885269,
+    lines: "未嫌寒气尚逡巡，泥饮连朝选主宾。\n小醉大醒悬酒户，遥开缓落衔花辰。\n相随少长兰亭集，渐次龙蛇桂海删。\n遗火春星看不厌，疏缝人语况濠濛。",
+    audioUrl:   WEB_ASSET_BASE + "audio/poem-8.mp3",
+    videoUrl:   "",
+    videoPoster: "",
+    graphImage: WEB_ASSET_BASE + "images/poem-8.webp"
+  },
+];
+
+/* ═══════ 汉字序号 ═══════ */
+const HAN = ['一','二','三','四','五','六','七','八','九','十',
+             '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
+
+/* ═══════ 地图初始化 ═══════ */
+let map = null;
+try {
+  if (typeof L !== 'undefined') {
+    map = L.map('map', {
+      center: [31.97, 120.89],
+      zoom: 11,
+      zoomControl: true,
+      attributionControl: false
+    });
+    // 高德地图瓦片 —— 单一域名，避免子域名解析问题
+    L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+      maxZoom: 18
+    }).addTo(map);
+  }
+} catch(e) {
+  console.warn('地图初始化失败:', e.message);
+  map = null;
+}
+
+/* ═══════ 通吕运河路线 ═══════ */
+if (map) {
+  const canalRoute = L.polyline([
+    [32.0788, 121.0745],  // 金沙沧园
+    [32.0599, 121.6027],  // 吕四
+    [32.051,  121.095],   // 排河观
+    [32.02,   120.87],    // 曼寿堂
+    [32.0055, 120.8853],  // 千龄观
+    [31.9744, 120.8674],  // 千佛寺
+    [31.9493, 120.8881],  // 狼山
+    [31.9331, 121.2515],  // 常乐镇盆松
+  ], {
+    color: '#C5A028',
+    weight: 2.5,
+    opacity: 0.55,
+    dashArray: '10, 6',
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+  canalRoute.bindTooltip('通吕运河', {
+    permanent: false,
+    direction: 'center',
+    className: 'canal-tooltip',
+    offset: [0, 0]
+  });
+}
+
+// CSS-in-JS for tooltip
+const canalStyle = document.createElement('style');
+canalStyle.textContent = '.canal-tooltip { background:rgba(22,14,6,0.9); border:1px solid #C5A028; color:#C5A028; font-family:"Songti SC","STKaiti","KaiTi","楷体",serif; font-size:12px; letter-spacing:3px; padding:4px 12px; border-radius:2px; } .canal-tooltip::before { border-top-color: #C5A028 !important; }';
+document.head.appendChild(canalStyle);
+
+/* ═══════ 地图点击：缩小知识卡片 ═══════ */
+if (map) {
+  map.on('click', function(e) {
+    var d = document.getElementById('detail');
+    if (!d.classList.contains('open')) return;
+    // 排除点击标记的情况
+    const clickTarget = e.originalEvent && e.originalEvent.target;
+    if (clickTarget instanceof Element && (
+        clickTarget.closest('.mk-tag') ||
+        clickTarget.closest('.leaflet-marker-icon') ||
+        clickTarget.closest('.leaflet-control'))) return;
+    cardMinimized = true;
+    d.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.45s cubic-bezier(0.4,0,0.2,1)';
+    const minimizedHeight = window.innerWidth <= 900 ? '28%' : '14%';
+    d.style.height = minimizedHeight;
+  });
+}
+
+/* ═══════ 状态 ═══════ */
+let activeId  = null;
+let chartInstance = null;
+let graphState = { mode: 'overview', poem: null, nodes: [], links: [], filter: 'all', selected: '' };
+let cardMinimized = false;
+const markers = {};
+let favoriteIds = new Set();
+let nearestLocatedPoem = null;
+let userLocationMarker = null;
+try {
+  const storedFavorites = JSON.parse(localStorage.getItem('zhangjian-favorites') || '[]');
+  favoriteIds = new Set(Array.isArray(storedFavorites)
+    ? storedFavorites.map(Number).filter(id => POEMS.some(p => p.id === id))
+    : []);
+} catch (e) { favoriteIds = new Set(); }
+
+/* ═══════ 本机定位：只计算最近诗歌地点，不保存坐标 ═══════ */
+function distanceInKm(lat1, lng1, lat2, lng2) {
+  const toRad = value => value * Math.PI / 180;
+  const earthRadiusKm = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function formatLocalDistance(km) {
+  if (km < 1) return `${Math.max(1, Math.round(km * 1000))} 米`;
+  if (km < 100) return `${km.toFixed(1)} 公里`;
+  return `${Math.round(km)} 公里`;
+}
+
+const locationToggle = document.getElementById('location-toggle');
+const locationResult = document.getElementById('location-result');
+const locationResultText = document.getElementById('location-result-text');
+const nearestPoemButton = document.getElementById('nearest-poem-btn');
+
+function showLocationMessage(message, hasNearestPoem = false) {
+  locationResult.hidden = false;
+  locationResultText.textContent = message;
+  nearestPoemButton.hidden = !hasNearestPoem;
+}
+
+locationToggle.addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    showLocationMessage('当前浏览器不支持定位，仍可通过地图标记浏览全部诗歌地点。');
+    return;
+  }
+  locationToggle.disabled = true;
+  locationToggle.setAttribute('aria-busy', 'true');
+  locationToggle.textContent = '正在定位…';
+  showLocationMessage('正在请求浏览器定位权限…');
+  navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    const ranked = POEMS.map(p => ({
+      poem: p,
+      distance: distanceInKm(latitude, longitude, p.lat, p.lng)
+    })).sort((a, b) => a.distance - b.distance);
+    const nearest = ranked[0];
+    nearestLocatedPoem = nearest.poem;
+    showLocationMessage(`最近诗踪：${nearest.poem.location}，直线距离约 ${formatLocalDistance(nearest.distance)}。`, true);
+    nearestPoemButton.textContent = `查看 ${nearest.poem.title}`;
+    locationToggle.textContent = '重新定位';
+    if (map && typeof L !== 'undefined') {
+      if (userLocationMarker) userLocationMarker.remove();
+      userLocationMarker = L.circleMarker([latitude, longitude], {
+        radius: 7,
+        color: '#F2EAD8',
+        weight: 2,
+        fillColor: '#6B9B6A',
+        fillOpacity: 0.9
+      }).addTo(map).bindTooltip('我的位置 · 仅本机使用', {
+        direction: 'top',
+        className: 'canal-tooltip'
+      });
+    }
+    locationToggle.disabled = false;
+    locationToggle.removeAttribute('aria-busy');
+  }, error => {
+    const messages = {
+      1: '未获得定位权限。你仍可通过地图标记浏览全部诗歌地点。',
+      2: '暂时无法获取当前位置，请检查设备定位服务后重试。',
+      3: '定位等待超时，请在信号较好的位置重试。'
+    };
+    nearestLocatedPoem = null;
+    showLocationMessage(messages[error.code] || '定位失败，请稍后重试。');
+    locationToggle.textContent = '重新定位';
+    locationToggle.disabled = false;
+    locationToggle.removeAttribute('aria-busy');
+  }, {
+    enableHighAccuracy: false,
+    timeout: 10000,
+    maximumAge: 300000
+  });
+});
+
+nearestPoemButton.addEventListener('click', () => {
+  if (nearestLocatedPoem) flyToPoem(nearestLocatedPoem);
+});
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+}
+
+/* ═══════ 自定义标记图标：垂签 ═══════ */
+function mkIcon(lit, char) { if (typeof L === 'undefined') return null; 
+  return L.divIcon({
+    className: '',
+    html: `<div class="mk-tag${lit ? ' lit' : ''}">
+      <div class="mk-tag-hole"></div>
+      <div class="mk-tag-body">
+        <span class="mk-tag-char">${escapeHTML(char || '詩')}</span>
+      </div>
+      <div class="mk-tag-tip"></div>
+    </div>`,
+    iconSize: [36, 60],
+    iconAnchor: [18, 56]
+  });
+}
+
+/* ═══════ 渲染左侧列表 ═══════ */
+const list = document.getElementById('poem-list');
+POEMS.forEach((p, i) => {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.className = 'poem-card';
+  el.id = 'pc-' + p.id;
+  el.dataset.poemId = String(p.id);
+  el.innerHTML = `
+    <div class="poem-seq">其${HAN[i]}</div>
+    <div class="poem-name">${escapeHTML(p.title)}</div>
+    <div class="poem-place">${escapeHTML(p.location)}</div>
+    <span class="poem-arrow">→</span>`;
+  el.addEventListener('click', () => flyToPoem(p));
+  list.appendChild(el);
+});
+
+/* ═══════ 基于现有项目数据的搜索 ═══════ */
+const poemSearch = document.getElementById('poem-search');
+const searchEmpty = document.createElement('div');
+searchEmpty.className = 'search-empty';
+searchEmpty.textContent = '未找到相符的诗歌';
+list.appendChild(searchEmpty);
+const relationLevelLabels = {
+  direct: '诗歌地点直接对应',
+  sameTown: '同镇人文关联',
+  regionalExtension: '地区文旅延伸',
+  modernNearby: '现代周边推荐'
+};
+function getTourismSearchText(p) {
+  return [...(p.tourism || []), ...(p.nearby || [])].map(item => [
+    item.name, item.category, item.relationType, item.contextLabel,
+    item.distanceLabel, item.description, item.sourceLabel,
+    item.poemExcerpt, item.fieldPrompt, relationLevelLabels[item.relationLevel]
+  ].join(' ')).join(' ');
+}
+function applyPoemFilters() {
+  const q = poemSearch.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('#poem-list .poem-card:not(.overview-card)').forEach(card => {
+    const id = Number(card.dataset.poemId);
+    const p = POEMS.find(poem => poem.id === id);
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines, getTourismSearchText(p)].join(' ').toLowerCase();
+    const match = !q || haystack.includes(q);
+    card.style.display = match ? '' : 'none';
+    card.classList.toggle('saved', favoriteIds.has(id));
+    if (match) visible++;
+  });
+  document.getElementById('pc-0').style.display = q ? 'none' : '';
+  searchEmpty.style.display = q && !visible ? 'block' : 'none';
+}
+poemSearch.addEventListener('input', applyPoemFilters);
+applyPoemFilters();
+
+const overlayPanelIds = ['people-panel', 'viz-panel', 'tourism-panel', 'qa-panel'];
+const panelToggleIds = {
+  'people-panel': 'people-toggle',
+  'viz-panel': 'viz-toggle',
+  'tourism-panel': 'tourism-toggle',
+  'qa-panel': 'qa-toggle'
+};
+function closeOverlayPanels(exceptId = '') {
+  overlayPanelIds.forEach(id => {
+    if (id === exceptId) return;
+    document.getElementById(id).classList.remove('open');
+    document.getElementById(panelToggleIds[id]).setAttribute('aria-expanded', 'false');
+  });
+}
+function openOverlayPanel(id) {
+  closeOverlayPanels(id);
+  const panelEl = document.getElementById(id);
+  panelEl.classList.add('open');
+  document.getElementById(panelToggleIds[id]).setAttribute('aria-expanded', 'true');
+  panelEl.querySelector('button, input')?.focus();
+}
+function closeOverlayPanel(id, restoreFocus = true) {
+  document.getElementById(id).classList.remove('open');
+  const toggle = document.getElementById(panelToggleIds[id]);
+  toggle.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) toggle.focus();
+}
+
+/* ═══════ 今日诗境：数字人文档案、关系分级与本地到访印记 ═══════ */
+const TOURISM_VISITS_KEY = 'zhangjian-scenic-visits-v1';
+const tourismEntries = POEMS.flatMap(poem => [
+  ...(poem.tourism || []).map(site => ({ poem, site })),
+  ...(poem.nearby || []).map(site => ({ poem, site }))
+]).map((entry, index) => ({ ...entry, entryKey: `${entry.poem.id}-${entry.site.siteId || index}` }));
+const tourismList = document.getElementById('tourism-list');
+const tourismToggle = document.getElementById('tourism-toggle');
+const tourismFilterSummary = document.getElementById('tourism-filter-summary');
+tourismToggle.textContent = '今日诗境';
+let expandedTourismCard = null;
+let scenicVisits = {};
+try {
+  const storedVisits = JSON.parse(localStorage.getItem(TOURISM_VISITS_KEY) || '{}');
+  if (storedVisits && typeof storedVisits === 'object' && !Array.isArray(storedVisits)) scenicVisits = storedVisits;
+} catch (e) {}
+
+function getBeijingDateKey() {
+  try {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  } catch (e) {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+function getDailyTourismEntry() {
+  const [year, month, day] = getBeijingDateKey().split('-').map(Number);
+  const dayNumber = Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+  return tourismEntries[((dayNumber % tourismEntries.length) + tourismEntries.length) % tourismEntries.length];
+}
+
+function setTourismCardExpanded(card, expanded) {
+  if (expanded && expandedTourismCard && expandedTourismCard !== card) {
+    setTourismCardExpanded(expandedTourismCard, false);
+  }
+  const details = card.querySelector('.tourism-card-details');
+  const toggle = card.querySelector('.tourism-card-toggle');
+  card.classList.toggle('expanded', expanded);
+  details.hidden = !expanded;
+  toggle.setAttribute('aria-expanded', String(expanded));
+  expandedTourismCard = expanded ? card : (expandedTourismCard === card ? null : expandedTourismCard);
+}
+
+function updateVisitButton(button, siteId) {
+  const visited = Boolean(scenicVisits[siteId]);
+  button.classList.toggle('on', visited);
+  button.setAttribute('aria-pressed', String(visited));
+  button.textContent = visited ? `✓ 已于 ${scenicVisits[siteId]} 留下印记` : '留下到访印记';
+}
+
+function createTourismCard(poem, site, includeAction = false, entryKey = '') {
+  const card = document.createElement('article');
+  card.className = 'tourism-card';
+  card.dataset.relationLevel = site.relationLevel || 'modernNearby';
+  card.dataset.entryKey = entryKey || `${poem.id}-${site.siteId}`;
+
+  const photoWrap = document.createElement('div');
+  photoWrap.className = 'tourism-photo-wrap';
+  const badge = document.createElement('span');
+  badge.className = 'tourism-photo-badge';
+  if (site.image) {
+    const image = document.createElement('img');
+    image.className = 'tourism-photo zoomable-image';
+    image.src = encodeURI(site.image);
+    image.alt = site.imageAlt;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', `打开${site.name}实景大图`);
+    image.style.objectPosition = site.imagePosition || '50% 50%';
+    image.addEventListener('error', () => {
+      card.classList.add('no-photo-card');
+      photoWrap.replaceChildren();
+    }, { once: true });
+    badge.textContent = '今日实景';
+    photoWrap.append(image, badge);
+    if (site.credit && site.imageSourceUrl) {
+      const photoCredit = document.createElement('a');
+      photoCredit.className = 'tourism-photo-credit';
+      photoCredit.href = site.imageSourceUrl;
+      photoCredit.target = '_blank';
+      photoCredit.rel = 'noopener noreferrer';
+      photoCredit.textContent = `摄影：${site.credit} ↗`;
+      photoWrap.appendChild(photoCredit);
+    }
+  } else {
+    card.classList.add('no-photo-card');
+  }
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'tourism-card-toggle';
+  toggle.setAttribute('aria-expanded', 'false');
+  const summary = document.createElement('span');
+  summary.className = 'tourism-card-summary';
+  const name = document.createElement('span');
+  name.className = 'tourism-card-name';
+  name.textContent = site.name;
+  const poemName = document.createElement('span');
+  poemName.className = 'tourism-card-poem';
+  poemName.textContent = site.contextLabel || `关联诗歌：${poem.title}`;
+  const relation = document.createElement('span');
+  relation.className = 'tourism-card-relation';
+  relation.textContent = relationLevelLabels[site.relationLevel] || site.relationType;
+  summary.append(name, poemName, relation);
+  const chevron = document.createElement('span');
+  chevron.className = 'tourism-card-chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.textContent = '⌄';
+  toggle.append(summary, chevron);
+
+  const details = document.createElement('div');
+  details.className = 'tourism-card-details';
+  details.hidden = true;
+  const poemSection = document.createElement('div');
+  poemSection.className = 'tourism-archive-section';
+  poemSection.innerHTML = `<div class="tourism-archive-label">诗中所见</div><p class="tourism-archive-text tourism-poem-quote">${escapeHTML(site.poemExcerpt || poem.lines.split('\n')[0])}</p>`;
+  const relationSection = document.createElement('div');
+  relationSection.className = 'tourism-archive-section';
+  relationSection.innerHTML = `<div class="tourism-archive-label">地点关系</div><p class="tourism-archive-text">${escapeHTML(site.description)}</p>`;
+  const promptSection = document.createElement('div');
+  promptSection.className = 'tourism-archive-section tourism-field-prompt';
+  promptSection.innerHTML = `<div class="tourism-archive-label">现场观察任务</div><p class="tourism-archive-text">${escapeHTML(site.fieldPrompt || '选择一处现场细节，记录它与你阅读诗歌时产生的联系。')}</p>`;
+  const meta = document.createElement('div');
+  meta.className = 'tourism-card-meta';
+  if (site.distanceLabel) {
+    const distance = document.createElement('span');
+    distance.textContent = site.distanceLabel;
+    meta.appendChild(distance);
+  }
+  if (site.image && site.credit) {
+    const credit = document.createElement('span');
+    credit.textContent = `照片：${site.credit}`;
+    meta.appendChild(credit);
+  }
+  if (site.image && site.imageSourceUrl) {
+    const photoSource = document.createElement('a');
+    photoSource.className = 'tourism-card-source';
+    photoSource.href = site.imageSourceUrl;
+    photoSource.target = '_blank';
+    photoSource.rel = 'noopener noreferrer';
+    photoSource.textContent = '照片原图';
+    meta.appendChild(photoSource);
+  }
+  if (site.image && site.imageLicenseUrl) {
+    const photoLicense = document.createElement('a');
+    photoLicense.className = 'tourism-card-source';
+    photoLicense.href = site.imageLicenseUrl;
+    photoLicense.target = '_blank';
+    photoLicense.rel = 'noopener noreferrer';
+    photoLicense.textContent = site.imageLicense;
+    meta.appendChild(photoLicense);
+  }
+  const source = document.createElement('a');
+  source.className = 'tourism-card-source';
+  source.href = site.sourceUrl;
+  source.target = '_blank';
+  source.rel = 'noopener noreferrer';
+  source.textContent = `来源：${site.sourceLabel}`;
+  meta.appendChild(source);
+  details.append(poemSection, relationSection, promptSection, meta);
+
+  const actions = document.createElement('div');
+  actions.className = 'tourism-card-actions';
+  const visitButton = document.createElement('button');
+  visitButton.type = 'button';
+  visitButton.className = 'tourism-visit';
+  updateVisitButton(visitButton, site.siteId);
+  visitButton.addEventListener('click', () => {
+    if (scenicVisits[site.siteId]) delete scenicVisits[site.siteId];
+    else scenicVisits[site.siteId] = getBeijingDateKey();
+    try { localStorage.setItem(TOURISM_VISITS_KEY, JSON.stringify(scenicVisits)); } catch (e) {}
+    document.querySelectorAll('.tourism-visit').forEach(button => {
+      if (button.dataset.siteId === site.siteId) updateVisitButton(button, site.siteId);
+    });
+  });
+  visitButton.dataset.siteId = site.siteId;
+  actions.appendChild(visitButton);
+  if (includeAction) {
+    const openButton = document.createElement('button');
+    openButton.type = 'button';
+    openButton.className = 'tourism-open-poem';
+    openButton.textContent = '在地图中查看对应诗歌';
+    openButton.addEventListener('click', () => {
+      closeOverlayPanel('tourism-panel', false);
+      flyToPoem(poem);
+      switchTab('scenic');
+    });
+    actions.prepend(openButton);
+  }
+  details.appendChild(actions);
+  toggle.addEventListener('click', () => setTourismCardExpanded(card, !card.classList.contains('expanded')));
+  card.append(photoWrap, toggle, details);
+  return card;
+}
+
+tourismEntries.forEach(({ poem, site, entryKey }) => {
+  tourismList.appendChild(createTourismCard(poem, site, true, entryKey));
+});
+
+function applyTourismFilter(filter) {
+  let visibleCount = 0;
+  tourismList.querySelectorAll('.tourism-card').forEach(card => {
+    const level = card.dataset.relationLevel;
+    const visible = filter === 'all' || level === filter || (filter === 'extension' && ['sameTown', 'regionalExtension'].includes(level));
+    card.hidden = !visible;
+    if (!visible && card.classList.contains('expanded')) setTourismCardExpanded(card, false);
+    if (visible) visibleCount += 1;
+  });
+  tourismFilterSummary.hidden = filter === 'all';
+  tourismFilterSummary.textContent = filter === 'all' ? '' : `找到 ${visibleCount} 处景点`;
+}
+
+document.getElementById('tourism-filters').addEventListener('click', event => {
+  const button = event.target.closest('.tourism-filter');
+  if (!button) return;
+  document.querySelectorAll('.tourism-filter').forEach(item => {
+    const selected = item === button;
+    item.classList.toggle('on', selected);
+    item.setAttribute('aria-pressed', String(selected));
+  });
+  applyTourismFilter(button.dataset.filter);
+});
+
+const dailyEntry = getDailyTourismEntry();
+const tourismDaily = document.getElementById('tourism-daily');
+tourismDaily.innerHTML = `<div class="tourism-daily-kicker">每日一景 · ${escapeHTML(getBeijingDateKey())}</div><div class="tourism-daily-name">${escapeHTML(dailyEntry.site.name)}</div><div class="tourism-daily-copy">${escapeHTML(dailyEntry.site.poemExcerpt)}<br>${escapeHTML(relationLevelLabels[dailyEntry.site.relationLevel] || dailyEntry.site.relationType)}</div>`;
+const dailyButton = document.createElement('button');
+dailyButton.type = 'button';
+dailyButton.className = 'tourism-daily-action';
+dailyButton.textContent = '查看今日景点';
+dailyButton.addEventListener('click', () => {
+  const allFilter = document.querySelector('.tourism-filter[data-filter="all"]');
+  allFilter.click();
+  const target = tourismList.querySelector(`[data-entry-key="${dailyEntry.entryKey}"]`);
+  if (!target) return;
+  setTourismCardExpanded(target, true);
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  target.querySelector('.tourism-card-toggle')?.focus({ preventScroll: true });
+});
+tourismDaily.appendChild(dailyButton);
+document.getElementById('tourism-toggle').addEventListener('click', () => openOverlayPanel('tourism-panel'));
+document.getElementById('tourism-close').addEventListener('click', () => closeOverlayPanel('tourism-panel'));
+const peopleWorkList = document.getElementById('people-work-list');
+POEMS.forEach(p => {
+  const workButton = document.createElement('button');
+  workButton.type = 'button';
+  workButton.className = 'people-work';
+  workButton.textContent = p.title;
+  workButton.title = `${p.location} · ${p.theme}`;
+  workButton.addEventListener('click', () => {
+    closeOverlayPanel('people-panel', false);
+    flyToPoem(p);
+  });
+  peopleWorkList.appendChild(workButton);
+});
+document.getElementById('people-toggle').addEventListener('click', () => openOverlayPanel('people-panel'));
+document.getElementById('people-close').addEventListener('click', () => closeOverlayPanel('people-panel'));
+
+/* ═══════ 数据可视化：仅统计现有网站数据 ═══════ */
+let vizInstance = null;
+const vizThemeList = document.getElementById('viz-theme-list');
+const themeCounts = POEMS.reduce((counts, p) => {
+  counts[p.theme] = (counts[p.theme] || 0) + 1;
+  return counts;
+}, {});
+Object.entries(themeCounts).forEach(([theme, count]) => {
+  const themeButton = document.createElement('button');
+  themeButton.type = 'button';
+  themeButton.className = 'viz-theme-btn';
+  themeButton.textContent = `${theme} · ${count}`;
+  themeButton.addEventListener('click', () => {
+    closeOverlayPanel('viz-panel', false);
+    poemSearch.value = theme;
+    applyPoemFilters();
+    if (panel.classList.contains('collapsed')) panelToggle.click();
+    poemSearch.focus();
+  });
+  vizThemeList.appendChild(themeButton);
+});
+function renderDataViz() {
+  const places = new Set(POEMS.map(p => p.location)).size;
+  const explicitTime = POEMS.filter(p => p.timeClue && p.timeClue !== '年代待考').length;
+  const regionFor = poem => poem.location.includes('海门') ? '海门' : poem.location.includes('通州') ? '通州' : poem.location.includes('吕四') ? '启东' : '南通城区';
+  const regions = ['南通城区', '通州', '海门', '启东'];
+  const regionCounts = regions.map(region => POEMS.filter(poem => regionFor(poem) === region).length);
+  document.getElementById('stat-poems').textContent = POEMS.length;
+  document.getElementById('stat-places').textContent = places;
+  document.getElementById('stat-regions').textContent = regionCounts.filter(Boolean).length;
+  document.getElementById('stat-time').textContent = explicitTime;
+  if (typeof echarts === 'undefined') return;
+  const el = document.getElementById('viz-chart');
+  if (vizInstance) vizInstance.dispose();
+  vizInstance = echarts.init(el);
+  vizInstance.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger:'item', formatter: params => `${escapeHTML(params.name)}：${params.value} 首诗`, backgroundColor:'rgba(20,10,6,0.95)', borderColor:'rgba(212,175,55,0.4)', textStyle:{color:'#E0D6C8'} },
+    grid: { left: 88, right: 32, top: 8, bottom: 20 },
+    xAxis: { type:'value', min:0, max:Math.max(...regionCounts, 1), interval:1, axisLine:{show:false}, splitLine:{lineStyle:{color:'rgba(197,160,40,0.12)'}}, axisLabel:{color:'rgba(242,234,216,0.55)'} },
+    yAxis: { type:'category', inverse:true, data:regions, axisLine:{show:false}, axisLabel:{color:'#E0D6C8',fontFamily:'serif',fontSize:11} },
+    series: [{ type:'bar', barWidth:24, data:regionCounts, itemStyle:{color:'#AFC9A5',borderRadius:[0,4,4,0]}, label:{show:true,position:'right',color:'#D4AF37'} }]
+  });
+}
+document.getElementById('viz-toggle').addEventListener('click', () => {
+  openOverlayPanel('viz-panel');
+  setTimeout(renderDataViz, 30);
+});
+document.getElementById('viz-close').addEventListener('click', () => closeOverlayPanel('viz-panel'));
+
+/* ═══════ 本地资料问答：不联网、不调用 API ═══════ */
+function answerLocalQuestion(question) {
+  const q = question.trim().toLowerCase();
+  if (!q) return '请先输入一个问题。';
+  if (q.includes('今日诗境') || q.includes('每日一景') || q.includes('今天的景点')) {
+    const entry = getDailyTourismEntry();
+    return {
+      matches: [entry.poem],
+      message: `今天的诗境是${entry.site.name}，对应${entry.poem.title}。地点关系为“${relationLevelLabels[entry.site.relationLevel] || entry.site.relationType}”。现场观察任务：${entry.site.fieldPrompt}`
+    };
+  }
+  if ((q.includes('到访') || q.includes('印记') || q.includes('去过')) && (q.includes('哪些') || q.includes('什么') || q.includes('我'))) {
+    const visitedEntries = tourismEntries.filter(({ site }) => scenicVisits[site.siteId]);
+    const uniqueSites = [...new Map(visitedEntries.map(({ site }) => [site.siteId, site])).values()];
+    const matches = [...new Map(visitedEntries.map(({ poem }) => [poem.id, poem])).values()];
+    return {
+      matches,
+      message: uniqueSites.length
+        ? `本机保存了 ${uniqueSites.length} 处到访印记：${uniqueSites.map(site => `${site.name}（${scenicVisits[site.siteId]}）`).join('、')}。这些记录只保存在当前浏览器。`
+        : '当前浏览器还没有保存到访印记。你可以在“今日诗境”的景点卡中留下记录。'
+    };
+  }
+  if ((q.includes('现代周边') || q.includes('历史地点') || q.includes('诗歌地点')) && (q.includes('哪些') || q.includes('区别') || q.includes('什么'))) {
+    const wantsModern = q.includes('现代周边');
+    const selected = tourismEntries.filter(({ site }) => wantsModern ? site.relationLevel === 'modernNearby' : site.relationLevel === 'direct');
+    const matches = [...new Map(selected.map(({ poem }) => [poem.id, poem])).values()];
+    return {
+      matches,
+      message: selected.length
+        ? `${wantsModern ? '现代周边' : '诗歌地点直接对应'}包括：${selected.map(({ site }) => site.name).join('、')}。${wantsModern ? '它们用于今日行程，不代表诗歌历史地点。' : '地点对应不等于能够确定诗作的具体创作位置。'}`
+        : '没有找到对应的地点。'
+    };
+  }
+  if ((q.includes('时间') || q.includes('年代')) && (q.includes('明确') || q.includes('确定') || q.includes('有时间'))) {
+    const matches = POEMS.filter(p => p.timeClue && p.timeClue !== '年代待考');
+    return { matches, message: `当前网站中有 ${matches.length} 首诗带有明确的文本时间线索，其余作品不据此推定创作年代。` };
+  }
+  if (q.includes('待考') || q.includes('时间不明') || q.includes('年代不明') || q.includes('未知年代')) {
+    const matches = POEMS.filter(p => p.timeClue === '年代待考');
+    return { matches, message: `当前网站中有 ${matches.length} 首诗标记为“年代待考”。` };
+  }
+  if (q.includes('主题') && (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部'))) {
+    return { matches: POEMS, message: `当前八首诗共记录 ${new Set(POEMS.map(p => p.theme)).size} 个主题，具体如下。` };
+  }
+  if (q.includes('大有境') || q.includes('cbd') || q.includes('商场') || q.includes('逛街') || q.includes('购物')) {
+    const allShopping = POEMS.flatMap(poem =>
+      (poem.nearby || []).filter(site => site.category === '逛街购物').map(site => ({ poem, site }))
+    );
+    const selected = q.includes('大有境') || q.includes('cbd')
+      ? allShopping.filter(item => item.site.name.includes('大有境'))
+      : (q.includes('南大街') ? allShopping.filter(item => item.site.name.includes('南大街')) : allShopping);
+    const matches = [...new Map(selected.map(item => [item.poem.id, item.poem])).values()];
+    const labels = selected.map(item => `${item.site.name}（${item.poem.title}周边）`);
+    return {
+      matches,
+      message: matches.length
+        ? `想顺路逛逛，可以看看：${labels.join('、')}。这些是今日城市生活去处，不是诗歌历史地点。`
+        : '本站暂时没有对应的逛街去处。'
+    };
+  }
+  if ((q.includes('附近') || q.includes('最近')) && (q.includes('景区') || q.includes('景点') || q.includes('旅游'))) {
+    const allScenic = POEMS.flatMap(poem =>
+      (poem.nearby || []).filter(site => site.category?.includes('景区')).map(site => ({ poem, site }))
+    );
+    const selected = q.includes('狼山')
+      ? allScenic.filter(item => item.site.name.includes('狼山'))
+      : (q.includes('濠河') ? allScenic.filter(item => item.site.name.includes('濠河')) : allScenic);
+    const matches = [...new Map(selected.map(item => [item.poem.id, item.poem])).values()];
+    const labels = selected.map(item => `${item.site.name}（${item.poem.title}周边${item.site.distanceLabel ? `，${item.site.distanceLabel}` : ''}）`);
+    return {
+      matches,
+      message: matches.length
+        ? `附近景区可以看看：${labels.join('、')}。这是今日行程建议，不代表诗歌历史地点；直线距离仅供参考，实际路线以导航为准。`
+        : '本站暂时没有对应的附近景区推荐。'
+    };
+  }
+  if (q.includes('地点') && (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部'))) {
+    return { matches: POEMS, message: `当前八首诗共关联 ${new Set(POEMS.map(p => p.location)).size} 条地点记录，具体如下。` };
+  }
+  if ((q.includes('景点') || q.includes('文旅') || q.includes('旅游') || q.includes('实景')) &&
+      (q.includes('哪些') || q.includes('什么') || q.includes('所有') || q.includes('全部') || q.includes('有'))) {
+    const matches = [...new Map(tourismEntries.map(({ poem }) => [poem.id, poem])).values()];
+    const siteNames = [...new Set(tourismEntries.map(({ site }) => site.name))];
+    return {
+      matches,
+      message: `可以从这些今日景点继续走：${siteNames.join('、')}。每张景点卡都说明它与诗歌的关系；现代景点不等于诗作原址。`
+    };
+  }
+  const stopPhrases = ['哪些诗歌','哪些诗','哪一首诗','哪首诗','有什么诗','有没有诗','在哪里','在什么地方','写到了','写到','提到了','提到','有关','相关','请问','可以告诉我','是什么','有哪些'];
+  let cleaned = q.replace(/[？?。！!，,、\s]+/g, '');
+  stopPhrases.forEach(word => { cleaned = cleaned.split(word).join(''); });
+  cleaned = cleaned.replace(/^[与和的在是有了]+|[与和的在是有了]+$/g, '');
+  if (!cleaned) return '请先输入一个具体问题。';
+  const matches = POEMS.filter(p => {
+    const haystack = [p.title, p.location, p.timeClue, p.theme, p.lines, getTourismSearchText(p)].join(' ').toLowerCase();
+    const bareTitle = p.title.replace(/[《》]/g, '').toLowerCase();
+    const placeTerms = p.location.toLowerCase().split(/[·\s]+/).filter(term => term.length > 1);
+    return haystack.includes(cleaned) || q.includes(bareTitle) || placeTerms.some(term => q.includes(term));
+  });
+  if (matches.length) {
+    return { matches, message: `找到 ${matches.length} 首相关诗歌。` };
+  }
+  return { matches: [], message: '没有找到可以支持这个问题的内容。换个诗名或地点试试。' };
+}
+function renderLocalAnswer(question) {
+  const answerEl = document.getElementById('qa-answer');
+  const result = answerLocalQuestion(question);
+  if (typeof result === 'string') {
+    answerEl.textContent = result;
+    return;
+  }
+  answerEl.replaceChildren();
+  const message = document.createElement('div');
+  message.textContent = result.message;
+  answerEl.appendChild(message);
+  if (!result.matches.length) return;
+  const resultList = document.createElement('div');
+  resultList.className = 'qa-result-list';
+  const wantsTourism = /景点|景区|文旅|旅游|实景|附近|最近|商场|逛街|购物|大有境|cbd/i.test(question);
+  result.matches.forEach(p => {
+    const resultButton = document.createElement('button');
+    resultButton.type = 'button';
+    resultButton.className = 'qa-result';
+    const title = document.createElement('span');
+    title.textContent = p.title;
+    const meta = document.createElement('small');
+    const tourismNames = [...(p.tourism || []), ...(p.nearby || [])].map(site => site.name).join('、');
+    meta.textContent = `${p.location} · ${p.theme} · ${p.timeClue}${tourismNames ? ` · ${tourismNames}` : ''}`;
+    resultButton.append(title, meta);
+    resultButton.addEventListener('click', () => {
+      closeOverlayPanel('qa-panel', false);
+      flyToPoem(p);
+      if (wantsTourism && (p.tourism?.length || p.nearby?.length)) switchTab('scenic');
+    });
+    resultList.appendChild(resultButton);
+  });
+  answerEl.appendChild(resultList);
+}
+document.getElementById('qa-toggle').addEventListener('click', () => openOverlayPanel('qa-panel'));
+document.getElementById('qa-close').addEventListener('click', () => closeOverlayPanel('qa-panel'));
+document.getElementById('qa-form').addEventListener('submit', e => {
+  e.preventDefault();
+  renderLocalAnswer(document.getElementById('qa-input').value);
+});
+const detailGraphImage = document.getElementById('d-graph-img');
+const imageLightbox = document.getElementById('image-lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxClose = document.getElementById('lightbox-close');
+let lightboxTrigger = null;
+function closeImageLightbox() {
+  imageLightbox.hidden = true;
+  lightboxImage.removeAttribute('src');
+  lightboxTrigger?.focus?.();
+  lightboxTrigger = null;
+}
+detailGraphImage.tabIndex = 0;
+detailGraphImage.setAttribute('role', 'button');
+detailGraphImage.setAttribute('aria-label', '打开诗句关系图大图');
+function openImageLightbox(image) {
+  if (!image?.src) return;
+  lightboxTrigger = image;
+  lightboxImage.src = image.src;
+  lightboxImage.alt = image.alt || '图片预览';
+  imageLightbox.hidden = false;
+  lightboxClose.focus();
+}
+document.addEventListener('click', e => {
+  const image = e.target.closest?.('img.zoomable-image');
+  if (image) openImageLightbox(image);
+});
+document.addEventListener('keydown', e => {
+  const image = e.target.closest?.('img.zoomable-image');
+  if (!image) return;
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    openImageLightbox(image);
+  }
+});
+lightboxClose.addEventListener('click', closeImageLightbox);
+imageLightbox.addEventListener('click', e => {
+  if (e.target === imageLightbox) closeImageLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!imageLightbox.hidden) {
+    closeImageLightbox();
+    return;
+  }
+  const openPanel = overlayPanelIds.find(id => document.getElementById(id).classList.contains('open'));
+  if (openPanel) {
+    closeOverlayPanel(openPanel);
+    return;
+  }
+  if (document.getElementById('detail').classList.contains('open')) {
+    document.getElementById('close-btn').click();
+  } else if (poemSearch.value) {
+    poemSearch.value = '';
+    poemSearch.dispatchEvent(new Event('input'));
+  }
+});
+
+// Overview card click handler
+document.getElementById('pc-0').addEventListener('click', () => {
+  closeOverlayPanels();
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  setActivePoem(0);
+  updateHash(0);
+  if (map) { map.flyTo([31.97, 120.89], 11, { duration: 1.5, easeLinearity: 0.25 }); }
+  document.getElementById('d-title').textContent = '张謇诗歌宇宙';
+  document.getElementById('d-loc').textContent = '通吕运河 · 八诗纵横';
+  document.getElementById('d-meta').innerHTML = '<span class="detail-chip">8 首诗歌</span><span class="detail-chip">8 个地点</span><span class="detail-chip">8 个主题</span>';
+  document.getElementById('d-audio').innerHTML = '';
+  document.getElementById('d-scenic').replaceChildren();
+  document.querySelector('.tab[data-tab="aud"]').style.display = 'none';
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  renderGraphExperience(null);
+  document.getElementById('d-graph-img-wrap').style.display = 'none';
+  document.getElementById('d-lines-text').innerHTML = '通吕运河畔，张謇以诗为舟、以笔为桨，<br>在八首诗中留下了对佛寺禅意、海天壮阔、<br>身世孤寂、世事沧桑的深沉书写。<br>点击任一诗题，循迹而往。';
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  document.querySelector('.detail-body').scrollTop = 0;
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+});
+
+/* ═══════ 取标记字符：优先使用 emoji 字段 ═══════ */
+function getChar(p) {
+  return p.emoji || p.title.replace(/[《》]/g, '')[0] || '詩';
+}
+
+/* ═══════ 添加地图标记 ═══════ */
+if (map) {
+  POEMS.forEach(p => {
+    const m = L.marker([p.lat, p.lng], { icon: mkIcon(false, getChar(p)) }).addTo(map);
+    m.on('click', () => openCard(p));
+    markers[p.id] = m;
+  });
+}
+
+/* ═══════ 点击左侧诗卡：飞行定位 + 自动弹出卡片 ═══════ */
+function flyToPoem(p) {
+  closeOverlayPanels();
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  setActivePoem(p.id);
+  updateHash(p.id);
+  if (map) { map.flyTo([p.lat, p.lng], 13, { duration: 1.8, easeLinearity: 0.25 }); }
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  document.querySelector('.detail-body').scrollTop = 0;
+  // 移动端：点击诗卡后自动收起面板以展示地图
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+}
+
+/* ═══════ 点击地图标记：打开卡片 ═══════ */
+function openCard(p) {
+  closeOverlayPanels();
+  cardMinimized = false;
+  document.getElementById('detail').style.height = '';
+  setActivePoem(p.id);
+  updateHash(p.id);
+  fillCard(p);
+  document.getElementById('detail').classList.add('open');
+  switchTab('gph');
+  document.querySelector('.detail-body').scrollTop = 0;
+  if (window.innerWidth <= 900) {
+    setPanelExpanded(false);
+  }
+}
+
+/* ═══════ 设置当前激活诗歌 ═══════ */
+function setActivePoem(id) {
+  activeId = id;
+  document.querySelectorAll('.poem-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('pc-' + id)?.classList.add('active');
+  POEMS.forEach(p => markers[p.id]?.setIcon(mkIcon(p.id === id, getChar(p))));
+  // 总览不展示单篇媒体；没有视频的诗歌不显示视频入口。
+  document.querySelector('.tab[data-tab="aud"]').style.display = id === 0 ? 'none' : '';
+  const activePoem = POEMS.find(p => p.id === id);
+  document.querySelector('.tab[data-tab="vid"]').style.display = activePoem?.videoUrl ? '' : 'none';
+  const scenicTab = document.querySelector('.tab[data-tab="scenic"]');
+  const hasTravelData = activePoem?.tourism?.length || activePoem?.nearby?.length;
+  scenicTab.style.display = hasTravelData ? '' : 'none';
+  scenicTab.textContent = activePoem?.nearby?.length
+    ? '文 旅'
+    : (activePoem?.tourism?.some(site => site.image) ? '实 景' : '文 旅');
+  updateFavoriteButton(id);
+}
+
+function updateFavoriteButton(id) {
+  const btn = document.getElementById('favorite-btn');
+  if (!btn) return;
+  const saved = id !== 0 && favoriteIds.has(id);
+  btn.style.display = id === 0 ? 'none' : '';
+  btn.classList.toggle('saved', saved);
+  btn.textContent = saved ? '★ 已收藏' : '☆ 收藏';
+}
+
+/* ═══════ ECharts Graph 配置 ═══════ */
+function buildGraphOption(p) {
+  return {
+    backgroundColor: 'transparent',
+    animationDuration: 1200,
+    animationEasingUpdate: 'quinticInOut',
+    tooltip: {
+      trigger: 'item',
+      formatter: function(params) {
+        if (params.dataType === 'edge') {
+          return '<span style="color:#D4AF37;font-size:13px;letter-spacing:2px">' + escapeHTML(params.data.label || '') + '</span>';
+        }
+        return '<span style="color:#D4AF37;font-size:14px;font-weight:bold;letter-spacing:2px">' + escapeHTML(params.name) + '</span>';
+      },
+      backgroundColor: 'rgba(20,10,6,0.95)',
+      borderColor: 'rgba(212,175,55,0.4)',
+      borderWidth: 1,
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
+    },
+    series: [{
+      type: 'graph',
+      layout: 'force',
+      roam: true,
+      draggable: true,
+      force: {
+        repulsion: 280,
+        edgeLength: [100, 180],
+        gravity: 0.06
+      },
+      emphasis: {
+        focus: 'adjacency',
+        lineStyle: { width: 3 },
+        itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' }
+      },
+      label: {
+        show: true,
+        position: 'bottom',
+        color: '#E0D6C8',
+        fontSize: 13,
+        fontWeight: 'bold',
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
+        distance: 8,
+        letterSpacing: 2,
+        textShadowColor: 'rgba(0,0,0,0.6)',
+        textShadowBlur: 4
+      },
+      edgeLabel: {
+        show: true,
+        color: '#E0D6C8',
+        fontSize: 10,
+        fontWeight: 'bold',
+        fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif",
+        letterSpacing: 1,
+        textShadowColor: 'rgba(0,0,0,0.5)',
+        textShadowBlur: 3
+      },
+      edgeSymbol: ['none', 'arrow'],
+      edgeSymbolSize: 8,
+      lineStyle: {
+        color: 'rgba(224,214,200,0.45)',
+        width: 1.8,
+        curveness: 0.25
+      },
+      categories: [
+        { name: '作者', itemStyle: { color: '#D64545' }, symbol: 'diamond', symbolSize: 46,
+          label: { color: '#D4AF37', fontSize: 15, fontWeight: 700 } },
+        { name: '意象', itemStyle: { color: '#6B9B6A' }, symbol: 'circle', symbolSize: 28 },
+        { name: '情感', itemStyle: { color: '#E07B39' }, symbol: 'roundRect', symbolSize: 34 },
+        { name: '哲思', itemStyle: { color: '#8B7BBE' }, symbol: 'triangle', symbolSize: 32 }
+      ],
+      data: getGraphData(p),
+      links: getGraphLinks(p)
+    }]
+  };
+}
+
+function getGraphData(p) {
+  const base = [
+    { name: '张謇', category: 0, symbolSize: 52,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:15px;font-weight:bold">张謇</span><br><span style="color:#E0D6C8;font-size:12px">近代实业家·教育家</span>' } }
+  ];
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return base.concat([
+      { name: '三元宫', category: 1, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">三元宫</span><br><span style="color:#E0D6C8;font-size:12px">狼山古刹<br/>禅房山寺列</span>' } },
+      { name: '长老', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">长老</span><br><span style="color:#E0D6C8;font-size:12px">三元长老尊<br/>遗徒通世学</span>' } },
+      { name: '佛门', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛门</span><br><span style="color:#E0D6C8;font-size:12px">护佛广宗门</span>' } },
+{ name: '俭德', category: 3, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">俭德</span><br><span style="color:#E0D6C8;font-size:12px">斋鱼俭德存</span>' } },
+      { name: '江月', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江月</span><br><span style="color:#E0D6C8;font-size:12px">空堂照遗拂<br/>江月白翻翻</span>' } }
+    ]);
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return base.concat([
+      { name: '排河观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">排河观</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>蔚然一寺开</span>' } },
+      { name: '钟声', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声</span><br><span style="color:#E0D6C8;font-size:12px">钟声随鸟远<br/>悠远空灵</span>' } },
+      { name: '河势', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">河势</span><br><span style="color:#E0D6C8;font-size:12px">河势趁林回<br/>通吕运河蜿蜒</span>' } },
+      { name: '佛圯尘龛', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">佛圯尘龛</span><br><span style="color:#E0D6C8;font-size:12px">佛圯尘龛在<br/>僧贫圭挫颓</span>' } },
+      { name: '兴衰之叹', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兴衰之叹</span><br><span style="color:#E0D6C8;font-size:12px">兴衰何处问<br/>夕暖上经台</span>' } },
+      { name: '沧海桑田', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧海桑田</span><br><span style="color:#E0D6C8;font-size:12px">沧海成田后<br/>世事无常·时光流转</span>' } }
+    ]);
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return base.concat([
+      { name: '千龄观', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千龄观</span><br><span style="color:#E0D6C8;font-size:12px">消寒第五集<br/>闻粤事稍平</span>' } },
+      { name: '泥饮连朝', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">泥饮连朝</span><br><span style="color:#E0D6C8;font-size:12px">未嫌寒气尚逡巡<br/>泥饮连朝选主宾</span>' } },
+      { name: '兰亭雅集', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">兰亭雅集</span><br><span style="color:#E0D6C8;font-size:12px">相随少长兰亭集<br/>酒中聚友·以古为喻</span>' } },
+      { name: '粤事稍平', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">粤事稍平</span><br><span style="color:#E0D6C8;font-size:12px">渐次龙蛇桂海删<br/>岭南动乱渐息</span>' } },
+      { name: '春星遗火', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">春星遗火</span><br><span style="color:#E0D6C8;font-size:12px">遗火春星看不厌<br/>疏缝人语况濠濛</span>' } },
+      { name: '忧世情怀', category: 3, symbolSize: 36,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">忧世情怀</span><br><span style="color:#E0D6C8;font-size:12px">饮中闻时局<br/>杯酒难消家国忧</span>' } }
+    ]);
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return base.concat([
+      { name: '沧园', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧园</span><br><span style="color:#E0D6C8;font-size:12px">沧园栏楯尚清华<br/>载槛重停隔水车</span>' } },
+      { name: '燕子春暮', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">燕子春暮</span><br><span style="color:#E0D6C8;font-size:12px">燕子不来春不住<br/>春光将尽·燕归何处</span>' } },
+      { name: '龙孙斜日', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">龙孙斜日</span><br><span style="color:#E0D6C8;font-size:12px">龙孙方纵日方斜<br/>竹笋怒长·日影西沉</span>' } },
+      { name: '江客张生', category: 1, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">江客张生</span><br><span style="color:#E0D6C8;font-size:12px">荒疏江客调笙曲<br/>辛苦张生课菊花</span>' } },
+      { name: '寒食追思', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">寒食追思</span><br><span style="color:#E0D6C8;font-size:12px">惆怅百年寒食节<br/>祭墓思亲·百年惆怅</span>' } },
+      { name: '沧桑兴替', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">沧桑兴替</span><br><span style="color:#E0D6C8;font-size:12px">冬青无恙几人家<br/>物是人非·世事变迁</span>' } }
+    ]);
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return base.concat([
+      { name: '曼寿堂', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">曼寿堂</span><br><span style="color:#E0D6C8;font-size:12px">八月十三夜<br/>月下看月之所</span>' } },
+      { name: '未圆之月', category: 1, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">未圆之月</span><br><span style="color:#E0D6C8;font-size:12px">未圆怜更好<br/>将满未满·最是动人</span>' } },
+      { name: '树镂波笼', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">树镂波笼</span><br><span style="color:#E0D6C8;font-size:12px">树镂移阴叶<br/>波笼久坐巾</span>' } },
+      { name: '独对相亲', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">独对相亲</span><br><span style="color:#E0D6C8;font-size:12px">独对故相亲<br/>与月为友·清寂自得</span>' } },
+      { name: '啼螀倚阑', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">啼螀倚阑</span><br><span style="color:#E0D6C8;font-size:12px">啼螀尔何意<br/>宁伴倚阑人</span>' } },
+      { name: '月下哲思', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">月下哲思</span><br><span style="color:#E0D6C8;font-size:12px">已自东天出<br/>都疑下界新</span>' } }
+    ]);
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return base.concat([
+      { name: '千佛寺', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">千佛寺</span><br><span style="color:#E0D6C8;font-size:12px">招提是处并行查<br/>南通名刹·千佛之寺</span>' } },
+      { name: '回汀烟寒', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">回汀烟寒</span><br><span style="color:#E0D6C8;font-size:12px">烟寒荫霁繁茅屋<br/>水畔寒烟·茅屋掩映</span>' } },
+      { name: '暮鸦楸榆', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">暮鸦楸榆</span><br><span style="color:#E0D6C8;font-size:12px">风静楸榆点暮鸦<br/>日暮归鸦·萧瑟苍凉</span>' } },
+      { name: '病僧夕阳', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">病僧夕阳</span><br><span style="color:#E0D6C8;font-size:12px">衰草城边游客渡<br/>夕阳野外病僧家</span>' } },
+      { name: '孤篷漂泊', category: 2, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤篷漂泊</span><br><span style="color:#E0D6C8;font-size:12px">年年来去孤篷里<br/>身世飘零·辗转往复</span>' } },
+      { name: '钟声晚笳', category: 3, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">钟声晚笳</span><br><span style="color:#E0D6C8;font-size:12px">卧听钟声间晚笳<br/>暮钟晚笳·超然物外</span>' } }
+    ]);
+  }
+  if (/盆松/i.test(p.title)) {
+    return base.concat([
+      { name: '盆松', category: 1, symbolSize: 38,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">盆松</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生种<br/>谁将到此盆</span>' } },
+      { name: '青苍撮土', category: 1, symbolSize: 28,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">青苍撮土</span><br><span style="color:#E0D6C8;font-size:12px">青苍一撮土<br/>蟠郁百年根</span>' } },
+      { name: '斧痕创鳞', category: 2, symbolSize: 30,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">斧痕创鳞</span><br><span style="color:#E0D6C8;font-size:12px">宿黛含霜气<br/>创鳞见斧痕</span>' } },
+      { name: '梁栋之材', category: 3, symbolSize: 34,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">梁栋之材</span><br><span style="color:#E0D6C8;font-size:12px">等闲怜托处<br/>梁栋与谁论</span>' } },
+      { name: '孤寂感怀', category: 2, symbolSize: 32,
+        tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">孤寂感怀</span><br><span style="color:#E0D6C8;font-size:12px">山泽孤生<br/>托身盆中·谁与论</span>' } }
+    ]);
+  }
+  // 吕四 / 落日
+  return base.concat([
+    { name: '落日', category: 1, symbolSize: 38,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">落日</span><br><span style="color:#E0D6C8;font-size:12px">如初日之新生<br/>分光助月·散彩弥天</span>' } },
+    { name: '海天', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">海天</span><br><span style="color:#E0D6C8;font-size:12px">东西照海圆<br/>天海一色·万象包容</span>' } },
+    { name: '丹霞翠霭', category: 1, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">丹霞翠霭</span><br><span style="color:#E0D6C8;font-size:12px">野迥丹霞错<br/>山明翠霭偏</span>' } },
+    { name: '豪迈情怀', category: 2, symbolSize: 36,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">豪迈情怀</span><br><span style="color:#E0D6C8;font-size:12px">落日如初日的壮阔<br/>老而弥坚的雄心</span>' } },
+    { name: '桑榆晚境', category: 3, symbolSize: 30,
+      tooltip: { formatter: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">桑榆晚境</span><br><span style="color:#E0D6C8;font-size:12px">或云风雨候<br/>不得画诗传</span>' } }
+  ]);
+}
+
+function getGraphLinks(p) {
+  if (/三元|狼山|挽词/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '三元宫', label: '登临参访' },
+      { source: '张謇', target: '长老', label: '悼念挽歌' },
+      { source: '长老', target: '佛门', label: '护法宗门' },
+      { source: '长老', target: '俭德', label: '德行传世' },
+      { source: '张謇', target: '俭德', label: '赞叹褒扬' },
+{ source: '张謇', target: '江月', label: '即景抒怀' }
+    ];
+  }
+  if (/过排河观|排河观/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '排河观', label: '途径参访' },
+      { source: '排河观', target: '钟声', label: '听觉意象' },
+      { source: '排河观', target: '河势', label: '周边地理' },
+      { source: '排河观', target: '佛圯尘龛', label: '颓败之景' },
+      { source: '排河观', target: '沧海桑田', label: '历史变迁' },
+      { source: '张謇', target: '兴衰之叹', label: '直抒胸臆' },
+      { source: '兴衰之叹', target: '沧海桑田', label: '抚今追昔' },
+      { source: '兴衰之叹', target: '佛圯尘龛', label: '触景生情' }
+    ];
+  }
+  if (/千龄观|消寒/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千龄观', label: '消寒雅集' },
+      { source: '千龄观', target: '泥饮连朝', label: '觥筹交错' },
+      { source: '千龄观', target: '兰亭雅集', label: '以古喻今' },
+      { source: '张謇', target: '粤事稍平', label: '闻讯释怀' },
+      { source: '粤事稍平', target: '忧世情怀', label: '时局牵心' },
+      { source: '张謇', target: '忧世情怀', label: '家国忧思' },
+      { source: '千龄观', target: '春星遗火', label: '暮色春景' },
+      { source: '泥饮连朝', target: '粤事稍平', label: '借酒释怀' }
+    ];
+  }
+  if (/金沙祭墓|沧园/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '沧园', label: '祭墓饮客' },
+      { source: '沧园', target: '燕子春暮', label: '园中春景' },
+      { source: '沧园', target: '龙孙斜日', label: '竹影斜阳' },
+      { source: '沧园', target: '江客张生', label: '同游之友' },
+      { source: '张謇', target: '寒食追思', label: '祭扫感怀' },
+      { source: '寒食追思', target: '沧桑兴替', label: '抚今追昔' },
+      { source: '张謇', target: '沧桑兴替', label: '直抒感慨' },
+      { source: '沧桑兴替', target: '沧园', label: '物是人非' }
+    ];
+  }
+  if (/曼寿堂看月|八月十三/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '曼寿堂', label: '月夜独处' },
+      { source: '张謇', target: '未圆之月', label: '观照吟咏' },
+      { source: '未圆之月', target: '月下哲思', label: '启悟哲思' },
+      { source: '张謇', target: '独对相亲', label: '直抒心境' },
+      { source: '独对相亲', target: '未圆之月', label: '以月为友' },
+      { source: '曼寿堂', target: '树镂波笼', label: '堂前景致' },
+      { source: '张謇', target: '啼螀倚阑', label: '静夜听虫' },
+      { source: '啼螀倚阑', target: '独对相亲', label: '虫鸣助寂' }
+    ];
+  }
+  if (/千佛寺/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '千佛寺', label: '行经参访' },
+      { source: '千佛寺', target: '回汀烟寒', label: '水畔之景' },
+      { source: '千佛寺', target: '暮鸦楸榆', label: '暮色苍茫' },
+      { source: '千佛寺', target: '病僧夕阳', label: '寺中人事' },
+      { source: '张謇', target: '孤篷漂泊', label: '自伤身世' },
+      { source: '张謇', target: '钟声晚笳', label: '卧听感悟' },
+      { source: '钟声晚笳', target: '千佛寺', label: '寺中传出' },
+      { source: '孤篷漂泊', target: '病僧夕阳', label: '同病相怜' }
+    ];
+  }
+  if (/盆松/i.test(p.title)) {
+    return [
+      { source: '张謇', target: '盆松', label: '托物言志' },
+      { source: '盆松', target: '青苍撮土', label: '身寄方寸' },
+      { source: '盆松', target: '斧痕创鳞', label: '历经磨难' },
+      { source: '盆松', target: '梁栋之材', label: '本可为梁栋' },
+      { source: '盆松', target: '孤寂感怀', label: '寄托自伤' },
+      { source: '张謇', target: '梁栋之材', label: '自况抱负' },
+      { source: '张謇', target: '孤寂感怀', label: '直抒胸臆' }
+    ];
+  }
+  // 吕四 / 落日
+  return [
+    { source: '张謇', target: '落日', label: '创作吟咏' },
+    { source: '落日', target: '海天', label: '映照其中' },
+    { source: '落日', target: '丹霞翠霭', label: '渲染铺陈' },
+    { source: '落日', target: '豪迈情怀', label: '寄托抒发' },
+    { source: '张謇', target: '豪迈情怀', label: '直抒胸臆' },
+    { source: '豪迈情怀', target: '桑榆晚境', label: '晚年回响' }
+  ];
+}
+
+/* 诗句关系：固定排布，点击探索；不拖动节点，不依赖图表 CDN。 */
+const graphCategoryLabels = ['作者', '景与人', '情境', '思考'];
+function renderGraphExperience(poem) {
+  graphState = poem
+    ? { mode: 'poem', poem, nodes: getGraphData(poem), links: getGraphLinks(poem), filter: 'all', selected: '' }
+    : { mode: 'overview', poem: null, nodes: POEMS.map(p => ({ name: p.title.replace(/[《》]/g, ''), poemId: p.id, category: 1 })), links: [], filter: 'all', selected: '' };
+  graphState.selected = '';
+  document.getElementById('graph-heading').textContent = poem ? '读一首诗的线索' : '八首诗，一张关系图';
+  document.getElementById('graph-subtitle').textContent = poem
+    ? `${poem.title} · 点选线索，对照原诗与策展关联`
+    : '选择一首诗，查看地点、主题，再进入诗歌档案';
+  renderGraphFilters();
+  renderGraphCanvas();
+  renderGraphFocus();
+  renderGraphPoemHighlight();
+}
+
+function graphVisibleNodes() {
+  if (graphState.mode === 'overview' || graphState.filter === 'all') return graphState.nodes;
+  return graphState.nodes.filter(node => node.category === 0 || node.category === Number(graphState.filter));
+}
+
+function renderGraphFilters() {
+  const filters = document.getElementById('graph-filters');
+  filters.replaceChildren();
+  if (graphState.mode === 'overview') return;
+  [{ value: 'all', label: '全部线索' }, { value: '1', label: '景与人' }, { value: '2', label: '情境' }, { value: '3', label: '思考' }]
+    .filter(item => item.value === 'all' || graphState.nodes.some(node => node.category === Number(item.value)))
+    .forEach(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'graph-filter';
+      button.textContent = item.label;
+      button.setAttribute('aria-pressed', String(graphState.filter === item.value));
+      button.addEventListener('click', () => {
+        graphState.filter = item.value;
+        const visible = graphVisibleNodes();
+        if (!visible.some(node => node.name === graphState.selected)) {
+          graphState.selected = visible.find(node => node.category !== 0)?.name || '张謇';
+        }
+        renderGraphFilters();
+        renderGraphCanvas();
+        renderGraphFocus();
+        renderGraphPoemHighlight();
+        filters.querySelector(`[data-filter="${item.value}"]`)?.focus();
+      });
+      button.dataset.filter = item.value;
+      filters.appendChild(button);
+    });
+}
+
+function graphPositions(nodes, compact) {
+  const positions = new Map();
+  if (compact) {
+    nodes.forEach((node, index) => positions.set(node.name, {
+      x: index % 2 === 0 ? 25 : 75,
+      y: 27 + Math.floor(index / 2) * 18
+    }));
+  } else {
+    const leftCount = Math.ceil(nodes.length / 2);
+    const rightCount = nodes.length - leftCount;
+    nodes.forEach((node, index) => {
+      const left = index < leftCount;
+      const columnIndex = left ? index : index - leftCount;
+      const columnCount = left ? leftCount : rightCount;
+      positions.set(node.name, {
+        x: left ? 18 : 82,
+        y: columnCount === 1 ? 50 : 17 + columnIndex * 66 / (columnCount - 1)
+      });
+    });
+  }
+  return positions;
+}
+
+function selectGraphNode(name) {
+  if (!graphState.nodes.some(node => node.name === name)) return;
+  if (!graphVisibleNodes().some(node => node.name === name)) {
+    graphState.filter = 'all';
+    renderGraphFilters();
+  }
+  graphState.selected = name;
+  renderGraphCanvas();
+  renderGraphFocus();
+  renderGraphPoemHighlight();
+  document.querySelectorAll('#d-graph .graph-node').forEach(button => {
+    if (button.dataset.nodeName === name) button.focus();
+  });
+  if (window.innerWidth <= 900) {
+    document.getElementById('graph-focus').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function renderGraphCanvas() {
+  const wrap = document.getElementById('d-graph');
+  wrap.replaceChildren();
+  const nodes = graphVisibleNodes();
+  const compact = window.innerWidth <= 600;
+  const positions = graphPositions(nodes, compact);
+  const center = { x: 50, y: compact ? 12 : 50 };
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('graph-network-lines');
+  svg.setAttribute('aria-hidden', 'true');
+  const selected = graphState.selected;
+  const related = new Set([selected]);
+  graphState.links.forEach(link => {
+    if (link.source === selected) related.add(link.target);
+    if (link.target === selected) related.add(link.source);
+  });
+  const visibleNames = new Set(nodes.map(node => node.name));
+  const drawnLinks = graphState.mode === 'overview'
+    ? nodes.map(node => ({ source: '__center__', target: node.name }))
+    : graphState.links.filter(link => visibleNames.has(link.source) && visibleNames.has(link.target));
+  drawnLinks.forEach(link => {
+    const start = link.source === '__center__' ? center : positions.get(link.source);
+    const end = positions.get(link.target);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', `${start.x}%`);
+    line.setAttribute('y1', `${start.y}%`);
+    line.setAttribute('x2', `${end.x}%`);
+    line.setAttribute('y2', `${end.y}%`);
+    if (graphState.mode === 'overview') line.classList.add('is-overview');
+    if (selected && (link.source === selected || link.target === selected)) line.classList.add('is-active');
+    else if (selected && !(related.has(link.source) && related.has(link.target))) line.classList.add('is-muted');
+    svg.appendChild(line);
+  });
+  const network = document.createElement('div');
+  network.className = 'graph-network';
+  const centerNode = document.createElement('div');
+  centerNode.className = 'graph-center';
+  centerNode.style.left = `${center.x}%`;
+  centerNode.style.top = `${center.y}%`;
+  const centerSmall = document.createElement('small');
+  centerSmall.textContent = graphState.mode === 'overview' ? '张謇诗路' : '正在阅读';
+  const centerTitle = document.createElement('span');
+  centerTitle.textContent = graphState.mode === 'overview' ? '八首诗' : '这一首诗';
+  centerNode.append(centerSmall, centerTitle);
+  network.append(svg, centerNode);
+  nodes.forEach(node => {
+    const point = positions.get(node.name);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'graph-node';
+    button.dataset.category = String(node.category);
+    button.dataset.nodeName = node.name;
+    button.style.left = `${point.x}%`;
+    button.style.top = `${point.y}%`;
+    button.setAttribute('aria-pressed', String(node.name === selected));
+    if (selected && graphState.mode === 'poem' && !related.has(node.name)) button.classList.add('is-muted');
+    const kind = document.createElement('span');
+    kind.className = 'graph-node-kind';
+    kind.textContent = graphState.mode === 'overview' ? `其${'一二三四五六七八'[node.poemId - 1]}` : graphCategoryLabels[node.category] || '线索';
+    const name = document.createElement('span');
+    name.textContent = graphState.mode === 'overview' && node.name.length > 9 ? `${node.name.slice(0, 9)}…` : node.name;
+    button.title = node.name;
+    button.append(kind, name);
+    button.addEventListener('click', () => selectGraphNode(node.name));
+    network.appendChild(button);
+  });
+  wrap.appendChild(network);
+}
+
+function graphNodeNote(node) {
+  if (node.name === '张謇') return '这组诗歌的作者；下方线索展示的是诗句与策展阅读中的关联。';
+  const raw = typeof node.tooltip?.formatter === 'string' ? node.tooltip.formatter : '';
+  const note = raw.replace(/<br\s*\/?>/gi, ' · ').replace(/<[^>]*>/g, '').replace(node.name, '').trim().replace(/^[·:：-]\s*/, '');
+  return note || '从诗歌文字中提取的阅读线索。';
+}
+
+function graphExactQuote(node) {
+  if (!node || !graphState.poem) return '';
+  const lines = graphState.poem.lines.split('\n');
+  const raw = typeof node.tooltip?.formatter === 'string' ? node.tooltip.formatter : '';
+  const fragments = raw.split(/<br\s*\/?>/i).map(part => part.replace(/<[^>]*>/g, '').trim());
+  fragments.push(node.name);
+  for (const fragment of fragments) {
+    if (fragment.length < 2) continue;
+    const match = lines.find(line => line.includes(fragment));
+    if (match) return match;
+  }
+  return '';
+}
+
+function renderGraphPoemHighlight() {
+  if (!graphState.poem) return;
+  const target = document.getElementById('d-lines-text');
+  const quote = graphExactQuote(graphState.nodes.find(node => node.name === graphState.selected));
+  target.replaceChildren();
+  graphState.poem.lines.split('\n').forEach((line, index) => {
+    if (index) target.appendChild(document.createElement('br'));
+    if (line === quote) {
+      const mark = document.createElement('mark');
+      mark.textContent = line;
+      target.appendChild(mark);
+    } else target.appendChild(document.createTextNode(line));
+  });
+}
+
+function renderGraphFocus() {
+  const focus = document.getElementById('graph-focus');
+  focus.replaceChildren();
+  const selected = graphState.nodes.find(node => node.name === graphState.selected);
+  const kicker = document.createElement('div');
+  kicker.className = 'graph-focus-kicker';
+  const title = document.createElement('h3');
+  const note = document.createElement('p');
+  if (!selected) {
+    kicker.textContent = '开始探索';
+    title.textContent = graphState.mode === 'overview' ? '从一首诗，走进一座城' : '从图里选择一条线索';
+    note.textContent = graphState.mode === 'overview'
+      ? '点击图中的诗作，先看它的地点与主题，再打开完整诗歌档案。'
+      : '点击景物、情境或思考线索，查看诗句提示与其他节点的关联。';
+    focus.append(kicker, title, note);
+    return;
+  }
+  if (graphState.mode === 'overview') {
+    const poem = POEMS.find(item => item.id === selected.poemId);
+    kicker.textContent = `诗歌档案 · 其${'一二三四五六七八'[poem.id - 1]}`;
+    title.textContent = poem.title;
+    note.textContent = `${poem.location} · ${poem.theme} · ${poem.timeClue}。${poem.lines.split('\n')[0]}`;
+    focus.append(kicker, title, note);
+    const action = document.createElement('button');
+    action.type = 'button';
+    action.className = 'graph-focus-action';
+    action.textContent = '定位并读这首诗 →';
+    action.addEventListener('click', () => flyToPoem(poem));
+    focus.appendChild(action);
+    return;
+  }
+  kicker.textContent = `诗句线索 · ${graphCategoryLabels[selected.category] || '阅读'}`;
+  title.textContent = selected.name;
+  note.textContent = graphNodeNote(selected);
+  focus.append(kicker, title, note);
+  const quote = graphExactQuote(selected);
+  if (quote) {
+    const block = document.createElement('blockquote');
+    block.className = 'graph-quote';
+    const label = document.createElement('small');
+    label.textContent = '原诗对照';
+    block.append(label, document.createTextNode(quote));
+    focus.appendChild(block);
+  } else {
+    const caveat = document.createElement('p');
+    caveat.style.marginTop = '10px';
+    caveat.textContent = '这是阅读线索，诗文中没有直接出现同名词语。';
+    focus.appendChild(caveat);
+  }
+  const relatedLinks = graphState.links.filter(link => link.source === selected.name || link.target === selected.name);
+  if (relatedLinks.length) {
+    const relationLabel = document.createElement('div');
+    relationLabel.className = 'graph-relation-label';
+    relationLabel.textContent = '策展关联 · 点击继续探索';
+    focus.appendChild(relationLabel);
+    const links = document.createElement('div');
+    links.className = 'graph-focus-links';
+    relatedLinks.forEach(link => {
+      const target = link.source === selected.name ? link.target : link.source;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = `${link.label} · ${target}`;
+      button.addEventListener('click', () => selectGraphNode(target));
+      links.appendChild(button);
+    });
+    focus.appendChild(links);
+  }
+  const action = document.createElement('button');
+  action.type = 'button';
+  action.className = 'graph-focus-action';
+  action.textContent = '对照完整诗文 ↓';
+  action.addEventListener('click', () => document.getElementById('d-lines').scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+  focus.appendChild(action);
+}
+
+function setGraphExpanded(expanded) {
+  document.getElementById('detail').classList.toggle('graph-expanded', expanded);
+  const button = document.getElementById('graph-expand');
+  button.setAttribute('aria-pressed', String(expanded));
+  button.textContent = expanded ? '收起图谱' : '展开图谱';
+}
+document.getElementById('graph-expand').addEventListener('click', () => {
+  setGraphExpanded(!document.getElementById('detail').classList.contains('graph-expanded'));
+});
+
+/* ═══════ Global Graph ═══════ */
+function buildGlobalGraphOption() {
+  const poemNodes = POEMS.map(p => ({
+    name: p.title.replace(/[《》]/g, ''),
+    category: 1,
+    symbolSize: 30,
+    detailTooltip: '<span style="color:#D4AF37;font-size:14px;font-weight:bold">' + escapeHTML(p.title) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">地点：' + escapeHTML(p.location) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">主题：' + escapeHTML(p.theme) + '</span><br>' +
+      '<span style="color:#E0D6C8;font-size:12px">时间：' + escapeHTML(p.timeClue) + '</span>'
+  }));
+  const themes = [...new Set(POEMS.map(p => p.theme).filter(Boolean))];
+  const themeColors = ['#6B9B6A','#E07B39','#8B7BBE','#D64545','#D4AF37','#C5A028','#5B8C5A','#C47B3B'];
+  const themeNodes = themes.map((t, index) => ({
+    name: t, category: 3, symbolSize: 28,
+    itemStyle: { color: themeColors[index] || '#6B9B6A' }
+  }));
+
+  return {
+    backgroundColor: 'transparent',
+    animationDuration: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    tooltip: {
+      trigger: 'item',
+      formatter: function(p) {
+        if (p.dataType === 'edge') return '<span style="color:#D4AF37;font-size:12px;letter-spacing:2px">' + escapeHTML(p.data.label || '') + '</span>';
+        if (p.data && p.data.detailTooltip) return p.data.detailTooltip;
+        return '<span style="color:#D4AF37;font-size:14px;font-weight:bold;letter-spacing:2px">' + escapeHTML(p.name) + '</span>';
+      },
+      backgroundColor: 'rgba(20,10,6,0.95)',
+      borderColor: 'rgba(212,175,55,0.4)',
+      borderWidth: 1,
+      textStyle: { color: '#E0D6C8', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", fontSize: 13 }
+    },
+    series: [{
+      type: 'graph', layout: 'force', roam: true, draggable: true,
+      force: { repulsion: 350, edgeLength: [120, 220], gravity: 0.08 },
+      emphasis: { focus: 'adjacency', lineStyle: { width: 3 }, itemStyle: { shadowBlur: 20, shadowColor: 'rgba(212,175,55,0.5)' } },
+      label: { show: true, position: 'bottom', color: '#E0D6C8', fontSize: 12, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", distance: 6 },
+      edgeLabel: { show: true, color: '#E0D6C8', fontSize: 9, fontWeight: 'bold', fontFamily: "'Songti SC','STKaiti','KaiTi','楷体',serif", letterSpacing: 1 },
+      edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 6,
+      lineStyle: { color: 'rgba(224,214,200,0.4)', width: 1.5, curveness: 0.2 },
+      categories: [
+        { name: '作者', itemStyle: { color: '#D64545' }, symbol: 'diamond', symbolSize: 52, label: { color: '#D4AF37', fontSize: 16, fontWeight: 700 } },
+        { name: '诗作', itemStyle: { color: '#C5A028' }, symbol: 'roundRect', symbolSize: 32 },
+        { name: '地点', itemStyle: { color: '#6B9B6A' }, symbol: 'circle', symbolSize: 18 },
+        { name: '主题', itemStyle: { color: '#E07B39' }, symbol: 'triangle', symbolSize: 30 }
+      ],
+      data: [
+        { name: '张謇', category: 0, symbolSize: 56 },
+        ...poemNodes,
+        ...POEMS.map(p => ({ name: p.location, category: 2, symbolSize: 18 })),
+        ...themeNodes
+      ],
+      links: [
+        ...POEMS.map(p => ({ source: '张謇', target: p.title.replace(/[《》]/g, ''), label: '诗作' })),
+        ...POEMS.map(p => ({ source: p.title.replace(/[《》]/g, ''), target: p.location, label: '地点' })),
+        ...POEMS.filter(p => p.theme).map(p => ({ source: p.title.replace(/[《》]/g, ''), target: p.theme, label: '主题' }))
+      ]
+    }]
+  };
+}
+
+/* ═══════ 填充卡片内容 ═══════ */
+function renderDetailMeta(p) {
+  const metaEl = document.getElementById('d-meta');
+  metaEl.replaceChildren();
+  [
+    { label: p.theme, value: p.theme },
+    { label: p.timeClue, value: p.timeClue },
+    { label: p.location, value: p.location.split('·')[0].trim() }
+  ].filter(item => item.label).forEach(item => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'detail-chip';
+    chip.textContent = item.label;
+    chip.title = `筛选：${item.value}`;
+    chip.addEventListener('click', () => {
+      poemSearch.value = item.value;
+      applyPoemFilters();
+      if (panel.classList.contains('collapsed')) panelToggle.click();
+      poemSearch.focus();
+    });
+    metaEl.appendChild(chip);
+  });
+}
+
+function renderTourismDetail(p) {
+  const scenicEl = document.getElementById('d-scenic');
+  scenicEl.replaceChildren();
+  if (p.tourism?.length) {
+    const title = document.createElement('div');
+    title.className = 'tourism-section-title';
+    title.textContent = '诗歌地点关联';
+    scenicEl.appendChild(title);
+  }
+  (p.tourism || []).forEach(site => {
+    scenicEl.appendChild(createTourismCard(p, site, false));
+  });
+  if (p.nearby?.length) {
+    const title = document.createElement('div');
+    title.className = 'tourism-section-title';
+    title.textContent = '周边推荐 · 不属于诗歌历史地点';
+    scenicEl.appendChild(title);
+  }
+  (p.nearby || []).forEach(site => {
+    scenicEl.appendChild(createTourismCard(p, site, false));
+  });
+}
+
+function fillCard(p) {
+  document.getElementById('d-title').textContent = p.title;
+  document.getElementById('d-loc').textContent   = p.location;
+  renderDetailMeta(p);
+  renderTourismDetail(p);
+
+  // 音频
+  const audEl = document.getElementById('d-audio');
+  audEl.replaceChildren();
+  if (p.audioUrl) {
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.preload = 'metadata';
+    audio.src = encodeURI(p.audioUrl);
+    audio.addEventListener('error', () => {
+      const msg = document.createElement('div');
+      msg.className = 'placeholder-box';
+      msg.style.cssText = 'height:50px;font-size:11px';
+      msg.textContent = '[ 音频暂时无法加载 ]';
+      audEl.replaceChildren(msg);
+    }, { once: true });
+    audEl.appendChild(audio);
+  } else {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder-box';
+    placeholder.style.cssText = 'height:50px;font-size:11px';
+    placeholder.textContent = '这首诗暂时没有朗读';
+    audEl.appendChild(placeholder);
+  }
+
+  // 诗句关系：固定排布、筛选与点击探索
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  renderGraphExperience(p);
+
+  // 图谱原图（若有预制的知识图谱PNG则展示）
+  const imgWrap = document.getElementById('d-graph-img-wrap');
+  const imgEl   = document.getElementById('d-graph-img');
+  if (p.graphImage) {
+    // 懒加载图片放在隐藏容器中不会触发 load；先展示折叠入口，再按需加载原图。
+    imgWrap.style.display = 'block';
+    imgWrap.open = false;
+    imgEl.onload = null;
+    imgEl.onerror = () => { imgWrap.style.display = 'none'; imgEl.removeAttribute('src'); };
+    imgEl.alt = `${p.title}诗句关系图`;
+    imgEl.src = encodeURI(p.graphImage);
+  } else {
+    imgWrap.style.display = 'none';
+    imgEl.onload = null;
+    imgEl.onerror = null;
+    imgEl.src = '';
+  }
+
+  // 诗句由 renderGraphPoemHighlight 填入，选中线索时同步标记原诗。
+}
+
+/* ═══════ 标签页切换 ═══════ */
+function switchTab(key) {
+  if (key === 'vid' && !POEMS.find(p => p.id === activeId)?.videoUrl) key = 'gph';
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === key));
+  document.querySelectorAll('.pane').forEach(pn => pn.classList.remove('on'));
+  document.getElementById('pane-' + key)?.classList.add('on');
+
+  // 视频按需创建，直接读取本地网页资源，不经过第三方视频平台。
+  const vidEl = document.getElementById('d-video');
+  if (key === 'vid') {
+    const p = POEMS.find(x => x.id === activeId);
+    if (p?.videoUrl) {
+      vidEl.replaceChildren();
+      const video = document.createElement('video');
+      video.src = encodeURI(p.videoUrl);
+      video.controls = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.setAttribute('aria-label', `${p.title}影像`);
+      if (p.videoPoster) video.poster = encodeURI(p.videoPoster);
+      video.addEventListener('error', () => {
+        const message = document.createElement('div');
+        message.className = 'placeholder-box';
+        message.style.height = '100%';
+        message.textContent = '[ 视频暂时无法加载 ]';
+        vidEl.replaceChildren(message);
+      });
+      vidEl.appendChild(video);
+    }
+  } else {
+    vidEl.innerHTML = ''; // 释放资源
+  }
+  // 切换到知识图谱时重绘图表
+  if (key === 'gph' && chartInstance) {
+    setTimeout(() => chartInstance.resize(), 50);
+  }
+}
+
+/* ═══════ 关闭卡片 ═══════ */
+document.getElementById('close-btn').addEventListener('click', () => {
+  cardMinimized = false;
+  setGraphExpanded(false);
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('d-video').innerHTML = ''; // 释放视频
+  if (chartInstance) { chartInstance.dispose(); chartInstance = null; }
+  if (window.location.hash) {
+    try { history.replaceState(null, '', window.location.pathname + window.location.search); }
+    catch (e) { window.location.hash = ''; }
+  }
+});
+
+document.getElementById('favorite-btn').addEventListener('click', () => {
+  if (!activeId || activeId === 0) return;
+  if (favoriteIds.has(activeId)) favoriteIds.delete(activeId);
+  else favoriteIds.add(activeId);
+  try { localStorage.setItem('zhangjian-favorites', JSON.stringify([...favoriteIds])); } catch (e) {}
+  updateFavoriteButton(activeId);
+  applyPoemFilters();
+});
+
+/* ═══════ 知识卡片缩放：仅在按住拖动条后改变高度 ═══════ */
+(function(){
+  const detail = document.getElementById('detail');
+  const handle = detail.querySelector('.resize-handle');
+  const mapWrap = document.getElementById('map-wrap');
+  let dragging = false;
+  let activePointerId = null;
+
+  function limits() {
+    return { min: window.innerWidth <= 900 ? 28 : 16, max: 85 };
+  }
+
+  function currentHeightPercent() {
+    const mapHeight = mapWrap.getBoundingClientRect().height || 1;
+    return (detail.getBoundingClientRect().height / mapHeight) * 100;
+  }
+
+  function applyHeight(percent) {
+    const { min, max } = limits();
+    const next = Math.max(min, Math.min(max, percent));
+    detail.style.height = next + '%';
+    handle.setAttribute('aria-label', `拖动调整知识卡片高度，当前约${Math.round(next)}%`);
+  }
+
+  handle.addEventListener('pointerdown', function(e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+    dragging = true;
+    activePointerId = e.pointerId;
+    cardMinimized = false;
+    handle.setPointerCapture?.(e.pointerId);
+    handle.classList.add('dragging');
+    detail.style.transition = 'none';
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  window.addEventListener('pointermove', function(e) {
+    if (!dragging || e.pointerId !== activePointerId) return;
+    e.preventDefault();
+    const rect = mapWrap.getBoundingClientRect();
+    applyHeight(((rect.bottom - e.clientY) / rect.height) * 100);
+  }, { passive: false });
+
+  function endDrag(e) {
+    if (!dragging || (e.pointerId !== undefined && e.pointerId !== activePointerId)) return;
+    const pointerId = activePointerId;
+    dragging = false;
+    activePointerId = null;
+    if (pointerId !== null && handle.hasPointerCapture?.(pointerId)) {
+      handle.releasePointerCapture(pointerId);
+    }
+    handle.classList.remove('dragging');
+    detail.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1), height 0.35s ease';
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    if (chartInstance) setTimeout(() => chartInstance.resize(), 100);
+  }
+
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+  handle.addEventListener('lostpointercapture', endDrag);
+  window.addEventListener('blur', () => endDrag({}));
+
+  handle.addEventListener('keydown', function(e) {
+    const controls = ['ArrowUp', 'ArrowDown', 'Home', 'End'];
+    if (!controls.includes(e.key)) return;
+    e.preventDefault();
+    const { min, max } = limits();
+    let next = currentHeightPercent();
+    if (e.key === 'ArrowUp') next += 6;
+    if (e.key === 'ArrowDown') next -= 6;
+    if (e.key === 'Home') next = min;
+    if (e.key === 'End') next = max;
+    detail.style.transition = 'height 0.2s ease';
+    applyHeight(next);
+    cardMinimized = false;
+    if (chartInstance) setTimeout(() => chartInstance.resize(), 220);
+  });
+})();
+
+/* ═══════ tab点击事件代理 ═══════ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
+});
+
+/* ═══════ URL Hash 路由 ═══════ */
+function updateHash(id) {
+  const nextHash = id === 0 ? 'overview' : 'poem-' + id;
+  if (window.location.hash === '#' + nextHash) return;
+  try {
+    history.pushState(null, '', window.location.pathname + window.location.search + '#' + nextHash);
+  } catch (e) {
+    window.location.hash = nextHash;
+  }
+}
+
+function handleHash() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'overview') {
+    document.getElementById('pc-0')?.click();
+  } else if (hash.startsWith('poem-')) {
+    const id = parseInt(hash.replace('poem-', ''));
+    const p = POEMS.find(x => x.id === id);
+    if (p) flyToPoem(p);
+  }
+}
+
+window.addEventListener('hashchange', handleHash);
+window.addEventListener('popstate', handleHash);
+
+// 页面加载时读取 hash
+if (window.location.hash) {
+  setTimeout(handleHash, 400);
+}
+
+/* ═══════ 左侧面板收缩/展开 ═══════ */
+const panelToggle = document.getElementById('panel-toggle');
+const panel = document.getElementById('panel');
+function setPanelExpanded(expanded) {
+  panel.classList.toggle('collapsed', !expanded);
+  document.body.classList.toggle('panel-folded', !expanded);
+  panelToggle.setAttribute('aria-expanded', String(expanded));
+  panelToggle.setAttribute('aria-label', expanded ? '收起目录' : '展开目录');
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 400);
+  }
+}
+panelToggle.addEventListener('click', () => {
+  setPanelExpanded(panel.classList.contains('collapsed'));
+});
+let layoutWasMobile = window.innerWidth <= 900;
+let graphWasCompact = window.innerWidth <= 600;
+window.addEventListener('resize', () => {
+  const layoutIsMobile = window.innerWidth <= 900;
+  const graphIsCompact = window.innerWidth <= 600;
+  if (layoutWasMobile && !layoutIsMobile) setPanelExpanded(true);
+  if (!layoutWasMobile && layoutIsMobile && document.getElementById('detail').classList.contains('open')) setPanelExpanded(false);
+  layoutWasMobile = layoutIsMobile;
+  if (graphWasCompact !== graphIsCompact && graphState.nodes.length) renderGraphCanvas();
+  graphWasCompact = graphIsCompact;
+  if (map) map.invalidateSize();
+  if (chartInstance) chartInstance.resize();
+  if (vizInstance) vizInstance.resize();
+});
+});
+</script>
+</body>
+</html>

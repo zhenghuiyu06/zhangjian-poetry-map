@@ -1,0 +1,57 @@
+/* 七境终章沿用浅水蓝与纸质护照；私人记录默认不进入可分享卡。 */
+.profile-gate{margin-top:24px;padding:23px 24px;border:1px solid #c9d5d1;border-radius:7px;background:linear-gradient(110deg,#edf4f0,#fffaf0)}
+.profile-gate.is-ready{border-color:#b69678;background:linear-gradient(110deg,#f7eee1,#ecf3ef)}
+.profile-gate-mark{color:#9a523b;font-size:11px;font-weight:750;letter-spacing:.16em}
+.profile-gate h3{font-family:var(--serif);font-size:clamp(24px,2.5vw,31px);line-height:1.25;margin:8px 0 8px;color:#1b3e4b}
+.profile-gate p{margin:0 0 16px;font-size:14px;color:#46585d;line-height:1.75}
+.profile-gate .profile-progress{height:8px;max-width:560px;background:#d4dfda;border-radius:99px;overflow:hidden;margin:0 0 18px}
+.profile-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#a44c37,#cfaa6b);border-radius:inherit;transition:width .3s}
+.profile-gate button{min-height:46px}
+.profile-gate small{display:block;margin-top:13px;color:#647076;font-size:11px;line-height:1.6}
+.profile-dialog{width:min(960px,calc(100% - 24px));max-height:92dvh;overflow:auto;border:1px solid #d7c9b0;background:#fffaf0;color:#17252b}
+.profile-dialog-body{padding:clamp(24px,4vw,48px)}
+.profile-dialog .eyebrow{color:#a54632}
+.profile-dialog h2{font-family:var(--serif);font-size:clamp(30px,3.4vw,48px);line-height:1.2;margin:16px 52px 10px 0}
+.profile-dialog-intro{color:#526369;line-height:1.75;margin:0 35px 24px 0}
+.profile-status{min-height:22px;color:#8c3d2c;font-size:13px;line-height:1.65;margin:16px 0 0}
+.profile-question{border:1px solid #d8d4c9;border-radius:7px;padding:19px;margin:0 0 14px;background:#fffdf8;min-width:0}
+.profile-question legend{font-family:var(--serif);font-weight:700;font-size:20px;padding:0 8px;color:#1a3e4b}
+.profile-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.profile-option{display:flex;align-items:center;gap:10px;min-height:54px;padding:9px 12px;border:1px solid #dcd9cf;border-radius:5px;background:#fcfaf4;cursor:pointer;font-size:14px;line-height:1.45}
+.profile-option:hover,.profile-option:has(input:checked){border-color:#a65841;background:#f8ece4}
+.profile-option:has(input:focus-visible){outline:3px solid #396a74;outline-offset:2px}
+.profile-option input{accent-color:#a54632;flex:0 0 auto;width:17px;height:17px}
+.profile-favorite{display:block;font-weight:700;margin:19px 0 8px;color:#23434d}
+.profile-select,.profile-private-select{width:100%;min-height:48px;border:1px solid #c8c8bb;border-radius:5px;background:#fffdf8;color:#17252b;padding:0 12px;font:inherit}
+.profile-form-actions,.profile-result-actions,.profile-private-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.profile-form-actions button,.profile-result-actions button,.profile-private-actions button{min-height:44px}
+.profile-disclaimer{font-size:12px;color:#647076;line-height:1.7;margin:15px 0 0}
+.profile-result-card{position:relative;overflow:hidden;border:1px solid #c9b89e;border-radius:8px;padding:clamp(23px,4vw,42px);background:radial-gradient(circle at 92% 8%,#e0ece9,transparent 44%),#fffbf2;box-shadow:0 15px 35px rgba(31,56,61,.08)}
+.profile-result-card::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border:1px solid #c3d4d1;border-radius:50%;pointer-events:none}
+.profile-result-kicker{font-size:11px;font-weight:750;letter-spacing:.2em;color:#a04e36}
+.profile-result-card h3{font-family:var(--serif);font-size:clamp(35px,5vw,59px);line-height:1.15;margin:16px 0 12px;color:#1a3c4b}
+.profile-secondary{display:inline-block;padding:5px 11px;border-radius:99px;background:#e7eeeb;color:#2f525d;font-size:12px}
+.profile-result-card p{color:#3e5055;font-size:15px;line-height:1.85;max-width:700px;white-space:pre-wrap;overflow-wrap:anywhere}
+.profile-stamp-row{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 18px}
+.profile-stamp-row span{display:inline-flex;align-items:center;justify-content:center;min-height:29px;padding:2px 9px;border:1px solid #b77b62;color:#9a523b;border-radius:99px;font-size:11px}
+.profile-recommendation{padding:15px 18px;border-left:3px solid #a54632;background:#f1f4ef;color:#2a4850;line-height:1.75;font-size:14px}
+.profile-recommendation b{display:block;font-family:var(--serif);font-size:17px;margin-bottom:2px}
+.profile-private-panel{margin-top:22px;padding:20px;border:1px solid #d8d4c9;border-radius:7px;background:#fffdf8}
+.profile-private-panel h4{font-family:var(--serif);font-size:21px;margin:0 0 5px;color:#1d3f4c}
+.profile-private-panel p{font-size:13px;color:#58676a;line-height:1.7;margin:0 0 13px}
+.profile-private-preview{margin-top:13px;padding:13px;border:1px dashed #ccbda9;border-radius:5px;color:#43545b;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.profile-private-preview img{display:block;width:100%;max-height:210px;object-fit:cover;margin-top:10px;border-radius:4px}
+.profile-private-preview strong{display:block;color:#9b4d36}
+.profile-private-preview[hidden]{display:none}
+.profile-private-actions button{font-size:13px}
+.profile-private-panel .profile-private-applied{margin:14px 0 0;padding:9px 12px;border-left:3px solid #a54632;background:#f8eee7;color:#713f30;font-weight:650}
+.profile-explanation{margin-top:19px;border-top:1px solid #d8d4c9;padding-top:12px;color:#53646a;font-size:13px;line-height:1.75}
+.profile-explanation summary{width:max-content;max-width:100%;min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700;color:#23434d}
+.profile-explanation p{margin:0 0 6px}
+.profile-copy-fallback{display:block;width:100%;min-height:124px;margin-top:14px;padding:12px;border:1px solid #c8c8bb;border-radius:5px;background:#fffdf8;color:#17252b;font:inherit;font-size:14px;line-height:1.65;resize:vertical}
+.profile-download-fallback{margin-top:18px;padding:14px;border:1px solid #d8d4c9;border-radius:7px;background:#fffdf8}
+.profile-download-fallback p{margin:0 0 10px;color:#475d61;font-size:13px;line-height:1.6}
+.profile-save-again{display:inline-flex;align-items:center;min-height:44px;margin:0 0 12px;color:#1b4552;font-weight:700;text-underline-offset:3px}
+.profile-download-fallback img{display:block;width:min(100%,340px);height:auto;border:1px solid #d6c8b5;border-radius:4px}
+@media(max-width:760px){.profile-gate{padding:20px 17px}.profile-dialog-body{padding:25px 17px 30px}.profile-dialog h2{margin-right:46px}.profile-options{grid-template-columns:1fr}.profile-option{min-height:48px}.profile-result-actions button,.profile-form-actions button{flex:1 1 165px}.profile-result-card p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.profile-progress span{transition:none}}
