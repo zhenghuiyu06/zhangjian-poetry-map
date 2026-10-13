@@ -5,7 +5,7 @@ const tourGuides = {
     title: '从狼山，读到一座城',
     description: '先在诗中读到狼山，再到今天的山水中寻找“江月白翻翻”。想继续走，可自选博物苑、濠河或商圈，给旅程一个不同的尾声。',
     steps: ['读《狼山三元宫近斥僧挽词》', '看狼山今日山水', '自选博物苑、濠河或商圈'],
-    caveat: '同城主题选点；具体交通与开放信息请出发前核对。',
+    caveat: '',
     image: 'assets/scenic/langshan.webp',
     imageAlt: '狼山国家森林公园现代实景',
     caption: '今日狼山实景',
@@ -35,7 +35,7 @@ const tourGuides = {
     title: '读一场落日，去看今日海岸',
     description: '从吕四归途诗开始，去观察今日启东海岸的海天光影。照片摄于东部海堤观潮台，与吕四并非同一地点。',
     steps: ['读吕四归途诗', '看东部海堤的今日海景', '记录自己见到的光线与颜色'],
-    caveat: '出发前请确认目的地、天气和交通；页面不提供两地间的路线或距离。',
+    caveat: '',
     image: 'assets/scenic/public/qidong-seawall-viewing-platform.jpg',
     imageAlt: '启东东部海堤观潮台现代实景',
     caption: '启东东部海堤观潮台 · Wangcheni97 / CC BY-SA 4.0',
@@ -74,7 +74,9 @@ function selectTourGuide(key) {
   document.getElementById('guideKicker').textContent = guide.kicker;
   document.getElementById('guideTitle').textContent = guide.title;
   document.getElementById('guideDescription').textContent = guide.description;
-  document.getElementById('guideCaveat').textContent = guide.caveat;
+  const caveat = document.getElementById('guideCaveat');
+  caveat.hidden = !guide.caveat;
+  caveat.textContent = guide.caveat;
   document.getElementById('guideCaption').textContent = guide.caption;
   const credit = document.getElementById('guideCredit');
   credit.hidden = !guide.photoSource;
