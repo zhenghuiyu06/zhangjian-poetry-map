@@ -40,7 +40,7 @@
 
 诗歌地图新增两张有明确许可的实景图：[濠河夜景](https://commons.wikimedia.org/wiki/File:Hao_River_in_The_Evening.JPG)由大眼夹拍摄于 2007 年，按 CC BY-SA 3.0 使用；[南大街街景](https://commons.wikimedia.org/wiki/File:Nantong_Bus_Route_G1_at_Nan_Dajie_in_Jiangsu,_China_20260219.jpg)由 4084470 0.smil 拍摄于 2026 年，按 CC BY 4.0 使用。网页版本经过缩放压缩，照片原图与许可链接可从景点卡查看。南通 CBD 大有境尚未找到许可明确的准确照片，保留文字信息但不显示空白图片位；获得自摄或授权图后再补入。桌面旧站原件不受影响。
 
-如东小洋口滩涂照片来自 [Alastair Rae 的 Wikimedia Commons 页面](https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg)，按 [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) 使用；站内使用缩放版，地点卡保留作者、许可及原图链接。原有潮间带风电场照片作为第二张图保留，不将两处现代景观指认为垦殖旧址。
+如东小洋口滩涂照片由 Alastair Rae 拍摄于 2014 年，原图见 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg)，按 [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) 使用；站内使用缩放版，地点卡保留作者、许可及原图链接。原有潮间带风电场照片作为第二张图保留，不将两处现代景观指认为垦殖旧址。
 
 页面不接入 AI API，不上传个人照片。任何现代实景图都不表示诗作年代的原貌。
 
