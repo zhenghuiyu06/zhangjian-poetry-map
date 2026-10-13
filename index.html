@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="从张謇诗歌出发，漫游今日南通。读诗、看实景、选一站，并留下自己的江海观察。">
+  <meta name="description" content="从海门故里出发，循七境认识张謇与南通。看今日风景、读诗歌线索，留下自己的江海行旅。">
   <meta name="theme-color" content="#f4f0e7">
   <title>张謇诗路 · 南通漫游｜城市行旅与诗路护照</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23143c5a'/%3E%3Cpath d='M14 44c10-3 13-24 26-25 6 0 10 5 10 11 0 9-9 15-21 15' fill='none' stroke='%23f3e9cf' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='25' cy='42' r='5' fill='%23a94a35'/%3E%3C/svg%3E">
@@ -114,15 +114,15 @@
     @media(max-width:760px){.method-try{align-items:stretch;flex-direction:column}.method-try button{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
   </style>
-  <link rel="stylesheet" href="v2.css">
+  <link rel="stylesheet" href="v2.css?v=20261013-seven">
   <link rel="stylesheet" href="profile.css">
   <link rel="stylesheet" href="fusion.css">
 </head>
 <body>
-  <a class="skip" href="#explore">跳到漫游选择</a>
+  <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="#explore">漫游</a><a href="#route">七境</a><a href="#archive">诗歌</a><a href="#passport">我的护照</a><a href="research.html" class="topnav-research">诗歌地图 ↗</a></nav>
+    <nav class="topnav" aria-label="主要导航"><a href="#seven-gates">七境</a><a href="#explore">漫游</a><a href="#archive">诗歌</a><a href="#passport">我的护照</a><a href="research.html" class="topnav-research">诗歌地图 ↗</a></nav>
     <button class="search-jump" id="searchJump" type="button" aria-label="搜索诗歌与地点">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
@@ -131,17 +131,31 @@
   <main id="top">
     <section class="tour-hero" aria-labelledby="tour-hero-title">
       <div class="tour-hero-copy">
-        <div class="eyebrow">从诗出发 · 漫游南通</div>
-        <h1 id="tour-hero-title">把诗读进<br><em>南通的风景里</em></h1>
-        <p>从一首张謇诗出发，找到今天可看的山海与人文地点；听一段朗读，走一站，再留下只属于自己的现场观察。</p>
-        <div class="tour-hero-actions"><a class="hero-primary" href="#explore">选择今天的漫游 ↗</a><a class="hero-secondary" href="#passport">打开我的诗路护照</a><a class="hero-secondary" href="research.html">打开诗歌地图 ↗</a></div>
+        <div class="eyebrow">从海门出发 · 走读南通</div>
+        <h1 id="tour-hero-title">张謇与<br><em>南通七境</em></h1>
+        <p>故里、文脉、园林、滩涂、考古、海岸与城市。先选一境认识今天的南通，再沿张謇的足迹与诗歌线索继续读下去。</p>
+        <div class="tour-hero-actions"><a class="hero-primary" href="#seven-gates">从第一站出发 ↗</a><a class="hero-secondary" href="#route">打开七境导览</a><a class="hero-secondary" href="#desk">走到线上书桌</a></div>
       </div>
-      <div class="tour-hero-aside" aria-label="网站内容概览"><span>一座城，几种读法</span><strong>读诗 · 看景 · 漫游</strong><p>从喜欢的风景开始，找到与它呼应的诗。</p><small>封面：今日狼山实景</small></div>
-      <a class="tour-scroll" href="#explore">向下，开始漫游 <span aria-hidden="true">↓</span></a>
+      <div class="tour-hero-aside" aria-label="七境行旅概览"><span>七境序章</span><strong>从故里到江海</strong><p>每一站有一条张謇线索，也有值得你亲自观察的今日风景。终点，把旅途带回一张书桌。</p><small>封面：今日张謇纪念馆实景</small></div>
+      <a class="tour-scroll" href="#seven-gates">向下，选择第一站 <span aria-hidden="true">↓</span></a>
+    </section>
+
+    <section class="seven-gates" id="seven-gates" aria-labelledby="seven-gates-title">
+      <div class="seven-gates-head"><div><div class="eyebrow">七境 · 七种进入南通的方式</div><h2 id="seven-gates-title">你想从哪里出发？</h2></div><p>点开一站，继续看它的张謇线索、今日景点与个人观察任务。可按兴趣选站，出行顺序由你决定。</p></div>
+      <div class="seven-gates-grid">
+        <a href="#route" data-entrance-station="haimen"><span>01 / 故里</span><strong>海门</strong><small>常乐镇 · 张謇纪念馆</small><em>从这里认识故乡 ↗</em></a>
+        <a href="#route" data-entrance-station="tongzhou"><span>02 / 寻根</span><strong>通州</strong><small>金沙诗境 · 地方文脉</small><em>沿地名读诗 ↗</em></a>
+        <a href="#route" data-entrance-station="rugao"><span>03 / 慢游</span><strong>如皋</strong><small>教育线索 · 水绘园</small><em>走进今日园林 ↗</em></a>
+        <a href="#route" data-entrance-station="rudong"><span>04 / 向海</span><strong>如东</strong><small>大豫垦殖 · 今日滩涂</small><em>看土地与海 ↗</em></a>
+        <a href="#route" data-entrance-station="haian"><span>05 / 探古</span><strong>海安</strong><small>人物书信 · 青墩遗址</small><em>读不同的历史时层 ↗</em></a>
+        <a href="#route" data-entrance-station="qidong"><span>06 / 追光</span><strong>启东</strong><small>吕四诗句 · 今日海岸</small><em>观察海天光影 ↗</em></a>
+        <a href="#route" data-entrance-station="nantong"><span>07 / 读城</span><strong>南通城区</strong><small>实业遗产 · 南通博物苑</small><em>走进城市记忆 ↗</em></a>
+        <a class="seven-gates-finale" href="#desk"><span>终点 / 回望</span><strong>张謇的书桌</strong><small>把七境的线索放到一起</small><em>进入线上书桌 ↗</em></a>
+      </div>
     </section>
 
     <section class="section mode-section" id="two-views" aria-labelledby="mode-title">
-      <header class="section-head"><div><div class="eyebrow">读城方式</div><h2 id="mode-title">一组诗歌，<br>两种读城方式</h2></div><p>沿着今日南通的山海与街巷漫游，也可以打开地图，看看诗歌的地点、主题和人物线索。</p></header>
+      <header class="section-head"><div><div class="eyebrow">继续探索</div><h2 id="mode-title">走一段路，<br>再读一座城</h2></div><p>从今日南通的山海与街巷漫游，也可以打开诗歌地图，追寻地点、主题和人物线索。</p></header>
       <div class="mode-grid">
         <a class="mode-card mode-card-walk" href="#route"><span class="mode-card-number">01 / 在路上</span><h3>漫游体验</h3><p>七境行旅、今日景点、诗歌朗读与影像、个人护照，以及集齐印章后的江海旅人画像。</p><span class="mode-card-tags"><span>七境自记</span><span>现场观察</span><span>旅人画像</span></span><strong>从七境出发 <span aria-hidden="true">↗</span></strong></a>
         <a class="mode-card mode-card-research" href="research.html"><span class="mode-card-number">02 / 看线索</span><h3>诗歌地图</h3><p>在地图上找诗歌地点，沿人物和主题线索继续阅读；也可以收藏诗歌、查看今日景点。</p><span class="mode-card-tags"><span>诗歌地点</span><span>人物与主题</span><span>诗路问答</span></span><strong>打开诗歌地图 <span aria-hidden="true">↗</span></strong></a>
@@ -210,6 +224,11 @@
         <div class="story-column"><span class="story-label">今日可看 · 现在</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
         <p class="story-relation" id="storyRelation">出生地与同镇纪念空间；不将今日景点误写为诗歌创作原址。</p><div class="story-sources" id="storySources"></div>
       </section>
+    </section>
+
+    <section class="desk-section" id="desk" aria-labelledby="desk-title">
+      <div class="desk-illustration" aria-hidden="true"><span class="desk-book desk-book-one"></span><span class="desk-book desk-book-two"></span><span class="desk-paper">謇</span><span class="desk-line"></span></div>
+      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title">行至江海，<br>再回到文字</h2><p>在这里翻开站内诗歌，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="#archive">读张謇诗歌 ↗</a><a href="research.html">看诗歌地图 ↗</a><a href="#passport">打开我的护照 ↗</a></div></div>
     </section>
 
     <section class="section archive" id="archive" aria-labelledby="archive-title">
@@ -544,6 +563,7 @@
     function showStationPoems(key){const s=stations[key];if(!s||!s.ids.length)return;activeFilter=s.name==='南通城区'?'南通':s.name;search.value='';document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('on',b.dataset.filter===activeFilter));render();document.getElementById('archive').scrollIntoView({behavior:'smooth'})}
     document.querySelectorAll('.route-node').forEach(n=>{n.addEventListener('pointerup',()=>setStation(n.dataset.station));n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStation(n.dataset.station)}})});
     document.querySelectorAll('.route-chip').forEach(n=>n.addEventListener('click',()=>setStation(n.dataset.station)));
+    document.querySelectorAll('[data-entrance-station]').forEach(link=>link.addEventListener('click',()=>setStation(link.dataset.entranceStation)));
     document.getElementById('stationOpen').addEventListener('click',()=>showStationPoems(currentStation));
     document.getElementById('stationFeature').addEventListener('click',()=>openStation(currentStation));
     document.getElementById('todayBtn').addEventListener('click',()=>{const keys=Object.keys(stations);const dateKey=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const day=Number(dateKey.replace(/\D/g,''));const key=keys[day%keys.length];setStation(key);openStation(key)});
