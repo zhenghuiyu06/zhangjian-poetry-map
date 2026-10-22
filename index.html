@@ -129,11 +129,80 @@
     @media(max-width:760px){.method-try{align-items:stretch;flex-direction:column}.method-try button{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
   </style>
+  <script>
+    // 入场动画：每个浏览器会话只播一次；带锚点的深链与“减少动态效果”设置直接进入正文。
+    (function(){
+      var root=document.documentElement;
+      try{
+        if(location.hash||sessionStorage.getItem('zj-intro-seen')||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+        sessionStorage.setItem('zj-intro-seen','1');
+      }catch(e){return}
+      root.classList.add('intro');
+      // 兜底：后续脚本即使出错，遮罩也不会一直挡住页面。
+      setTimeout(function(){root.classList.add('intro-reveal','intro-done')},6000);
+    })();
+  </script>
+  <style>
+    .intro-veil{display:none}
+    .intro .intro-veil{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:24px 16px;overflow:hidden;cursor:pointer;color:#17242c;background:radial-gradient(circle at 50% 40%,#fbf8f1 0,#f4f0e7 55%,#e9e1d2 100%)}
+    .intro.intro-reveal .intro-veil{animation:intro-lift .8s cubic-bezier(.76,0,.24,1) forwards}
+    .intro.intro-skip .intro-veil{animation-duration:.5s}
+    .intro.intro-done .intro-veil{display:none}
+    .intro:not(.intro-done) body{overflow:hidden}
+    .intro-stage{position:relative;width:min(720px,100%);text-align:center}
+    .intro-eyebrow{margin:0 0 18px;color:#a64634;font-size:clamp(12px,1.6vw,14px);font-weight:700;letter-spacing:.32em;opacity:0;animation:intro-fade .8s ease .1s forwards}
+    .intro-title{position:relative;display:inline-flex;gap:.06em;margin:0;font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;font-size:clamp(54px,11vw,124px);font-weight:600;line-height:1.1;letter-spacing:.1em}
+    .intro-title>span{opacity:0;filter:blur(12px);transform:translateY(.12em);animation:intro-ink .9s cubic-bezier(.2,.7,.2,1) calc(1.35s + var(--i) * .13s) forwards}
+    .intro-seal{position:absolute;left:100%;top:-.08em;display:grid;place-items:center;width:clamp(38px,6.4vw,62px);height:clamp(38px,6.4vw,62px);margin-left:.04em;border-radius:5px;background:#a64634;color:#fff7e8;font-size:clamp(12px,1.9vw,18px);line-height:1.05;letter-spacing:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.38),0 6px 18px rgba(166,70,52,.28);opacity:0;animation:intro-stamp .5s cubic-bezier(.3,1.5,.5,1) 2.2s forwards}
+    .intro-river{display:block;width:100%;height:clamp(46px,8vw,72px);margin:clamp(14px,3vw,26px) 0 0;overflow:visible}
+    .intro-river path{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1 2;stroke-dashoffset:1;animation:intro-draw 1.3s cubic-bezier(.45,0,.2,1) .15s forwards}
+    .intro-river .wide{stroke:#9eb6c3;stroke-width:16;opacity:.28}
+    .intro-river .line{stroke:#143c5a;stroke-width:2.5}
+    .intro-stations{display:flex;justify-content:space-between;gap:4px;margin:6px 0 0;padding:0;list-style:none;font-family:"Songti SC","STSong","Noto Serif SC",serif;font-size:clamp(13px,2.2vw,17px);font-weight:700;color:#657078}
+    .intro-stations li{display:grid;justify-items:center;gap:7px;opacity:.18;animation:intro-station .5s ease calc(.45s + var(--i) * .13s) forwards}
+    .intro-stations li::before{content:"";width:11px;height:11px;border-radius:50%;background:#fffdf8;border:2.5px solid #143c5a;transition:none;animation:intro-dot .5s ease calc(.45s + var(--i) * .13s) forwards}
+    .intro-tagline{margin:clamp(22px,4vw,34px) 0 0;color:#35444d;font-family:"Songti SC","STSong","Noto Serif SC",serif;font-size:clamp(15px,2vw,19px);letter-spacing:.24em;opacity:0;animation:intro-fade .8s ease 2.4s forwards}
+    .intro-hint{position:absolute;right:clamp(16px,4vw,40px);bottom:max(18px,env(safe-area-inset-bottom));color:#8a9398;font-size:12px;letter-spacing:.12em;opacity:0;animation:intro-fade .6s ease .9s forwards}
+    .intro:not(.intro-reveal) .tour-hero-copy,.intro:not(.intro-reveal) .tour-hero-aside{opacity:0;transform:translateY(22px)}
+    .intro .tour-hero-copy,.intro .tour-hero-aside{transition:opacity .9s ease .25s,transform .9s cubic-bezier(.2,.7,.2,1) .25s}
+    .intro .tour-hero-aside{transition-delay:.45s}
+    @keyframes intro-fade{to{opacity:1}}
+    @keyframes intro-ink{to{opacity:1;filter:blur(0);transform:none}}
+    @keyframes intro-draw{to{stroke-dashoffset:0}}
+    @keyframes intro-station{to{opacity:1;color:#17242c}}
+    @keyframes intro-dot{60%{transform:scale(1.45)}to{background:#a64634;border-color:#a64634;transform:scale(1)}}
+    @keyframes intro-stamp{0%{opacity:0;transform:scale(1.9) rotate(-18deg)}100%{opacity:1;transform:scale(1) rotate(-6deg)}}
+    @keyframes intro-lift{to{clip-path:inset(0 0 100% 0);visibility:hidden}}
+  </style>
   <link rel="stylesheet" href="v2.css?v=20261013-seven">
   <link rel="stylesheet" href="profile.css?v=20261021">
   <link rel="stylesheet" href="fusion.css?v=20261021">
 </head>
 <body>
+  <div class="intro-veil" id="introVeil" aria-hidden="true">
+    <div class="intro-stage">
+      <p class="intro-eyebrow">从海门出发 · 走读南通</p>
+      <div class="intro-title"><span style="--i:0">张</span><span style="--i:1">謇</span><span style="--i:2">诗</span><span style="--i:3">路</span><b class="intro-seal">謇<br>迹</b></div>
+      <svg class="intro-river" viewBox="0 0 720 60" preserveAspectRatio="none"><path class="wide" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/><path class="line" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/></svg>
+      <ol class="intro-stations"><li style="--i:0">海门</li><li style="--i:1">通州</li><li style="--i:2">如皋</li><li style="--i:3">如东</li><li style="--i:4">海安</li><li style="--i:5">启东</li><li style="--i:6">南通</li></ol>
+      <p class="intro-tagline">七境 · 一条江海诗路</p>
+    </div>
+    <span class="intro-hint">轻触任意处跳过</span>
+  </div>
+  <script>
+    (function(){
+      var root=document.documentElement;if(!root.classList.contains('intro'))return;
+      var events=['pointerdown','keydown','wheel','touchstart'],timer=setTimeout(function(){leave(false)},3200);
+      function leave(fast){
+        if(root.classList.contains('intro-reveal'))return;
+        clearTimeout(timer);events.forEach(function(type){window.removeEventListener(type,skip)});
+        root.classList.add('intro-reveal');if(fast)root.classList.add('intro-skip');
+        setTimeout(function(){root.classList.add('intro-done')},fast?520:820);
+      }
+      function skip(){leave(true)}
+      events.forEach(function(type){window.addEventListener(type,skip,{passive:true})});
+    })();
+  </script>
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
