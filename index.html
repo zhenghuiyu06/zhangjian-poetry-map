@@ -6,6 +6,21 @@
   <meta name="description" content="从海门故里出发，循七境认识张謇与南通。看今日风景、读诗歌线索，留下自己的江海行旅。">
   <meta name="theme-color" content="#f4f0e7">
   <title>张謇诗路 · 南通漫游｜城市行旅与诗路护照</title>
+  <link rel="canonical" href="https://loveeti.top/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="张謇诗路 · 南通漫游">
+  <meta property="og:url" content="https://loveeti.top/">
+  <meta property="og:title" content="张謇诗路 · 南通漫游">
+  <meta property="og:description" content="从海门故里出发，循七境认识张謇与南通。看今日风景、读诗歌线索，留下自己的江海行旅。">
+  <meta property="og:image" content="https://loveeti.top/assets/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="海门常乐镇张謇纪念馆门匾">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <!-- 首屏封面是 CSS 背景图，提前声明可让浏览器不必等 v2.css 解析完才开始下载。 -->
+  <link rel="preload" as="image" href="assets/scenic/zhangjian-memorial.webp" type="image/webp" fetchpriority="high">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23143c5a'/%3E%3Cpath d='M14 44c10-3 13-24 26-25 6 0 10 5 10 11 0 9-9 15-21 15' fill='none' stroke='%23f3e9cf' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='25' cy='42' r='5' fill='%23a94a35'/%3E%3C/svg%3E">
   <style>
     :root{
@@ -115,8 +130,8 @@
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
   </style>
   <link rel="stylesheet" href="v2.css?v=20261013-seven">
-  <link rel="stylesheet" href="profile.css">
-  <link rel="stylesheet" href="fusion.css">
+  <link rel="stylesheet" href="profile.css?v=20261021">
+  <link rel="stylesheet" href="fusion.css?v=20261021">
 </head>
 <body>
   <a class="skip" href="#seven-gates">跳到七境入口</a>
@@ -172,7 +187,7 @@
           <button class="guide-option" type="button" data-guide="coast" aria-pressed="false"><span>03 / 海天追光</span><strong>读一场落日</strong><small>吕四归途 · 今日启东海岸</small></button>
         </div>
         <div class="guide-panel" id="guidePanel" aria-live="polite">
-          <figure class="guide-visual"><img id="guideImage" src="assets/scenic/langshan.webp" alt="狼山国家森林公园现代实景" decoding="async"><div class="guide-image-fallback" id="guideImageFallback" hidden>图片暂时无法加载，仍可查看地点介绍。</div><figcaption id="guideCaption">今日狼山实景</figcaption></figure>
+          <figure class="guide-visual"><img id="guideImage" src="assets/scenic/langshan.webp" alt="狼山国家森林公园现代实景" loading="lazy" decoding="async"><div class="guide-image-fallback" id="guideImageFallback" hidden>图片暂时无法加载，仍可查看地点介绍。</div><figcaption id="guideCaption">今日狼山实景</figcaption></figure>
           <div class="guide-copy"><div class="guide-kicker" id="guideKicker">诗歌地点直接对应 × 今日同城延伸</div><h3 id="guideTitle">从狼山，读到一座城</h3><p id="guideDescription">先在诗中读到狼山，再到今天的山水中寻找“江月白翻翻”。想继续走，可自选博物苑、濠河或商圈，给旅程一个不同的尾声。</p><div class="guide-steps" id="guideSteps"></div><p class="guide-caveat" id="guideCaveat" hidden></p><p class="guide-credit" id="guideCredit" hidden></p><div class="guide-actions"><button class="primary" id="guidePlace" type="button">查看地点特色</button><button class="ghost" id="guidePoem" type="button">读关联诗歌</button></div></div>
         </div>
       </div>
@@ -235,7 +250,7 @@
       <header class="section-head"><div><div class="eyebrow">读一首诗</div><h2 id="archive-title">诗与南通</h2></div><p>从诗句走向江海山水与城市人文。读诗、听朗读、看诗句关系，再用自己的观察续写旅程。</p></header>
       <div class="archive-tools">
         <label class="searchbox" for="archiveSearch"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="archiveSearch" type="search" placeholder="搜索诗名、地点、主题或景点" autocomplete="off"></label>
-        <div class="filters" role="group" aria-label="按地点筛选"><button class="filter on" data-filter="all">全部</button><button class="filter" data-filter="南通">南通城区</button><button class="filter" data-filter="通州">通州</button><button class="filter" data-filter="海门">海门</button><button class="filter" data-filter="启东">启东</button></div>
+        <div class="filters" role="group" aria-label="按地点筛选"><button class="filter on" type="button" data-filter="all" aria-pressed="true">全部</button><button class="filter" type="button" data-filter="南通" aria-pressed="false">南通城区</button><button class="filter" type="button" data-filter="通州" aria-pressed="false">通州</button><button class="filter" type="button" data-filter="海门" aria-pressed="false">海门</button><button class="filter" type="button" data-filter="启东" aria-pressed="false">启东</button></div>
       </div>
       <p class="result-summary" id="resultSummary" hidden></p>
       <div class="poem-grid" id="poemGrid"></div>
@@ -312,7 +327,7 @@
       haimen:{no:'01',name:'海门',keyword:'故里 · 出发',note:'从《盆松》的常乐镇地点记录，走向今日张謇纪念馆；两者是同镇关联。',ids:[3],status:'同镇关联',title:'从《盆松》走向纪念空间',feature:'海门常乐镇的张謇纪念馆，可作为阅读张謇生平与地方记忆的今日人文地点。配图展示的是现代纪念空间，不是《盆松》的创作现场。',relation:'关联层级：同镇人文延伸；《盆松》的地点记录与纪念馆同在常乐镇，不推定为创作原址。',task:'选一处松、木构或庭院细节，写下它与你读到的诗句之间的联系。',factSource:{label:'海门区人民政府 · 张謇文化旅游景区',url:'https://www.haimen.gov.cn/hmsrmzf/fjms/content/48c31a44-c3e8-4c90-81c0-9085ae2f6366.html'},photo:{src:'assets/scenic/zhangjian-memorial.webp',place:'张謇纪念馆',alt:'海门常乐镇张謇纪念馆今日实景',credit:''}},
       tongzhou:{no:'02',name:'通州',keyword:'金沙 · 文脉',note:'《过排河观》和《金沙祭墓饮客沧园》写到金沙、排河观与沧园；配图是通州南山湖的今日水岸。',ids:[4,7],status:'地区延伸',title:'从金沙诗境看今日水岸',feature:'这两首诗提供了通州的文本线索。南山湖一带的现代水岸照片，适合观察今天城市与水的关系。',relation:'与诗歌的关系：同区配图；南山湖不是排河观或沧园，照片不能证明诗中地点的现存状态。',task:'先找出两首诗里的水与园林词语，再观察今日水岸有哪些相似或不同。',factSource:{label:'照片位置说明 · Wikimedia Commons',url:'https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E9%80%9A%E5%B7%9E%E5%8C%BA%E4%BD%93%E8%82%B2%E4%B8%AD%E5%BF%83%E7%9C%BA%E6%9C%9B%E5%8D%97%E5%B1%B1%E6%B9%96%E4%B8%80%E5%8F%B7.jpg'},photo:{src:'assets/scenic/public/station-tongzhou.jpg',place:'通州南山湖一带',alt:'从通州区体育中心眺望南山湖一带的现代城市水岸',credit:'Wangcheni97',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E9%80%9A%E5%B7%9E%E5%8C%BA%E4%BD%93%E8%82%B2%E4%B8%AD%E5%BF%83%E7%9C%BA%E6%9C%9B%E5%8D%97%E5%B1%B1%E6%B9%96%E4%B8%80%E5%8F%B7.jpg'}},
       rugao:{no:'03',name:'如皋',keyword:'园林 · 慢游',note:'走进水绘园，从水面、桥廊与树影感受如皋园林。',ids:[],status:'今日景点',title:'水绘园：从园林开始慢游',feature:'水绘园是如皋的园林景点。漫步水边，观察建筑、树影与水面的层次，也可以为今日旅程留一张照片。',relation:'',task:'拍一处水面或园林细节，写下今天最喜欢的视角。',factSource:{label:'如皋市人民政府 · 水绘园',url:'https://www.rugao.gov.cn/rgsrmzf/bddt/content/cd1f458a-2fb9-4e10-a5ec-225d0208ea3c.html'},photo:{src:'assets/scenic/public/station-rugao.jpg',place:'如皋水绘园',alt:'如皋水绘园今日水面与园林建筑',credit:'Howhowforever',license:'CC BY-SA 3.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/',source:'https://commons.wikimedia.org/wiki/File:%E6%B0%B4%E7%BB%98%E5%9B%AD.jpg'}},
-      rudong:{no:'04',name:'如东',keyword:'滩涂 · 向海',note:'先看小洋口的真实滩涂，再从大豫的垦殖线索认识如东。',ids:[],status:'今日景点',title:'小洋口：看见如东滩涂',feature:'小洋口的潮间带有泥滩、水道和湿地植被；这张照片拍摄于2014年，展示的是现代景观。大豫镇的垦殖历史是另一条地方线索，不把小洋口照片说成当年的垦殖现场。',relation:'',task:'留意水线、泥滩与植被的边界，拍一张自己看到的海岸，再写下潮水带来的变化。',factSource:{label:'如东县人民政府 · 小洋口海湾',url:'https://www.rudong.gov.cn/rdxrmzf/rdyw/content/9f0e419c-b678-4d4a-9088-258a7a981377.html'},photo:{src:'assets/scenic/public/rudong-xiaoyangkou-tidal-flat.jpg',place:'如东小洋口滩涂',alt:'如东小洋口滩涂、湿地栈道和水面上的小船',credit:'Alastair Rae',license:'CC BY-SA 2.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/2.0/',source:'https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg',modified:'网页缩放版'},gallery:[{src:'assets/scenic/public/station-rudong.png',place:'如东潮间带风电场',alt:'如东潮间带风电场今日实景',credit:'CatOnMars',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E5%A6%82%E4%B8%9C%E6%BD%AE%E9%97%B4%E5%B8%A6%E9%A3%8E%E7%94%B5%E5%9C%BA1.png',modified:'网页缩放版'}]},
+      rudong:{no:'04',name:'如东',keyword:'滩涂 · 向海',note:'先看小洋口的真实滩涂，再从大豫的垦殖线索认识如东。',ids:[],status:'今日景点',title:'小洋口：看见如东滩涂',feature:'小洋口的潮间带有泥滩、水道和湿地植被；这张照片拍摄于2014年，展示的是现代景观。大豫镇的垦殖历史是另一条地方线索，不把小洋口照片说成当年的垦殖现场。',relation:'',task:'留意水线、泥滩与植被的边界，拍一张自己看到的海岸，再写下潮水带来的变化。',factSource:{label:'如东县人民政府 · 小洋口海湾',url:'https://www.rudong.gov.cn/rdxrmzf/rdyw/content/9f0e419c-b678-4d4a-9088-258a7a981377.html'},photo:{src:'assets/scenic/public/rudong-xiaoyangkou-tidal-flat.jpg',place:'如东小洋口滩涂',alt:'如东小洋口滩涂、湿地栈道和水面上的小船',credit:'Alastair Rae',license:'CC BY-SA 2.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/2.0/',source:'https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg',modified:'网页缩放版'},gallery:[{src:'assets/scenic/public/station-rudong.jpg',place:'如东潮间带风电场',alt:'如东潮间带风电场今日实景',credit:'CatOnMars',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E5%A6%82%E4%B8%9C%E6%BD%AE%E9%97%B4%E5%B8%A6%E9%A3%8E%E7%94%B5%E5%9C%BA1.png',modified:'网页缩放版'}]},
       haian:{no:'05',name:'海安',keyword:'青墩 · 探古',note:'在青墩遗址了解海安的考古故事。',ids:[],status:'今日景点',title:'青墩遗址：从考古读江海',feature:'青墩遗址位于海安市南莫镇青墩村。可从现场标识进入海安的考古故事，再观察遗址周边的今日景观。',relation:'',task:'读一条现场介绍，拍一处你觉得最能留下印象的细节。',factSource:{label:'海安市人民政府 · 青墩遗址',url:'https://www.haian.gov.cn/hasrmzf/qdwh/content/891e2c1b-e5bd-49ef-8d28-53bbaee62894.html'},photo:{src:'assets/scenic/public/station-haian.jpg',place:'海安青墩遗址',alt:'海安青墩遗址今日标识亭与纪念碑',credit:'Howhowforever',license:'CC BY-SA 3.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/',source:'https://commons.wikimedia.org/wiki/File:%E9%9D%92%E5%A2%A9%E9%81%97%E5%9D%80.jpg'}},
       qidong:{no:'06',name:'启东',keyword:'海天 · 追光',note:'以吕四归途诗为文本入口；配图为启东东部海堤，不是吕四渔港。',ids:[2],status:'沿海延伸',title:'吕四归途与今日海岸',feature:'《落日九月十五歸自吕四途中》提供吕四的文本线索。配图是启东东部海堤观潮台的现代海岸景观，可用来观察今日的海面与天光。',relation:'关联层级：启东沿海延伸；配图不是吕四渔港，也不推定为诗歌创作原址。',task:'对照诗中的落日和海天色彩，记录今天看到的光线变化。',factSource:{label:'照片位置说明 · Wikimedia Commons',url:'https://commons.wikimedia.org/wiki/File:%E5%90%AF%E4%B8%9C%E5%B8%82%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%A0%A4%E8%A7%82%E6%BD%AE%E5%8F%B0.jpg'},photo:{src:'assets/scenic/public/qidong-seawall-viewing-platform.jpg',place:'启东东部海堤观潮台',alt:'启东市东部海堤观潮台与沿海景观',credit:'Wangcheni97',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E5%90%AF%E4%B8%9C%E5%B8%82%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%A0%A4%E8%A7%82%E6%BD%AE%E5%8F%B0.jpg'}},
       nantong:{no:'07',name:'南通城区',keyword:'城市 · 江海',note:'从城区诗境走向南通博物苑，区分诗歌地点与现代人文延伸。',ids:[1,5,6,8],status:'城市延伸',title:'从诗路走向南通博物苑',feature:'南通博物苑由张謇创办，是认识他与城市关系的今日人文地点。城区诗歌还有狼山、寺观、月夜与雅集等线索；博物苑不是这些诗作的创作地点。',relation:'与诗歌的关系：南通城市人文延伸；《狼山三元宫近斥僧挽词》的直接地点仍是狼山。',task:'从博物苑的建筑或展陈中选一项，与城区诗歌的一条线索并置阅读。',factSource:{label:'南通市人民政府 · 南通博物苑',url:'https://www.nantong.gov.cn/ntsrmzf/fjms/content/c563d231-e4fa-4b3b-9b9e-caa263fc6913.html'},photo:{src:'assets/scenic/public/nantong-museum-historical-building.jpg',place:'南通博物苑',alt:'南通博物苑历史建筑与张謇塑像今日实景',credit:'Peter Potrowl',license:'CC BY 3.0',licenseUrl:'https://creativecommons.org/licenses/by/3.0/',source:'https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg'}}
@@ -573,7 +588,7 @@
       sources.replaceChildren(...story.sources.map(source=>{const link=document.createElement('a');link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`资料来源：${source.label} ↗`;return link}));
     }
     function setStation(key){const s=stations[key];if(!s)return;currentStation=key;document.querySelectorAll('.route-node,.route-chip').forEach(n=>n.classList.toggle('active',n.dataset.station===key));document.getElementById('stationNo').textContent=s.no;document.getElementById('stationKeyword').textContent=s.keyword;document.getElementById('stationName').textContent=s.name;document.getElementById('stationNote').textContent=s.note;document.getElementById('stationPoems').textContent=s.ids.length||1;document.getElementById('stationPoemsLabel').textContent=s.ids.length?'收录诗歌':'今日看点';document.getElementById('stationStatus').textContent=s.status;document.getElementById('stationStatusLabel').textContent=s.ids.length?'诗歌关联':'行旅类型';setStationPhoto('stationPhoto','stationPhotoImage','stationPhotoCaption',s.photo,'地区配图');document.getElementById('stationOpen').hidden=!s.ids.length;renderStationStory(key);}
-    function showStationPoems(key){const s=stations[key];if(!s||!s.ids.length)return;activeFilter=s.name==='南通城区'?'南通':s.name;search.value='';document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('on',b.dataset.filter===activeFilter));render();document.getElementById('archive').scrollIntoView({behavior:'smooth'})}
+    function showStationPoems(key){const s=stations[key];if(!s||!s.ids.length)return;activeFilter=s.name==='南通城区'?'南通':s.name;search.value='';syncFilters();render();document.getElementById('archive').scrollIntoView({behavior:'smooth'})}
     document.querySelectorAll('.route-node').forEach(n=>{n.addEventListener('pointerup',()=>setStation(n.dataset.station));n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStation(n.dataset.station)}})});
     document.querySelectorAll('.route-chip').forEach(n=>n.addEventListener('click',()=>setStation(n.dataset.station)));
     document.querySelectorAll('[data-entrance-station]').forEach(link=>link.addEventListener('click',()=>setStation(link.dataset.entranceStation)));
@@ -586,7 +601,8 @@
     document.getElementById('stationDialogPoems').addEventListener('click',e=>{const key=e.currentTarget.dataset.station;stationDialog.close();showStationPoems(key)});
     stationDialog.addEventListener('click',e=>{if(e.target===stationDialog)stationDialog.close()});
     document.getElementById('searchJump').addEventListener('click',()=>{document.getElementById('archive').scrollIntoView({behavior:'smooth'});setTimeout(()=>search.focus(),500)});search.addEventListener('input',render);
-    document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('on',x===b));render()}));
+    function syncFilters(){document.querySelectorAll('.filter').forEach(b=>{const on=b.dataset.filter===activeFilter;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))})}
+    document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;syncFilters();render()}));
     grid.addEventListener('click',e=>{const c=e.target.closest('[data-poem]');if(c)openPoem(c.dataset.poem)});document.querySelectorAll('.scenic-open').forEach(b=>b.addEventListener('click',()=>openPoem(b.dataset.poem)));
     const dialog=document.getElementById('poemDialog'),graphDialog=document.getElementById('graphDialog');
     document.getElementById('dialogViews').insertAdjacentHTML('beforeend','<button type="button" data-view="activity" aria-pressed="false">参与任务</button>');
@@ -600,7 +616,7 @@
     setStation('haimen');render();refreshVisitMarkers();
   </script>
   <script src="v2.js?v=20261013-guides"></script>
-  <script src="profile-core.js"></script>
+  <script src="profile-core.js?v=20261021"></script>
   <script src="profile.js?v=20261011-copy"></script>
 </body>
 </html>
