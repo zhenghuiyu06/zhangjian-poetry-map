@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="2026 南通市公共图书馆地方文献展线上导览。循张謇足迹，在地图上读展、找书、规划江海漫游。">
+  <title>江海阅潮生 · 2026 南通市公共图书馆地方文献展</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="js/data.js"></script>
+  <script defer src="js/guide.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#why">跳到展览内容</a>
+  <header class="masthead"><div class="frame masthead-inner">
+    <a class="identity" href="#top"><span class="brand-icon" aria-hidden="true">潮</span><span>江海阅潮生<small>地方文献展 · 线上导览</small></span></a>
+    <nav aria-label="主导航"><a href="#map">七境地图</a><a href="#books">江海书架</a><a href="#travel">怎么去</a><a href="shilu.html#archive">张謇诗路 ↗</a></nav>
+  </div></header>
+  <main id="top" class="frame">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><div class="eyebrow"><span>2026.11.20</span> 南通 · 地方文献展</div>
+        <h1 id="hero-title">江海阅潮生</h1><p class="subtitle">2026 南通市公共图书馆地方文献展</p>
+        <p class="hero-note">在书里读见张謇，在地图上找到江海。<br>从一处足迹出发，翻一页地方文献。</p>
+        <div class="actions"><a class="button primary" href="#map">打开七境地图 <span aria-hidden="true">↘</span></a><a class="button" href="#books">逛逛江海书架</a></div>
+        <p class="host">主办单位 · 南通市图书馆</p>
+      </div>
+      <figure class="hero-art"><picture><source media="(max-width: 800px)" srcset="assets/hero-860.webp"><img src="assets/hero-1400.webp" width="1400" height="976" fetchpriority="high" alt="展览主视觉：蓝绿色的江海阅潮生题字、沿江城市与张謇塑像"></picture><figcaption>01 / 2026 地方文献展主视觉</figcaption></figure>
+    </section>
+    <div class="ribbon-head"><span class="eyebrow">THE SEVEN STOPS</span><span>选一境，找到文献背后的地方 <span aria-hidden="true">→</span></span></div>
+    <div id="ribbons" class="ribbons" aria-label="七境入口"></div>
+    <section class="section intro" id="why"><div><p class="eyebrow">01 / 展览序厅</p><h2>为什么做这件事</h2></div><div><p class="lead">让一本地方文献，成为认识一座城的起点。</p><p>展板可以告诉我们张謇到过哪里，地图则能把下一步交给读者：点开地点，查书名和页码；想去现场，就用地名发给同行的人，或打开导航。在展厅内沿书索地，走出展厅也能沿地找书。</p><details id="intro-text"><summary>读序厅引言</summary></details></div></section>
+    <section class="section" id="map"><div class="section-heading"><div><p class="eyebrow">02 / 一张图，读七境</p><h2>七境地图</h2></div><p>先选一境，再点一地。<br>地点、书页和今天的出行方式在这里相遇。</p></div>
+      <div class="map-layout">
+        <div class="map-card">
+          <div class="filters" id="layers" aria-label="地图图层"></div>
+          <div class="map-viewport"><svg id="atlas" viewBox="0 0 760 490" role="group" aria-label="南通七境示意图"></svg></div>
+          <div class="map-caption"><span>示意，落点可能有一两公里出入；区界与海岸线不作导航依据。</span><button type="button" id="reset-map">查看全图</button></div>
+          <div class="districts filters" id="districts" aria-label="选择地区"></div>
+        </div>
+        <aside class="station-card" aria-label="地图阅读栏">
+          <div class="station-header" id="station-header"></div>
+          <div class="filters tabs" role="tablist" aria-label="地区导览内容" id="station-tabs"></div>
+          <div class="station-body" id="station-body" role="tabpanel" tabindex="0"></div>
+        </aside>
+      </div>
+      <noscript><p>启用 JavaScript 可查看七境地图和书架；也可打开<a href="shilu.html">张謇诗路</a>。</p></noscript>
+    </section>
+    <section class="section" id="timeline"><div class="section-heading"><div><p class="eyebrow">03 / 循年寻迹</p><h2>足迹年表</h2></div><p>生于海门，到江海各处办实业、兴教育。</p></div><ol class="timeline" id="timeline-list"></ol></section>
+    <section class="section" id="firsts"><div class="section-heading"><div><p class="eyebrow">04 / 近代开创</p><h2>张謇的十个“第一”</h2></div><p>地域、门类和时间不同，称谓也不同。<br>已找到的限定语和待核说法分开列。</p></div><div class="first-grid" id="first-list"></div></section>
+    <section class="section" id="books"><div class="section-heading"><div><p class="eyebrow">05 / 把地图读成书</p><h2>江海书架</h2></div><p>按书名、地名或 ISBN 找书。<br>页码随地点列出，便于回到文献。</p></div>
+      <div class="book-controls"><label>搜索文献<input type="search" id="book-query" placeholder="如：水绘园、古镇余西、濠河"></label><label>展区<select id="book-region"></select></label><label>类别<select id="book-topic"><option value="all">全部</option><option value="exhibit">展陈书目</option><option value="food">地方饮食线索</option></select></label></div>
+      <p class="muted">已接专题的书可直接打开；其余可复制书名，前往超星读秀检索，可能需要馆校登录。</p><p id="book-count" role="status" class="muted"></p><div id="book-grid" class="book-grid"></div><button class="button" id="book-more" type="button" hidden>再看一些</button>
+    </section>
+    <section class="section" id="travel"><div class="section-heading"><div><p class="eyebrow">06 / 把书里的地方走一遍</p><h2>怎么去</h2></div><p>先看抵达方式，再打开地图确认最后一段。<br>出发前请查 <a href="https://www.12306.cn/" target="_blank" rel="noopener">12306 ↗</a>。</p></div><div id="travel-list" class="travel-grid"></div></section>
+    <section class="section" id="play"><div class="section-heading"><div><p class="eyebrow">07 / 带一页记忆回家</p><h2>一起玩</h2></div><p>盖一枚个人印章，答一道展览题，再读一首诗。</p></div><div class="play-grid">
+      <article class="card"><h3>我的诗路护照</h3><p id="stamp-count" role="status">读取本机记录…</p><div id="stamps" class="stamp-row"></div><p class="muted">印章为个人自记，只保存于当前浏览器。</p><a href="shilu.html#passport">打开护照和江海旅人画像 ↗</a></article>
+      <article class="card"><h3>展览小问答</h3><div id="quiz"></div><p id="quiz-result" role="status"></p></article>
+      <article class="card"><h3>读一首张謇诗</h3><p>八首诗、朗读、影像和诗句关系，继续在诗路里读。</p><div class="actions"><a class="button" href="shilu.html#archive">诗歌档案 ↗</a><a class="button" href="research.html">诗歌地图 ↗</a></div></article>
+    </div></section>
+  </main>
+  <footer class="footer"><div class="frame"><p class="eyebrow">江海阅潮生 / 2026</p><h2>资料来源</h2><p>主视觉据展览设计 PDF，序厅、七境引言与展陈书目据馆方提供的《张謇文旅汇总版》。展陈引言是策展叙述，不作张謇原文；点位、引语与出版信息见各卡片说明。</p><p><a href="handoff.html">资料核对与站点说明 ↗</a> · <a href="../index.html">返回原站 ↗</a></p></div></footer>
+  <dialog id="place-dialog" aria-labelledby="place-title"><div class="dialog-inner"><form method="dialog"><button class="close" aria-label="关闭地点详情">×</button></form><div id="place-content"></div></div></dialog>
+</body>
+</html>
