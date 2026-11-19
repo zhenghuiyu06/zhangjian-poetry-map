@@ -1,0 +1,23 @@
+/* A faint view of Langshan at the foot of the original opening. */
+.intro .intro-veil { isolation: isolate; }
+
+.intro-veil::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 38%;
+  pointer-events: none;
+  background: url("../assets/scenic/langshan.webp") center 49% / cover no-repeat;
+  filter: grayscale(1) sepia(.18);
+  mix-blend-mode: multiply;
+  opacity: .22;
+  mask-image: linear-gradient(transparent, #0008 45%, black);
+}
+
+@media (max-width: 600px) {
+  .intro-veil::before { height: 24%; opacity: .15; }
+}
+
+@media (max-width: 360px) {
+  .intro-title { font-size: min(54px, 14.5vw); }
+}

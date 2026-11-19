@@ -145,6 +145,15 @@
     const region=d?`<p class="muted">同境非遗：${esc(d.heritage.map(row=>row[0]).join('、'))}；地方味道：${esc(d.food.map(row=>row[0]).join('、'))}。这是地区导览，不表示该地点提供此体验。</p>`:'';
     const placeBounds=!p.coords?'展表保留此条线索，位置待核，未在地图上标点。':'地图是参考位置，请用地点名称查询并核对入口。';
     $('place-content').innerHTML=`<p class="eyebrow">${esc(p.transit?'交通线索':regionName(p.area)+' / 地点与文献')}</p><h2 id="place-title">${esc(p.name)}</h2>${p.description?`<p>${esc(p.description)}</p>`:''}${p.transit?p.citations.map(source).join(''):''}<p class="muted">${placeBounds}</p><div class="actions">${navigation(p)}<button class="button" data-share="${p.id}">发给朋友</button></div><p class="source" id="share-status" role="status"></p>${region}${refs.length?`<h3>看对应书页</h3><ul class="reference-list">${refs.map(reference).join('')}</ul>${refs.some(r=>r.quotes.length)?'':'<p class="source">无独立可引用的张謇原话字段；保留展表叙述。</p>'}`:!p.transit?`<p class="warning">${p.area==='rudong'?'图书表待补；未补写引文、ISBN 或页码。':'展表尚未提供书页。'}</p>${source(original)}`:''}`;
+    if(refs.length){
+      const content=$('place-content');
+      const heading=content.querySelector('h3');
+      heading.tabIndex=-1;
+      const readPages=document.createElement('button');
+      readPages.type='button';readPages.className='button primary';readPages.textContent='查这处的书目与页码';
+      readPages.addEventListener('click',()=>heading.focus());
+      content.querySelector('.actions').prepend(readPages);
+    }
     if(!placeDialog.open){placeDialog.showModal();placeDialog.querySelector('.close').focus();}
   }
   function openPlace(id, change=true, trigger) {
