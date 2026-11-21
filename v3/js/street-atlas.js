@@ -45,7 +45,7 @@ window.createStreetAtlas = function (root, selectPlace, status) {
   // One catalogue landmark per district first, then a second for wider maps.
   const landmarks=[25,31,15,9,45,1,37,24,30,17,12,44,4,41]
     .map(number=>window.JIANGHAI_CATALOG.find(p=>p.number===number));
-  let zoom=9, minZoom=8, center=[0,0], items=[], viewKey='', area='', mode='street', searching=false;
+  let zoom=9, minZoom=8, center=[0,0], items=[], viewKey='', area='', mode='street', searching=false, cultureView=false;
   let frame=0, pinchDistance=0, lastSize='', focusBounds=extents.street;
   const clamp=(value,min,max)=>Math.max(min,Math.min(value,max));
   function project([lng,lat]) {
@@ -74,8 +74,8 @@ window.createStreetAtlas = function (root, selectPlace, status) {
     const sheetReady=!detailSheet.hidden && detailSheet.naturalWidth>0;
     const missing=mode==='street' && !sheetReady && images.length && images.every(i=>i.dataset.failed);
     root.classList.toggle('missing-tiles',Boolean(missing));
-    const message=(missing?'街道底图暂未载入，当前显示南通区界。':'')+
-      (mode==='diagram'?'点选地区，在地点列表中查阅文献。':area||searching?'点选景点图标，查看对应文献。':'点选地区展开景点，或点地名查看文献。');
+    const message=(missing?'街道底图暂未载入。':'')+
+      (mode==='diagram'?'点选地区。示意图不用于导航。':cultureView?'点区县筛选，点标记看介绍。':'点区县或地名。落点仅供参考。');
     if(status.textContent!==message)status.textContent=message;
   }
   function paint() {
@@ -144,7 +144,7 @@ window.createStreetAtlas = function (root, selectPlace, status) {
     const valid=(x,y)=>x>=padding && x<=w-padding && y>=padding && y<=h-padding &&
       !(x<69 && y<108) && !(x>w-84 && y>h-36) &&
       placed.every(p=>Math.abs(p.x-x)>=spacing || Math.abs(p.y-y)>=spacing);
-    if(mode==='diagram' || (!area && !searching)){
+    if(mode==='diagram' || (!area && (!searching || cultureView))){
       const occupied=[];
       for(const region of regions){
         const at=mode==='street'?region.label:project(region.center);
@@ -155,12 +155,13 @@ window.createStreetAtlas = function (root, selectPlace, status) {
         label.textContent=region.name;label.setAttribute('aria-label','查看'+region.name+'的景点');fragment.append(label);
         const halfWidth=w<520?25:34,halfHeight=w<520?14:18;
         occupied.push([sx(at)-halfWidth,sy(at)-halfHeight,sx(at)+halfWidth,sy(at)+halfHeight]);
+        if(cultureView&&mode==='street')placed.push({x:sx(at),y:sy(at)});
       }
       for(const [title,coord] of [['长江',[120.71,31.80]],['黄海',[121.68,32.39]]]){
         const at=project(coord),name=document.createElement('span');name.className='atlas-water';name.textContent=title;
         name.style.left=sx(at)+'px';name.style.top=sy(at)+'px';fragment.append(name);
       }
-      if(mode==='street')drawLandmarks(fragment,occupied,sx,sy,w,h);
+      if(mode==='street'&&!cultureView)drawLandmarks(fragment,occupied,sx,sy,w,h);
     }
     for(const item of mode==='street' && (area||searching)?items:[]){
       const [mx,my]=project(item.coords), ax=mx*s-left, ay=my*s-top;
@@ -191,6 +192,7 @@ window.createStreetAtlas = function (root, selectPlace, status) {
       button.style.left=x+'px';button.style.top=y+'px';
       button.textContent=window.atlasPlaceSymbol(item);
       button.title=item.name+(item.positionNote?' · '+item.positionNote:'');button.setAttribute('aria-label',button.title);
+      if(cultureView)button.dataset.culturePin=item.id;
       button.onclick=()=>selectPlace(item.id);
       fragment.append(button);
       placed.push({x,y,button,name:item.name});
@@ -283,9 +285,9 @@ window.createStreetAtlas = function (root, selectPlace, status) {
   });
   new ResizeObserver(schedule).observe(root);
   return {
-    update(next,region,style,showMatches){
-      items=next;area=region;mode=style;searching=showMatches;
-      root.dataset.mode=mode;root.dataset.overview=String(mode==='diagram'||(!area&&!searching));credit.hidden=mode!=='street';
+    update(next,region,style,showMatches,showCulture=false){
+      items=next;area=region;mode=style;searching=showMatches;cultureView=showCulture;
+      root.dataset.mode=mode;root.dataset.overview=String(mode==='diagram'||(!area&&(!searching||cultureView)));credit.hidden=mode!=='street';
       controls[0].parentElement.hidden=mode==='diagram';
       const key=mode==='diagram'?mode:mode+':'+area;
       if(key!==viewKey){

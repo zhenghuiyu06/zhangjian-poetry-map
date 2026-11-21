@@ -275,7 +275,7 @@
       <div class="stage-copy">
         <div class="eyebrow">沿着诗路看南通</div>
         <h2 id="stage-title">七境，<span>七种看法</span></h2>
-        <p class="lead">点亮一个地区，看看今日实景与诗歌线索。图中连线只用于浏览，不代表实际路线。</p>
+        <p class="lead">选一站，看今日实景与诗歌线索。</p>
         <div class="stage-actions"><a class="primary" href="#archive">寻找一首诗</a><button class="ghost" id="todayBtn" type="button">今天去哪一站</button></div>
       </div>
 
@@ -327,7 +327,7 @@
     </section>
 
     <section class="section journey" id="journey" aria-labelledby="journey-title">
-      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title">诗句落地，风景有了名字</h2></div><p>看山、访馆、追海天。每张卡都说明诗歌与今日景点的关系；现代风景不等于诗作年代的原貌。</p></header>
+      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title">从诗句走向今日南通</h2></div><p>看狼山江月，访常乐故里，到启东看海。</p></header>
       <div class="scenic-grid">
         <article class="scenic-card"><img src="../assets/scenic/langshan.webp" alt="狼山国家森林公园今日实景" loading="lazy" decoding="async"><div class="scenic-content"><span class="tag">诗歌地点直接对应</span><h3>狼山国家森林公园</h3><p>对应《狼山三元宫近斥僧挽词》的地点记录。到现场寻找山、水与江面天光，回应“江月白翻翻”。</p><button class="ghost scenic-open" type="button" data-poem="1" style="border-color:rgba(255,255,255,.6);color:white">读这首诗</button></div></article>
         <article class="scenic-card secondary"><img src="../assets/scenic/zhangjian-memorial.webp" alt="海门常乐镇张謇纪念馆入口今日实景" loading="lazy" decoding="async"><div class="scenic-content"><span class="tag">同镇人文景点</span><h3>张謇纪念馆</h3><p>与《盆松》的地点记录同在常乐镇，但不表述为诗歌创作原址。可从松、木构与庭院细节理解“梁栋与谁论”。</p><button class="ghost scenic-open" type="button" data-poem="3" style="border-color:rgba(255,255,255,.6);color:white">读《盆松》</button></div></article>
@@ -421,7 +421,7 @@
         const request=indexedDB.open('zhangjian-poetry-observations-v2',2);
         let settled=false;
         const fail=error=>{if(settled)return;settled=true;clearTimeout(timer);reject(error)};
-        const timer=setTimeout(()=>fail(new Error('本机记录读取超时；请关闭其他旧版预览标签后刷新')),8000);
+        const timer=setTimeout(()=>fail(new Error('读取记录超时，请刷新后重试')),8000);
         request.onupgradeneeded=()=>{
           const db=request.result;
           if(!db.objectStoreNames.contains('observations'))db.createObjectStore('observations',{keyPath:'id'});
@@ -430,7 +430,7 @@
         };
         request.onsuccess=()=>{const db=request.result;if(settled){db.close();return}settled=true;clearTimeout(timer);db.onversionchange=()=>{db.close();dbPromise=null};resolve(db)};
         request.onerror=()=>fail(request.error||new Error('本机记录无法打开'));
-        request.onblocked=()=>fail(new Error('本机记录被其他页面占用；请关闭其他旧版预览标签后刷新'));
+        request.onblocked=()=>fail(new Error('记录被其他页面占用，请关闭其他站点标签后重试'));
       }).catch(error=>{dbPromise=null;throw error});
       return dbPromise;
     }

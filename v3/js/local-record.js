@@ -5,7 +5,7 @@ let dbPromise=null;
         const request=indexedDB.open('zhangjian-poetry-observations-v2',2);
         let settled=false;
         const fail=error=>{if(settled)return;settled=true;clearTimeout(timer);reject(error)};
-        const timer=setTimeout(()=>fail(new Error('本机记录读取超时；请关闭其他旧版预览标签后刷新')),8000);
+        const timer=setTimeout(()=>fail(new Error('读取记录超时，请刷新后重试')),8000);
         request.onupgradeneeded=()=>{
           const db=request.result;
           if(!db.objectStoreNames.contains('observations'))db.createObjectStore('observations',{keyPath:'id'});

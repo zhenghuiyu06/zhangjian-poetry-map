@@ -72,7 +72,7 @@
     } catch {
       if (current !== refreshId) return;
       unlocked = false;
-      gateText.textContent = '当前浏览器无法读取本机护照，暂时不能核对七境或生成画像。请检查存储设置；若同时开着旧版预览，请关闭后刷新。其他内容仍可浏览。';
+      gateText.textContent = '暂时无法读取护照，请刷新后重试。';
       progressFill.style.width = '0%';
       entry.hidden = true;
       if (dialog.open) dialog.close();

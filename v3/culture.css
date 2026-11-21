@@ -1,0 +1,37 @@
+.culture-panel{--culture-ink:#195650;--culture-wash:#e8f1ea;--culture-line:#c7d9cc;color:#263c42}
+.culture-panel[data-theme=food]{--culture-ink:#754524;--culture-wash:#fcf0dc;--culture-line:#dfc9aa}
+.culture-panel-tools{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.culture-panel-tools p{display:flex;gap:.55rem;align-items:baseline;margin:0}
+.culture-panel-tools strong{color:var(--culture-ink);font-size:1.1rem}
+.culture-panel-tools span,.culture-note{color:#4d605c;font-size:.875rem}
+.culture-panel-tools select{background:#fffdf7;color:#263c42;border:1px solid var(--line);min-height:44px;padding:.3rem .45rem;border-radius:6px;font:inherit;font-size:.875rem;max-width:100%}
+.culture-panel-tools{margin-bottom:.7rem}
+.culture-map-jump{display:none}
+.culture-list{display:grid;gap:.65rem}
+.culture-card,.culture-empty{border:1px solid var(--culture-line);border-radius:8px;background:#fffcf5;padding:.8rem;min-width:0}
+.culture-card[open]{border-color:var(--culture-ink)}
+.culture-card>summary{display:grid;gap:.38rem;padding:0;color:inherit;list-style:none}
+.culture-card>summary::-webkit-details-marker{display:none}
+.culture-card-top{display:flex;justify-content:space-between;align-items:center;gap:.35rem;font-size:.875rem;color:#4d605c}
+.culture-type{color:var(--culture-ink);background:var(--culture-wash);padding:.05rem .45rem;border-radius:4px;font-weight:700}
+.culture-recognition{display:block;color:var(--culture-ink);font-size:.8rem;font-weight:650}
+.culture-card-title{font:700 1.25rem/1.4 var(--serif);color:var(--culture-ink)}
+.culture-card-summary{font-size:.95rem;line-height:1.55;font-weight:400}
+.culture-card-toggle{font-size:.875rem;font-weight:700;color:var(--culture-ink);text-decoration:underline;text-underline-offset:.2em}
+.culture-card:not([open]) .culture-close-text,.culture-card[open] .culture-open-text{display:none}
+.culture-detail{border-top:1px solid var(--culture-line);margin-top:.65rem;padding-top:.55rem;line-height:1.65}
+.culture-detail p{margin:0 0 .5rem}
+.culture-location{display:flex;align-items:baseline;flex-wrap:wrap;gap:.25rem .65rem}
+.culture-sources{margin-top:.25rem}
+.culture-sources summary{font-size:.875rem;min-height:44px}
+.culture-sources ul{margin:0;padding-left:1.2rem;font-size:.875rem}
+.culture-sources a{display:inline-block;padding:.35rem 0}
+.culture-place{margin-bottom:.55rem;min-height:44px}
+.culture-empty p{margin:.3rem 0 0}
+.culture-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:770px){
+  .map-layout:has(.culture-panel)>.station-card{grid-row:1}
+  .map-layout:has(.culture-panel) .station-body{max-height:440px}
+  .map-layout:has(.culture-panel) .station-body:not(:has(.culture-card:nth-child(3))){max-height:none}
+  .culture-map-jump{display:inline-flex;margin-inline-start:.6em;min-height:44px;align-items:center}
+}

@@ -10,13 +10,15 @@
   <script defer src="js/data.js?v=56a"></script>
   <script defer src="js/guide.js?v=56a"></script>
   <link rel="stylesheet" href="atlas.css?v=place-actions-1">
+  <link rel="stylesheet" href="culture.css?v=1">
   <script defer src="js/nantong-boundaries.js"></script>
   <script defer src="js/street-atlas.js?v=seven-3"></script>
   <script defer src="js/local-record.js"></script>
-  <script defer src="js/app.js?v=dual-map-20261121"></script>
+  <script defer src="js/culture.js?v=1"></script>
+  <script defer src="js/app.js?v=culture-1"></script>
 </head>
 <body>
-  <a class="skip" href="#why">跳到展览内容</a>
+  <a class="skip" href="#map">跳到七境地图</a>
   <header class="masthead"><div class="frame masthead-inner">
     <a class="identity" href="#top"><span class="brand-icon" aria-hidden="true">潮</span><span>江海阅潮生<small>地方文献展 · 线上导览</small></span></a>
     <nav aria-label="主导航"><a href="index.html">张謇诗路</a><a href="#map">七境地图</a><a href="#books">江海书架</a><a href="#travel">怎么去</a></nav>
@@ -29,16 +31,16 @@
         <div class="actions"><a class="button primary" href="#map">打开七境地图 <span aria-hidden="true">↘</span></a><a class="button" href="#books">逛逛江海书架</a></div>
         <p class="host">主办单位 · 南通市图书馆</p>
       </div>
-      <figure class="hero-art"><picture><source media="(max-width: 800px)" srcset="assets/hero-860.webp"><img src="assets/hero-1400.webp" width="1400" height="976" fetchpriority="high" alt="展览主视觉：蓝绿色的江海阅潮生题字、沿江城市与张謇塑像"></picture><figcaption>01 / 2026 地方文献展主视觉</figcaption></figure>
+      <figure class="hero-art"><picture><source media="(max-width: 800px)" srcset="assets/hero-860.webp"><img src="assets/hero-1400.webp" width="1400" height="976" fetchpriority="high" alt="展览主视觉：江海阅潮生题字、沿江城市与张謇塑像"></picture></figure>
     </section>
-    <div class="ribbon-head"><span class="eyebrow">THE SEVEN STOPS</span><span>选一境，找到文献背后的地方 <span aria-hidden="true">→</span></span></div>
+    <div class="ribbon-head"><span class="eyebrow">按地区游览</span></div>
     <div id="ribbons" class="ribbons" aria-label="七境入口"></div>
-    <section class="section intro" id="why"><div><p class="eyebrow">01 / 展览序厅</p><h2>为什么做这件事</h2></div><div><p class="lead">让一本地方文献，成为认识一座城的起点。</p><p>展板可以告诉我们张謇到过哪里，地图则能把下一步交给读者：点开地点，查书名和页码；想去现场，就用地名发给同行的人，或打开导航。在展厅内沿书索地，走出展厅也能沿地找书。</p><details id="intro-text"><summary>读序厅引言</summary><p>七个地区的 56 处地点，按参展目录收录。点选地点，可对照展陈简介、书名与文献页码。</p></details></div></section>
-    <section class="section" id="map"><div class="section-heading"><div><p class="eyebrow">02 / 从地点找文献</p><h2>展览七境地图</h2></div><p>先选地区，再点地图或列表里的地点，查看对应书名和页码。游览前也可切到「非遗」「味道」或「怎么去」。</p></div>
+    <section class="section intro" id="why"><div><p class="eyebrow">展览序厅</p><h2>从书页走到南通</h2></div><div><p>循张謇足迹读地方文献，再去地图上的七境找一处想走访的地方。</p></div></section>
+    <section class="section" id="map"><div class="section-heading"><div><p class="eyebrow">从地点找文献</p><h2>展览七境地图</h2></div><p>选一境，查张謇足迹、地方非遗、美食和出行。</p></div>
       <p class="muted" id="map-bookmark-status" role="status" hidden>这个旧地点不在本期目录里，可以按地名查找。</p>
       <div class="map-layout">
         <div class="map-card">
-          <div class="filters"><label class="map-search">查找地点 <input type="search" id="map-query" placeholder="地名、书名或诗句"></label></div>
+          <div class="filters"><label class="map-search"><span id="map-query-label">查找地点</span><input type="search" id="map-query" placeholder="地名、书名或诗句"></label></div>
           <div class="filters" id="layers" aria-label="地图图层"></div>
           <div class="atlas-bar"><strong>南通七境</strong><div id="map-modes" role="group" aria-label="底图样式"><button type="button" data-mode="street" aria-pressed="true">街道地图</button><button type="button" data-mode="diagram" aria-pressed="false">分区示意图</button></div></div>
           <div class="map-viewport">
@@ -63,7 +65,7 @@
     <section class="section" id="firsts"><div class="section-heading"><div><p class="eyebrow">04 / 近代开创</p><h2>文献里的“第一”</h2></div><p>循展表中的记载，查阅相应地点与书页。</p></div><div class="first-grid" id="first-list"></div></section>
     <section class="section" id="books"><div class="section-heading"><div><p class="eyebrow">05 / 把地图读成书</p><h2>江海书架</h2></div><p>按书名或地名找书。<br>页码随地点列出，便于回到文献。</p></div>
       <div class="book-controls"><label>搜索文献<input type="search" id="book-query" placeholder="如：水绘园、古镇余西、濠河"></label><label>展区<select id="book-region"></select></label></div>
-      <p class="muted">点选地名可查对应页码，也可按书名到超星读秀检索。校外访问可能需要机构登录。</p><p id="book-count" role="status" class="muted"></p><div id="book-grid" class="book-grid"></div><button class="button" id="book-more" type="button" hidden>再看一些</button>
+      <p id="book-count" role="status" class="muted"></p><div id="book-grid" class="book-grid"></div><button class="button" id="book-more" type="button" hidden>更多书目</button>
     </section>
     <section class="section" id="travel"><div class="section-heading"><div><p class="eyebrow">06 / 把书里的地方走一遍</p><h2>怎么去</h2></div><p>先看抵达方式，再打开地图确认最后一段。<br>出发前请查 <a href="https://www.12306.cn/" target="_blank" rel="noopener">12306 ↗</a>。</p></div><div id="travel-list" class="travel-grid"></div></section>
     <section class="section" id="play"><div class="section-heading"><div><p class="eyebrow">07 / 带一页记忆回家</p><h2>一起玩</h2></div><p>盖一枚个人印章，答一道展览题。</p></div><div class="play-grid">

@@ -7,6 +7,13 @@
   const byPlace = new Map(places.map(p => [p.id,p]));
   const district = id => districts.find(d => d.id === id);
   const state = {area:'',layer:'all',tab:'foot',place:''};
+  const culture = window.JIANGHAI_CULTURE;
+  const inCulture = () => Object.hasOwn(culture,state.tab);
+  const regionLabel = id => district(id)?.name || '南通全域';
+  const cultureItems = () => culture[state.tab].filter(item =>
+    (!state.area || item.areas.includes(state.area)) &&
+    [item.title,item.kind,...item.areas.map(regionLabel),byPlace.get(item.place)?.name]
+      .some(value=>value?.includes($('map-query').value.trim())));
   const stampKeys = new Set();
   const query = (p, term) => [p.name,p.title,p.region,p.description].some(s => s.includes(term));
   // Only redirect old IDs when the revised catalogue still lists the same place.
@@ -51,12 +58,24 @@
   $('ribbons').innerHTML=districts.map((d,i)=>'<a class="ribbon" data-region="'+d.id+'" href="'+hrefRegion(d)+'" style="--tint:'+d.color+'"><i>0'+(i+1)+'</i><strong>'+d.name+'</strong><small>'+areaItems(d.id).length+' 处地点</small></a>').join('');
   $('districts').innerHTML=action('region','','全域')+districts.map(d=>action('region',d.id,d.name)).join('');
   $('layers').innerHTML=layers.map(([id,name])=>action('layer',id,name)).join('');
-  const tabs=[['foot','足迹与文献'],['heritage','非遗'],['food','味道'],['access','怎么去']];
+  const tabs=[['foot','足迹与文献'],['heritage','非遗'],['food','美食'],['access','怎么去']];
   $('station-tabs').innerHTML=tabs.map(([id,name])=>'<button type="button" role="tab" data-tab="'+id+'" id="tab-'+id+'" aria-controls="station-body">'+name+'</button>').join('');
 
   const street=$('street-map');
   let mode='street';
-  const atlas=window.createStreetAtlas(street,id=>openPlace(id,true,street),$('atlas-status'));
+  const atlas=window.createStreetAtlas(street,id=>{
+    if(inCulture()){
+      const card=[...$('station-body').querySelectorAll('[data-culture-anchor]')].find(el=>el.dataset.cultureAnchor===id);
+      if(card){
+        card.open=true;
+        const summary=card.querySelector('summary');
+        summary.focus({preventScroll:true});
+        if(card.getBoundingClientRect().top>window.innerHeight-80)summary.scrollIntoView({block:'nearest'});
+        return;
+      }
+    }
+    openPlace(id,true,street);
+  },$('atlas-status'));
   function setMode(next){
     mode=next;
     for(const button of $('map-modes').children)button.setAttribute('aria-pressed',String(button.dataset.mode===mode));
@@ -70,18 +89,50 @@
   let returnHash='#map', trigger=null;
   const directions=p=>'https://uri.amap.com/search?keyword='+encodeURIComponent('南通 '+p.region+' '+p.name)+'&callnative=1';
   function updateStreet(){
+    if(inCulture()){
+      const anchors=[...new Set(cultureItems().map(item=>item.place))].map(id=>byPlace.get(id)).filter(Boolean);
+      atlas.update(anchors,state.area,mode,true,true);
+      return;
+    }
     atlas.update(filtered(),state.area,mode,Boolean($('map-query').value.trim()) || state.layer!=='all');
+  }
+  function drawCulture(){
+    const items=cultureItems(), heritage=state.tab==='heritage';
+    const label=heritage?'非遗':'美食';
+    const regionOptions=[['','南通全域'],...districts.map(d=>[d.id,d.name])];
+    $('station-body').innerHTML='<div class="culture-panel" data-theme="'+state.tab+'">'+
+      '<div class="culture-panel-tools"><p><strong>'+label+'精选</strong></p>'+
+      '<label><span class="culture-sr">筛选地区</span><select data-culture-region aria-label="筛选地区">'+
+      regionOptions.map(([id,name])=>'<option value="'+esc(id)+'"'+(id===state.area?' selected':'')+'>'+esc(name)+'</option>').join('')+'</select></label></div>'+
+      '<a class="culture-map-jump" href="#map-modes">查看地图</a>'+
+      (items.length?'<div class="culture-list">'+items.map(item=>{
+        const place=byPlace.get(item.place);
+        return '<details class="culture-card"'+(place?' data-culture-anchor="'+esc(place.id)+'"':'')+'><summary>'+
+          '<span class="culture-card-top"><span class="culture-type">'+esc(item.kind)+'</span><span>'+esc(state.area?regionLabel(state.area):item.areas.map(regionLabel).join('、'))+'</span></span>'+
+          '<span class="culture-card-title">'+esc(item.title)+'</span><span class="culture-card-summary">'+esc(item.summary)+'</span>'+
+          '<span class="culture-card-toggle"><span class="culture-open-text">查看详情</span><span class="culture-close-text">收起详情</span></span></summary>'+
+          '<div class="culture-detail"><p>'+esc(item.detail)+'</p>'+
+          (item.recognition?'<p class="culture-recognition">'+esc(item.recognition)+'</p>':'')+
+          (place?'<p class="culture-location"><strong>'+(item.anchor==='region'?'风味地域':'关联地点')+'</strong>'+
+          '<span>'+esc(place.name)+'</span></p><a class="button culture-place" data-place="'+esc(place.id)+'" href="#p='+esc(place.id)+'">'+(item.anchor==='region'?'了解这个地方':'查看地点卡')+'</a>':'')+
+          '<details class="culture-sources"><summary>资料来源</summary><ul>'+
+          item.sources.map(([name,url])=>'<li><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(name)+'</a></li>').join('')+
+          '</ul></details></div></details>';
+      }).join('')+'</div>':'<div class="culture-empty">没有匹配的'+label+'。试试其他关键词或地区。</div>')+'</div>';
   }
   function draw(){
     for(const el of $('districts').children) el.setAttribute('aria-pressed',String(el.dataset.region===state.area));
     for(const el of $('layers').children) el.setAttribute('aria-pressed',String(el.dataset.layer===state.layer));
     for(const el of $('station-tabs').children){el.setAttribute('aria-selected',String(el.dataset.tab===state.tab));el.tabIndex=el.dataset.tab===state.tab?0:-1;}
     $('station-body').setAttribute('aria-labelledby','tab-'+state.tab);
-    let items=filtered();
-    if(state.tab==='heritage')items=items.filter(tests.heritage);
-    if(state.tab==='food')items=items.filter(p=>/名产|名点|酿酒|酒业|酒厂|茶干|羊肉|脆饼|海鲜|带鱼/.test(p.description));
-    $('station-header').innerHTML='<p class="eyebrow">江海阅潮生 / 地方文献展</p><h3>'+esc(district(state.area)?.name||'从序厅出发')+'</h3>';
-    $('station-body').innerHTML='<p class="muted">'+items.length+' 条地点 · '+(state.tab==='access'?'按地名查询出行':'点选查看展览文献')+'</p><ul class="place-list">'+items.map(p=>'<li>'+toPlace(p)+(state.tab==='access'?' <a target="_blank" rel="noopener" href="'+directions(p)+'">查路线 ↗</a>':'')+'</li>').join('')+'</ul>';
+    const isCulture=inCulture();
+    $('layers').hidden=isCulture;
+    $('map-query-label').textContent=isCulture?(state.tab==='heritage'?'查找非遗':'查找美食'):'查找地点';
+    $('map-query').placeholder=isCulture?'项目名、地区或关联地名':'地名、书名或诗句';
+    $('station-header').innerHTML='<p class="eyebrow">江海阅潮生 / 地方文献展</p><h3>'+esc(district(state.area)?.name||(isCulture?'南通全域':'从序厅出发'))+'</h3>';
+    if(isCulture){drawCulture();updateStreet();return;}
+    const items=filtered();
+    $('station-body').innerHTML=items.length?'<ul class="place-list">'+items.map(p=>'<li>'+toPlace(p)+(state.tab==='access'?' <a target="_blank" rel="noopener" href="'+directions(p)+'">查路线</a>':'')+'</li>').join('')+'</ul>':'<p class="muted">没有找到相关地点。</p>';
     updateStreet();
   }
   function externalLink(url, label){
@@ -115,7 +166,6 @@
   function renderPlace(p){
     state.place=p.id;
     $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title">'+esc(p.name)+'</h2>'+
-      '<p class="muted">'+esc(p.positionNote||'地图为地点参考位置')+'。</p>'+
       '<div class="place-actions"><button type="button" class="button" id="jump-book">查看书目与页码</button>'+
       '<button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
       '<button type="button" class="button" id="share-place">分享给朋友</button></div>'+
@@ -157,8 +207,9 @@
     if(place){if(!mapDialog.open){state.area=place.area;draw();}scrollMap();renderPlace(place);return;}
     if(mapDialog.open)mapDialog.close();
     if(hash==='#search'){scrollMap();$('map-query').focus();return;}
-    if(hash==='#map' ||param.has('d')||param.has('p')){
-      state.area=district(param.get('d'))?.id||''; state.layer='all';state.tab='foot';
+    if(hash==='#map' ||param.has('d')||param.has('p')||(culture&&param.has('tab'))){
+      state.area=district(param.get('d'))?.id||''; state.layer='all';
+      state.tab=culture&&Object.hasOwn(culture,param.get('tab'))?param.get('tab'):'foot';
       $('map-bookmark-status').hidden=!param.has('p');
       if(param.has('p'))history.replaceState(null,'','#map');
       $('map-query').value='';draw();scrollMap();
@@ -173,12 +224,26 @@
     const term=$('book-query').value.trim(),area=$('book-region').value;
     const matched=[...grouped].map(([title,entries])=>[title,entries.filter(p=>(!area||area===p.area)&&query(p,term))]).filter(([,entries])=>entries.length);
     $('book-count').textContent='找到 '+matched.length+' 种书目';
-    $('book-grid').innerHTML=matched.slice(0,limit).map(([title,entries])=>'<article class="book-card"><p class="eyebrow">'+[...new Set(entries.map(p=>p.region))].join(' · ')+'</p><h3>《'+esc(title)+'》</h3>'+entries.map(p=>'<p>'+toPlace(p)+' · '+esc(p.pages||'目录未列页码')+'</p>').join('')+bookActions(entries[0])+'</article>').join('');
+    $('book-grid').innerHTML=matched.slice(0,limit).map(([title,entries])=>'<article class="book-card"><p class="eyebrow">'+[...new Set(entries.map(p=>p.region))].join(' · ')+'</p><h3>《'+esc(title)+'》</h3>'+entries.map(p=>'<p>'+toPlace(p)+(p.pages?' · '+esc(p.pages):'')+'</p>').join('')+bookActions(entries[0])+'</article>').join('');
     $('book-more').hidden=limit>=matched.length;
   }
   $('book-query').oninput=$('book-region').onchange=()=>{limit=16;drawBooks();};
   $('book-more').onclick=()=>{limit+=16;drawBooks();};
   $('map-query').oninput=draw;
+  function setRegion(id){
+    state.area=id;
+    const params=new URLSearchParams();
+    if(id)params.set('d',id);
+    if(inCulture())params.set('tab',state.tab);
+    history.pushState(null,'',params.size?'#'+params:'#map');
+  }
+  $('station-body').addEventListener('change',event=>{
+    const select=event.target.closest('[data-culture-region]');
+    if(!select)return;
+    setRegion(select.value);
+    draw();
+    $('station-body').querySelector('[data-culture-region]')?.focus({preventScroll:true});
+  });
   $('first-list').innerHTML=places.flatMap(p=>{
     const line=p.description.split('。').find(t=>/第一[家所座个]|首座|最早的/.test(t));
     if(!line)return [];
@@ -206,14 +271,23 @@
     if(!el||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
     event.preventDefault();
     if(el.dataset.place){openPlace(el.dataset.place,true,el);return;}
-    if(el.dataset.answer){$('quiz-result').textContent=el.dataset.answer==='23'?'答对了。目录第 23 条是如皋花木大世界。':'再看看如皋的花木盆景。';return;}
+    if(el.dataset.answer){$('quiz-result').textContent=el.dataset.answer==='23'?'答对了：《盆松》与如皋花木大世界相连。':'提示：找找如皋的盆景。';return;}
     if(el.dataset.stamp){stamps(el.dataset.stamp);return;}
     if(el.dataset.layer)state.layer=el.dataset.layer;
-    if(el.dataset.tab)state.tab=el.dataset.tab;
+    if(el.dataset.tab){
+      const wasCulture=inCulture();
+      state.tab=el.dataset.tab;
+      if(wasCulture||inCulture()){
+        $('map-query').value='';
+        const params=new URLSearchParams();
+        if(state.area)params.set('d',state.area);
+        if(inCulture())params.set('tab',state.tab);
+        history.replaceState(null,'',params.size?'#'+params:'#map');
+      }
+    }
     if('region' in el.dataset||el.id==='reset-map'){
-      state.area=el.dataset.region||'';
-      if(el.id==='reset-map'){state.layer='all';state.tab='foot';$('map-query').value='';atlas.reset();}
-      history.pushState(null,'',state.area?'#d='+state.area:'#map');if(el.tagName==='A')scrollMap();
+      if(el.id==='reset-map'){state.layer='all';if(!inCulture())state.tab='foot';$('map-query').value='';atlas.reset();}
+      setRegion(el.dataset.region||'');if(el.tagName==='A')scrollMap();
     }
     draw();
   });
