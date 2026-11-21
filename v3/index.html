@@ -127,6 +127,7 @@
     @media(max-width:760px){.activity-guides,.activity-preview{grid-template-columns:1fr}.activity-preview-image{min-height:190px;max-height:230px}.activity-preview-copy{padding:0 16px 16px}}
     @media(max-width:760px){.method-try{align-items:stretch;flex-direction:column}.method-try button{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
+    #passport-stamps-title{margin:0 0 .55em;color:var(--ink);font:700 clamp(1.65rem,1.25rem + 1.4vw,2.45rem)/1.25 var(--serif);scroll-margin-top:5rem;}
   </style>
   <script>
     // 入场动画：每个浏览器会话只播一次；带锚点的深链与“减少动态效果”设置直接进入正文。
@@ -173,12 +174,13 @@
     @keyframes intro-stamp{0%{opacity:0;transform:scale(1.9) rotate(-18deg)}100%{opacity:1;transform:scale(1) rotate(-6deg)}}
     @keyframes intro-lift{to{clip-path:inset(0 0 100% 0);visibility:hidden}}
   </style>
-  <link rel="stylesheet" href="../v2.css?v=20261013-seven">
-  <link rel="stylesheet" href="../profile.css?v=20261021">
+  <link rel="stylesheet" href="../v2.css?v=20261121-desk">
+  <link rel="stylesheet" href="../profile.css?v=impression2">
   <link rel="stylesheet" href="../fusion.css?v=20261021">
   <link rel="stylesheet" href="derived.css">
-  <link rel="stylesheet" href="intro.css">
+  <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=walk2">
 
+  <link rel="stylesheet" href="headings.css?v=hero-gold">
 </head>
 <body>
   <div class="intro-veil" id="introVeil" aria-hidden="true">
@@ -208,7 +210,7 @@
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境地图 ↗</a><a href="#seven-gates">七境</a><a href="#explore">漫游</a><a href="shilu.html#archive">诗歌</a><a href="exhibit.html#books">书架</a><a href="#passport">我的护照</a><a href="exhibit.html">地方文献展</a></nav>
+    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图</a><a href="#seven-gates">七境</a><a href="#explore">漫游路线</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
     <button class="search-jump" id="searchJump" type="button" aria-label="搜索展览地点与文献">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
@@ -218,24 +220,24 @@
     <section class="tour-hero" aria-labelledby="tour-hero-title">
       <div class="tour-hero-copy">
         <div class="eyebrow">从海门出发 · 走读南通</div>
-        <h1 id="tour-hero-title">张謇与<br><em>南通七境</em></h1>
-        <p>从一首诗、一页地方文献出发，在七境地图上找到书里写的南通。</p>
-        <div class="tour-hero-actions"><a class="hero-primary" href="exhibit.html#map">打开七境地图</a><a class="hero-secondary" href="#seven-gates">开始七境漫游</a></div>
+        <h1 id="tour-hero-title" class="site-heading">张謇与<br><em>南通七境</em></h1>
+        <p>翻开张謇的诗，江海有情，南通有请，奔向诗与远方......</p>
+        <div class="tour-hero-actions"><a class="hero-primary" href="exhibit.html#map">打开七境诗歌地图</a><a class="hero-secondary" href="#seven-gates">开始七境漫游</a></div>
       </div>
-      <div class="tour-hero-aside" aria-label="七境行旅概览"><span>七境序章</span><strong>从故里到江海</strong><p>每一站有一条张謇线索，也有值得你亲自观察的今日风景。终点，把旅途带回一张书桌。</p><small>封面：今日张謇纪念馆实景</small></div>
+      <div class="tour-hero-aside" aria-label="七境行旅概览"><span>七境序章</span><strong>从故里到江海</strong><p>平台目前收录南通代表性的56个景点，每个景点几乎都有一条关于张謇诗歌的线索。沿途也有值得你亲自观察的今日风景。终点，把旅途带回书案。</p><small>封面：今日张謇纪念馆实景</small></div>
       <a class="tour-scroll" href="#two-views">向下，看看从哪开始 <span aria-hidden="true">↓</span></a>
     </section>
 
     <section class="section mode-section jianghai-guide" id="two-views" aria-labelledby="mode-title">
       <header class="section-head">
-        <div><div class="eyebrow">第一次来，从这里开始</div><h2 id="mode-title">你想怎样读南通？</h2></div>
-        <p>想找地点、看风景或查书，选一个入口就好。想读诗，也可以直接去<a href="shilu.html#archive">八首诗歌档案</a>。</p>
+        <div><div class="eyebrow">第一次来，从这里开始</div><h2 id="mode-title" class="site-heading">你想怎样读南通？</h2></div>
+        <p>想找诗、想看景、想查书，选一个入口就好。不用按顺序逛。</p>
       </header>
       <nav class="mode-grid" aria-label="选择浏览方式">
         <a class="mode-card mode-card-research" href="exhibit.html#map">
-          <span class="mode-card-number">想找地点</span><h3>七境地图</h3>
+          <span class="mode-card-number">想找地点</span><h3>七境诗歌地图</h3>
           <p>在地图上点选景点，查看参展书目、页码和相关诗文。</p>
-          <strong>打开七境地图</strong>
+          <strong>打开七境诗歌地图</strong>
         </a>
         <a class="mode-card mode-card-walk" href="#seven-gates">
           <span class="mode-card-number">想看景</span><h3>七境漫游</h3>
@@ -243,29 +245,29 @@
           <strong>选择一站</strong>
         </a>
         <a class="mode-card mode-card-exhibit" href="exhibit.html">
-          <span class="mode-card-number">想查书</span><h3>地方文献展</h3>
-          <p>在展览七境地图里按地点查书名和页码，再看当地非遗、风味与怎么去。</p>
+          <span class="mode-card-number">想查书</span><h3>地方文献</h3>
+          <p>在七境诗歌地图里按地点查书名和页码，再看当地非遗、风味与怎么去。</p>
           <strong>走进江海阅潮生</strong>
         </a>
       </nav>
     </section>
 
     <section class="seven-gates" id="seven-gates" aria-labelledby="seven-gates-title">
-      <div class="seven-gates-head"><div><div class="eyebrow">七境 · 七种进入南通的方式</div><h2 id="seven-gates-title">你想从哪里出发？</h2></div><p>点开一站，继续看它的张謇线索、参展地点与文献。可按兴趣选站，出行顺序由你决定。</p></div>
+      <div class="seven-gates-head"><div><div class="eyebrow">七境 · 七种进入南通的方式</div><h2 id="seven-gates-title" class="site-heading">你想从哪里出发？</h2></div><p>点开一站，继续看它的张謇线索、参展地点与文献。可按兴趣选站，出行顺序由你决定。</p></div>
       <div class="seven-gates-grid">
-        <a href="#route" data-entrance-station="haimen"><span>01 / 故里</span><strong>海门</strong><small>常乐镇 · 张謇纪念馆</small><em>从这里认识故乡 ↗</em></a>
-        <a href="#route" data-entrance-station="tongzhou"><span>02 / 寻根</span><strong>通州</strong><small>运盐河 · 三姓街</small><em>沿地名读诗 ↗</em></a>
-        <a href="#route" data-entrance-station="rugao"><span>03 / 慢游</span><strong>如皋</strong><small>教育线索 · 水绘园</small><em>走进今日园林 ↗</em></a>
-        <a href="#route" data-entrance-station="rudong"><span>04 / 向海</span><strong>如东</strong><small>范公堤遗迹 · 洋口港</small><em>看土地与海 ↗</em></a>
-        <a href="#route" data-entrance-station="haian"><span>05 / 探古</span><strong>海安</strong><small>韩国钧故居 · 青墩遗址博物馆</small><em>读不同的历史时层 ↗</em></a>
-        <a href="#route" data-entrance-station="qidong"><span>06 / 追光</span><strong>启东</strong><small>吕四渔场 · 圆陀角风景区</small><em>观察海天光影 ↗</em></a>
-        <a href="#route" data-entrance-station="nantong"><span>07 / 读城</span><strong>崇川</strong><small>实业遗产 · 南通博物苑</small><em>走进城市记忆 ↗</em></a>
+        <a href="#route" data-entrance-station="haimen"><span>01</span><strong>海门·故里</strong><small>常乐镇 · 张謇纪念馆</small><em>从这里认识故乡 ↗</em></a>
+        <a href="#route" data-entrance-station="tongzhou"><span>02</span><strong>通州·寻根</strong><small>运盐河 · 三姓街</small><em>沿地名读诗 ↗</em></a>
+        <a href="#route" data-entrance-station="rugao"><span>03</span><strong>如皋·慢游</strong><small>教育线索 · 水绘园</small><em>走进今日园林 ↗</em></a>
+        <a href="#route" data-entrance-station="rudong"><span>04</span><strong>如东·向海</strong><small>范公堤遗迹 · 洋口港</small><em>看土地与海 ↗</em></a>
+        <a href="#route" data-entrance-station="haian"><span>05</span><strong>海安·探古</strong><small>韩国钧故居 · 青墩遗址博物馆</small><em>读不同的历史时层 ↗</em></a>
+        <a href="#route" data-entrance-station="qidong"><span>06</span><strong>启东·追光</strong><small>吕四渔场 · 圆陀角风景区</small><em>观察海天光影 ↗</em></a>
+        <a href="#route" data-entrance-station="nantong"><span>07</span><strong>崇川·读城</strong><small>实业遗产 · 南通博物苑</small><em>走进城市记忆 ↗</em></a>
         <a class="seven-gates-finale" href="#desk"><span>终点 / 回望</span><strong>张謇的书桌</strong><small>把七境的线索放到一起</small><em>进入线上书桌 ↗</em></a>
       </div>
     </section>
 
     <section class="section explore-v2" id="explore" aria-labelledby="explore-title">
-      <header class="section-head"><div><div class="eyebrow">选一段行程</div><h2 id="explore-title">今天，想怎样认识南通？</h2></div><p>从一处景点开始，读它对应的地方文献。</p></header>
+      <header class="section-head"><div><div class="eyebrow">漫游路线</div><h2 id="explore-title" class="site-heading">今天，想怎样认识南通？</h2></div><p>从一处景点开始，读它对应的地方文献。</p></header>
       <p class="guide-swipe-hint">左右滑动，查看三种漫游主题 →</p>
       <div class="guide-layout">
         <div class="guide-options" role="group" aria-label="漫游主题">
@@ -283,7 +285,7 @@
     <section class="stage" id="route" aria-labelledby="stage-title">
       <div class="stage-copy">
         <div class="eyebrow">沿着诗路看南通</div>
-        <h2 id="stage-title">七境，<span>七种看法</span></h2>
+        <h2 id="stage-title" class="site-heading">七境，<span>七种看法</span></h2>
         <p class="lead">选一站，看张謇足迹与今日风景。</p>
         <div class="stage-actions"><a class="primary" href="exhibit.html#books">翻阅江海书架</a><button class="ghost" id="todayBtn" type="button">今天去哪一站</button></div>
       </div>
@@ -295,14 +297,14 @@
           <path class="route-river-thin" d="M64 70 C406 122 430 252 150 302 C5 327 65 395 289 401 C520 410 505 545 216 592 C90 615 128 694 386 700"/>
           <path class="route-path" d="M110 96 C390 140 382 238 160 278 C30 302 75 397 286 414 C468 430 470 535 250 584 C145 608 152 664 350 676"/>
           <g class="route-node active" tabindex="0" role="button" aria-label="第一站 海门" data-station="haimen" transform="translate(110 96)"><circle r="12"/><text x="24" y="6">海门</text><text class="n" x="24" y="24">01 故里</text></g>
-          <g class="route-node" tabindex="0" role="button" aria-label="第二站 通州" data-station="tongzhou" transform="translate(354 176)"><circle r="12"/><text x="-86" y="6">通州</text><text class="n" x="-86" y="24">02 文脉</text></g>
+          <g class="route-node" tabindex="0" role="button" aria-label="第二站 通州" data-station="tongzhou" transform="translate(354 176)"><circle r="12"/><text x="-86" y="6">通州</text><text class="n" x="-86" y="24">02 寻根</text></g>
           <g class="route-node" tabindex="0" role="button" aria-label="第三站 如皋" data-station="rugao" transform="translate(160 278)"><circle r="12"/><text x="24" y="6">如皋</text><text class="n" x="24" y="24">03 慢游</text></g>
-          <g class="route-node" tabindex="0" role="button" aria-label="第四站 如东" data-station="rudong" transform="translate(112 374)"><circle r="12"/><text x="24" y="6">如东</text><text class="n" x="24" y="24">04 滩涂</text></g>
+          <g class="route-node" tabindex="0" role="button" aria-label="第四站 如东" data-station="rudong" transform="translate(112 374)"><circle r="12"/><text x="24" y="6">如东</text><text class="n" x="24" y="24">04 向海</text></g>
           <g class="route-node" tabindex="0" role="button" aria-label="第五站 海安" data-station="haian" transform="translate(286 414)"><circle r="12"/><text x="24" y="6">海安</text><text class="n" x="24" y="24">05 探古</text></g>
           <g class="route-node" tabindex="0" role="button" aria-label="第六站 启东" data-station="qidong" transform="translate(388 522)"><circle r="12"/><text x="-86" y="6">启东</text><text class="n" x="-86" y="24">06 追光</text></g>
-          <g class="route-node" tabindex="0" role="button" aria-label="第七站 崇川" data-station="nantong" transform="translate(350 676)"><circle r="12"/><text x="-120" y="6">崇川</text><text class="n" x="-120" y="24">07 城市</text></g>
+          <g class="route-node" tabindex="0" role="button" aria-label="第七站 崇川" data-station="nantong" transform="translate(350 676)"><circle r="12"/><text x="-120" y="6">崇川</text><text class="n" x="-120" y="24">07 读城</text></g>
         </svg>
-        <div class="route-chips" aria-label="七境快速切换"><button class="route-chip active" type="button" data-station="haimen">海门</button><button class="route-chip" type="button" data-station="tongzhou">通州</button><button class="route-chip" type="button" data-station="rugao">如皋</button><button class="route-chip" type="button" data-station="rudong">如东</button><button class="route-chip" type="button" data-station="haian">海安</button><button class="route-chip" type="button" data-station="qidong">启东</button><button class="route-chip" type="button" data-station="nantong">城区</button></div>
+        <div class="route-chips" aria-label="七境快速切换"><button class="route-chip active" type="button" data-station="haimen">海门</button><button class="route-chip" type="button" data-station="tongzhou">通州</button><button class="route-chip" type="button" data-station="rugao">如皋</button><button class="route-chip" type="button" data-station="rudong">如东</button><button class="route-chip" type="button" data-station="haian">海安</button><button class="route-chip" type="button" data-station="qidong">启东</button><button class="route-chip" type="button" data-station="nantong">崇川</button></div>
       </div>
 
       <aside class="station-panel" aria-live="polite">
@@ -315,42 +317,66 @@
       <section class="story-sheet" aria-labelledby="storyTitle" aria-live="polite">
         <div class="story-intro"><div class="eyebrow">足迹与风物</div><h3 id="storyTitle">从海门读起</h3><p>点选地图上的一境，看看历史线索如何连到今日风景。</p><span class="story-type" id="storyType">故里原点</span></div>
         <div class="story-column"><span class="story-label">张謇线索 · 当时</span><p id="storyTrace">张謇生于海门常乐镇。</p></div>
-        <div class="story-column"><span class="story-label">对应书目</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
+        <div class="story-column"><span class="story-label">对应书目</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><span class="story-label">今日景点</span><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
         <p class="story-relation" id="storyRelation">出生地与同镇纪念空间；不将今日景点误写为诗歌创作原址。</p><div class="story-sources" id="storySources"></div>
+        <div class="field-task"><strong>本境推荐走读任务</strong><p id="stationTask"></p><a id="stationTaskLink" href="exhibit.html#p=catalog-05">打开学生走读任务 →</a></div>
       </section>
     </section>
 
     <section class="desk-section" id="desk" aria-labelledby="desk-title">
-      <div class="desk-illustration" aria-hidden="true"><span class="desk-book desk-book-one"></span><span class="desk-book desk-book-two"></span><span class="desk-paper">謇</span><span class="desk-line"></span></div>
-      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title">行至江海，<br>再回到文字</h2><p>在这里翻开参展书目，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="exhibit.html#books">读参展书目 ↗</a><a href="exhibit.html#map">看七境地图 ↗</a><a href="#passport">打开我的护照 ↗</a></div></div>
+      <img class="desk-still-life" src="../assets/images/jiangnan-writing-desk.jpg" alt="" loading="lazy" decoding="async" width="1774" height="887">
+      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title" class="site-heading">行至江海，<br>再回到文字</h2><p>在这里翻开参展书目，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="exhibit.html#books">读参展书目 ↗</a><a href="exhibit.html#map">看七境诗歌地图 ↗</a><a href="#passport">打开诗路护照 ↗</a><a href="#method">数字人文五步法 ↗</a><a href="#project">项目纪实 ↗</a></div></div>
     </section>
 
     <section class="section journey" id="journey" aria-labelledby="journey-title">
-      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title">诗句落地，风景有了名字</h2></div><p>从今日风景找到对应书目，沿着文献细读南通。</p></header>
+      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title" class="site-heading">诗句落地，风景有了名字</h2></div><p>从今日风景找到对应书目，沿着文献细读南通。</p></header>
       <div class="scenic-grid"><article class="scenic-card "><img src="../assets/scenic/langshan.webp" loading="lazy" alt="狼山风景名胜区"><div class="scenic-content"><span class="tag">崇川</span><h3>狼山风景名胜区</h3><p>狼山，相传山形似狼，又称紫琅山，位于南通崇川南郊长江北岸，为军山、剑山、狼山、马鞍山、黄泥山五山之首。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-50">读地点文献 ↗</a></div></article><article class="scenic-card secondary"><img src="../assets/scenic/zhangjian-memorial.webp" loading="lazy" alt="张謇纪念馆"><div class="scenic-content"><span class="tag">海门</span><h3>张謇纪念馆</h3><p>张謇纪念馆其旧址为张公故里祠堂。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-02">读地点文献 ↗</a></div></article><article class="scenic-card "><img src="../assets/scenic/public/nantong-museum-historical-building.jpg" loading="lazy" alt="南通博物苑"><div class="scenic-content"><span class="tag">崇川</span><h3>南通博物苑</h3><p>南通博物苑，取博物收藏、园馆一体之意，由张謇创办，为中国第一座公共博物馆（1905年），位于南通崇川濠南路。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-45">读地点文献 ↗</a><div class="photo-credit"><span>© Peter Potrowl</span><details><summary>图片来源</summary><div class="credit-links"><a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener noreferrer">CC BY 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons 原图</a></div></details></div></div></article><article class="scenic-card secondary"><img src="../assets/scenic/haohe-evening.jpg" loading="lazy" alt="濠河风景区"><div class="scenic-content"><span class="tag">崇川</span><h3>濠河风景区</h3><p>濠河，因河似壕沟而得名，位于南通崇川，始建于958年，是中国保存最完整且位于城市中心的古护城河。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-42">读地点文献 ↗</a></div></article></div>
       <div class="observe"><article><b>看见</b><p>拍下一个与诗句产生呼应的空间细节，不追求复原历史。</p></article><article><b>辨明</b><p>先判断是诗歌地点、同镇关联、地区延伸，还是现代周边。</p></article><article><b>留下</b><p>写一句现场观察，让旅行记录成为可回溯的当代注释。</p></article></div>
     </section>
 
     <section class="section passport-v2" id="passport" aria-labelledby="passport-title">
       <div class="passport-wrap">
-        <div class="passport-intro"><div class="eyebrow">留下这一程</div><h2 id="passport-title">我的<br class="passport-title-break">诗路护照</h2><p>每到一个地区，打开地点卡，自记一枚印章；也能用照片和一句话留下现场观察。记录仅保存在这个浏览器。</p><div class="passport-tallies"><div><strong id="visitCount">—</strong><span>自记到访 / 7 境</span></div><div><strong id="observationCount">—</strong><span>已存地点观察</span></div></div><a href="#route" class="passport-link">选择下一站</a><a href="exhibit.html#map" class="passport-link">到景点写观察</a><small>自记打卡不是定位验证或景区认证；清理浏览器数据后记录可能丢失。</small></div>
-        <div class="passport-book"><div class="passport-book-top"><span>江海行旅册 · 个人记录</span><span>南通 / 我的诗路</span></div><div class="passport-stamps" id="passportStamps" aria-label="七境打卡印章"><p class="passport-loading">正在读取本机记录…</p></div><div class="passport-notes"><h3>我的地点观察</h3><div id="passportNotes" aria-live="polite"><p>在地点详情中可以留下自己的观察。</p></div></div><section class="profile-gate" id="profileGate" aria-labelledby="profileGateTitle"><div class="profile-gate-mark">旅程终章 · 个人画像</div><h3 id="profileGateTitle">你的江海旅人画像</h3><p id="profileGateText" aria-live="polite">正在核对七境印章…</p><div class="profile-progress" aria-hidden="true"><span id="profileProgressFill"></span></div><button class="primary" id="profileEntry" type="button" hidden>生成我的江海画像</button><small>由你的选择生成本次行旅偏好；不是心理测评，也不是景区到访认证。</small></section></div>
+        <div class="passport-intro"><div class="eyebrow">留下这一程</div><h2 id="passport-title" class="site-heading">我的<br class="passport-title-break">诗路护照</h2><p>从一句诗出发，沿七境寻找张謇实业、教育与地方生活的痕迹。用一张照片或几句笔记留下你的观察，再讲给下一位读者。印章和观察卡保存在当前浏览器。</p><div class="passport-tallies"><div><strong id="visitCount">—</strong><span>自记到访 / 7 境</span></div><div><strong id="observationCount">—</strong><span>已存观察卡</span></div></div><a href="#route" class="passport-link">选择下一站</a><a href="exhibit.html#map" class="passport-link">到景点填写观察卡</a><small>自记打卡不是定位验证或景区认证；清理浏览器数据后记录可能丢失。</small></div>
+        <div class="passport-book"><div class="passport-book-top"><span>江海行旅册 · 个人记录</span><span>南通 / 我的诗路</span></div><section class="passport-trail" aria-labelledby="trail-title">
+            <h3 id="trail-title">读诗 · 寻迹 · 观察 · 传播</h3>
+            <label for="trail-place">选择走读地点</label> <select id="trail-place"></select>
+            <blockquote id="trail-verse"></blockquote>
+            <ol class="trail-steps">
+              <li><a id="trail-read"><strong>读诗</strong><span>对读原句与书目 →</span></a></li>
+              <li><a id="trail-map"><strong>寻迹</strong><span>在七境地图找地点 →</span></a></li>
+              <li><a id="trail-note"><strong>观察</strong><span>写笔记、添照片 →</span></a></li>
+              <li><a href="#trail-share" id="trail-share-link"><strong>传播</strong><span>整理分享文字 →</span></a></li>
+            </ol>
+            <details id="trail-share"><summary>我的走读分享稿</summary>
+              <label for="trail-copy-text">编辑要分享的文字</label>
+              <textarea id="trail-copy-text" rows="4"></textarea>
+              <button type="button" id="trail-add-note">加入本站观察笔记</button>
+              <button type="button" id="trail-copy">复制分享文字</button>
+              <p id="trail-status" role="status"></p>
+            </details>
+          </section><h3 id="passport-stamps-title">我的七境印章</h3><div class="passport-stamps" id="passportStamps" role="group" aria-labelledby="passport-stamps-title"><p class="passport-loading">正在读取本机记录…</p></div><div class="passport-notes"><h3>我的观察卡</h3><div id="passportNotes" aria-live="polite"><p>在地点详情中填写观察卡，保存后可在这里重读。</p></div></div><section class="profile-gate" id="profileGate" aria-labelledby="profileGateTitle"><div class="profile-gate-mark">旅程终章 · 个人印象</div><h3 id="profileGateTitle">我的数字江海印象</h3><p id="profileGateText" aria-live="polite">正在核对七境印章…</p><div class="profile-progress" aria-hidden="true"><span id="profileProgressFill"></span></div><button class="primary" id="profileEntry" type="button" hidden>生成我的数字江海印象</button><small>由你的选择生成本次行旅偏好；不是心理测评，也不是景区到访认证。</small></section></div>
       </div>
     </section>
 
     <section class="section method" id="method" aria-labelledby="method-title">
-      <header class="section-head"><div><div class="eyebrow">边走边读</div><h2 id="method-title">让旅程，成为你的江海注释</h2></div><p>读诗、辨地点、看今日、留记录。背后是数字人文的方法，体验却可以从一张照片和一句观察开始。</p></header>
+      <header class="section-head"><div><div class="eyebrow">边走边读</div><h2 id="method-title" class="site-heading">数字人文五步法</h2></div><p>读诗、辨地点、看今日、留记录。背后是数字人文的方法，体验却可以从一张照片和一句观察开始。</p></header>
       <div class="method-grid">
         <div class="method-flow" aria-label="数字人文五步法"><div class="method-step"><span>第一步</span><strong>文本</strong><small>从参展目录查找作品与引句。</small></div><div class="method-step"><span>第二步</span><strong>地点</strong><small>对照展表中的地区与地点。</small></div><div class="method-step"><span>第三步</span><strong>时间</strong><small>只记录题名或资料可确认的时间。</small></div><div class="method-step"><span>第四步</span><strong>关系</strong><small>标注直接、同镇、延伸与周边。</small></div><div class="method-step"><span>第五步</span><strong>证据</strong><small>为事实保留来源，存疑内容留空。</small></div></div>
         <div class="method-try"><div><strong>在运盐河，读《过排河观》</strong><p>“钟声随鸟远，河势趁林回。”</p></div><a class="primary" href="exhibit.html#p=catalog-07">读地点文献 ↗</a></div>
       </div>
     </section>
+    <section class="section" id="project" aria-labelledby="project-title">
+      <header class="section-head"><div><div class="eyebrow">项目纪实</div><h2 id="project-title" class="site-heading">从课堂到七境</h2></div><p>《数字人文实务》把诗文整理带入地方走读，《语义网技术》关注诗、地点与人物之间的关系。作品按地点收入地图，读者可以对照书页，留下自己的观察。</p></header>
+      <div class="project-grid"><div><h3>诗画作品与署名</h3><div id="worksList" class="works-list"></div></div>
+      <figure class="teaching-model"><a href="assets/teaching-model.jpg" target="_blank" rel="noopener"><img src="assets/teaching-model.jpg" loading="lazy" width="2269" height="1280" alt="三链融通机制图，展示课程方法链、数智资源链和实践活动链如何衔接"></a><figcaption>课程、资源与走读如何衔接 · 申报书图1　<a href="assets/teaching-model.jpg" target="_blank" rel="noopener">查看原图 ↗</a></figcaption></figure></div>
+      <p class="project-source">地点、书目与页码据《参展图书目录增补完善修订版》（2026年11月16日）。诗歌校注的出处列在相应地点卡中。</p>
+    </section>
   </main>
 
-  <footer><strong>张謇诗路 · 南通漫游</strong><span>从诗歌出发，发现今日南通。</span></footer>
+  <footer><strong>张謇诗路 · 南通漫游</strong><nav class="project-links" aria-label="项目与方法"><a href="#method">数字人文五步法</a><a href="#project">项目纪实</a></nav></footer>
 
-  <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle"><button class="dialog-close" id="profileDialogClose" type="button" aria-label="关闭江海旅人画像">×</button><div class="profile-dialog-body"><div class="eyebrow">这一程的读城方式</div><h2 id="profileDialogTitle">我的江海旅人画像</h2><p class="profile-dialog-intro">四个选择，回望你怎样读过这座城。结果只保存在当前浏览器。</p><div id="profileContent"></div><p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p></div></dialog>
+  <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle"><button class="dialog-close" id="profileDialogClose" type="button" aria-label="关闭数字江海印象">×</button><div class="profile-dialog-body"><div class="eyebrow">这一程的读城方式</div><h2 id="profileDialogTitle" class="site-heading">我的数字江海印象</h2><p class="profile-dialog-intro">四个选择，回望你怎样读过这座城。结果只保存在当前浏览器。</p><div id="profileContent"></div><p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/data.js?v=56a"></script><script src="js/guide.js?v=56a"></script><script src="js/local-record.js"></script>
-  <script src="js/home-map.js?v=56a"></script><script src="js/catalog-profile-core.js"></script><script src="js/catalog-profile.js"></script></body></html>
+  <script src="js/data.js?v=56a"></script><script src="js/guide.js?v=walk1"></script><script src="js/walks.js?v=2"></script><script src="js/local-record.js"></script>
+  <script src="js/home-map.js?v=study-desk-1"></script><script src="js/catalog-profile-core.js?v=study-desk-1"></script><script src="js/catalog-profile.js?v=study-desk-1"></script></body></html>

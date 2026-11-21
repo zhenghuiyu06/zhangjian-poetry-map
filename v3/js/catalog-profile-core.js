@@ -1,4 +1,4 @@
-// 江海旅人画像只描述本次行旅选择，不推断稳定人格或历史事实。
+// 数字江海印象只描述本次行旅选择，不推断稳定人格或历史事实。
 (function (root) {
   'use strict';
 
@@ -59,7 +59,7 @@
     if (!result) return '';
     const type = types.find(item => item.id === result.primary);
     const secondary = result.secondary ? ` · 也带着${types.find(item => item.id === result.secondary).motif}的兴趣` : '';
-    return `我的江海旅人画像：${type.name}${secondary}\n${story(profile, favoriteName, observationCount)}\n再读／再看：${type.next}\n七境印章为个人自记；画像只描述本次行旅偏好。`;
+    return `我的数字江海印象：${type.name}${secondary}\n${story(profile, favoriteName, observationCount)}\n再读／再看：${type.next}\n七境印章为个人自记；印象只描述本次行旅偏好。`;
   }
 
   const core = { types, questions, evaluate, story, shareText };

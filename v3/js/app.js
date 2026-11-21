@@ -36,20 +36,32 @@
   function placeLink(p){
     return '<a class="place-link" data-place="'+p.id+'" href="#p='+p.id+'" aria-label="查看地点：'+esc(p.name)+'">查看地点 <span aria-hidden="true">→</span></a>';
   }
-  const poemFilms = new Map([
-    ['catalog-01', ['田家', 'tianjia', '樊萌', '蒋华']],
-    ['catalog-04', ['青龙港', 'qinglonggang', '江琳', '蒋华']],
-    ['catalog-07', ['过排河观', 'guopaiheguan', '张梦颖', '徐毅']],
-    ['catalog-10', ['中秋宋宅楼中对月', 'songzhai', '梁佳琪', '徐毅']],
-    ['catalog-23', ['盆松', 'pensong', '宋若琳', '徐毅']],
-    ['catalog-50', ['琅山', 'langshan', '樊萌', '蒋华']]
-  ]);
+  const readingNotes = {
+    'catalog-23': ['展览配诗', '展表用《盆松》带读如皋盆景。校注将此诗系于张謇少年在家乡私塾读书期间，未指明今日园区为创作地点。', '1'],
+    'catalog-10': ['诗中地点', '诗题点明宋宅，校注将宋宅系于今通州区西亭镇。这里标到镇，宅楼的今址仍待考。', '2'],
+    'catalog-07': ['沿河走读', '展表在运盐河条目中引此诗。校注记排河观遗址在金沙镇南，并指出张謇从常乐前往西亭宋宅途中经过此处。观址与今日河岸的距离仍待核。', '3–4']
+  };
+  function readingNote(p) {
+    const record = readingNotes[p.id];
+    if (!record) return '';
+    return '<aside class="poem-context"><h3>诗与此地 · '+record[0]+'</h3><p>'+record[1]+'</p><small>参照《张謇诗编年校注》上册，第'+record[2]+'页。</small></aside>';
+  }
+  function verseReader() {
+    const pairs = [
+      ['青苍撮土', '青苍一撮土'],
+      ['斧痕创鳞', '创鳞见斧痕'],
+      ['梁栋之材', '梁栋与谁论']
+    ];
+    return '<section class="verse-reader"><h3>《盆松》意象与诗句</h3><p>点开一个意象，读对应的诗句。</p>'+
+      pairs.map(([tag,line])=>'<details><summary>'+tag+'</summary><blockquote>'+line+'</blockquote></details>').join('')+
+      '<small>据《张謇诗编年校注》上册第1页，引句节选，转为简体。</small></section>';
+  }
   function poemFilm(p){
-    const film=poemFilms.get(p.id);
+    const film=window.JIANGHAI_FILMS.get(p.id);
     if(!film)return '';
     const [title,file,creator,teacher]=film;
     const base='assets/poem-films/'+file;
-    return '<figure class="poem-film"><figcaption><h3>《'+title+'》诗画视频</h3><small>制作 · '+creator+'　指导 · '+teacher+'</small></figcaption>'+
+    return '<figure class="poem-film"><figcaption><h3>《'+title+'》诗画视频</h3><small>视频制作　<strong>'+creator+'</strong>　指导教师　<strong>'+teacher+'</strong></small></figcaption>'+
       '<video controls playsinline preload="none" poster="'+base+'.jpg" aria-label="播放《'+title+'》诗画视频" src="'+base+'.mp4"></video></figure>';
   }
   const hrefRegion = d => '#d='+d.id;
@@ -163,14 +175,34 @@
     const button=event.target.closest('[data-copy-title]');
     if(button)copyValue(button.dataset.copyTitle,button.parentElement.nextElementSibling,'书名已复制。');
   });
+  const favoritePrefix='zhangjian.favorite.';
+  function showFavorites() {
+    const list=$('favorite-list');
+    const button=$('toggle-favorite');
+    try {
+      const saved=places.filter(p=>localStorage.getItem(favoritePrefix+p.id)==='1');
+      list.innerHTML=saved.length?saved.map(toPlace).join(' · '):'还没有收藏。可在地点详情中收藏想重访的地点。';
+      if(button){
+        const active=saved.some(p=>p.id===state.place);
+        button.setAttribute('aria-pressed',String(active));
+        button.textContent=active?'取消收藏':'收藏此地点';
+      }
+    } catch {
+      list.textContent='当前浏览器无法读取本机收藏。';
+      if(button)button.disabled=true;
+    }
+  }
+  window.addEventListener('storage',showFavorites);
+  window.addEventListener('pageshow',showFavorites);
+  showFavorites();
   function renderPlace(p){
     state.place=p.id;
-    $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title">'+esc(p.name)+'</h2>'+
+    $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title" class="site-heading">'+esc(p.name)+'</h2>'+
       '<div class="place-actions"><button type="button" class="button" id="jump-book">查看书目与页码</button>'+
       '<button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
       '<button type="button" class="button" id="share-place">分享给朋友</button></div>'+
       '<div id="place-maps" role="group" aria-label="选择地图平台" hidden>'+mapActions(p)+'</div><div class="source" role="status" id="share-status"></div>'+
-      '<p class="entry-text">'+esc(p.description)+'</p>'+poemFilm(p)+'<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
+      '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+'<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
       (p.pages?'<p class="muted">'+esc(p.pages)+'</p>':'')+bookActions(p)+'</li></ul>';
     $('jump-book').onclick=()=>{$('place-book').focus();$('place-book').scrollIntoView({block:'nearest'});};
     $('travel-toggle').onclick=event=>{
@@ -186,7 +218,49 @@
       }
       await copyValue(url,$('share-status'),'地点链接已复制，可分享给朋友。');
     };
-    attachPlaceNote(p,$('place-content')); if(!mapDialog.open)mapDialog.showModal();
+    const favorite=document.createElement('button');
+    favorite.type='button';
+    favorite.className='button';
+    favorite.id='toggle-favorite';
+    favorite.onclick=()=>{
+      try {
+        if(localStorage.getItem(favoritePrefix+p.id)==='1')localStorage.removeItem(favoritePrefix+p.id);
+        else localStorage.setItem(favoritePrefix+p.id,'1');
+        showFavorites();
+      } catch { $('share-status').textContent='当前浏览器无法保存收藏。'; }
+    };
+    $('place-content').append(favorite);
+    showFavorites();
+    const noteBox=attachPlaceNote(p,$('place-content'));
+    if(!mapDialog.open)mapDialog.showModal();
+    const jump=document.createElement('button');
+    jump.type='button';
+    jump.className='walk-jump';
+    jump.textContent='查看学生走读任务 ↓';
+    const goToWalk=()=>{
+      const heading=$('walk-heading');
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView({block:'start'});
+    };
+    jump.onclick=goToWalk;
+    const noteJump=document.createElement('button');
+    noteJump.type='button';
+    noteJump.className='walk-jump';
+    noteJump.textContent='填写观察卡 ↓';
+    noteJump.setAttribute('aria-controls',noteBox.id);
+    noteJump.onclick=()=>{
+      noteBox.open=true;
+      noteBox.scrollIntoView({block:'nearest'});
+      (noteBox.querySelector('textarea:enabled')||noteBox.querySelector('summary')).focus();
+    };
+    const actions=document.createElement('div');
+    actions.className='walk-actions';
+    actions.append(jump,noteJump);
+    $('place-content').querySelector('.entry-text').before(actions);
+    const destination=new URLSearchParams(location.hash.slice(1));
+    if(destination.get('walk')==='1')goToWalk();
+    if(destination.get('note')==='1')noteJump.click();
+
   }
   function openPlace(id,change=true,origin){
     const p=byPlace.get(id); if(!p)return;
@@ -202,7 +276,7 @@
     const hash=location.hash,param=new URLSearchParams(hash.slice(1));
     const oldId=param.get('p'), number=Object.hasOwn(legacyNumbers,oldId)?legacyNumbers[oldId]:0;
     const alias=number?'catalog-'+String(number).padStart(2,'0'):'';
-    if(alias){history.replaceState(null,'','#p='+alias);param.set('p',alias);}
+    if(alias){param.set('p',alias);history.replaceState(null,'','#'+param);}
     const place=byPlace.get(param.get('p'));
     if(place){if(!mapDialog.open){state.area=place.area;draw();}scrollMap();renderPlace(place);return;}
     if(mapDialog.open)mapDialog.close();
@@ -255,6 +329,39 @@
     const entry=p.description.split('。').find(s=>s.includes(String(year)));
     return '<li><b>'+year+'</b><h3>'+esc(p.name)+'</h3>'+(entry?'<p>'+esc(entry)+'。</p>':'')+placeLink(p)+'</li>';
   }).join('');
+  const films=window.JIANGHAI_FILMS;
+  const askForm=$('catalog-question');
+  askForm.addEventListener('submit',event=>{
+    event.preventDefault();
+    const input=askForm.elements.question.value.trim().replace(/[《》？?，。、\s]/g,'');
+    const result=$('catalog-answer');
+    result.replaceChildren();
+    const matches=places.filter(p=>input.includes(p.name.replace(/\s/g,'')) || (films.has(p.id) && input.includes(films.get(p.id)[0])));
+    if(matches.length!==1){
+      result.textContent=matches.length?'请一次查询一处地点或一首诗。':'请写出展表中的地点全名或站内诗画作品名。';
+      return;
+    }
+    const p=matches[0];
+    const title=films.get(p.id)?.[0];
+    let intent=input.replace(p.name.replace(/\s/g,''),'');
+    if(title)intent=intent.replace(title,'');
+    intent=intent.replace(/^(请问|我想查|想查|查一下|查)/,'').replace(/[的呢吗呀]/g,'');
+    let answer;
+    if(/^(书目与页码|书目|对应书目|参考书|对应哪本书|出自哪本书|在哪本书|页码|在第几页|第几页|在哪一页)$/.test(intent)){
+      answer='《'+p.title+'》'+(p.pages?'，'+p.pages:'，展表未列页码')+'。';
+    } else if(/^(配在哪里|在哪个地点|对应哪个地点|对应地点|展览配诗地点)$/.test(intent) && title){
+      answer='展表在'+p.region+'的“'+p.name+'”条目引用《'+title+'》。';
+    } else if(/^(诗地关系|诗与地点关系|与地点关系)$/.test(intent) && readingNotes[p.id]){
+      answer=readingNotes[p.id][1]+' 参照《张謇诗编年校注》上册第'+readingNotes[p.id][2]+'页。';
+    }
+    const paragraph=document.createElement('p');
+    paragraph.textContent=answer||'现有站内问答未收录这个问题，请查阅该地点的展表说明和原书页。';
+    const source=document.createElement('a');
+    source.href='#p='+p.id;
+    source.dataset.place=p.id;
+    source.textContent='查看'+p.name;
+    result.append(paragraph,source);
+  });
   $('quiz').innerHTML='<p>展览目录在哪一处引用了《盆松》？</p><div class="quiz-options">'+[23,2,50].map(n=>action('answer',n,places[n-1].name)).join('')+'</div>';
   $('stamps').innerHTML=districts.map(d=>action('stamp',d.id,d.name)).join('');
   async function stamps(change){
@@ -304,9 +411,65 @@
 
 function attachPlaceNote(place,container){
   const box=document.createElement('details');
-  box.innerHTML='<summary>我的地点观察</summary><div><label>现场笔记<textarea rows="3"></textarea></label><label>添加照片（可选）<input type="file" accept="image/*"></label><div class="actions"><button type="button" class="button">保存到本机</button><button type="button" class="button">删除本条观察</button></div><p role="status" class="source"></p></div>';
+  box.innerHTML='<summary>填写观察卡</summary><div><label>现场笔记<textarea rows="3"></textarea></label><label>添加照片（可选）<input type="file" accept="image/*"></label><div class="actions"><button type="button" class="button">保存到本机</button><button type="button" class="button">删除这张观察卡</button></div><p role="status" class="source"></p></div>';
   container.append(box);
+  box.id='walk-note';
+  const passportLink=document.createElement('a');
+  passportLink.href='index.html?trail='+encodeURIComponent(place.id)+'#passport';
+  passportLink.textContent='回诗路护照看记录 →';
+  box.querySelector('.actions').after(passportLink);
+  const task=window.JIANGHAI_WALKS[place.id];
+  const section=document.createElement('section');
+  section.className='walk-checklist';
+  section.setAttribute('aria-labelledby','walk-heading');
+  section.innerHTML='<h3 id="walk-heading" tabindex="-1">学生走读任务</h3><p class="walk-question"></p><p class="source walk-source"></p><fieldset><legend>现场观察、核对草稿、写给游客</legend></fieldset><details class="walk-ai-help"><summary>想用自己的 AI 再试一次？</summary><p>把地点卡中的一条资料和你的导览词发给 AI，问它：“哪几个字能从资料里找到依据？哪几个字是我的现场观察？请指出你拿不准的地方。”回看原文，由你决定保留哪种说法。</p></details><div class="walk-footer"><span role="status"></span></div>';
+  section.querySelector('.walk-question').textContent=task.question;
+  const pages=place.pages?.trim();
+  section.querySelector('.walk-source').textContent='约 5–10 分钟 · 《'+place.title+'》'+(pages?' · '+pages:'');
+  const steps=[['see','到场看一眼'],['verify','你来核对'],['record','写给下一位游客']];
+  const progressStatus=section.querySelector('[role=status]');
+  const fieldset=section.querySelector('fieldset');
+  function updateProgress(){
+    progressStatus.textContent='已勾选 '+fieldset.querySelectorAll('input:checked').length+' / 3 · 仅存本机';
+  }
+  for(const [key,title] of steps){
+    const label=document.createElement('label');
+    const checkbox=document.createElement('input');
+    checkbox.type='checkbox';
+    const storageKey='zhangjian.walk.v1.'+place.id+'.'+key;
+    try { checkbox.checked=localStorage.getItem(storageKey)==='1'; }
+    catch { checkbox.disabled=true; }
+    checkbox.onchange=()=>{
+      try {
+        if(checkbox.checked)localStorage.setItem(storageKey,'1');
+        else localStorage.removeItem(storageKey);
+        updateProgress();
+      } catch {
+        checkbox.checked=!checkbox.checked;
+        progressStatus.textContent='此浏览器暂时无法保存勾选进度。';
+      }
+    };
+    const text=document.createElement('span');
+    const heading=document.createElement('strong');
+    heading.textContent=title;
+    text.append(heading);
+    if(key==='verify'){
+      const draft=document.createElement('span');
+      draft.className='walk-ai-example';
+      const caption=document.createElement('b');
+      caption.textContent='模拟 AI 草稿 · 待核对';
+      draft.append(caption,document.createTextNode(task.ai));
+      text.append(draft);
+    }
+    text.append(document.createTextNode(task[key]));
+    label.append(checkbox,text);
+    fieldset.append(label);
+  }
+  updateProgress();
+  if(fieldset.querySelector('input:disabled'))progressStatus.textContent='此浏览器暂时无法保存勾选进度。';
+  container.insertBefore(section,box);
   const note=box.querySelector('textarea'),file=box.querySelector('input'),[save,remove]=box.querySelectorAll('button'),status=box.querySelector('[role=status]');
+  note.placeholder='写一两句给游客的话。可以记下你看到的细节，或写出你根据哪句话改了草稿。';
   let prior=null;
   save.disabled=true;remove.disabled=true;note.disabled=true;
   localRecord('observations','readonly','get',place.id).then(r=>{
@@ -321,4 +484,5 @@ function attachPlaceNote(place,container){
     catch{status.textContent='保存失败，请检查本机存储空间。';}finally{save.disabled=false;remove.disabled=!prior;}
   };
   remove.onclick=async()=>{remove.disabled=true;save.disabled=true;try{await localRecord('observations','readwrite','delete',place.id);prior=null;note.value='';file.value='';status.textContent='本条观察已删除。';}catch{status.textContent='删除失败，请重试。';}finally{save.disabled=false;remove.disabled=!prior;}};
+  return box;
 }

@@ -38,15 +38,12 @@ section[id]{scroll-margin-top:76px}
 .seven-gates-grid .seven-gates-finale{background:#e5eeeb;border-color:#bfd0c9}
 .seven-gates-finale::after{content:"";position:absolute;right:21px;bottom:20px;width:54px;height:16px;border:2px solid rgba(21,57,79,.17);border-bottom-width:5px;transform:skew(-14deg)}
 .desk-section{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(0,1.15fr);gap:clamp(35px,7vw,115px);align-items:center;padding:90px clamp(18px,7vw,110px);background:#e5ece7;border-top:1px solid #cbd8d2;border-bottom:1px solid #cbd8d2;scroll-margin-top:76px}
-.desk-illustration{position:relative;max-width:570px;min-height:390px;width:100%;margin:auto;border:1px solid #c1cfc8;border-radius:6px;background:radial-gradient(circle at 62% 25%,#f8f3e5 0%,#e1e9e3 62%,#d7e1db 100%);overflow:hidden}
-.desk-illustration::before{content:"";position:absolute;left:7%;right:7%;bottom:15%;height:15px;background:#9a684c;box-shadow:0 9px 0 #724b38;border-radius:2px}
-.desk-book{position:absolute;display:block;left:17%;bottom:20%;width:34%;height:23px;border-radius:3px;background:#294f56;transform:rotate(-9deg);box-shadow:4px 8px 15px rgba(32,54,49,.14)}
-.desk-book-two{left:23%;bottom:27%;width:31%;height:20px;background:#a55c3e;transform:rotate(7deg)}
-.desk-paper{position:absolute;display:grid;place-items:center;right:17%;top:17%;width:32%;height:45%;background:#fffaf0;color:#9c4a35;font-family:var(--serif);font-size:clamp(52px,8vw,95px);box-shadow:9px 12px 25px rgba(37,65,60,.15);transform:rotate(8deg)}
-.desk-line{position:absolute;right:20%;bottom:22%;width:27%;height:2px;background:#46656a;transform:rotate(-34deg);transform-origin:right center}
+.desk-still-life{display:block;width:100%;max-width:570px;aspect-ratio:3/2;height:auto;object-fit:cover;object-position:center 60%;margin:auto;border:1px solid #c1cfc8;border-radius:6px}
+.desk-illustration{position:relative;max-width:570px;min-height:340px;width:100%;margin:auto;border:1px solid #c1cfc8;border-radius:6px;background:#e1e9e3 url("assets/images/jiangnan-writing-desk.jpg") center/cover no-repeat}
+.desk-illustration>span{display:none}
 .desk-copy{max-width:600px}.desk-copy p{color:#445b5f;font-size:16px;line-height:1.9;margin:23px 0 27px}.desk-links{display:flex;gap:10px;flex-wrap:wrap}.desk-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid #9bb2aa;border-radius:999px;background:#f9faf4;color:#204653;font-size:13px;font-weight:700;text-decoration:none}.desk-links a:hover{background:#fff}
-@media(max-width:900px){.seven-gates-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.desk-section{grid-template-columns:1fr}.desk-illustration{min-height:300px;max-width:100%}}
-@media(max-width:600px){.seven-gates{padding:70px 16px}.seven-gates-head{grid-template-columns:1fr;gap:15px}.seven-gates-grid{gap:9px}.seven-gates-grid a{padding:17px 14px;min-height:175px}.seven-gates-grid a::before{right:14px;top:16px;width:22px;height:22px}.seven-gates-grid strong{font-size:25px;margin:18px 0 5px}.seven-gates-grid small{font-size:11px}.seven-gates-grid em{font-size:11px}.desk-section{padding:68px 16px;gap:28px}.desk-illustration{min-height:230px}.desk-copy p{font-size:15px}.desk-links a{width:100%;justify-content:center}}
+@media(max-width:900px){.seven-gates-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.desk-section{grid-template-columns:1fr}.desk-still-life{max-width:100%;aspect-ratio:5/2}}
+@media(max-width:600px){.seven-gates{padding:70px 16px}.seven-gates-head{grid-template-columns:1fr;gap:15px}.seven-gates-grid{gap:9px}.seven-gates-grid a{padding:17px 14px;min-height:175px}.seven-gates-grid a::before{right:14px;top:16px;width:22px;height:22px}.seven-gates-grid strong{font-size:25px;margin:18px 0 5px}.seven-gates-grid small{font-size:11px}.seven-gates-grid em{font-size:11px}.desk-section{padding:68px 16px;gap:28px}.desk-still-life{aspect-ratio:16/9}.desk-copy p{font-size:15px}.desk-links a{width:100%;justify-content:center}}
 
 .explore-v2{background:#eae4da;padding-top:95px;padding-bottom:110px}
 .guide-swipe-hint{display:none}

@@ -7,3 +7,17 @@ window.JIANGHAI_DISTRICTS = [
   {id:'qidong',name:'启东',color:'#cbb7de',center:[121.65,31.97],box:[121.41,31.70,122.02,32.20],shape:[[121.39,32.16],[121.59,32.25],[121.72,32.16],[121.92,32.03],[121.98,31.79],[121.82,31.70],[121.62,31.80],[121.51,31.89],[121.53,32.08]]},
   {id:'nantong',name:'崇川',color:'#debecf',center:[120.83,31.99],box:[120.64,31.85,121.00,32.13],shape:[[120.49,32.04],[120.69,32.06],[120.84,32.10],[120.93,31.98],[121.08,31.93],[120.96,31.86],[120.69,31.93]]}
 ];
+
+window.JIANGHAI_FILMS = new Map([
+    ['catalog-01', ['田家', 'tianjia', '樊萌', '蒋华']],
+    ['catalog-04', ['青龙港', 'qinglonggang', '江琳', '蒋华']],
+    ['catalog-07', ['过排河观', 'guopaiheguan', '张梦颖', '徐毅']],
+    ['catalog-10', ['中秋宋宅楼中对月', 'songzhai', '梁佳琪', '徐毅']],
+    ['catalog-23', ['盆松', 'pensong', '宋若琳', '徐毅']],
+    ['catalog-50', ['琅山', 'langshan', '樊萌', '蒋华']]
+  ]);
+
+window.JIANGHAI_FEATURED_WALKS = {
+  haimen: 'catalog-05', tongzhou: 'catalog-07', rugao: 'catalog-23',
+  rudong: 'catalog-24', haian: 'catalog-30', qidong: 'catalog-37', nantong: 'catalog-43'
+};

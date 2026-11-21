@@ -2,7 +2,7 @@
 .profile-gate{margin-top:24px;padding:23px 24px;border:1px solid #c9d5d1;border-radius:7px;background:linear-gradient(110deg,#edf4f0,#fffaf0)}
 .profile-gate.is-ready{border-color:#b69678;background:linear-gradient(110deg,#f7eee1,#ecf3ef)}
 .profile-gate-mark{color:#9a523b;font-size:11px;font-weight:750;letter-spacing:.16em}
-.profile-gate h3{font-family:var(--serif);font-size:clamp(24px,2.5vw,31px);line-height:1.25;margin:8px 0 8px;color:#1b3e4b}
+.profile-gate h3{font-family:var(--serif);font-weight:750;font-size:clamp(34px,4vw,50px);text-wrap:balance;line-height:1.2;margin:8px 0 8px;color:#923b2f}
 .profile-gate p{margin:0 0 16px;font-size:14px;color:#46585d;line-height:1.75}
 .profile-gate .profile-progress{height:8px;max-width:560px;background:#d4dfda;border-radius:99px;overflow:hidden;margin:0 0 18px}
 .profile-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#a44c37,#cfaa6b);border-radius:inherit;transition:width .3s}
@@ -11,7 +11,7 @@
 .profile-dialog{width:min(960px,calc(100% - 24px));max-height:92dvh;overflow:auto;border:1px solid #d7c9b0;background:#fffaf0;color:#17252b}
 .profile-dialog-body{padding:clamp(24px,4vw,48px)}
 .profile-dialog .eyebrow{color:#a54632}
-.profile-dialog h2{font-family:var(--serif);font-size:clamp(30px,3.4vw,48px);line-height:1.2;margin:16px 52px 10px 0}
+.profile-dialog h2{color:#923b2f;font-weight:750;font-family:var(--serif);font-size:clamp(44px,6.5vw,76px);text-wrap:balance;line-height:1.14;margin:16px 0 14px}
 .profile-dialog-intro{color:#526369;line-height:1.75;margin:0 35px 24px 0}
 .profile-status{min-height:22px;color:#8c3d2c;font-size:13px;line-height:1.65;margin:16px 0 0}
 .profile-question{border:1px solid #d8d4c9;border-radius:7px;padding:19px;margin:0 0 14px;background:#fffdf8;min-width:0}
@@ -29,7 +29,7 @@
 .profile-result-card{position:relative;overflow:hidden;border:1px solid #c9b89e;border-radius:8px;padding:clamp(23px,4vw,42px);background:radial-gradient(circle at 92% 8%,#e0ece9,transparent 44%),#fffbf2;box-shadow:0 15px 35px rgba(31,56,61,.08)}
 .profile-result-card::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border:1px solid #c3d4d1;border-radius:50%;pointer-events:none}
 .profile-result-kicker{font-size:11px;font-weight:750;letter-spacing:.2em;color:#a04e36}
-.profile-result-card h3{font-family:var(--serif);font-size:clamp(35px,5vw,59px);line-height:1.15;margin:16px 0 12px;color:#1a3c4b}
+.profile-result-card h3{font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);line-height:1.15;margin:16px 0 12px;color:#1a3c4b}
 .profile-secondary{display:inline-block;padding:5px 11px;border-radius:99px;background:#e7eeeb;color:#2f525d;font-size:12px}
 .profile-result-card p{color:#3e5055;font-size:15px;line-height:1.85;max-width:700px;white-space:pre-wrap;overflow-wrap:anywhere}
 .profile-stamp-row{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 18px}
@@ -53,5 +53,5 @@
 .profile-download-fallback p{margin:0 0 10px;color:#475d61;font-size:13px;line-height:1.6}
 .profile-save-again{display:inline-flex;align-items:center;min-height:44px;margin:0 0 12px;color:#1b4552;font-weight:700;text-underline-offset:3px}
 .profile-download-fallback img{display:block;width:min(100%,340px);height:auto;border:1px solid #d6c8b5;border-radius:4px}
-@media(max-width:760px){.profile-gate{padding:20px 17px}.profile-dialog-body{padding:25px 17px 30px}.profile-dialog h2{margin-right:46px}.profile-options{grid-template-columns:1fr}.profile-option{min-height:48px}.profile-result-actions button,.profile-form-actions button{flex:1 1 165px}.profile-result-card p{font-size:14px}}
+@media(max-width:760px){.profile-gate{padding:20px 17px}.profile-dialog-body{padding:25px 17px 30px}.profile-options{grid-template-columns:1fr}.profile-option{min-height:48px}.profile-result-actions button,.profile-form-actions button{flex:1 1 165px}.profile-result-card p{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.profile-progress span{transition:none}}

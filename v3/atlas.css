@@ -41,7 +41,14 @@
 #street-map[data-mode=diagram] .district-label{background:#fdfbefcf}
 #street-map[data-mode=diagram]{touch-action:pan-y;cursor:default}
 #street-map[data-mode=diagram] .district-shape[data-selected=true]{fill-opacity:1;stroke:#215c5b;stroke-width:2.6;paint-order:fill stroke}
-#street-map[data-mode=diagram]:has(.district-label[aria-pressed=true]) .district-shape[data-selected=false]{fill-opacity:.48}
+#street-map[data-mode=diagram] .district-shape[data-region=haian]{fill:#ad8bd0}
+#street-map[data-mode=diagram] .district-shape[data-region=rugao]{fill:#8cba69}
+#street-map[data-mode=diagram] .district-shape[data-region=rudong]{fill:#e7bd49}
+#street-map[data-mode=diagram] .district-shape[data-region=tongzhou]{fill:#77aada}
+#street-map[data-mode=diagram] .district-shape[data-region=nantong]{fill:#d97872}
+#street-map[data-mode=diagram] .district-shape[data-region=haimen]{fill:#58b8ab}
+#street-map[data-mode=diagram] .district-shape[data-region=qidong]{fill:#ee9459}
+#street-map[data-mode=diagram]:has(.district-label[aria-pressed=true]) .district-shape[data-selected=false]{fill-opacity:.88}
 #street-map[data-mode=diagram] .district-label[aria-pressed=true]{color:white;background:#215c5b;border-color:#215c5b}
 .atlas-site-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#855329;box-shadow:0 0 0 1.2px #fff9e8;transform:translate(-50%,-50%)}
 .atlas-site-leader{position:absolute;height:1px;transform-origin:left center;background:#84633b99}

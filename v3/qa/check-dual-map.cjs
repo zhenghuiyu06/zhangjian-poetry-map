@@ -50,7 +50,7 @@ mkdirSync(out,{recursive:true});
       assert.match(await p.locator('#share-status input').inputValue(),/#p=catalog-48$/);
       await p.getByRole('button',{name:'查看书目与页码'}).click();
       assert.equal(await p.evaluate(()=>document.activeElement.id),'place-book');
-      await p.locator('#place-content summary').click();
+      await p.locator('#walk-note > summary').click();
       await p.locator('#place-content textarea').fill('本地验收观察');
       await p.getByRole('button',{name:'保存到本机'}).click();
       await p.getByText('已保存在当前浏览器。',{exact:true}).waitFor();

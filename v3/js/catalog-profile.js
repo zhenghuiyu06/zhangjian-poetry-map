@@ -64,15 +64,15 @@
       gate.classList.toggle('is-ready', unlocked);
       progressFill.style.width = `${Math.round(visits.length / stationKeys.length * 100)}%`;
       gateText.textContent = unlocked
-        ? savedProfile ? '七境印章已集齐。你的江海画像保存在这个浏览器里，可随时重看或重测。' : '七境印章已集齐。用四个轻巧的选择，给这次旅程留下一张专属画像。'
-        : `已自记 ${visits.length} / ${stationKeys.length} 境；再收集 ${stationKeys.length - visits.length} 枚印章，就能解锁画像。`;
+        ? savedProfile ? '七境印章已集齐。你的数字江海印象保存在这个浏览器里，可随时重看或重测。' : '七境印章已集齐。用四个轻巧的选择，给这次旅程留下一份数字江海印象。'
+        : `已自记 ${visits.length} / ${stationKeys.length} 境；再收集 ${stationKeys.length - visits.length} 枚印章，就能解锁印象。`;
       entry.hidden = !unlocked;
-      entry.textContent = savedProfile ? '查看我的江海画像' : '生成我的江海画像';
+      entry.textContent = savedProfile ? '查看我的数字江海印象' : '生成我的数字江海印象';
       if (!unlocked && dialog.open) dialog.close();
     } catch {
       if (current !== refreshId) return;
       unlocked = false;
-      gateText.textContent = '暂时无法读取护照，请刷新后重试。';
+      gateText.textContent = '当前浏览器无法读取本机护照，暂时不能核对七境或生成印象。请检查存储设置；若同时开着旧版预览，请关闭后刷新。其他内容仍可浏览。';
       progressFill.style.width = '0%';
       entry.hidden = true;
       if (dialog.open) dialog.close();
@@ -134,11 +134,11 @@
     select.value = savedProfile?.favoriteStation || '';
     form.append(favoriteLabel, select);
     const actions = make('div', 'profile-form-actions');
-    const submit = make('button', 'primary', '查看我的江海画像');
+    const submit = make('button', 'primary', '查看我的数字江海印象');
     submit.type = 'submit';
     actions.append(submit);
     if (savedProfile) {
-      const back = make('button', 'ghost', '返回原画像');
+      const back = make('button', 'ghost', '返回原有印象');
       back.type = 'button';
       back.addEventListener('click', renderResult);
       actions.append(back);
@@ -167,7 +167,7 @@
         selectedShare = null;
         await refreshProfile();
         renderResult();
-        setStatus('画像已保存在当前浏览器。分享图片默认不含私人观察。');
+        setStatus('印象已保存在当前浏览器。分享图片默认不含私人观察。');
       } catch {
         setStatus('保存失败：当前浏览器无法写入本机记录。你的选择仍在页面上，可以稍后重试。');
         submit.disabled = false;
@@ -183,7 +183,7 @@
     const result = core.evaluate(savedProfile.answers);
     const type = typeById(result.primary);
     const card = make('article', 'profile-result-card');
-    card.setAttribute('aria-label', '我的江海旅人画像结果');
+    card.setAttribute('aria-label', '我的数字江海印象结果');
     card.append(make('div', 'profile-result-kicker', '这一程的我'));
     card.append(make('h3', '', type.name));
     if (result.secondary) card.append(make('span', 'profile-secondary', `也带着${typeById(result.secondary).motif}的兴趣`));
@@ -209,11 +209,11 @@
     const retake = make('button', 'ghost', '重新选择');
     retake.type = 'button';
     retake.addEventListener('click', () => { selectedShare = null; releasePreview(); clearGeneratedPreview(); renderQuiz(); });
-    const remove = make('button', 'ghost', '删除本机画像');
+    const remove = make('button', 'ghost', '删除本机印象');
     remove.type = 'button';
     let armed = false;
     remove.addEventListener('click', async () => {
-      if (!armed) { armed = true; remove.textContent = '再点一次，确认删除'; setStatus('只删除画像和四题答案；七境印章与诗歌观察会保留。'); return; }
+      if (!armed) { armed = true; remove.textContent = '再点一次，确认删除'; setStatus('只删除印象和四题答案；七境印章与诗歌观察会保留。'); return; }
       remove.disabled = true;
       try {
         await localRecord('profiles', 'readwrite', 'delete', 'current');
@@ -221,14 +221,14 @@
         selectedShare = null;
         await refreshProfile();
         renderQuiz();
-        setStatus('本机画像已删除；七境印章与诗歌观察未删除。');
-      } catch { remove.disabled = false; armed = false; remove.textContent = '删除本机画像'; setStatus('删除失败，请稍后重试。'); }
+        setStatus('本机印象已删除；七境印章与诗歌观察未删除。');
+      } catch { remove.disabled = false; armed = false; remove.textContent = '删除本机印象'; setStatus('删除失败，请稍后重试。'); }
     });
     actions.append(revisit, save, copy, retake, remove);
     content.append(actions);
     renderPrivatePanel();
     const details = make('details', 'profile-explanation');
-    details.append(make('summary', '', '这张画像如何生成？'), make('p', '', '七境印章只负责解锁；主类型按四题选择次数确定。并列时依次参考第四题、第一题。最想重访的站点和已存观察数量用于撰写本次行旅回顾，不用于推断人格。印章均为个人自记。'));
+    details.append(make('summary', '', '这份印象如何生成？'), make('p', '', '七境印章只负责解锁；主类型按四题选择次数确定。并列时依次参考第四题、第一题。最想重访的站点和已存观察数量用于撰写本次行旅回顾，不用于推断人格。印章均为个人自记。'));
     content.append(details);
   }
 
@@ -262,7 +262,7 @@
       const clear = make('button', 'ghost', '不加入私人内容');
       clear.type = 'button';
       clear.hidden = !selectedShare;
-      const applied = make('p', 'profile-private-applied', '本次下载将加入所选观察；关闭画像后自动恢复为默认不加入。');
+      const applied = make('p', 'profile-private-applied', '本次下载将加入所选观察；关闭印象后自动恢复为默认不加入。');
       applied.hidden = !selectedShare;
       inspect.addEventListener('click', () => {
         releasePreview();
@@ -321,7 +321,7 @@
         fallback = make('textarea', 'profile-copy-fallback');
         fallback.id = 'profileCopyFallback';
         fallback.readOnly = true;
-        fallback.setAttribute('aria-label', '可手动复制的画像文字');
+        fallback.setAttribute('aria-label', '可手动复制的印象文字');
         document.querySelector('.profile-result-actions').after(fallback);
       }
       fallback.value = value;
@@ -377,7 +377,7 @@
     for (let radius = 145; radius <= 410; radius += 88) { ctx.beginPath(); ctx.arc(995, 80, radius, 0, Math.PI * 2); ctx.stroke(); }
     ctx.strokeStyle = '#c7bba9'; ctx.lineWidth = 2; ctx.strokeRect(48, 48, 984, 1504);
     ctx.fillStyle = '#a54632'; ctx.font = '700 27px "PingFang SC",sans-serif'; ctx.fillText('张謇诗路 · 南通漫游', 95, 122);
-    ctx.fillStyle = '#52646b'; ctx.font = '24px "PingFang SC",sans-serif'; ctx.fillText('我的江海旅人画像 · 个人自记', 95, 174);
+    ctx.fillStyle = '#52646b'; ctx.font = '24px "PingFang SC",sans-serif'; ctx.fillText('我的数字江海印象 · 个人自记', 95, 174);
     ctx.fillStyle = '#173d4b'; ctx.font = '600 84px "Songti SC",serif'; ctx.fillText(type.name, 90, 290);
     ctx.fillStyle = '#945039'; ctx.font = '30px "PingFang SC",sans-serif';
     if (result.secondary) ctx.fillText(`也带着${typeById(result.secondary).motif}的兴趣`, 96, 347);
@@ -426,7 +426,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `江海旅人画像-${typeById(core.evaluate(savedProfile.answers).primary).name}.png`;
+      link.download = `数字江海印象-${typeById(core.evaluate(savedProfile.answers).primary).name}.png`;
       document.body.append(link);
       link.click();
       link.remove();
@@ -446,7 +446,7 @@
       saveAgain.href = fallbackUrl;
       saveAgain.download = link.download;
       fallback.append(saveAgain);
-      const image = document.createElement('img'); image.src = fallbackUrl; image.alt = '刚生成的江海旅人画像 PNG';
+      const image = document.createElement('img'); image.src = fallbackUrl; image.alt = '刚生成的数字江海印象 PNG';
       fallback.append(image);
     } catch (error) {
       setStatus(`${error.message || '图片生成失败'}；上方文字结果仍可查看或复制。`);

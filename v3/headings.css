@@ -1,0 +1,60 @@
+/* Shared title typography for pages, sections and detail dialogs. */
+:root {
+  --heading-ink: #923b2f;
+  --heading-family: "Songti SC", "STSong", "Noto Serif CJK SC", "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --heading-size: clamp(32px, 3.4vw, 49px);
+}
+:root body :is(h1, h2).site-heading {
+  color: var(--heading-ink);
+  font-family: var(--heading-family);
+  font-size: var(--heading-size);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: .015em;
+  text-wrap: balance;
+  line-break: strict;
+}
+#tour-hero-title { --heading-ink: #f3dfbb; }
+.journey { --heading-ink: #ffb4a4; }
+#tour-hero-title, #hero-title { --heading-size: clamp(46px, 6.3vw, 88px); }
+#profileDialogTitle { --heading-size: clamp(44px, 6.5vw, 76px); }
+#place-title { --heading-size: clamp(29px, 3.2vw, 45px); }
+
+/* Let the explanation move below the heading before it steals title space. */
+.section-heading { flex-wrap: wrap; align-items: end; gap: .65rem 2rem; }
+.section-heading > div { flex: 0 0 auto; max-width: 100%; }
+.section-heading > p { flex: 1 1 22rem; }
+@media (max-width: 900px) {
+  .section-heading { display: block; }
+  .section-heading > p { margin-top: .55rem; }
+  .section-head, .seven-gates-head { grid-template-columns: minmax(0, 1fr); gap: .65rem; }
+}
+.site-heading.site-heading > :is(em, span) {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.passport-trail {
+  margin:1.5rem 0 2rem; padding-bottom:1.5rem; border-bottom:1px solid #ccbd9f;
+}
+.passport-trail h3 {
+  margin:0 0 1rem; color:#873d30; font:700 clamp(1.35rem,2.3vw,2rem)/1.4 var(--heading-family);
+}
+.passport-trail select,.passport-trail textarea {max-width:100%;font:inherit;color:#1c414d;background:#fffdf8;border:1px solid #b7b3a2;border-radius:4px;padding:.45rem;}
+.passport-trail label {font-size:.9rem;color:#465a5b;}
+.passport-trail blockquote {margin:.9rem 0;color:#28484b;font:600 1.1rem/1.65 var(--heading-family);}
+.trail-steps {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;list-style:none;margin:1rem 0;padding:0;}
+.trail-steps a {display:block;height:100%;padding:.65rem .15rem;border-top:2px solid #af7860;text-decoration:none;color:#234855;}
+.trail-steps a:hover span,.trail-steps a:focus-visible span {text-decoration:underline;}
+.trail-steps strong,.trail-steps span {display:block;}
+.trail-steps strong {color:#843d31;font:700 1.22rem/1.4 var(--heading-family);}
+.trail-steps span {margin-top:.3rem;font-size:.87rem;}
+.passport-trail summary {cursor:pointer;font-weight:650;color:#234855;}
+.passport-trail details label,.passport-trail textarea {display:block;margin:.65rem 0;}
+.passport-trail textarea {width:100%;line-height:1.65;}
+.passport-trail button {margin:.25rem .3rem .25rem 0;border:1px solid #b5b8a6;border-radius:.35rem;padding:.65rem .85rem;font:inherit;cursor:pointer;background:#f0f2e9;color:#244b50;}
+#trail-status {font-size:.85rem;}
+.passport-observation {padding:.85rem 0;border-top:1px solid #d8cfba;}
+.passport-observation p {margin:.45rem 0;white-space:pre-wrap;overflow-wrap:anywhere;}
+.passport-observation img {display:block;max-width:100%;width:auto;max-height:16rem;margin-top:.55rem;border-radius:4px;}
+@media(max-width:650px){.trail-steps{grid-template-columns:repeat(2,minmax(0,1fr));}}
