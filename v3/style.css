@@ -10,4 +10,17 @@
 @media(max-width:770px){.frame{width:calc(100% - 32px)}.masthead-inner{flex-wrap:wrap;gap:.25rem;padding-top:.65rem}.masthead nav{gap:0 .95rem}.masthead nav a{font-size:.78rem}.hero{grid-template-columns:1fr;gap:1.15rem;padding:1.75rem 0 1.2rem}.hero h1{font-size:clamp(3.2rem,11vw,5.5rem)}.hero-art{grid-row:2}.hero-art img{max-height:min(59vw,420px);object-fit:contain}.ribbons{display:flex;overflow:auto;scroll-snap-type:x proximity;scroll-padding-inline:3px}.ribbon{flex:0 0 94px;min-height:145px;scroll-snap-align:start}.map-layout{grid-template-columns:1fr}.station-body{max-height:420px}.section-heading,.intro{display:block}.intro>div:last-child{width:auto}.section-heading>p,.intro .lead{margin-top:.6rem}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.first-grid,.book-grid,.travel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.play-grid{grid-template-columns:1fr}.book-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.book-controls label:first-child{grid-column:1/-1}}
 @media(max-width:440px){.ribbon-head{font-size:.7rem}.ribbon-head .eyebrow{letter-spacing:.08em;font-size:.66rem}.map-caption{align-items:start}.map-caption span{padding-top:.25rem}.first-card,.book-card,.travel-card{padding:.72rem}.book-card h3,.first-card h3,.travel-card h3{font-size:1.05rem}.filters button{padding-inline:.55rem}.hero-copy .actions .button{flex:1 0 auto}.travel-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-.poem-links{padding:0;margin:0;list-style:none}.poem-links .button{width:100%;min-height:48px;text-align:left;line-height:1.5}
+.timeline li,.first-card{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
+.timeline li{padding:.9rem .2rem .3rem}
+.timeline h3,.first-card h3{margin:0;line-height:1.4;text-wrap:pretty}
+.timeline b{line-height:1.2;font-variant-numeric:tabular-nums}
+.first-card .eyebrow{margin:0}
+.first-card blockquote{width:100%;margin:.15rem 0;padding:.65rem .85rem;background:#e9efe4;border-inline-start:2px solid var(--gold);color:var(--sea)}
+.timeline .place-link,.first-card .place-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:auto;min-height:44px;color:#28645f;text-decoration:none;font-weight:600;font-size:.9rem}
+.place-link:hover,.place-link:focus-visible{text-decoration:underline}
+.poem-film{margin:1.3rem 0 1.6rem}
+.poem-film figcaption{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.2rem .8rem;margin-bottom:.55rem}
+.poem-film small{color:var(--muted)}
+.poem-film video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#172520;border-radius:6px}
+@media(min-width:771px) and (max-width:1000px){.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.timeline,.first-grid{grid-template-columns:1fr}.timeline li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);column-gap:.8rem}.timeline li>b{grid-column:1;grid-row:1;padding-top:.17rem}.timeline li>:not(b){grid-column:2}.first-card{padding:1rem}}

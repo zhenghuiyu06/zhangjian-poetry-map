@@ -178,7 +178,7 @@
   <link rel="stylesheet" href="../fusion.css?v=20261021">
   <link rel="stylesheet" href="derived.css">
   <link rel="stylesheet" href="intro.css">
-  <script defer src="js/home-map.js"></script>
+
 </head>
 <body>
   <div class="intro-veil" id="introVeil" aria-hidden="true">
@@ -186,7 +186,7 @@
       <p class="intro-eyebrow">从海门出发 · 走读南通</p>
       <div class="intro-title"><span style="--i:0">张</span><span style="--i:1">謇</span><span style="--i:2">诗</span><span style="--i:3">路</span><b class="intro-seal">謇<br>迹</b></div>
       <svg class="intro-river" viewBox="0 0 720 60" preserveAspectRatio="none"><path class="wide" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/><path class="line" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/></svg>
-      <ol class="intro-stations"><li style="--i:0">海门</li><li style="--i:1">通州</li><li style="--i:2">如皋</li><li style="--i:3">如东</li><li style="--i:4">海安</li><li style="--i:5">启东</li><li style="--i:6">南通</li></ol>
+      <ol class="intro-stations"><li style="--i:0">海门</li><li style="--i:1">通州</li><li style="--i:2">如皋</li><li style="--i:3">如东</li><li style="--i:4">海安</li><li style="--i:5">启东</li><li style="--i:6">崇川</li></ol>
       <p class="intro-tagline">七境 · 一条江海诗路</p>
     </div>
     <span class="intro-hint">轻触任意处跳过</span>
@@ -208,8 +208,8 @@
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="research.html" class="topnav-research">诗歌地图 ↗</a><a href="#seven-gates">七境</a><a href="#explore">漫游</a><a href="#archive">诗歌</a><a href="#passport">我的护照</a><a href="#jianghai">地方文献展</a></nav>
-    <button class="search-jump" id="searchJump" type="button" aria-label="搜索诗歌与地点">
+    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境地图 ↗</a><a href="#seven-gates">七境</a><a href="#explore">漫游</a><a href="shilu.html#archive">诗歌</a><a href="exhibit.html#books">书架</a><a href="#passport">我的护照</a><a href="exhibit.html">地方文献展</a></nav>
+    <button class="search-jump" id="searchJump" type="button" aria-label="搜索展览地点与文献">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
   </header>
@@ -219,7 +219,7 @@
       <div class="tour-hero-copy">
         <div class="eyebrow">从海门出发 · 走读南通</div>
         <h1 id="tour-hero-title">张謇与<br><em>南通七境</em></h1>
-        <p>在七境地图上找张謇足迹、查展览书目。想看今天的南通，也可以从七境里选一站，再去读诗或听朗读。</p>
+        <p>从一首诗、一页地方文献出发，在七境地图上找到书里写的南通。</p>
         <div class="tour-hero-actions"><a class="hero-primary" href="exhibit.html#map">打开七境地图</a><a class="hero-secondary" href="#seven-gates">开始七境漫游</a></div>
       </div>
       <div class="tour-hero-aside" aria-label="七境行旅概览"><span>七境序章</span><strong>从故里到江海</strong><p>每一站有一条张謇线索，也有值得你亲自观察的今日风景。终点，把旅途带回一张书桌。</p><small>封面：今日张謇纪念馆实景</small></div>
@@ -229,80 +229,53 @@
     <section class="section mode-section jianghai-guide" id="two-views" aria-labelledby="mode-title">
       <header class="section-head">
         <div><div class="eyebrow">第一次来，从这里开始</div><h2 id="mode-title">你想怎样读南通？</h2></div>
-        <p>想找诗、想看景、想查书，选一个入口就好。不用按顺序逛。</p>
+        <p>想找地点、看风景或查书，选一个入口就好。想读诗，也可以直接去<a href="shilu.html#archive">八首诗歌档案</a>。</p>
       </header>
       <nav class="mode-grid" aria-label="选择浏览方式">
-        <a class="mode-card mode-card-research" href="research.html">
-          <span class="mode-card-number">想读诗</span><h3>诗歌档案</h3>
-          <p>从八首张謇诗里选一首，读原文、听朗读，或查看诗句关系。</p>
-          <strong>选一首张謇诗</strong>
+        <a class="mode-card mode-card-research" href="exhibit.html#map">
+          <span class="mode-card-number">想找地点</span><h3>七境地图</h3>
+          <p>在地图上点选景点，查看参展书目、页码和相关诗文。</p>
+          <strong>打开七境地图</strong>
         </a>
         <a class="mode-card mode-card-walk" href="#seven-gates">
           <span class="mode-card-number">想看景</span><h3>七境漫游</h3>
-          <p>从海门到南通城区，任选一境，看张謇足迹、今日景点和沿途照片。</p>
+          <p>从海门到崇川，任选一境，看张謇足迹与当地文献。</p>
           <strong>选择一站</strong>
         </a>
-        <a class="mode-card mode-card-exhibit" href="#jianghai">
+        <a class="mode-card mode-card-exhibit" href="exhibit.html">
           <span class="mode-card-number">想查书</span><h3>地方文献展</h3>
           <p>在展览七境地图里按地点查书名和页码，再看当地非遗、风味与怎么去。</p>
-          <strong>逛江海书架</strong>
+          <strong>走进江海阅潮生</strong>
         </a>
       </nav>
     </section>
 
     <section class="seven-gates" id="seven-gates" aria-labelledby="seven-gates-title">
-      <div class="seven-gates-head"><div><div class="eyebrow">七境 · 七种进入南通的方式</div><h2 id="seven-gates-title">你想从哪里出发？</h2></div><p>点开一站，继续看它的张謇线索、今日景点与个人观察任务。可按兴趣选站，出行顺序由你决定。</p></div>
+      <div class="seven-gates-head"><div><div class="eyebrow">七境 · 七种进入南通的方式</div><h2 id="seven-gates-title">你想从哪里出发？</h2></div><p>点开一站，继续看它的张謇线索、参展地点与文献。可按兴趣选站，出行顺序由你决定。</p></div>
       <div class="seven-gates-grid">
         <a href="#route" data-entrance-station="haimen"><span>01 / 故里</span><strong>海门</strong><small>常乐镇 · 张謇纪念馆</small><em>从这里认识故乡 ↗</em></a>
-        <a href="#route" data-entrance-station="tongzhou"><span>02 / 寻根</span><strong>通州</strong><small>金沙诗境 · 地方文脉</small><em>沿地名读诗 ↗</em></a>
+        <a href="#route" data-entrance-station="tongzhou"><span>02 / 寻根</span><strong>通州</strong><small>运盐河 · 三姓街</small><em>沿地名读诗 ↗</em></a>
         <a href="#route" data-entrance-station="rugao"><span>03 / 慢游</span><strong>如皋</strong><small>教育线索 · 水绘园</small><em>走进今日园林 ↗</em></a>
-        <a href="#route" data-entrance-station="rudong"><span>04 / 向海</span><strong>如东</strong><small>大豫垦殖 · 今日滩涂</small><em>看土地与海 ↗</em></a>
-        <a href="#route" data-entrance-station="haian"><span>05 / 探古</span><strong>海安</strong><small>人物书信 · 青墩遗址</small><em>读不同的历史时层 ↗</em></a>
-        <a href="#route" data-entrance-station="qidong"><span>06 / 追光</span><strong>启东</strong><small>吕四诗句 · 今日海岸</small><em>观察海天光影 ↗</em></a>
-        <a href="#route" data-entrance-station="nantong"><span>07 / 读城</span><strong>南通城区</strong><small>实业遗产 · 南通博物苑</small><em>走进城市记忆 ↗</em></a>
+        <a href="#route" data-entrance-station="rudong"><span>04 / 向海</span><strong>如东</strong><small>范公堤遗迹 · 洋口港</small><em>看土地与海 ↗</em></a>
+        <a href="#route" data-entrance-station="haian"><span>05 / 探古</span><strong>海安</strong><small>韩国钧故居 · 青墩遗址博物馆</small><em>读不同的历史时层 ↗</em></a>
+        <a href="#route" data-entrance-station="qidong"><span>06 / 追光</span><strong>启东</strong><small>吕四渔场 · 圆陀角风景区</small><em>观察海天光影 ↗</em></a>
+        <a href="#route" data-entrance-station="nantong"><span>07 / 读城</span><strong>崇川</strong><small>实业遗产 · 南通博物苑</small><em>走进城市记忆 ↗</em></a>
         <a class="seven-gates-finale" href="#desk"><span>终点 / 回望</span><strong>张謇的书桌</strong><small>把七境的线索放到一起</small><em>进入线上书桌 ↗</em></a>
       </div>
     </section>
 
-    <section class="jianghai-entry" id="jianghai" aria-labelledby="jianghai-title">
-      <div class="jianghai-entry-inner">
-        <picture class="jianghai-entry-art">
-          <img src="assets/hero-860.webp" alt="江海阅潮生地方文献展主视觉" width="860" height="599" loading="lazy" decoding="async">
-        </picture>
-        <div class="jianghai-entry-copy">
-          <p class="jianghai-kicker">南通市图书馆 · 2026 年 11 月 20 日</p>
-          <h2 id="jianghai-title">江海阅潮生</h2>
-          <p>2026 南通市公共图书馆地方文献展</p>
-          <p>沿张謇足迹查书名、读原文、找页码，也看看每一境的非遗、风味和出行线索。</p>
-          <div class="jianghai-entry-actions">
-            <a class="jianghai-map-link" href="exhibit.html#map">打开展览七境地图</a>
-            <a href="exhibit.html#books">江海书架</a>
-            <a href="exhibit.html">浏览完整展览</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section explore-v2" id="explore" aria-labelledby="explore-title">
-      <header class="section-head"><div><div class="eyebrow">选一段行程</div><h2 id="explore-title">今天，想怎样认识南通？</h2></div><p>先选喜欢的山、城或海，再找到与它呼应的诗。每个主题都能成为你自己的南通行旅开篇。</p></header>
+      <header class="section-head"><div><div class="eyebrow">选一段行程</div><h2 id="explore-title">今天，想怎样认识南通？</h2></div><p>从一处景点开始，读它对应的地方文献。</p></header>
       <p class="guide-swipe-hint">左右滑动，查看三种漫游主题 →</p>
       <div class="guide-layout">
         <div class="guide-options" role="group" aria-label="漫游主题">
-          <button class="guide-option is-active" type="button" data-guide="city" aria-pressed="true"><span>01 / 山水与城市</span><strong>从狼山开始</strong><small>诗歌地点 · 博物苑 · 城中生活</small></button>
-          <button class="guide-option" type="button" data-guide="haimen" aria-pressed="false"><span>02 / 故里人文</span><strong>常乐慢读</strong><small>《盆松》 · 张謇纪念馆</small></button>
-          <button class="guide-option" type="button" data-guide="coast" aria-pressed="false"><span>03 / 海天追光</span><strong>读一场落日</strong><small>吕四归途 · 今日启东海岸</small></button>
+          <button class="guide-option is-active" type="button" data-guide="city" aria-pressed="true"><span>01 / 山水与城市</span><strong>从狼山开始</strong><small>狼山 · 军山 · 濠河</small></button>
+          <button class="guide-option" type="button" data-guide="haimen" aria-pressed="false"><span>02 / 故里人文</span><strong>常乐慢读</strong><small>张謇纪念馆 · 颐生酒厂</small></button>
+          <button class="guide-option" type="button" data-guide="coast" aria-pressed="false"><span>03 / 文博访古</span><strong>走进博物苑</strong><small>南通博物苑 · 濠南别业</small></button>
         </div>
         <div class="guide-panel" id="guidePanel" aria-live="polite">
           <figure class="guide-visual"><img id="guideImage" src="../assets/scenic/langshan.webp" alt="狼山国家森林公园现代实景" loading="lazy" decoding="async"><div class="guide-image-fallback" id="guideImageFallback" hidden>图片暂时无法加载，仍可查看地点介绍。</div><figcaption id="guideCaption">今日狼山实景</figcaption></figure>
-          <div class="guide-copy"><div class="guide-kicker" id="guideKicker">诗歌地点直接对应 × 今日同城延伸</div><h3 id="guideTitle">从狼山，读到一座城</h3><p id="guideDescription">先在诗中读到狼山，再到今天的山水中寻找“江月白翻翻”。想继续走，可自选博物苑、濠河或商圈，给旅程一个不同的尾声。</p><div class="guide-steps" id="guideSteps"></div><p class="guide-caveat" id="guideCaveat" hidden></p><p class="guide-credit" id="guideCredit" hidden></p><div class="guide-actions"><button class="primary" id="guidePlace" type="button">查看地点特色</button><button class="ghost" id="guidePoem" type="button">读关联诗歌</button></div></div>
-        </div>
-      </div>
-      <div class="city-extensions" aria-labelledby="extensions-title">
-        <div class="city-extensions-heading"><div class="eyebrow">顺路看看</div><h3 id="extensions-title">读完诗，也可以看看今日的城市</h3><p>把河畔散步和城市生活排进自己的日程。</p></div>
-        <div class="city-extensions-grid">
-          <a href="https://www.nantong.gov.cn/ntsrmzf/sq/sq.html" target="_blank" rel="noopener noreferrer"><span>水岸漫游</span><strong>濠河风景区</strong><small>查看南通市政府介绍 ↗</small></a>
-          <a href="https://www.nantong.gov.cn/ntsrmzf/xwfbh/content/1c230647-ffbd-4efa-8852-caa303ee86b4.html" target="_blank" rel="noopener noreferrer"><span>城市慢逛</span><strong>南大街商圈</strong><small>查看南通市政府介绍 ↗</small></a>
-          <a href="https://www.nantong.gov.cn/ntsrmzf/ntxw/content/f3b045f5-7767-4582-a3da-4a1105820830.htm" target="_blank" rel="noopener noreferrer"><span>当代消费</span><strong>南通 CBD 大有境</strong><small>查看南通市政府介绍 ↗</small></a>
+          <div class="guide-copy"><div class="guide-kicker" id="guideKicker">展览目录 · 地点与文献</div><h3 id="guideTitle">从狼山，读到一座城</h3><p id="guideDescription">在狼山风景名胜区读《琅山》。</p><div class="guide-steps" id="guideSteps"></div><p class="guide-caveat" id="guideCaveat" hidden></p><p class="guide-credit" id="guideCredit" hidden></p><div class="guide-actions"><button class="primary" id="guidePlace" type="button">查看地点特色</button><button class="ghost" id="guidePoem" type="button">查看本境地点</button></div></div>
         </div>
       </div>
     </section>
@@ -312,12 +285,12 @@
         <div class="eyebrow">沿着诗路看南通</div>
         <h2 id="stage-title">七境，<span>七种看法</span></h2>
         <p class="lead">点亮一个地区，看看今日实景与诗歌线索。图中连线只用于浏览，不代表实际路线。</p>
-        <div class="stage-actions"><a class="primary" href="#archive">寻找一首诗</a><button class="ghost" id="todayBtn" type="button">今天去哪一站</button></div>
+        <div class="stage-actions"><a class="primary" href="exhibit.html#books">翻阅江海书架</a><button class="ghost" id="todayBtn" type="button">今天去哪一站</button></div>
       </div>
 
       <div class="route-map" aria-label="南通七境浏览示意，点击站点切换内容">
         <svg class="route-svg" viewBox="0 0 520 720" role="img" aria-labelledby="routeTitle routeDesc">
-          <title id="routeTitle">南通七境浏览示意</title><desc id="routeDesc">连接海门、通州、如皋、如东、海安、启东与南通城区的浏览示意线，不代表实际道路。</desc>
+          <title id="routeTitle">南通七境浏览示意</title><desc id="routeDesc">连接海门、通州、如皋、如东、海安、启东与崇川的浏览示意线，不代表实际道路。</desc>
           <path class="route-river" d="M90 90 C400 145 390 250 145 280 C-20 300 35 420 275 422 C510 425 530 560 225 610 C125 626 110 675 360 685"/>
           <path class="route-river-thin" d="M64 70 C406 122 430 252 150 302 C5 327 65 395 289 401 C520 410 505 545 216 592 C90 615 128 694 386 700"/>
           <path class="route-path" d="M110 96 C390 140 382 238 160 278 C30 302 75 397 286 414 C468 430 470 535 250 584 C145 608 152 664 350 676"/>
@@ -327,7 +300,7 @@
           <g class="route-node" tabindex="0" role="button" aria-label="第四站 如东" data-station="rudong" transform="translate(112 374)"><circle r="12"/><text x="24" y="6">如东</text><text class="n" x="24" y="24">04 滩涂</text></g>
           <g class="route-node" tabindex="0" role="button" aria-label="第五站 海安" data-station="haian" transform="translate(286 414)"><circle r="12"/><text x="24" y="6">海安</text><text class="n" x="24" y="24">05 探古</text></g>
           <g class="route-node" tabindex="0" role="button" aria-label="第六站 启东" data-station="qidong" transform="translate(388 522)"><circle r="12"/><text x="-86" y="6">启东</text><text class="n" x="-86" y="24">06 追光</text></g>
-          <g class="route-node" tabindex="0" role="button" aria-label="第七站 南通城区" data-station="nantong" transform="translate(350 676)"><circle r="12"/><text x="-120" y="6">南通城区</text><text class="n" x="-120" y="24">07 城市</text></g>
+          <g class="route-node" tabindex="0" role="button" aria-label="第七站 崇川" data-station="nantong" transform="translate(350 676)"><circle r="12"/><text x="-120" y="6">崇川</text><text class="n" x="-120" y="24">07 城市</text></g>
         </svg>
         <div class="route-chips" aria-label="七境快速切换"><button class="route-chip active" type="button" data-station="haimen">海门</button><button class="route-chip" type="button" data-station="tongzhou">通州</button><button class="route-chip" type="button" data-station="rugao">如皋</button><button class="route-chip" type="button" data-station="rudong">如东</button><button class="route-chip" type="button" data-station="haian">海安</button><button class="route-chip" type="button" data-station="qidong">启东</button><button class="route-chip" type="button" data-station="nantong">城区</button></div>
       </div>
@@ -335,406 +308,49 @@
       <aside class="station-panel" aria-live="polite">
         <div class="station-heading"><div class="station-count" id="stationNo">01</div><div><div class="station-keyword" id="stationKeyword">故里 · 出发</div><h2 id="stationName">海门</h2></div></div>
         <figure class="station-photo" id="stationPhoto"><img id="stationPhotoImage" src="../assets/scenic/zhangjian-memorial.webp" alt="海门常乐镇张謇纪念馆现代实景" decoding="async"><div class="image-fallback" id="stationPhotoFallback">图片暂时无法加载，仍可查看本站特色。</div><figcaption id="stationPhotoCaption">地区配图 · 张謇纪念馆</figcaption></figure>
-        <p class="station-note" id="stationNote">以常乐镇的诗歌地点记录为入口，先辨认“同镇关联”，再进入今日纪念空间。</p>
-        <div class="station-facts"><div class="fact"><strong id="stationPoems">1</strong><span id="stationPoemsLabel">收录诗歌</span></div><div class="fact"><strong id="stationStatus">同镇关联</strong><span id="stationStatusLabel">诗歌关联</span></div></div>
-        <div class="station-actions"><button class="primary" id="stationFeature" type="button">查看本站特色</button><button class="ghost" id="stationOpen" type="button">查看本境诗歌</button></div>
+        <p class="station-note" id="stationNote">从张謇故里景区出发，沿目录探访海门。</p>
+        <div class="station-facts"><div class="fact"><strong id="stationPoems">6</strong><span id="stationPoemsLabel">展览地点</span></div><div class="fact"><strong id="stationStatus">参展书目</strong><span id="stationStatusLabel">参展书目</span></div></div>
+        <div class="station-actions"><button class="primary" id="stationFeature" type="button">查看本站特色</button><button class="ghost" id="stationOpen" type="button">查看本境地点</button></div>
       </aside>
       <section class="story-sheet" aria-labelledby="storyTitle" aria-live="polite">
         <div class="story-intro"><div class="eyebrow">足迹与风物</div><h3 id="storyTitle">从海门读起</h3><p>点选地图上的一境，看看历史线索如何连到今日风景。</p><span class="story-type" id="storyType">故里原点</span></div>
         <div class="story-column"><span class="story-label">张謇线索 · 当时</span><p id="storyTrace">张謇生于海门常乐镇。</p></div>
-        <div class="story-column"><span class="story-label">今日可看 · 现在</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
+        <div class="story-column"><span class="story-label">对应书目</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
         <p class="story-relation" id="storyRelation">出生地与同镇纪念空间；不将今日景点误写为诗歌创作原址。</p><div class="story-sources" id="storySources"></div>
       </section>
     </section>
 
     <section class="desk-section" id="desk" aria-labelledby="desk-title">
       <div class="desk-illustration" aria-hidden="true"><span class="desk-book desk-book-one"></span><span class="desk-book desk-book-two"></span><span class="desk-paper">謇</span><span class="desk-line"></span></div>
-      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title">行至江海，<br>再回到文字</h2><p>在这里翻开站内诗歌，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="#archive">读张謇诗歌 ↗</a><a href="research.html">看诗歌地图 ↗</a><a href="#passport">打开我的护照 ↗</a></div></div>
-    </section>
-
-    <section class="section archive" id="archive" aria-labelledby="archive-title">
-      <header class="section-head"><div><div class="eyebrow">读一首诗</div><h2 id="archive-title">诗与南通</h2></div><p>从诗句走向江海山水与城市人文。读诗、听朗读、看诗句关系，再用自己的观察续写旅程。</p></header>
-      <div class="archive-tools">
-        <label class="searchbox" for="archiveSearch"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="archiveSearch" type="search" placeholder="搜索诗名、地点、主题或景点" autocomplete="off"></label>
-        <div class="filters" role="group" aria-label="按地点筛选"><button class="filter on" type="button" data-filter="all" aria-pressed="true">全部</button><button class="filter" type="button" data-filter="南通" aria-pressed="false">南通城区</button><button class="filter" type="button" data-filter="通州" aria-pressed="false">通州</button><button class="filter" type="button" data-filter="海门" aria-pressed="false">海门</button><button class="filter" type="button" data-filter="启东" aria-pressed="false">启东</button></div>
-      </div>
-      <p class="result-summary" id="resultSummary" hidden></p>
-      <div class="poem-grid" id="poemGrid"></div>
+      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title">行至江海，<br>再回到文字</h2><p>在这里翻开参展书目，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="exhibit.html#books">读参展书目 ↗</a><a href="exhibit.html#map">看七境地图 ↗</a><a href="#passport">打开我的护照 ↗</a></div></div>
     </section>
 
     <section class="section journey" id="journey" aria-labelledby="journey-title">
-      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title">诗句落地，风景有了名字</h2></div><p>看山、访馆、追海天。每张卡都说明诗歌与今日景点的关系；现代风景不等于诗作年代的原貌。</p></header>
-      <div class="scenic-grid">
-        <article class="scenic-card"><img src="../assets/scenic/langshan.webp" alt="狼山国家森林公园今日实景" loading="lazy" decoding="async"><div class="scenic-content"><span class="tag">诗歌地点直接对应</span><h3>狼山国家森林公园</h3><p>对应《狼山三元宫近斥僧挽词》的地点记录。到现场寻找山、水与江面天光，回应“江月白翻翻”。</p><button class="ghost scenic-open" type="button" data-poem="1" style="border-color:rgba(255,255,255,.6);color:white">读这首诗</button></div></article>
-        <article class="scenic-card secondary"><img src="../assets/scenic/zhangjian-memorial.webp" alt="海门常乐镇张謇纪念馆入口今日实景" loading="lazy" decoding="async"><div class="scenic-content"><span class="tag">同镇人文景点</span><h3>张謇纪念馆</h3><p>与《盆松》的地点记录同在常乐镇，但不表述为诗歌创作原址。可从松、木构与庭院细节理解“梁栋与谁论”。</p><button class="ghost scenic-open" type="button" data-poem="3" style="border-color:rgba(255,255,255,.6);color:white">读《盆松》</button></div></article>
-        <article class="scenic-card public-photo"><img src="../assets/scenic/public/nantong-museum-historical-building.jpg" alt="南通博物苑历史建筑与张謇塑像" loading="lazy" decoding="async" style="object-position:50% 48%"><div class="scenic-content"><span class="tag">南通城市人文延伸</span><h3>南通博物苑</h3><p>作为南通城区的人文行旅补充，帮助读者在诗歌之外继续理解人物与城市。这里不是本页诗歌的创作原址。</p><button class="ghost scenic-open" type="button" data-poem="8" style="border-color:rgba(255,255,255,.6);color:white">从城区诗境继续阅读</button><div class="photo-credit"><span>© Peter Potrowl</span><details><summary>图片来源</summary><div class="credit-links"><a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener noreferrer">CC BY 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons 原图</a></div></details></div></div></article>
-        <article class="scenic-card secondary public-photo"><img src="../assets/scenic/public/qidong-seawall-viewing-platform.jpg" alt="启东市东部海堤观潮台与沿海景观" loading="lazy" decoding="async" style="object-position:50% 54%"><div class="scenic-content"><span class="tag">启东沿海延伸</span><h3>东部海堤观潮台</h3><p>从《落日九月十五歸自吕四途中》继续观察启东沿海的海面与天光。这里不是吕四渔港，也不推定为诗歌创作原址。</p><button class="ghost scenic-open" type="button" data-poem="2" style="border-color:rgba(255,255,255,.6);color:white">读吕四归途诗</button><div class="photo-credit"><span>© Wangcheni97</span><details><summary>图片来源</summary><div class="credit-links"><a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:%E5%90%AF%E4%B8%9C%E5%B8%82%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%A0%A4%E8%A7%82%E6%BD%AE%E5%8F%B0.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons 原图</a></div></details></div></div></article>
-      </div>
+      <header class="section-head"><div><div class="eyebrow">诗与风景</div><h2 id="journey-title">诗句落地，风景有了名字</h2></div><p>从今日风景找到对应书目，沿着文献细读南通。</p></header>
+      <div class="scenic-grid"><article class="scenic-card "><img src="../assets/scenic/langshan.webp" loading="lazy" alt="狼山风景名胜区"><div class="scenic-content"><span class="tag">崇川</span><h3>狼山风景名胜区</h3><p>狼山，相传山形似狼，又称紫琅山，位于南通崇川南郊长江北岸，为军山、剑山、狼山、马鞍山、黄泥山五山之首。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-50">读地点文献 ↗</a></div></article><article class="scenic-card secondary"><img src="../assets/scenic/zhangjian-memorial.webp" loading="lazy" alt="张謇纪念馆"><div class="scenic-content"><span class="tag">海门</span><h3>张謇纪念馆</h3><p>张謇纪念馆其旧址为张公故里祠堂。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-02">读地点文献 ↗</a></div></article><article class="scenic-card "><img src="../assets/scenic/public/nantong-museum-historical-building.jpg" loading="lazy" alt="南通博物苑"><div class="scenic-content"><span class="tag">崇川</span><h3>南通博物苑</h3><p>南通博物苑，取博物收藏、园馆一体之意，由张謇创办，为中国第一座公共博物馆（1905年），位于南通崇川濠南路。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-45">读地点文献 ↗</a><div class="photo-credit"><span>© Peter Potrowl</span><details><summary>图片来源</summary><div class="credit-links"><a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener noreferrer">CC BY 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons 原图</a></div></details></div></div></article><article class="scenic-card secondary"><img src="../assets/scenic/haohe-evening.jpg" loading="lazy" alt="濠河风景区"><div class="scenic-content"><span class="tag">崇川</span><h3>濠河风景区</h3><p>濠河，因河似壕沟而得名，位于南通崇川，始建于958年，是中国保存最完整且位于城市中心的古护城河。</p><a class="ghost" style="color:white" href="exhibit.html#p=catalog-42">读地点文献 ↗</a></div></article></div>
       <div class="observe"><article><b>看见</b><p>拍下一个与诗句产生呼应的空间细节，不追求复原历史。</p></article><article><b>辨明</b><p>先判断是诗歌地点、同镇关联、地区延伸，还是现代周边。</p></article><article><b>留下</b><p>写一句现场观察，让旅行记录成为可回溯的当代注释。</p></article></div>
     </section>
 
     <section class="section passport-v2" id="passport" aria-labelledby="passport-title">
       <div class="passport-wrap">
-        <div class="passport-intro"><div class="eyebrow">留下这一程</div><h2 id="passport-title">我的<br class="passport-title-break">诗路护照</h2><p>每到一个地区，打开地点卡，自记一枚印章；读完诗，还能用照片和一句话留下观察。记录仅保存在这个浏览器。</p><div class="passport-tallies"><div><strong id="visitCount">—</strong><span>自记到访 / 7 境</span></div><div><strong id="observationCount">—</strong><span>已存观察 / 8 首诗</span></div></div><a href="#route" class="passport-link">选择下一站</a><a href="#archive" class="passport-link">回诗歌档案写观察</a><small>自记打卡不是定位验证或景区认证；清理浏览器数据后记录可能丢失。</small></div>
-        <div class="passport-book"><div class="passport-book-top"><span>江海行旅册 · 个人记录</span><span>南通 / 我的诗路</span></div><div class="passport-stamps" id="passportStamps" aria-label="七境打卡印章"><p class="passport-loading">正在读取本机记录…</p></div><div class="passport-notes"><h3>我的诗境注释</h3><div id="passportNotes" aria-live="polite"><p>保存一首诗的观察后，会在这里出现。</p></div></div><section class="profile-gate" id="profileGate" aria-labelledby="profileGateTitle"><div class="profile-gate-mark">旅程终章 · 个人画像</div><h3 id="profileGateTitle">你的江海旅人画像</h3><p id="profileGateText" aria-live="polite">正在核对七境印章…</p><div class="profile-progress" aria-hidden="true"><span id="profileProgressFill"></span></div><button class="primary" id="profileEntry" type="button" hidden>生成我的江海画像</button><small>由你的选择生成本次行旅偏好；不是心理测评，也不是景区到访认证。</small></section></div>
+        <div class="passport-intro"><div class="eyebrow">留下这一程</div><h2 id="passport-title">我的<br class="passport-title-break">诗路护照</h2><p>每到一个地区，打开地点卡，自记一枚印章；也能用照片和一句话留下现场观察。记录仅保存在这个浏览器。</p><div class="passport-tallies"><div><strong id="visitCount">—</strong><span>自记到访 / 7 境</span></div><div><strong id="observationCount">—</strong><span>已存地点观察</span></div></div><a href="#route" class="passport-link">选择下一站</a><a href="exhibit.html#map" class="passport-link">到景点写观察</a><small>自记打卡不是定位验证或景区认证；清理浏览器数据后记录可能丢失。</small></div>
+        <div class="passport-book"><div class="passport-book-top"><span>江海行旅册 · 个人记录</span><span>南通 / 我的诗路</span></div><div class="passport-stamps" id="passportStamps" aria-label="七境打卡印章"><p class="passport-loading">正在读取本机记录…</p></div><div class="passport-notes"><h3>我的地点观察</h3><div id="passportNotes" aria-live="polite"><p>在地点详情中可以留下自己的观察。</p></div></div><section class="profile-gate" id="profileGate" aria-labelledby="profileGateTitle"><div class="profile-gate-mark">旅程终章 · 个人画像</div><h3 id="profileGateTitle">你的江海旅人画像</h3><p id="profileGateText" aria-live="polite">正在核对七境印章…</p><div class="profile-progress" aria-hidden="true"><span id="profileProgressFill"></span></div><button class="primary" id="profileEntry" type="button" hidden>生成我的江海画像</button><small>由你的选择生成本次行旅偏好；不是心理测评，也不是景区到访认证。</small></section></div>
       </div>
     </section>
 
     <section class="section method" id="method" aria-labelledby="method-title">
       <header class="section-head"><div><div class="eyebrow">边走边读</div><h2 id="method-title">让旅程，成为你的江海注释</h2></div><p>读诗、辨地点、看今日、留记录。背后是数字人文的方法，体验却可以从一张照片和一句观察开始。</p></header>
       <div class="method-grid">
-        <div class="method-flow" aria-label="数字人文五步法"><div class="method-step"><span>第一步</span><strong>文本</strong><small>从题名与诗句提取明确线索。</small></div><div class="method-step"><span>第二步</span><strong>地点</strong><small>区分原诗地点与后来的景点。</small></div><div class="method-step"><span>第三步</span><strong>时间</strong><small>只记录题名或资料可确认的时间。</small></div><div class="method-step"><span>第四步</span><strong>关系</strong><small>标注直接、同镇、延伸与周边。</small></div><div class="method-step"><span>第五步</span><strong>证据</strong><small>为事实保留来源，存疑内容留空。</small></div></div>
-        <div class="method-try"><div><strong>从一首诗开始，留下你的今日观察</strong><p>试试《八月十三夜曼寿堂看月》：拍树影、水波或月色，写一句感受；照片只保存在你的浏览器。</p></div><button id="methodTry" type="button">打开“月影采样”任务</button></div>
+        <div class="method-flow" aria-label="数字人文五步法"><div class="method-step"><span>第一步</span><strong>文本</strong><small>从参展目录查找作品与引句。</small></div><div class="method-step"><span>第二步</span><strong>地点</strong><small>对照展表中的地区与地点。</small></div><div class="method-step"><span>第三步</span><strong>时间</strong><small>只记录题名或资料可确认的时间。</small></div><div class="method-step"><span>第四步</span><strong>关系</strong><small>标注直接、同镇、延伸与周边。</small></div><div class="method-step"><span>第五步</span><strong>证据</strong><small>为事实保留来源，存疑内容留空。</small></div></div>
+        <div class="method-try"><div><strong>在运盐河，读《过排河观》</strong><p>“钟声随鸟远，河势趁林回。”</p></div><a class="primary" href="exhibit.html#p=catalog-07">读地点文献 ↗</a></div>
       </div>
     </section>
   </main>
 
   <footer><strong>张謇诗路 · 南通漫游</strong><span>从诗歌出发，发现今日南通。</span></footer>
 
-  <dialog id="poemDialog" aria-labelledby="dialogTitle"><button class="dialog-close" id="dialogClose" type="button" aria-label="关闭诗歌详情">×</button><div class="dialog-inner"><aside class="dialog-side"><div class="dialog-number" id="dialogNo">01</div><div class="place" id="dialogPlace"></div></aside><div class="dialog-main"><div class="eyebrow" id="dialogTheme"></div><h2 id="dialogTitle"></h2><div class="dialog-views" id="dialogViews" role="group" aria-label="诗歌资料类型"><button type="button" data-view="poem" aria-pressed="true">诗文与朗读</button><button type="button" data-view="video" aria-pressed="false">看影像</button><button type="button" data-view="graph" aria-pressed="false">诗句关系图</button></div><div class="dialog-content" id="dialogContent"></div></div></div></dialog>
-  <dialog id="graphDialog" class="graph-dialog" aria-label="诗句关系图大图"><button class="graph-dialog-close" id="graphDialogClose" type="button">关闭大图</button><div class="graph-fullscroll"><img id="graphFullImage" alt=""></div><p>可左右滚动查看图中细节。</p></dialog>
-  <dialog id="stationDialog" class="station-dialog" aria-labelledby="stationDialogTitle" aria-describedby="stationDialogFeature"><button class="dialog-close" id="stationDialogClose" type="button" aria-label="关闭地点特色卡">×</button><div class="station-dialog-inner"><figure class="station-dialog-photo" id="stationDialogPhoto"><img id="stationDialogImage" alt="" decoding="async"><div class="image-fallback" id="stationDialogFallback">图片暂时无法加载，地点介绍仍可阅读。</div><figcaption id="stationDialogCaption"></figcaption></figure><div class="station-dialog-copy"><div class="eyebrow">今日一站</div><h2 id="stationDialogTitle"></h2><p class="station-dialog-place" id="stationDialogPlace"></p><div class="station-dialog-gallery" id="stationDialogGallery" role="group" aria-label="切换本站照片" hidden></div><p id="stationDialogFeature"></p><p class="station-dialog-relation" id="stationDialogRelation"></p><p class="station-dialog-task"><b>现场观察</b><br><span id="stationDialogTask"></span></p><p class="station-dialog-credit" id="stationDialogCredit"></p><div class="station-dialog-sources"><a id="stationDialogFactSource" target="_blank" rel="noopener noreferrer">地点资料来源 ↗</a><a id="stationDialogPhotoSource" target="_blank" rel="noopener noreferrer">照片原图与授权 ↗</a></div><div class="jianghai-next station-next" aria-label="到站与继续探索"><a id="stationTravel" class="ghost" target="_blank" rel="noopener noreferrer">在高德查怎么去</a><a id="stationExhibit" class="ghost">查看这一境的文献与出行</a><a id="stationPassport" class="ghost" href="#passport">查看我的诗路护照</a></div><div class="station-dialog-actions"><button class="primary" id="stationDialogPoems" type="button">查看关联诗歌</button><button class="ghost" id="stationDialogDone" type="button">返回路线</button></div></div></div></dialog>
   <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle"><button class="dialog-close" id="profileDialogClose" type="button" aria-label="关闭江海旅人画像">×</button><div class="profile-dialog-body"><div class="eyebrow">这一程的读城方式</div><h2 id="profileDialogTitle">我的江海旅人画像</h2><p class="profile-dialog-intro">四个选择，回望你怎样读过这座城。结果只保存在当前浏览器。</p><div id="profileContent"></div><p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script>
-    const poems=[
-      {id:1,title:'狼山三元宫近斥僧挽词',place:'狼山 · 南通',region:'南通',theme:'佛寺禅意',time:'年代待考',lines:'山寺禅房列，三元长老尊。\n遗徒通世学，护佛广宗门。\n焚象衰时及。斋鱼俭德存。\n空堂照遗拂，江月白翻翻。',excerpt:'空堂照遗拂，江月白翻翻。',audio:'../assets/audio/poem-1.mp3',image:'../assets/images/poem-1.webp',relation:'诗歌地点直接对应',task:'观察山、水与江面天光，寻找一处能与你对“江月白翻翻”的理解产生呼应的今日景象。',scenic:'狼山国家森林公园'},
-      {id:2,title:'落日九月十五歸自吕四途中',place:'吕四 · 启东',region:'启东',theme:'壮阔海天',time:'九月十五（题名明确）',lines:'落日如初日，东西照海圆。\n分光还助月，散彩欲弥天。\n野迥丹霞错，山明翠霭偏。\n或云风雨候，不得画诗传。',excerpt:'分光还助月，散彩欲弥天。',audio:'../assets/audio/poem-2.mp3',image:'../assets/images/poem-2.webp',relation:'吕四地区文旅延伸',task:'观察海面、船只与天光，记录今天的色彩如何让你联想到“散彩欲弥天”。',scenic:'吕四渔港'},
-      {id:3,title:'盆松',place:'常乐镇 · 海门',region:'海门',theme:'托物言志',time:'年代待考',lines:'山泽孤生种，谁将到此盆？\n青苍一撮土，蟠郁百年根。\n宿黛含霜气，创鳞见斧痕。\n等闲怜托处，梁栋与谁论。',excerpt:'等闲怜托处，梁栋与谁论。',audio:'../assets/audio/poem-3.mp3',image:'../assets/images/poem-3.webp',relation:'同镇人文景点',task:'从松、木构或庭院细节中选择一处，思考它如何帮助你理解“梁栋与谁论”。',scenic:'张謇纪念馆'},
-      {id:4,title:'过排河观',place:'排河观 · 金沙镇 · 通州',region:'通州',theme:'沧桑变迁',time:'年代待考',lines:'沧海成田后，蔚然一寺开。\n钟声随鸟远，河势趁林回。\n佛圯尘龛在，僧贫圭挫颓。\n兴衰何处问，夕暖上经台。',excerpt:'兴衰何处问，夕暖上经台。',audio:'../assets/audio/poem-4.mp3',image:'../assets/images/poem-4.webp',relation:'诗歌地点记录',task:'从地貌、河流或旧迹中选择一项，记录你如何理解诗中的“兴衰”。'},
-      {id:5,title:'千佛寺',place:'千佛寺 · 南通',region:'南通',theme:'暮色苍凉',time:'年代待考',lines:'复泣回汀水一涯，招提是处并行查。\n烟寒荫霁繁茅屋，风静楸榆点暮鸦。\n衰草城边游客渡，夕阳野外病僧家。\n年年来去孤篷里，卧听钟声间晚笳。',excerpt:'风静楸榆点暮鸦。',audio:'../assets/audio/poem-5.mp3',image:'../assets/images/poem-5.webp',relation:'现代周边另行标注',task:'比较诗歌地点与今日城市边界，记录一处环境变化。',scenic:'狼山、南通CBD大有境'},
-      {id:6,title:'八月十三夜曼寿堂看月',place:'曼寿堂 · 南通',region:'南通',theme:'月下哲思',time:'八月十三夜（题名明确）',lines:'已自东天出，都疑下界新。\n未圆怜更好，独对故相亲。\n树镂移阴叶，波笼久坐巾。\n啼螀尔何意，宁伴倚阑人？',excerpt:'树镂移阴叶，波笼久坐巾。',audio:'../assets/audio/poem-6.mp3',image:'../assets/images/poem-6.webp',relation:'主城区文旅延伸',task:'寻找树影、水波或月色，记录一处能让你联想到诗句的景象。',scenic:'濠河风景区、南大街商圈'},
-      {id:7,title:'金沙祭墓饮客沧园',place:'金沙 · 沧园 · 通州',region:'通州',theme:'寒食追思',time:'寒食节（诗句明确）',lines:'沧园栏楯尚清华，载槛重停隔水车。\n燕子不来春不住，龙孙方纵日方斜。\n荒疏江客调笙曲，辛苦张生课菊花。\n惆怅百年寒食节，冬青无恙几人家？',excerpt:'惆怅百年寒食节，冬青无恙几人家？',audio:'../assets/audio/poem-7.mp3',image:'../assets/images/poem-7.webp',relation:'诗歌地点记录',task:'观察园林、植物与水岸的季节变化，为诗句写一条今日注释。'},
-      {id:8,title:'千龄观消寒第五集闻粤事稍平',place:'千龄观 · 南通',region:'南通',theme:'雅集忧世',time:'消寒期间（题名明确）',lines:'未嫌寒气尚逡巡，泥饮连朝选主宾。\n小醉大醒悬酒户，遥开缓落衔花辰。\n相随少长兰亭集，渐次龙蛇桂海删。\n遗火春星看不厌，疏缝人语况濠濛。',excerpt:'相随少长兰亭集。',audio:'../assets/audio/poem-8.mp3',image:'../assets/images/poem-8.webp',relation:'诗歌地点记录',task:'寻找一处适合共同阅读或交谈的空间，记录“雅集”在今天可能是什么样。'}
-    ];
-    // 参与任务是当代观察方案；建议地点不等于作品创作地。
-    const activities={
-      1:{title:'江月留白',where:'建议观察：狼山今日景观',photo:'拍一处山、水或江面光影；不必进入寺院内部。',note:'画面中的哪一处，让你想到“江月白翻翻”？'},
-      2:{title:'海天调色盘',where:'建议观察：吕四地区或自选海岸',photo:'拍下落日、海天或船影中的一种颜色变化。',note:'写下拍摄时的色彩与光线；不要把其他启东海岸写成吕四原址。'},
-      3:{title:'一株松的细节',where:'建议观察：常乐镇或自选庭院',photo:'拍松针、盆栽、树根或木构中的一处细节。',note:'这处细节怎样帮助你理解“梁栋与谁论”？纪念馆不是创作原址。'},
-      4:{title:'今日水岸注释',where:'建议观察：通州自选水岸',photo:'拍一处河道、桥或地貌，只记录今天真实看见的。',note:'它让你怎样理解“兴衰”？无法核实的历史变化不要推断。'},
-      5:{title:'暮色与声音',where:'建议观察：南通自选街巷或水岸',photo:'拍一处傍晚的树影、街巷或水岸，避开可识别的人脸。',note:'现场有哪些声音或氛围与你读诗时的感受不同？'},
-      6:{title:'月影采样',where:'建议观察：自选安全的夜间地点',photo:'拍树影、水波或月色；没有月亮时也可以记录树影。',note:'用一句话说明画面与“树镂移阴叶，波笼久坐巾”的联系。'},
-      7:{title:'季节的注脚',where:'建议观察：通州或自选园林水岸',photo:'拍一种植物、园林细节或水岸季节变化。',note:'写一条只描述当下所见的“今日注释”，不把照片当作沧园原貌。'},
-      8:{title:'今天的雅集',where:'建议观察：自选阅读或交谈空间',photo:'拍桌面、书页或共享空间；请避开他人的面孔和私人物品。',note:'如果把一次共同阅读称为“雅集”，你会选哪个细节作为证据？'}
-    };
-    const poemStations={1:'nantong',2:'qidong',3:'haimen',4:'tongzhou',5:'nantong',6:'nantong',7:'tongzhou',8:'nantong'};
-    const poemVideos=new Map([
-      [1,{src:'../assets/videos/poem-1.mp4',poster:'../assets/posters/poem-1.jpg'}],
-      [2,{src:'../assets/videos/poem-2.mp4',poster:'../assets/posters/poem-2.jpg'}],
-      [3,{src:'../assets/videos/poem-3.mp4',poster:'../assets/posters/poem-3.jpg'}],
-      [4,{src:'../assets/videos/poem-4.mp4',poster:'../assets/posters/poem-4.jpg'}],
-      [5,{src:'../assets/videos/poem-5.mp4',poster:'../assets/posters/poem-5.jpg'}],
-      [6,{src:'../assets/videos/poem-6.mp4',poster:'../assets/posters/poem-6.jpg'}],
-      [7,{src:'../assets/videos/poem-7.mp4',poster:'../assets/posters/poem-7.jpg'}]
-    ]);
-    const stations={
-      haimen:{no:'01',name:'海门',keyword:'故里 · 出发',note:'从《盆松》的常乐镇地点记录，走向今日张謇纪念馆；两者是同镇关联。',ids:[3],status:'同镇关联',title:'从《盆松》走向纪念空间',feature:'海门常乐镇的张謇纪念馆，可作为阅读张謇生平与地方记忆的今日人文地点。配图展示的是现代纪念空间，不是《盆松》的创作现场。',relation:'关联层级：同镇人文延伸；《盆松》的地点记录与纪念馆同在常乐镇，不推定为创作原址。',task:'选一处松、木构或庭院细节，写下它与你读到的诗句之间的联系。',factSource:{label:'海门区人民政府 · 张謇文化旅游景区',url:'https://www.haimen.gov.cn/hmsrmzf/fjms/content/48c31a44-c3e8-4c90-81c0-9085ae2f6366.html'},photo:{src:'../assets/scenic/zhangjian-memorial.webp',place:'张謇纪念馆',alt:'海门常乐镇张謇纪念馆今日实景',credit:''}},
-      tongzhou:{no:'02',name:'通州',keyword:'金沙 · 文脉',note:'《过排河观》和《金沙祭墓饮客沧园》写到金沙、排河观与沧园；配图是通州南山湖的今日水岸。',ids:[4,7],status:'地区延伸',title:'从金沙诗境看今日水岸',feature:'这两首诗提供了通州的文本线索。南山湖一带的现代水岸照片，适合观察今天城市与水的关系。',relation:'与诗歌的关系：同区配图；南山湖不是排河观或沧园，照片不能证明诗中地点的现存状态。',task:'先找出两首诗里的水与园林词语，再观察今日水岸有哪些相似或不同。',factSource:{label:'照片位置说明 · Wikimedia Commons',url:'https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E9%80%9A%E5%B7%9E%E5%8C%BA%E4%BD%93%E8%82%B2%E4%B8%AD%E5%BF%83%E7%9C%BA%E6%9C%9B%E5%8D%97%E5%B1%B1%E6%B9%96%E4%B8%80%E5%8F%B7.jpg'},photo:{src:'../assets/scenic/public/station-tongzhou.jpg',place:'通州南山湖一带',alt:'从通州区体育中心眺望南山湖一带的现代城市水岸',credit:'Wangcheni97',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E4%BB%8E%E9%80%9A%E5%B7%9E%E5%8C%BA%E4%BD%93%E8%82%B2%E4%B8%AD%E5%BF%83%E7%9C%BA%E6%9C%9B%E5%8D%97%E5%B1%B1%E6%B9%96%E4%B8%80%E5%8F%B7.jpg'}},
-      rugao:{no:'03',name:'如皋',keyword:'园林 · 慢游',note:'走进水绘园，从水面、桥廊与树影感受如皋园林。',ids:[],status:'今日景点',title:'水绘园：从园林开始慢游',feature:'水绘园是如皋的园林景点。漫步水边，观察建筑、树影与水面的层次，也可以为今日旅程留一张照片。',relation:'',task:'拍一处水面或园林细节，写下今天最喜欢的视角。',factSource:{label:'如皋市人民政府 · 水绘园',url:'https://www.rugao.gov.cn/rgsrmzf/bddt/content/cd1f458a-2fb9-4e10-a5ec-225d0208ea3c.html'},photo:{src:'../assets/scenic/public/station-rugao.jpg',place:'如皋水绘园',alt:'如皋水绘园今日水面与园林建筑',credit:'Howhowforever',license:'CC BY-SA 3.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/',source:'https://commons.wikimedia.org/wiki/File:%E6%B0%B4%E7%BB%98%E5%9B%AD.jpg'}},
-      rudong:{no:'04',name:'如东',keyword:'滩涂 · 向海',note:'先看小洋口的真实滩涂，再从大豫的垦殖线索认识如东。',ids:[],status:'今日景点',title:'小洋口：看见如东滩涂',feature:'小洋口的潮间带有泥滩、水道和湿地植被；这张照片拍摄于2014年，展示的是现代景观。大豫镇的垦殖历史是另一条地方线索，不把小洋口照片说成当年的垦殖现场。',relation:'',task:'留意水线、泥滩与植被的边界，拍一张自己看到的海岸，再写下潮水带来的变化。',factSource:{label:'如东县人民政府 · 小洋口海湾',url:'https://www.rudong.gov.cn/rdxrmzf/rdyw/content/9f0e419c-b678-4d4a-9088-258a7a981377.html'},photo:{src:'../assets/scenic/public/rudong-xiaoyangkou-tidal-flat.jpg',place:'如东小洋口滩涂',alt:'如东小洋口滩涂、湿地栈道和水面上的小船',credit:'Alastair Rae',license:'CC BY-SA 2.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/2.0/',source:'https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg',modified:'网页缩放版'},gallery:[{src:'../assets/scenic/public/station-rudong.jpg',place:'如东潮间带风电场',alt:'如东潮间带风电场今日实景',credit:'CatOnMars',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E5%A6%82%E4%B8%9C%E6%BD%AE%E9%97%B4%E5%B8%A6%E9%A3%8E%E7%94%B5%E5%9C%BA1.png',modified:'网页缩放版'}]},
-      haian:{no:'05',name:'海安',keyword:'青墩 · 探古',note:'在青墩遗址了解海安的考古故事。',ids:[],status:'今日景点',title:'青墩遗址：从考古读江海',feature:'青墩遗址位于海安市南莫镇青墩村。可从现场标识进入海安的考古故事，再观察遗址周边的今日景观。',relation:'',task:'读一条现场介绍，拍一处你觉得最能留下印象的细节。',factSource:{label:'海安市人民政府 · 青墩遗址',url:'https://www.haian.gov.cn/hasrmzf/qdwh/content/891e2c1b-e5bd-49ef-8d28-53bbaee62894.html'},photo:{src:'../assets/scenic/public/station-haian.jpg',place:'海安青墩遗址',alt:'海安青墩遗址今日标识亭与纪念碑',credit:'Howhowforever',license:'CC BY-SA 3.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/',source:'https://commons.wikimedia.org/wiki/File:%E9%9D%92%E5%A2%A9%E9%81%97%E5%9D%80.jpg'}},
-      qidong:{no:'06',name:'启东',keyword:'海天 · 追光',note:'以吕四归途诗为文本入口；配图为启东东部海堤，不是吕四渔港。',ids:[2],status:'沿海延伸',title:'吕四归途与今日海岸',feature:'《落日九月十五歸自吕四途中》提供吕四的文本线索。配图是启东东部海堤观潮台的现代海岸景观，可用来观察今日的海面与天光。',relation:'关联层级：启东沿海延伸；配图不是吕四渔港，也不推定为诗歌创作原址。',task:'对照诗中的落日和海天色彩，记录今天看到的光线变化。',factSource:{label:'照片位置说明 · Wikimedia Commons',url:'https://commons.wikimedia.org/wiki/File:%E5%90%AF%E4%B8%9C%E5%B8%82%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%A0%A4%E8%A7%82%E6%BD%AE%E5%8F%B0.jpg'},photo:{src:'../assets/scenic/public/qidong-seawall-viewing-platform.jpg',place:'启东东部海堤观潮台',alt:'启东市东部海堤观潮台与沿海景观',credit:'Wangcheni97',license:'CC BY-SA 4.0',licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',source:'https://commons.wikimedia.org/wiki/File:%E5%90%AF%E4%B8%9C%E5%B8%82%E4%B8%9C%E9%83%A8%E6%B5%B7%E5%A0%A4%E8%A7%82%E6%BD%AE%E5%8F%B0.jpg'}},
-      nantong:{no:'07',name:'南通城区',keyword:'城市 · 江海',note:'从城区诗境走向南通博物苑，区分诗歌地点与现代人文延伸。',ids:[1,5,6,8],status:'城市延伸',title:'从诗路走向南通博物苑',feature:'南通博物苑由张謇创办，是认识他与城市关系的今日人文地点。城区诗歌还有狼山、寺观、月夜与雅集等线索；博物苑不是这些诗作的创作地点。',relation:'与诗歌的关系：南通城市人文延伸；《狼山三元宫近斥僧挽词》的直接地点仍是狼山。',task:'从博物苑的建筑或展陈中选一项，与城区诗歌的一条线索并置阅读。',factSource:{label:'南通市人民政府 · 南通博物苑',url:'https://www.nantong.gov.cn/ntsrmzf/fjms/content/c563d231-e4fa-4b3b-9b9e-caa263fc6913.html'},photo:{src:'../assets/scenic/public/nantong-museum-historical-building.jpg',place:'南通博物苑',alt:'南通博物苑历史建筑与张謇塑像今日实景',credit:'Peter Potrowl',license:'CC BY 3.0',licenseUrl:'https://creativecommons.org/licenses/by/3.0/',source:'https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg'}}
-    };
-    // 本板块将可核的张謇线索与今日游览分开：同城景点不等于亲历地点或诗歌创作地。
-    const stationStories={
-      haimen:{title:'故里，从常乐读起',type:'出生地 · 同镇延伸',trace:'张謇生于海门常乐镇；《盆松》的地点记录也指向常乐。',today:'走进张謇纪念馆与故里景区，从今日展陈认识他的生平和家乡。',places:['张謇纪念馆','张謇故里景区'],relation:'纪念馆与诗歌地点属同镇关联，不将今日建筑指认为《盆松》创作原址。',sources:[{label:'海门区政府 · 张謇文化旅游景区',url:'https://www.haimen.gov.cn/hmsrmzf/fjms/content/48c31a44-c3e8-4c90-81c0-9085ae2f6366.html'}]},
-      tongzhou:{title:'金沙，留下的文脉',type:'诗歌地点 · 地区延伸',trace:'《过排河观》《金沙祭墓饮客沧园》留有金沙线索；今通州还有张氏墓祠、张謇祖居等文保点。',today:'可循金沙的地名线索读诗，再看通州今日的城市水岸与乡镇人文。',places:['金沙镇张氏墓祠','西亭镇张謇祖居','南山湖一带'],relation:'南山湖是今日通州配图，不是诗中的排河观或沧园。',sources:[{label:'南通市政府 · 文物保护单位清单',url:'https://www.nantong.gov.cn/ntsrmzf/upload/f814cda0-a344-4d86-9faf-aea6f522eb1c.pdf'}]},
-      rugao:{title:'如皋，教育与园林',type:'教育活动 · 今日延伸',trace:'地方研究资料记载，张謇曾应邀到如皋高等小学演说；这是教育活动线索。',today:'今日走进水绘园，可以从桥廊、水面与园林空间感受如皋。',places:['水绘园'],relation:'张謇的教育活动与水绘园是如皋的两条阅读线索；水绘园不标作他的到访地。',sources:[{label:'张謇研究会 · 沙元炳与张謇',url:'https://m.zhangjianyanjiu.org/nd.jsp?id=237'},{label:'如皋市政府 · 水绘园',url:'https://www.rugao.gov.cn/rgsrmzf/bddt/content/cd1f458a-2fb9-4e10-a5ec-225d0208ea3c.html'}]},
-      rudong:{title:'如东，向海而生',type:'垦殖事业 · 沿海延伸',trace:'如东大豫镇是张謇创办的南通大豫垦殖公司所在地。',today:'今日可从小洋口的潮间带看滩涂、水道与湿地，再看沿海风电形成的新景观。',places:['大豫镇','小洋口滩涂','如东潮间带风电场'],relation:'小洋口和风电场照片呈现的是现代景观，不代表大豫垦殖时期的原貌。',sources:[{label:'如东县政府 · 大豫镇村庄规划',url:'https://www.rudong.gov.cn/gtj/upload/7c53150b-a0fe-405c-a7e9-a9aed1b4e37d.pdf'},{label:'如东县政府 · 小洋口海湾',url:'https://www.rudong.gov.cn/rdxrmzf/rdyw/content/9f0e419c-b678-4d4a-9088-258a7a981377.html'},{label:'如东县政府 · 沿海风电',url:'https://www.rudong.gov.cn/rdxrmzf/rdyw/content/6dc8a5a6-14fb-4464-b015-79f50d529cd3.htm'}]},
-      haian:{title:'海安，从书信走向考古',type:'人物通信 · 文化延伸',trace:'南通档案馆保存有张謇写给韩国钧的信稿；韩国钧与海安的人文记忆相连。',today:'可在海安走访韩国钧故居，也可到青墩遗址认识更早的地方历史。',places:['韩国钧故居','青墩遗址'],relation:'书信联系的是人物；青墩呈现另一历史时层，不标作张謇到访地。',sources:[{label:'南通档案馆 · 张謇信稿',url:'https://daj.nantong.gov.cn/ntsdaj/zjdag/content/2165b9fe-0e5a-49df-8eae-44109fab3fb6.html'},{label:'海安市政府 · 韩国钧故居',url:'https://www.haian.gov.cn/hasrmzf/lyzy/content/69a5aecc-9569-4c5f-93ce-b292c27292f0.html'},{label:'海安市政府 · 青墩文化',url:'https://www.haian.gov.cn/hasrmzf/qdwh/content/891e2c1b-e5bd-49ef-8d28-53bbaee62894.html'}]},
-      qidong:{title:'启东，诗路接向海岸',type:'垦牧事业 · 沿海诗境',trace:'张謇创办通海垦牧公司；《落日九月十五歸自吕四途中》又留下吕四归途的诗歌线索。',today:'从通海垦牧公司的今日展示走向海岸，也可把吕四渔港纳入当代漫游。',places:['通海垦牧公司景区','吕四渔港','东部海堤观潮台'],relation:'页面照片拍摄于东部海堤，不是吕四渔港；复建展示也不等于原建筑。',sources:[{label:'南通档案馆 · 通海垦牧公司',url:'https://daj.nantong.gov.cn/ntsdaj/bmdt/content/12241475-875a-492e-8ba1-198c16f69250.html'},{label:'南通市政府 · 风景名胜',url:'https://www.nantong.gov.cn/ntsrmzf/fjms2018/content/a63b4b34-da31-4522-8598-fae910934e77.html'}]},
-      nantong:{title:'南通城区，读一座城',type:'实业教育 · 城市诗境',trace:'张謇创办大生纱厂和南通博物苑；城区诗歌另留下狼山等地点线索。',today:'在南通博物苑、唐闸工业遗产与濠河之间，看今日城市如何保存与更新这些记忆。',places:['南通博物苑','唐闸工业遗产','濠河'],relation:'狼山与对应诗歌有直接地点关联；博物苑、唐闸及濠河不因此成为其他诗作的创作原址。',sources:[{label:'南通市政府 · 南通博物苑',url:'https://www.nantong.gov.cn/ntsrmzf/fjms/content/c563d231-e4fa-4b3b-9b9e-caa263fc6913.html'},{label:'南通市政府 · 历史遗存',url:'https://www.nantong.gov.cn/ntsrmzf/lsyc2018/content/c07d14f8-6e49-4710-8699-aaba40f264d2.html'}]}
-    };
-    const grid=document.getElementById('poemGrid'),search=document.getElementById('archiveSearch'),summary=document.getElementById('resultSummary');let activeFilter='all',activePoem=null;
-    function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-    const drafts=new Map();let activityImageUrl=null,currentPoemView='poem',dbPromise=null;
-    function activityDb(){
-      if(!('indexedDB' in window))return Promise.reject(new Error('此浏览器不支持本机记录'));
-      if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{
-        const request=indexedDB.open('zhangjian-poetry-observations-v2',2);
-        let settled=false;
-        const fail=error=>{if(settled)return;settled=true;clearTimeout(timer);reject(error)};
-        const timer=setTimeout(()=>fail(new Error('本机记录读取超时；请关闭其他旧版预览标签后刷新')),8000);
-        request.onupgradeneeded=()=>{
-          const db=request.result;
-          if(!db.objectStoreNames.contains('observations'))db.createObjectStore('observations',{keyPath:'id'});
-          if(!db.objectStoreNames.contains('visits'))db.createObjectStore('visits',{keyPath:'key'});
-          if(!db.objectStoreNames.contains('profiles'))db.createObjectStore('profiles',{keyPath:'id'});
-        };
-        request.onsuccess=()=>{const db=request.result;if(settled){db.close();return}settled=true;clearTimeout(timer);db.onversionchange=()=>{db.close();dbPromise=null};resolve(db)};
-        request.onerror=()=>fail(request.error||new Error('本机记录无法打开'));
-        request.onblocked=()=>fail(new Error('本机记录被其他页面占用；请关闭其他旧版预览标签后刷新'));
-      }).catch(error=>{dbPromise=null;throw error});
-      return dbPromise;
-    }
-    function localRecord(storeName,mode,operation,value){
-      return activityDb().then(db=>new Promise((resolve,reject)=>{
-        const tx=db.transaction(storeName,mode),request=tx.objectStore(storeName)[operation](value);
-        let result;
-        request.onsuccess=()=>{result=request.result};
-        tx.oncomplete=()=>resolve(result);
-        tx.onerror=()=>reject(tx.error||new Error('本机记录失败'));
-        tx.onabort=()=>reject(tx.error||new Error('本机记录已中断'));
-      }));
-    }
-    function localTime(timestamp){return new Date(timestamp).toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
-    function releaseActivityImage(){if(activityImageUrl){URL.revokeObjectURL(activityImageUrl);activityImageUrl=null}}
-    function ensureDraft(id){
-      if(drafts.has(id))return drafts.get(id);
-      const draft={ready:false,note:'',photo:null,savedAt:null,dirty:false,error:''};drafts.set(id,draft);
-      localRecord('observations','readonly','get',id).then(record=>{
-        if(record){draft.note=record.note||'';draft.photo=record.photo||null;draft.savedAt=record.updatedAt||null}
-      }).catch(()=>{draft.error='当前浏览器无法读取本机记录。可以预览，但请勿依赖自动保存。'}).finally(()=>{
-        draft.ready=true;
-        if(activePoem?.id===id&&currentPoemView==='activity')renderActivity(activePoem);
-      });
-      return draft;
-    }
-    async function prepareActivityPhoto(file){
-      if(file.type&&!file.type.startsWith('image/'))throw new Error('请选择图片文件');
-      if(file.size>15*1024*1024)throw new Error('图片超过 15MB，请先压缩');
-      const source=URL.createObjectURL(file);
-      try{
-        const image=new Image();
-        await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('当前浏览器无法读取这张图片'));image.src=source});
-        const ratio=Math.min(1,1600/Math.max(image.naturalWidth,image.naturalHeight));
-        const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.naturalWidth*ratio));canvas.height=Math.max(1,Math.round(image.naturalHeight*ratio));
-        const ctx=canvas.getContext('2d');if(!ctx)throw new Error('无法处理图片');
-        ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);
-        return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('图片压缩失败')),'image/jpeg',.84));
-      }finally{URL.revokeObjectURL(source)}
-    }
-    function renderActivity(p){
-      if(activePoem?.id!==p.id||currentPoemView!=='activity')return;
-      const slot=document.querySelector('#dialogContent .activity-slot');if(!slot)return;
-      const draft=ensureDraft(p.id),activity=activities[p.id];
-      releaseActivityImage();
-      if(!draft.ready){slot.innerHTML='<div class="activity-panel" role="status">正在读取这首诗的本机观察记录…</div>';return}
-      slot.innerHTML=`<div class="activity-panel"><h3>参与任务 · ${esc(activity.title)}</h3><span class="activity-where">${esc(activity.where)}</span><div class="activity-guides"><div><b>① 拍一张照片</b>${esc(activity.photo)}</div><div><b>② 写一句观察</b>${esc(activity.note)}</div></div><div class="activity-preview" aria-label="我的诗境观察卡预览"><div class="activity-preview-image"></div><div class="activity-preview-copy"><b>我的当代诗境</b><blockquote>${esc(p.excerpt)}</blockquote><p></p></div></div><label for="activityNote">我的观察（最多 280 字）</label><textarea id="activityNote" maxlength="280" placeholder="只写你真实看见或感受到的内容…"></textarea><input id="activityCamera" type="file" accept="image/*" capture="environment" hidden><input id="activityGallery" type="file" accept="image/*" hidden><div class="activity-actions"><button type="button" data-activity="camera">拍摄照片</button><button type="button" data-activity="gallery">选择照片</button><button type="button" data-activity="remove-photo" ${draft.photo?'':'hidden'}>移除照片</button><button class="primary" type="button" data-activity="save" ${draft.pending?'disabled':''}>${draft.pending?'保存中…':'保存观察'}</button><button type="button" data-activity="delete" ${draft.savedAt?'':'hidden'}>删除本机记录</button></div><p class="activity-status" role="status" aria-live="polite"></p><p class="activity-privacy">照片可选；观察文字必填。照片会压缩后与文字一起保存在当前浏览器，不上传、不公开。清理浏览器网站数据后可能丢失，请保留照片原件。这里的记录是今天的观察，不是历史图像或到场证明。</p></div>`;
-      const note=slot.querySelector('#activityNote'),preview=slot.querySelector('.activity-preview-copy p'),imageBox=slot.querySelector('.activity-preview-image'),status=slot.querySelector('.activity-status');
-      note.value=draft.note;preview.textContent=draft.note||'你的观察文字会出现在这里。';
-      if(draft.photo){const image=document.createElement('img');activityImageUrl=URL.createObjectURL(draft.photo);image.src=activityImageUrl;image.alt='你选择的当代现场照片';imageBox.replaceChildren(image)}else imageBox.textContent='你的现场照片将显示在这里';
-      const updateStatus=()=>{status.textContent=draft.error|| (draft.pending?'正在保存到当前浏览器…':draft.dirty?'有未保存的修改':draft.savedAt?`已保存在当前浏览器 · ${localTime(draft.savedAt)}`:'尚未保存；可先写观察，再选择照片。')};updateStatus();
-      const stationKey=poemStations[p.id],stationButton=document.createElement('button');
-      stationButton.type='button';stationButton.textContent=`查看${stations[stationKey].name}打卡`;
-      slot.querySelector('.activity-actions').appendChild(stationButton);
-      stationButton.addEventListener('click',()=>{
-        if(draft.dirty){showToast('请先保存观察，再打开地区打卡');return}
-        document.getElementById('poemDialog').close();setStation(stationKey);openStation(stationKey);
-      });
-      note.addEventListener('input',()=>{draft.note=note.value;draft.dirty=true;preview.textContent=draft.note||'你的观察文字会出现在这里。';updateStatus()});
-      for(const [buttonName,inputId] of [['camera','activityCamera'],['gallery','activityGallery']]){
-        slot.querySelector(`[data-activity="${buttonName}"]`).addEventListener('click',()=>slot.querySelector(`#${inputId}`).click());
-        slot.querySelector(`#${inputId}`).addEventListener('change',async event=>{
-          const file=event.target.files?.[0];if(!file)return;
-          try{draft.photo=await prepareActivityPhoto(file);draft.dirty=true;showToast('照片已放入观察卡，记得保存');renderActivity(p)}
-          catch(error){showToast(error.message||'照片读取失败')}
-          event.target.value='';
-        });
-      }
-      slot.querySelector('[data-activity="remove-photo"]').addEventListener('click',()=>{draft.photo=null;draft.dirty=true;renderActivity(p)});
-      slot.querySelector('[data-activity="save"]').addEventListener('click',async()=>{
-        const written=draft.note.trim();if(!written){note.focus();showToast('请先写一句观察');return}
-        const photo=draft.photo,updatedAt=Date.now();draft.pending=true;updateStatus();
-        try{
-          await localRecord('observations','readwrite','put',{id:p.id,note:written,photo,updatedAt});
-          draft.savedAt=updatedAt;draft.error='';draft.dirty=draft.note!==written||draft.photo!==photo;showToast('观察已保存在当前浏览器');
-        }catch{draft.error='保存失败：当前浏览器无法写入本机记录，请检查存储空间或隐私设置';showToast('保存失败，记录尚未写入')}
-        finally{draft.pending=false;renderActivity(p)}
-      });
-      const deleteButton=slot.querySelector('[data-activity="delete"]');let deleteArmed=false;
-      deleteButton.addEventListener('click',async()=>{
-        if(!deleteArmed){deleteArmed=true;deleteButton.textContent='再点一次，确认删除';status.textContent='将删除这首诗在当前浏览器的照片和文字，无法撤销。';return}
-        try{await localRecord('observations','readwrite','delete',p.id);drafts.set(p.id,{ready:true,note:'',photo:null,savedAt:null,dirty:false,error:''});renderActivity(p);showToast('本机观察记录已删除')}
-        catch{showToast('删除失败，请稍后重试')}
-      });
-    }
-    let currentStation='haimen';
-    const stationDialog=document.getElementById('stationDialog');
-    stationDialog.querySelector('.station-dialog-actions').insertAdjacentHTML('beforebegin','<div class="station-checkin"><b>我的地点打卡</b><p id="stationVisitStatus" role="status" aria-live="polite">正在读取本机记录…</p><button class="ghost" id="stationVisitButton" type="button" disabled>自记到访</button><small>打卡是你的个人行旅记录，保存在当前浏览器；不需开启定位，也不会公开。</small></div>');
-    const stationVisitStatus=document.getElementById('stationVisitStatus'),stationVisitButton=document.getElementById('stationVisitButton');
-    let stationVisitRecord=null,stationDeleteArmed=false;
-    async function refreshVisitMarkers(){
-      try{
-        const visited=new Set((await localRecord('visits','readonly','getAll')).map(record=>record.key));
-        document.querySelectorAll('.route-chip').forEach(chip=>{
-          const checked=visited.has(chip.dataset.station);chip.classList.toggle('visited',checked);
-          chip.setAttribute('aria-label',`${chip.textContent}，${checked?'已自记打卡':'未自记打卡'}`);
-        });
-      }catch{/* 浏览器禁止本机存储时仍可浏览路线 */}
-    }
-    async function refreshStationVisit(key){
-      stationVisitButton.disabled=true;stationVisitStatus.textContent='正在读取本机记录…';
-      try{
-        const record=await localRecord('visits','readonly','get',key);
-        if(stationDialog.dataset.station!==key)return;
-        stationVisitRecord=record||null;stationDeleteArmed=false;
-        stationVisitStatus.textContent=record?`已自记到访 ${stations[key].name} · ${localTime(record.checkedAt)}`:'尚未标记到访。你可以在现场自行记录这一站。';
-        stationVisitButton.textContent=record?'取消本机打卡':'自记到访这一站';stationVisitButton.disabled=false;
-      }catch{
-        if(stationDialog.dataset.station!==key)return;
-        stationVisitStatus.textContent='此浏览器无法保存地点打卡，请检查隐私或存储设置。';stationVisitButton.disabled=true;
-      }
-    }
-    stationVisitButton.addEventListener('click',async()=>{
-      const key=stationDialog.dataset.station;if(!stations[key])return;
-      if(stationVisitRecord&&!stationDeleteArmed){stationDeleteArmed=true;stationVisitButton.textContent='再点一次，确认取消';stationVisitStatus.textContent=`将删除 ${stations[key].name} 在当前浏览器的自记打卡。`;return}
-      stationVisitButton.disabled=true;
-      try{
-        if(stationVisitRecord)await localRecord('visits','readwrite','delete',key);
-        else await localRecord('visits','readwrite','put',{key,checkedAt:Date.now()});
-        await refreshStationVisit(key);
-        await refreshVisitMarkers();
-      }catch{stationVisitStatus.textContent='打卡记录未能保存，请稍后重试。';stationVisitButton.disabled=false}
-    });
-    for(const id of ['stationPhotoImage','stationDialogImage']){
-      const img=document.getElementById(id);
-      img.addEventListener('error',()=>img.parentElement.classList.add('image-failed'));
-      img.addEventListener('load',()=>img.parentElement.classList.remove('image-failed'));
-    }
-    function setStationPhoto(figureId,imageId,captionId,photo,label){
-      const figure=document.getElementById(figureId),img=document.getElementById(imageId);
-      figure.classList.remove('image-failed');
-      img.alt=photo.alt;
-      img.src=photo.src;
-      document.getElementById(captionId).textContent=`${label} · ${photo.place}`;
-      if(img.complete&&!img.naturalWidth)figure.classList.add('image-failed');
-    }
-    function showStationDialogPhoto(photo){
-      const mapSearch=new URL('https://uri.amap.com/search');
-      mapSearch.searchParams.set('keyword','南通 '+photo.place);
-      mapSearch.searchParams.set('callnative','1');
-      document.getElementById('stationTravel').href=mapSearch.href;
-      setStationPhoto('stationDialogPhoto','stationDialogImage','stationDialogCaption',photo,'现代实景');
-      const credit=document.getElementById('stationDialogCredit');
-      credit.hidden=!photo.license&&!photo.source;
-      credit.replaceChildren(document.createTextNode(credit.hidden?'':`照片：${photo.credit}${photo.modified?` · ${photo.modified}`:''}`));
-      if(photo.license){
-        const license=document.createElement('a');license.href=photo.licenseUrl;license.target='_blank';license.rel='noopener noreferrer';license.textContent=photo.license;
-        credit.append(' · ',license);
-      }
-      const source=document.getElementById('stationDialogPhotoSource');source.hidden=!photo.source;
-      if(photo.source)source.href=photo.source;
-    }
-    function openStation(key){
-      const s=stations[key];if(!s)return;
-      document.getElementById('stationDialogTitle').textContent=s.title;
-      document.getElementById('stationDialogPlace').textContent=`${s.no} / ${s.name} · ${s.keyword}`;
-      document.getElementById('stationDialogFeature').textContent=s.feature;
-      const relation=document.getElementById('stationDialogRelation');relation.textContent=s.relation.replace(/^关联层级：/,'与诗歌的关系：');relation.hidden=!s.relation;
-      document.getElementById('stationDialogTask').textContent=s.task;
-      const photos=[s.photo,...(s.gallery||[])],gallery=document.getElementById('stationDialogGallery');
-      gallery.hidden=photos.length<2;
-      gallery.replaceChildren(...photos.map((photo,index)=>{
-        const button=document.createElement('button');button.type='button';button.textContent=photo.place;button.setAttribute('aria-pressed',String(index===0));
-        button.addEventListener('click',()=>{
-          showStationDialogPhoto(photo);
-          gallery.querySelectorAll('button').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-        });
-        return button;
-      }));
-      showStationDialogPhoto(s.photo);
-      document.getElementById('stationExhibit').href='exhibit.html#d='+encodeURIComponent(key);
-      document.getElementById('stationPassport').onclick=()=>stationDialog.close();
-      const fact=document.getElementById('stationDialogFactSource');fact.href=s.factSource.url;fact.textContent=`${s.factSource.label} ↗`;
-      const related=document.getElementById('stationDialogPoems');related.hidden=!s.ids.length;related.textContent=`查看关联诗歌（${s.ids.length} 首）`;
-      related.dataset.station=key;
-      stationDialog.dataset.station=key;
-      stationDialog.showModal();
-      refreshStationVisit(key);
-    }
-    function render(){const q=search.value.trim().toLowerCase();const list=poems.filter(p=>(activeFilter==='all'||p.region===activeFilter)&&[p.title,p.place,p.theme,p.relation,p.scenic||'',p.lines].join(' ').toLowerCase().includes(q));const isFiltered=Boolean(q||activeFilter!=='all');summary.hidden=!isFiltered;summary.textContent=isFiltered?`找到 ${list.length} 首符合条件的诗歌`:'';grid.innerHTML=list.length?list.map(p=>`<button class="poem-card" type="button" data-poem="${p.id}"><span class="poem-index">第 ${String(p.id).padStart(2,'0')} 首</span><h3>《${esc(p.title)}》</h3><blockquote>${esc(p.excerpt)}</blockquote><div class="poem-meta"><span class="tag">${esc(p.place)}</span><span class="tag relation">${esc(p.relation)}</span></div><span class="poem-media-note">听朗读${poemVideos.has(p.id)?' · 看影像':''} · 看诗句关系 · 留下观察</span></button>`).join(''):'<div class="empty">没有匹配结果。试试地点“狼山”“吕四”“常乐镇”，或主题“月下”“寒食”。</div>';}
-    function pauseDetailMedia(){document.querySelectorAll('#dialogContent audio,#dialogContent video').forEach(media=>media.pause())}
-    function showPoemView(view){
-      if(!activePoem)return;
-      const p=activePoem,content=document.getElementById('dialogContent');
-      pauseDetailMedia();
-      releaseActivityImage();currentPoemView=view;
-      document.querySelectorAll('#dialogViews button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===view)));
-      content.replaceChildren();
-      if(view==='poem'){
-        content.innerHTML=`<div class="full-poem"></div><div class="media-box"><strong>听朗读</strong><audio controls preload="none" src="${esc(p.audio)}" aria-label="《${esc(p.title)}》朗读"></audio></div><a class="research-poem-link" href="research.html#poem-${p.id}">在诗歌地图上看地点与关系 <span aria-hidden="true">↗</span></a><div class="field-task"><b>现场观察</b><br>${esc(p.task)}<br><small>用今日观察回应诗句。</small><br><button class="ghost" type="button" id="startActivity" style="margin-top:12px">记录这首诗的观察</button></div><div class="jianghai-next poem-next" aria-label="继续读与走"></div>`;
-        content.querySelector('.full-poem').textContent=p.lines;
-        const next=content.querySelector('.poem-next');
-        for(const [target,label] of [['video','看这首诗的影像'],['graph','看诗句关系']]){
-          if(target==='video'&&!poemVideos.has(p.id))continue;
-          const button=document.createElement('button');button.type='button';button.className='ghost';button.textContent=label;
-          button.addEventListener('click',()=>showPoemView(target));next.append(button);
-        }
-        content.querySelector('#startActivity').addEventListener('click',()=>showPoemView('activity'));
-      }else if(view==='activity'){
-        content.innerHTML='<div class="activity-slot"></div>';
-        renderActivity(p);
-      }else if(view==='video'){
-        const item=poemVideos.get(p.id);
-        if(!item)return showPoemView('poem');
-        content.innerHTML='<div class="video-frame"></div><p class="media-caption">这段影像用于表达诗歌意境，不是历史场景或现场实景记录。</p>';
-        const video=document.createElement('video');
-        video.controls=true;video.playsInline=true;video.preload='metadata';video.poster=item.poster;video.src=item.src;
-        video.setAttribute('aria-label',`《${p.title}》视频`);
-        video.addEventListener('error',()=>{if(content.contains(video)){const message=document.createElement('p');message.className='media-error';message.textContent='影像暂时无法播放，请稍后重试。';video.replaceWith(message)}});
-        content.querySelector('.video-frame').appendChild(video);
-      }else if(view==='graph'){
-        content.innerHTML='<p class="media-caption">将诗中的地点、意象与主题连起来阅读；点击图片可放大查看。</p><button class="graph-preview" type="button" aria-label="放大诗句关系图"><img alt=""></button><a class="graph-original" target="_blank" rel="noopener">在新标签查看原图</a>';
-        const image=content.querySelector('img');image.src=p.image;image.alt=`《${p.title}》诗句关系图`;
-        image.addEventListener('error',()=>{content.querySelector('.graph-preview')?.replaceWith(Object.assign(document.createElement('p'),{className:'media-error',textContent:'诗句关系图暂时无法加载。'}))});
-        content.querySelector('.graph-original').href=p.image;
-        content.querySelector('.graph-preview').addEventListener('click',()=>{const full=document.getElementById('graphFullImage');full.src=p.image;full.alt=image.alt;document.getElementById('graphDialog').showModal()});
-      }
-      document.querySelector('.dialog-main').scrollTop=0;
-    }
-    function openPoem(id){
-      const p=poems.find(x=>x.id===Number(id));if(!p)return;
-      activePoem=p;
-      document.getElementById('dialogNo').textContent=String(p.id).padStart(2,'0');
-      document.getElementById('dialogPlace').innerHTML=`<strong>${esc(p.place)}</strong><br>${esc(p.time)}<br>${esc(p.relation)}`;
-      document.getElementById('dialogTheme').textContent=p.theme;
-      document.getElementById('dialogTitle').textContent=`《${p.title}》`;
-      document.querySelector('#dialogViews [data-view="video"]').hidden=!poemVideos.has(p.id);
-      showPoemView('poem');
-      document.getElementById('poemDialog').showModal();
-    }
-    function renderStationStory(key){
-      const story=stationStories[key];if(!story)return;
-      for(const [id,value] of Object.entries({storyTitle:story.title,storyType:story.type,storyTrace:story.trace,storyToday:story.today,storyRelation:story.relation}))document.getElementById(id).textContent=value;
-      const places=document.getElementById('storyPlaces');
-      places.replaceChildren(...story.places.map(place=>{const tag=document.createElement('span');tag.textContent=place;return tag}));
-      const sources=document.getElementById('storySources');
-      sources.replaceChildren(...story.sources.map(source=>{const link=document.createElement('a');link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`资料来源：${source.label} ↗`;return link}));
-    }
-    function setStation(key){const s=stations[key];if(!s)return;currentStation=key;document.querySelectorAll('.route-node,.route-chip').forEach(n=>n.classList.toggle('active',n.dataset.station===key));document.getElementById('stationNo').textContent=s.no;document.getElementById('stationKeyword').textContent=s.keyword;document.getElementById('stationName').textContent=s.name;document.getElementById('stationNote').textContent=s.note;document.getElementById('stationPoems').textContent=s.ids.length||1;document.getElementById('stationPoemsLabel').textContent=s.ids.length?'收录诗歌':'今日看点';document.getElementById('stationStatus').textContent=s.status;document.getElementById('stationStatusLabel').textContent=s.ids.length?'诗歌关联':'行旅类型';setStationPhoto('stationPhoto','stationPhotoImage','stationPhotoCaption',s.photo,'地区配图');document.getElementById('stationOpen').hidden=!s.ids.length;renderStationStory(key);}
-    function showStationPoems(key){const s=stations[key];if(!s||!s.ids.length)return;activeFilter=s.name==='南通城区'?'南通':s.name;search.value='';syncFilters();render();document.getElementById('archive').scrollIntoView({behavior:'smooth'})}
-    document.querySelectorAll('.route-node').forEach(n=>{n.addEventListener('pointerup',()=>setStation(n.dataset.station));n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStation(n.dataset.station)}})});
-    document.querySelectorAll('.route-chip').forEach(n=>n.addEventListener('click',()=>setStation(n.dataset.station)));
-    document.querySelectorAll('[data-entrance-station]').forEach(link=>link.addEventListener('click',()=>setStation(link.dataset.entranceStation)));
-    document.getElementById('stationOpen').addEventListener('click',()=>showStationPoems(currentStation));
-    document.getElementById('stationFeature').addEventListener('click',()=>openStation(currentStation));
-    document.getElementById('todayBtn').addEventListener('click',()=>{const keys=Object.keys(stations);const dateKey=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const day=Number(dateKey.replace(/\D/g,''));const key=keys[day%keys.length];setStation(key);openStation(key)});
-    document.getElementById('methodTry').addEventListener('click',()=>{openPoem(6);showPoemView('activity')});
-    document.getElementById('stationDialogClose').addEventListener('click',()=>stationDialog.close());
-    document.getElementById('stationDialogDone').addEventListener('click',()=>stationDialog.close());
-    document.getElementById('stationDialogPoems').addEventListener('click',e=>{const key=e.currentTarget.dataset.station;stationDialog.close();showStationPoems(key)});
-    stationDialog.addEventListener('click',e=>{if(e.target===stationDialog)stationDialog.close()});
-    document.getElementById('searchJump').addEventListener('click',()=>{document.getElementById('archive').scrollIntoView({behavior:'smooth'});setTimeout(()=>search.focus(),500)});search.addEventListener('input',render);
-    function syncFilters(){document.querySelectorAll('.filter').forEach(b=>{const on=b.dataset.filter===activeFilter;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))})}
-    document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{activeFilter=b.dataset.filter;syncFilters();render()}));
-    grid.addEventListener('click',e=>{const c=e.target.closest('[data-poem]');if(c)openPoem(c.dataset.poem)});document.querySelectorAll('.scenic-open').forEach(b=>b.addEventListener('click',()=>openPoem(b.dataset.poem)));
-    const dialog=document.getElementById('poemDialog'),graphDialog=document.getElementById('graphDialog');
-    document.getElementById('dialogViews').insertAdjacentHTML('beforeend','<button type="button" data-view="activity" aria-pressed="false">参与任务</button>');
-    document.getElementById('dialogViews').addEventListener('click',e=>{const button=e.target.closest('button[data-view]');if(button&&!button.hidden)showPoemView(button.dataset.view)});
-    document.getElementById('dialogClose').addEventListener('click',()=>dialog.close());
-    dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
-    dialog.addEventListener('close',()=>{pauseDetailMedia();releaseActivityImage();document.getElementById('dialogContent').replaceChildren();activePoem=null});
-    document.getElementById('graphDialogClose').addEventListener('click',()=>graphDialog.close());
-    graphDialog.addEventListener('click',e=>{if(e.target===graphDialog)graphDialog.close()});
-    function showToast(text){const t=document.getElementById('toast');t.textContent=text;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),2200)}
-    setStation('haimen');render();refreshVisitMarkers();
-  </script>
-  <script src="js/v2-derived.js?v=20261013-guides"></script>
-  <script src="../profile-core.js?v=20261021"></script>
-  <script src="../profile.js?v=20261011-copy"></script>
-</body>
-</html>
+  <script src="js/data.js?v=56a"></script><script src="js/guide.js?v=56a"></script><script src="js/local-record.js"></script>
+  <script src="js/home-map.js?v=56a"></script><script src="js/catalog-profile-core.js"></script><script src="js/catalog-profile.js"></script></body></html>

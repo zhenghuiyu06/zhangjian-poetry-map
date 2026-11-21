@@ -686,6 +686,14 @@
     setStation('haimen');render();refreshVisitMarkers();
   </script>
   <script src="js/v2-derived.js?v=20261013-guides"></script>
+  <script>
+    function openSharedPoem(){
+      const shared=location.hash.match(/^#read-poem-([1-8])$/);
+      if(shared&&!document.getElementById('poemDialog').open)openPoem(Number(shared[1]));
+    }
+    openSharedPoem();
+    window.addEventListener('hashchange',openSharedPoem);
+  </script>
   <script src="../profile-core.js?v=20261021"></script>
   <script src="../profile.js?v=20261011-copy"></script>
 </body>

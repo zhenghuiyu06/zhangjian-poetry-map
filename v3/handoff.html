@@ -1,16 +1,22 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>江海阅潮生 · 核对与交付</title><link rel="icon" href="assets/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script defer src="js/data.js"></script><script defer src="js/guide.js"></script><script defer src="js/handoff.js"></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>江海阅潮生 · 双地图版资料说明</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <header class="masthead"><div class="frame masthead-inner"><a class="identity" href="exhibit.html">← 返回江海阅潮生</a></div></header>
+  <header class="masthead"><div class="frame masthead-inner"><a class="identity" href="exhibit.html">返回江海阅潮生</a></div></header>
   <main class="frame">
-    <section class="section"><p class="eyebrow">展览配套 / 编辑与核对</p><h1 style="font-size:clamp(2.5rem,6vw,5rem)">资料核对与站点说明</h1><p>所有新增文件均在 <code>v3/</code>。预览须从仓库根目录启动静态服务器，再打开 <code>/v3/</code>；原站的图片、朗读、影像及经典地图通过相对路径复用，不能只拷贝 <code>v3/</code> 单独部署。</p></section>
-    <section class="section" id="materials"><h2>展览材料</h2><p>馆方提供的《2026文献展相关设计.2(1).pdf》用于主视觉及挂幅风格参考；《张謇文旅汇总版(3).zip》中的「引言汇总」及「参展图书汇总」是展陈文字与书页关系的直接来源。GBK 文件名解码后读取；海安旧格式引言经 LibreOffice 转为 UTF-8 文本；合并单元格按不同书目与地点关系读取。</p><p id="materials-count"></p><p>引言属策展综述。卡片仅将能够从表述认定为张謇话语且带来源的片段提为独立引录，仍待对读原典；未判定的内容保留在表录正文，不强行署作张謇原话。另见引言和每条书目附注。</p>
-      <h3>原表文字修正</h3><ol class="handoff-list" id="changes"></ol>
-      <h3>原表待核和保留说明</h3><ul class="handoff-list" id="issues"></ul>
+    <section class="section">
+      <p class="eyebrow">展览配套</p><h1>双地图版资料说明</h1>
+      <p>展陈地点、书目与引文沿用部署包所据的《参展图书目录增补完善修订版》。地点卡仅列对应书名及已提供的页码；地图落点为参考位置。</p>
+      <p>街道底图来自高德地图。分区示意图用于浏览地区，不作为行政边界或导航依据。</p>
+      <p>新旧版本使用同一套浏览器本机记录。地址、端口或浏览器不同，记录不会自动迁移。浏览<a href="shilu.html#archive">原有诗歌档案</a>可继续查看旧的诗歌观察。</p>
+      <p><a href="README.md">查看版本来源与维护说明</a></p>
     </section>
-    <section class="section"><h2>地图与引文待核</h2><p>落点按参考经纬度等距投影，边界及海岸手绘；位置不明、跨市或范围模糊的条目保留在侧栏，没有补造坐标。已落点也不是测绘成果，范围内同址建筑以参考点展示；先用地图搜索核对入口，再出发。</p><ul class="handoff-list" id="unplaced"></ul><p>展表未提供的如东图书、引文和页码不填；三处如东补点沿用原站。同境非遗与美食是阅读线索，不代表具体景点有展演、餐饮或服务供应。</p></section>
-    <section class="section"><h2>补充来源与待核</h2><p>以下按站点、史实候选、交通和地方饮食书目列出处。名录国家级判断采用能核到的国务院批次条目；无法核至项目或省级名录的地方传统不标级别。</p><ul class="handoff-list" id="public-sources"></ul></section>
-    <section class="section"><h2>超星与后续维护</h2><p>《古镇余西》（ISBN 9787567231399）已配馆方提供的超星专题。实测 <code>ss.zhizhen.com/s?sw=</code> 会跳登录，未采用为公共检索模板；其余书提供读秀入口和复制书名。没有把外链写成正式合作或馆藏授权。</p><ol class="handoff-list"><li><code>js/data.js</code>：改引言、展区、地点、书、原文引录和书目关系；数组 <code>records</code> 的索引从零计。调整索引时同时更新 <code>places[].refs</code> 和 <code>books[].refs</code>。</li><li><code>chaoxing.searchTemplate</code> 留空；取得可验证的馆方 URL 模板后填 HTTPS 地址并保留 <code>{query}</code> 占位。可直接给 <code>books[]</code> 添加 <code>chaoxing</code> URL，优先于 ISBN 覆盖与模板。</li><li><code>js/guide.js</code>：补充地点坐标、地区非遗和风味、十个「第一」、年表、交通及公开出处。网站不依赖地图库、也不发请求更新这些字段。</li><li>更新原站派生内容可运行 <code>node v3/build-derived.mjs</code>。它仅写入 v3 下两个页面与一个路径修正版脚本。三个 IndexedDB store 及七境印章 key 与原站一致；必须是同协议、域名及端口才共用。</li><li>标题字为 Noto Serif SC（简体中文，700），以实际标题字集生成本地 WOFF；字体许可见 <a href="assets/OFL.txt">OFL</a>。新增标题后可运行 <code>prepare-visuals.py</code> 重建子集。</li></ol></section>
   </main>
-</body></html>
+</body>
+</html>
