@@ -15,7 +15,10 @@
     [item.title,item.kind,...item.areas.map(regionLabel),byPlace.get(item.place)?.name]
       .some(value=>value?.includes($('map-query').value.trim())));
   const stampKeys = new Set();
-  const query = (p, term) => [p.name,p.title,p.region,p.description].some(s => s.includes(term));
+  const readings = window.JIANGHAI_POEM_READINGS;
+  const mediaByTitle = new Map(window.JIANGHAI_POETRY_MEDIA.map(work => [work.title, work]));
+  const query = (p, term) => [p.name,p.title,p.region,p.description].some(s => s.includes(term))
+    || Boolean(readings[p.id]?.some(poem => poem.title.includes(term) || poem.lines.some(line => line.includes(term))));
   // Only redirect old IDs when the revised catalogue still lists the same place.
   const legacyNumbers = {
     'intro-2':51,'intro-3':43,'intro-4':36,'intro-5':49,'intro-7':52,'intro-10':53,'intro-11':54,
@@ -56,6 +59,37 @@
       pairs.map(([tag,line])=>'<details><summary>'+tag+'</summary><blockquote>'+line+'</blockquote></details>').join('')+
       '<small>据《张謇诗编年校注》上册第1页，引句节选，转为简体。</small></section>';
   }
+  function poemReadings(p) {
+    const items = readings[p.id];
+    if (!items) return '';
+    const base = 'assets/poem-readings/';
+    return items.map(poem => {
+      const pictures = (poem.pictures || []).map(([file, description]) =>
+        '<img loading="lazy" decoding="async" src="'+base+file+'.webp" alt="'+esc(description)+'">'
+      ).join('');
+      const text = '<blockquote>'+poem.lines.map(esc).join('<br>')+'</blockquote>';
+      const normalizeVerse = value => value.replace(/[\s\p{P}]/gu,'');
+      const inIntroduction = normalizeVerse(p.description).includes(normalizeVerse(poem.lines.join('')));
+      const verse = poem.lines.length > 8 || inIntroduction
+        ? '<details class="poem-full"><summary>'+(inIntroduction ? '分行读诗' : '展开诗文')+'</summary>'+text+'</details>'
+        : text;
+      const annotations = Object.entries(poem.annotations || {}).filter(([heading]) => heading !== '创作背景').map(([heading, paragraphs]) => {
+        const body = paragraphs.filter(line => line.trim() && !/[:：]\s*$/.test(line))
+          .map(line => '<p>'+esc(line)+'</p>').join('');
+        return body ? '<details class="poem-annotation"><summary>'+esc(heading)+'</summary>'+body+'</details>' : '';
+      }).join('');
+      const audio = poem.podcast ? '<div class="reading-audio"><strong>听诗歌播客</strong><span>'+esc(poem.podcast[1])+
+        '</span><audio controls preload="none" aria-label="'+esc(poem.podcast[1])+'" src="'+base+poem.podcast[0]+'.mp3"></audio></div>' : '';
+      return '<section class="place-reading"><header><small>'+esc(poem.relation || '诗歌选读')+'</small><h3>《'+esc(poem.title)+'》'+esc(poem.selection || '')+'</h3></header>'+
+        (poem.note ? '<p>'+esc(poem.note)+'</p>' : '')+verse+
+        (poem.source ? '<small>'+esc(poem.source)+'</small>' : '')+
+        (pictures ? '<figure><div class="reading-pictures">'+pictures+'</div><figcaption>诗意配图 · 《张謇诗画人生》</figcaption></figure>' : '')+audio+
+        (poem.relation ? (mediaByTitle.get(poem.title)?.films || []).map(film =>
+          relatedVideo('《'+poem.title+'》诗画视频', film.credit, film.src, film.poster)
+        ).join('') : '')+
+        (annotations ? '<div class="poem-notes"><h4>项目阅读札记</h4>'+annotations+'</div>' : '')+'</section>';
+    }).join('');
+  }
   function poemFilm(p){
     const film=window.JIANGHAI_FILMS.get(p.id);
     if(!film)return '';
@@ -63,6 +97,16 @@
     const base='assets/poem-films/'+file;
     return '<figure class="poem-film"><figcaption><h3>《'+title+'》诗画视频</h3><small>视频制作　<strong>'+creator+'</strong>　指导教师　<strong>'+teacher+'</strong></small></figcaption>'+
       '<video controls playsinline preload="none" poster="'+base+'.jpg" aria-label="播放《'+title+'》诗画视频" src="'+base+'.mp4"></video></figure>';
+  }
+  function relatedVideo(title, caption, src, poster) {
+    return '<figure class="poem-film"><figcaption><h3>'+esc(title)+'</h3><small>'+esc(caption)+'</small></figcaption>'+
+      '<video controls playsinline preload="none"'+(poster?' poster="'+esc(poster)+'"':'')+' aria-label="'+esc(title)+'" src="'+esc(src)+'"></video></figure>';
+  }
+  function chronicleFilms(p) {
+    return window.JIANGHAI_CHRONICLES.filter(clip => clip.places[p.id]).map(clip => {
+      const path = 'assets/poetry-library/'+clip.file;
+      return relatedVideo(clip.title, clip.places[p.id], path+'.mp4', path+'.jpg');
+    }).join('');
   }
   const hrefRegion = d => '#d='+d.id;
   const scrollMap = () => $('map').scrollIntoView({block:'start'});
@@ -195,15 +239,56 @@
   window.addEventListener('storage',showFavorites);
   window.addEventListener('pageshow',showFavorites);
   showFavorites();
+  function showPlacePhotos(p){
+    const photos = window.placePhotos?.[p.id];
+    if (!photos?.length) return;
+    const figure = document.createElement('figure');
+    figure.className = 'place-photos';
+    figure.innerHTML = '<a class="place-photo-view" target="_blank" rel="noopener"><img loading="lazy" decoding="async" alt=""></a>' +
+      '<figcaption><span class="place-photo-label">展览配图</span><span class="place-photo-caption" aria-live="polite"></span></figcaption>';
+    const link = figure.querySelector('a');
+    const img = link.querySelector('img');
+    const caption = figure.querySelector('.place-photo-caption');
+    let index = 0;
+    function display(){
+      const photo = photos[index];
+      link.href = 'assets/place-photos/' + photo.file;
+      link.setAttribute('aria-label', '查看大图：' + photo.caption + '（新窗口）');
+      img.width = photo.width;
+      img.height = photo.height;
+      img.alt = photo.caption;
+      img.src = link.href;
+      caption.textContent = (photos.length > 1 ? (index + 1) + ' / ' + photos.length + '　' : '') + photo.caption;
+    }
+    if (photos.length > 1){
+      const controls = document.createElement('div');
+      controls.className = 'place-photo-controls';
+      for (const [name, step] of [['上一张', -1], ['下一张', 1]]){
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = name;
+        button.onclick = () => {
+          index = (index + step + photos.length) % photos.length;
+          display();
+        };
+        controls.append(button);
+      }
+      figure.querySelector('figcaption').append(controls);
+    }
+    display();
+    $('place-content').querySelector('.entry-text').after(figure);
+  }
   function renderPlace(p){
+    $('place-content').querySelectorAll('audio, video').forEach(media => media.pause());
     state.place=p.id;
     $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title" class="site-heading">'+esc(p.name)+'</h2>'+
       '<div class="place-actions"><button type="button" class="button" id="jump-book">查看书目与页码</button>'+
       '<button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
       '<button type="button" class="button" id="share-place">分享给朋友</button></div>'+
       '<div id="place-maps" role="group" aria-label="选择地图平台" hidden>'+mapActions(p)+'</div><div class="source" role="status" id="share-status"></div>'+
-      '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+'<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
+      '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+poemReadings(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+chronicleFilms(p)+'<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
       (p.pages?'<p class="muted">'+esc(p.pages)+'</p>':'')+bookActions(p)+'</li></ul>';
+    showPlacePhotos(p);
     $('jump-book').onclick=()=>{$('place-book').focus();$('place-book').scrollIntoView({block:'nearest'});};
     $('travel-toggle').onclick=event=>{
       const panel=$('place-maps');
@@ -267,8 +352,13 @@
     if(change){returnHash=location.hash||'#map';trigger=origin;history.pushState(null,'','#p='+id);}
     renderPlace(p);
   }
+  mapDialog.addEventListener('play',event=>{
+    mapDialog.querySelectorAll('audio, video').forEach(media => {
+      if (media !== event.target) media.pause();
+    });
+  },true);
   mapDialog.addEventListener('close',()=>{
-    $('place-content').querySelector('video')?.pause();
+    $('place-content').querySelectorAll('audio, video').forEach(media => media.pause());
     if(location.hash.startsWith('#p=')) history.replaceState(null,'',returnHash);
     state.place=''; if(trigger?.isConnected) trigger.focus({preventScroll:true});trigger=null;
   });

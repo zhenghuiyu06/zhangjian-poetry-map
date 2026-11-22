@@ -1,0 +1,109 @@
+.place-reading {
+  margin: 1.5rem 0;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border: 1px solid #d9cbb6;
+  border-radius: 8px;
+  background: #faf7ee;
+}
+.place-reading header small {
+  color: #85503d;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.place-reading header h3 { margin: .25rem 0 .75rem; color: #254b4f; }
+.place-reading blockquote {
+  margin: .8rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid #aa8055;
+  color: #243f45;
+  font-family: "Songti SC", "SimSun", serif;
+  font-size: 1.1rem;
+  line-height: 1.95;
+}
+.place-reading figure { margin: 1rem 0 0; }
+.reading-pictures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: .65rem;
+}
+.reading-pictures img {
+  display: block;
+  max-width: 100%;
+  max-height: 23rem;
+  margin: auto;
+  border-radius: 4px;
+}
+.place-reading figcaption, .place-reading > small {
+  color: #596660;
+  font-size: .85rem;
+}
+.place-reading figcaption { margin-top: .4rem; }
+.reading-audio {
+  display: grid;
+  gap: .35rem;
+  margin-top: 1rem;
+  padding-top: .8rem;
+  border-top: 1px solid #d9cbb6;
+}
+.reading-audio strong { color: #824530; }
+.reading-audio audio { width: 100%; min-width: 0; }
+.poem-notes { margin-top: 1rem; }
+.poem-notes h4 { margin: 0; color: #354d49; }
+.poem-notes > small { display: block; margin: .25rem 0 .6rem; color: #596660; }
+.poem-annotation, .poem-full { border-top: 1px solid #d9cbb6; }
+.place-reading summary { padding: .65rem 0; color: #714533; font-weight: 650; cursor: pointer; }
+.poem-annotation p { margin: .45rem 0 .65rem; line-height: 1.75; }
+
+.place-photos {
+  margin: 1.35rem 0 1.6rem;
+  border: 1px solid #d8cbb6;
+  border-radius: .5rem;
+  overflow: hidden;
+  background: #fcf8ef;
+}
+.place-photo-view {
+  display: grid;
+  place-items: center;
+  background: #ebe4d8;
+  cursor: zoom-in;
+}
+.place-photo-view img {
+  display: block;
+  width: 100%;
+  height: clamp(11rem, 48vw, 21rem);
+  object-fit: contain;
+}
+.place-photos figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem .75rem;
+  padding: .7rem .9rem;
+  color: #263e42;
+  line-height: 1.5;
+}
+.place-photo-label {
+  color: #963f2b;
+  font-weight: 700;
+}
+.place-photo-caption {
+  flex: 1 1 10rem;
+  overflow-wrap: anywhere;
+}
+.place-photo-controls {
+  display: flex;
+  gap: .4rem;
+  margin-inline-start: auto;
+}
+.place-photo-controls button {
+  padding: .45rem .75rem;
+  min-height: 44px;
+  font: inherit;
+  background: #fffaf1;
+  color: #174454;
+  border: 1px solid #bcae93;
+  border-radius: .4rem;
+  cursor: pointer;
+}
+.place-photo-controls button:hover { background: #f1e6d3; }
+.place-photo-view:focus-visible { outline: 3px solid #984731; outline-offset: -4px; }

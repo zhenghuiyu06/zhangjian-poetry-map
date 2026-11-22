@@ -51,6 +51,8 @@
     main{overflow:hidden}
     .eyebrow{display:flex;align-items:center;gap:10px;color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
     .eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+    .city-inscription{display:block;width:clamp(220px,34vw,420px);max-width:100%;height:auto}
+    .tour-hero-kicker{color:#ff7058;filter:drop-shadow(0 2px 3px #0a1a21)}
     .stage{min-height:calc(100svh - 72px);display:grid;grid-template-columns:minmax(250px,.8fr) minmax(380px,1.3fr) minmax(260px,.9fr);gap:clamp(18px,3vw,48px);align-items:stretch;padding:clamp(28px,4vw,58px) clamp(18px,4vw,64px) 36px}
     .stage-copy{align-self:center;max-width:430px;position:relative;z-index:2}
     .stage-copy h1{font-family:var(--serif);font-size:clamp(44px,5.6vw,84px);font-weight:600;line-height:1.04;letter-spacing:.04em;margin:22px 0 20px}
@@ -150,7 +152,7 @@
     .intro.intro-done .intro-veil{display:none}
     .intro:not(.intro-done) body{overflow:hidden}
     .intro-stage{position:relative;width:min(720px,100%);text-align:center}
-    .intro-eyebrow{margin:0 0 18px;color:#a64634;font-size:clamp(12px,1.6vw,14px);font-weight:700;letter-spacing:.32em;opacity:0;animation:intro-fade .8s ease .1s forwards}
+    .intro-eyebrow{margin:0 auto clamp(20px,2.5vw,32px);color:#aa362b;opacity:0;animation:intro-fade .8s ease .1s forwards}
     .intro-title{position:relative;display:inline-flex;gap:.06em;margin:0;font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;font-size:clamp(54px,11vw,124px);font-weight:600;line-height:1.1;letter-spacing:.1em}
     .intro-title>span{opacity:0;filter:blur(12px);transform:translateY(.12em);animation:intro-ink .9s cubic-bezier(.2,.7,.2,1) calc(1.35s + var(--i) * .13s) forwards}
     .intro-seal{position:absolute;left:100%;top:-.08em;display:grid;place-items:center;width:clamp(38px,6.4vw,62px);height:clamp(38px,6.4vw,62px);margin-left:.04em;border-radius:5px;background:#a64634;color:#fff7e8;font-size:clamp(12px,1.9vw,18px);line-height:1.05;letter-spacing:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.38),0 6px 18px rgba(166,70,52,.28);opacity:0;animation:intro-stamp .5s cubic-bezier(.3,1.5,.5,1) 2.2s forwards}
@@ -178,14 +180,14 @@
   <link rel="stylesheet" href="../profile.css?v=impression2">
   <link rel="stylesheet" href="../fusion.css?v=20261021">
   <link rel="stylesheet" href="derived.css">
-  <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=walk2">
+  <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=place-photos-20261122">
 
   <link rel="stylesheet" href="headings.css?v=hero-gold">
 </head>
 <body>
   <div class="intro-veil" id="introVeil" aria-hidden="true">
     <div class="intro-stage">
-      <p class="intro-eyebrow">从海门出发 · 走读南通</p>
+      <img class="city-inscription intro-eyebrow" src="assets/city-inscription-paper.png" width="1335" height="201" alt="走读近代第一城">
       <div class="intro-title"><span style="--i:0">张</span><span style="--i:1">謇</span><span style="--i:2">诗</span><span style="--i:3">路</span><b class="intro-seal">謇<br>迹</b></div>
       <svg class="intro-river" viewBox="0 0 720 60" preserveAspectRatio="none"><path class="wide" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/><path class="line" pathLength="1" d="M4 34C110 6 220 56 360 30S600 8 716 28"/></svg>
       <ol class="intro-stations"><li style="--i:0">海门</li><li style="--i:1">通州</li><li style="--i:2">如皋</li><li style="--i:3">如东</li><li style="--i:4">海安</li><li style="--i:5">启东</li><li style="--i:6">崇川</li></ol>
@@ -210,7 +212,7 @@
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图</a><a href="#seven-gates">七境</a><a href="#explore">漫游路线</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
+    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图</a><a href="#seven-gates">七境</a><a href="#explore">漫游路线</a><a href="poetry.html">诗歌影音</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
     <button class="search-jump" id="searchJump" type="button" aria-label="搜索展览地点与文献">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
@@ -219,7 +221,7 @@
   <main id="top">
     <section class="tour-hero" aria-labelledby="tour-hero-title">
       <div class="tour-hero-copy">
-        <div class="eyebrow">从海门出发 · 走读南通</div>
+        <img class="city-inscription tour-hero-kicker" src="assets/city-inscription-cover.png" width="1335" height="201" alt="走读近代第一城">
         <h1 id="tour-hero-title" class="site-heading">张謇与<br><em>南通七境</em></h1>
         <p>翻开张謇的诗，江海有情，南通有请，奔向诗与远方......</p>
         <div class="tour-hero-actions"><a class="hero-primary" href="exhibit.html#map">打开七境诗歌地图</a><a class="hero-secondary" href="#seven-gates">开始七境漫游</a></div>
@@ -325,7 +327,7 @@
 
     <section class="desk-section" id="desk" aria-labelledby="desk-title">
       <img class="desk-still-life" src="../assets/images/jiangnan-writing-desk.jpg" alt="" loading="lazy" decoding="async" width="1774" height="887">
-      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title" class="site-heading">行至江海，<br>再回到文字</h2><p>在这里翻开参展书目，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="exhibit.html#books">读参展书目 ↗</a><a href="exhibit.html#map">看七境诗歌地图 ↗</a><a href="#passport">打开诗路护照 ↗</a><a href="#method">数字人文五步法 ↗</a><a href="#project">项目纪实 ↗</a></div></div>
+      <div class="desk-copy"><div class="eyebrow">终点 · 线上书桌</div><h2 id="desk-title" class="site-heading">行至江海，<br>再回到文字</h2><p>在这里翻开参展书目，对照地图上的地点与人物，也回看自己一路留下的观察。走完七境，还可以继续读下去。</p><div class="desk-links"><a href="exhibit.html#books">读参展书目 ↗</a><a href="exhibit.html#map">看七境诗歌地图 ↗</a><a href="poetry.html">看诗歌影音 ↗</a><a href="#passport">打开诗路护照 ↗</a><a href="#method">数字人文五步法 ↗</a><a href="#project">项目纪实 ↗</a></div></div>
     </section>
 
     <section class="section journey" id="journey" aria-labelledby="journey-title">
@@ -379,4 +381,4 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="js/data.js?v=56a"></script><script src="js/guide.js?v=walk1"></script><script src="js/walks.js?v=2"></script><script src="js/local-record.js"></script>
-  <script src="js/home-map.js?v=study-desk-1"></script><script src="js/catalog-profile-core.js?v=study-desk-1"></script><script src="js/catalog-profile.js?v=study-desk-1"></script></body></html>
+  <script src="js/home-map.js?v=place-photos-20261122"></script><script src="js/catalog-profile-core.js?v=study-desk-1"></script><script src="js/catalog-profile.js?v=study-desk-1"></script></body></html>

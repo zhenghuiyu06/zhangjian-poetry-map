@@ -50,16 +50,63 @@ function selectRoute(id){
 document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>selectRoute(b.dataset.guide));
 selectRoute('city');selectStation(selected);
 const passportPhotos = new Set();
+function makePassportStamp(district, index) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'passport-stamp';
+  button.setAttribute('aria-label', district.name+'到访印章');
+
+  const mark = document.createElement('span');
+  mark.className = 'passport-stamp-mark';
+  mark.setAttribute('aria-hidden', 'true');
+  const number = document.createElement('span');
+  number.className = 'seal-number';
+  number.textContent = String(index+1).padStart(2, '0');
+  const glyph = document.createElement('span');
+  glyph.className = 'seal-glyph';
+  glyph.textContent = '通';
+  const inscription = document.createElement('span');
+  inscription.className = 'seal-inscription';
+  inscription.textContent = district.name;
+  mark.append(number, glyph, inscription);
+  const name = document.createElement('strong');
+  name.textContent = district.name;
+  const action = document.createElement('small');
+  button.append(mark, name, action);
+
+  button.onclick = async () => {
+    if (button.hasAttribute('aria-busy')) return;
+    button.setAttribute('aria-busy', 'true');
+    const adding = button.getAttribute('aria-pressed') !== 'true';
+    try {
+      await localRecord('visits','readwrite',adding ? 'put' : 'delete',
+        adding ? {key:district.id, checkedAt:Date.now()} : district.id);
+      button.classList.toggle('just-stamped', adding);
+      await refreshVisitMarkers();
+    } catch {
+      action.textContent = '保存失败，请重试';
+    } finally {
+      button.removeAttribute('aria-busy');
+    }
+  };
+  return button;
+}
 async function refreshVisitMarkers(){
   try{
     const records=await localRecord('visits','readonly','getAll'),keys=new Set(records.map(r=>r.key));
     const notes=(await localRecord('observations','readonly','getAll')).filter(r=>catalogue.some(p=>p.id===r.id));
     $home('visitCount').textContent=Object.keys(stations).filter(k=>keys.has(k)).length;
     const count=$home('observationCount');if(count)count.textContent=notes.length;
-    $home('passportStamps').replaceChildren(...Object.values(stations).map(d=>{
-      const b=document.createElement('button');b.className='passport-stamp'+(keys.has(d.id)?' visited':'');const mark=document.createElement('span');mark.className='passport-stamp-mark';mark.textContent=keys.has(d.id)?'已访':String(Object.keys(stations).indexOf(d.id)+1).padStart(2,'0');const name=document.createElement('strong');name.textContent=d.name;const label=document.createElement('small');label.textContent=keys.has(d.id)?'取消印章':'自记到访';b.append(mark,name,label);b.setAttribute('aria-pressed',String(keys.has(d.id)));
-      b.onclick=async()=>{b.disabled=true;try{await localRecord('visits','readwrite',keys.has(d.id)?'delete':'put',keys.has(d.id)?d.id:{key:d.id,checkedAt:Date.now()});await refreshVisitMarkers();}finally{b.disabled=false;}};return b;
-    }));
+    const stamps = $home('passportStamps');
+    const districts = Object.values(stations);
+    if (!stamps.querySelector('button')) stamps.replaceChildren(...districts.map(makePassportStamp));
+    districts.forEach((district, index) => {
+      const button = stamps.children[index];
+      const visited = keys.has(district.id);
+      button.classList.toggle('visited', visited);
+      button.setAttribute('aria-pressed', String(visited));
+      button.lastElementChild.textContent = visited ? '已盖章 · 取消印章' : '自记到访 · 盖章';
+    });
     for (const url of passportPhotos) URL.revokeObjectURL(url);
     passportPhotos.clear();
     $home('passportNotes').replaceChildren(...notes.map(r=>{

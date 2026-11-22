@@ -1,0 +1,109 @@
+/* 展览页顶部，与下方主视觉共用左右对齐线。 */
+.masthead .masthead-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: clamp(1.5rem, 5vw, 6rem);
+  padding-block: .65rem;
+}
+.masthead .identity {
+  gap: clamp(.65rem, 1.15vw, 1.15rem);
+  font: 700 clamp(1.55rem, 2.35vw, 2.4rem)/1.15 var(--serif);
+}
+.masthead .identity small {
+  font: 550 clamp(.9rem, 1.13vw, 1.15rem)/1.35 system-ui, sans-serif;
+  letter-spacing: .08em;
+}
+.masthead .brand-icon {
+  width: clamp(3rem, 4.6vw, 4.1rem);
+  height: auto;
+  aspect-ratio: 1;
+  font-size: clamp(1.75rem, 2.6vw, 2.6rem);
+}
+.masthead nav {
+  justify-self: end;
+  width: min(100%, 44rem);
+  justify-content: space-between;
+  align-items: center;
+  gap: .4rem 1rem;
+}
+.masthead nav a {
+  font-size: clamp(1.125rem, 1.65vw, 1.65rem);
+  font-weight: 730;
+  white-space: nowrap;
+}
+#play .play-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+}
+#play .card > h3 { color: #963e31; }
+.library-entry { color: inherit; text-decoration: none; }
+.library-entry:hover { text-decoration: underline; }
+@media (max-width: 540px) {
+  #play .play-grid { gap: .5rem; }
+  #play .card { padding: .65rem; }
+  #play .stamp-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #play .stamp-row button { padding-inline: .15rem; }
+  #play #catalog-question input { flex-basis: 100%; }
+}
+.library { padding-block: clamp(1.5rem, 4vw, 3.75rem); }
+.library > a { font-size: .95rem; text-decoration: none; }
+.library > a:hover,.travel-card a:hover { color: #963e31; }
+.travel-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(.9rem, 1.6vw, 1.45rem);
+}
+.travel-card h3 {
+  color: #963e31;
+  font-size: clamp(1.55rem, 1.2rem + 1vw, 2.1rem);
+  margin-bottom: .45rem;
+}
+.travel-card ul { list-style: none; margin: 0 0 .4rem; padding: 0; }
+.travel-card a { text-decoration: none; }
+.travel-card li a {
+  max-width: 100%;
+  font-size: clamp(1rem, .94rem + .35vw, 1.18rem);
+  line-height: 1.45;
+}
+.travel-card > a { align-self: flex-start; margin-top: auto; font-weight: 650; }
+.library h1 {
+  margin: .45em 0 .65em;
+  color: #963e31;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-wrap: balance;
+}
+.library-layout { display: grid; grid-template-columns: minmax(14rem, 20rem) minmax(0,1fr); gap: clamp(1rem, 3vw, 3rem); align-items: start; }
+.library-index { border-top: 3px solid #326663; padding-top: 1rem; }
+.library-index label { display: block; font-weight: 700; color: var(--sea); margin-bottom: .3rem; }
+.library-index input, .library-index select { width: 100%; padding: .55rem .7rem; border: 1px solid #b6aa94; background: #fffdf7; color: var(--ink); border-radius: 5px; margin-bottom: .75rem; }
+#result-count { margin: .25rem 0; font-size: .92rem; color: var(--muted); }
+#library-titles { max-height: 65vh; overflow-y: auto; scrollbar-gutter: stable; }
+#library-titles a { display: block; padding: .65rem .8rem; border-bottom: 1px solid var(--line); text-decoration: none; }
+#library-titles a[aria-current] { background: #204e53; color: white; }
+#library-titles a:hover { text-decoration: underline; }
+.library-reader { padding: clamp(1.1rem, 3vw, 2.7rem); border: 1px solid var(--line); border-radius: 8px; background: var(--card); overflow-wrap: anywhere; }
+.library-reader h2 { font-size: clamp(1.7rem, 3vw, 2.75rem); }
+.library-reader h3 { margin: 1.4em 0 .55em; }
+.library-verse {
+  margin: 1.1em 0;
+  color: #203d42;
+  font: 400 clamp(1.16rem, 2vw, 1.5rem)/1.85 "Songti SC", "SimSun", "Noto Serif CJK SC", "Noto Serif SC", "Source Han Serif SC", serif;
+  font-synthesis: none;
+}
+.library-reader figure { margin: .7rem 0 1.45rem; }
+.library-reader figcaption { color: var(--muted); font-size: .92rem; margin: .35rem 0; }
+.library-reader audio, .library-reader video { display: block; width: 100%; }
+.library-reader video { aspect-ratio: 16/9; background: #14292c; }
+.library-reader img { width: auto; max-height: 40rem; object-fit: contain; margin-inline: auto; }
+.library-reader details { border-top: 1px solid var(--line); padding: .85rem 0; }
+.library-reader summary { cursor: pointer; color: var(--sea); font-weight: 700; }
+.library-reader details p { margin-top: .55rem; }
+@media (max-width: 820px) {
+  .masthead .masthead-inner { grid-template-columns: minmax(0, 1fr); row-gap: .45rem; padding-block: .65rem .25rem; }
+  .masthead nav { justify-self: start; width: min(100%, 38rem); column-gap: .25rem; flex-wrap: wrap; }
+  .masthead nav a { font-size: clamp(.95rem, 2.7vw, 1.25rem); }
+}
+@media (max-width: 720px) {
+  .library-layout { grid-template-columns: 1fr; }
+  #library-titles { max-height: 12rem; }
+}

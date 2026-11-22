@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>张謇诗歌影音 · 江海阅潮生</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=56-films-1">
+  <link rel="stylesheet" href="poetry.css?v=verse-type">
+  <script defer src="js/poem-readings.js?v=20261122"></script>
+  <script defer src="js/poetry-media.js?v=20261122"></script>
+  <script defer src="js/chronicles.js?v=20261122"></script>
+  <script defer src="js/poetry-library.js?v=films2"></script>
+</head>
+<body>
+  <a class="skip" href="#library">跳到诗歌目录</a>
+  <header class="masthead"><div class="frame masthead-inner">
+    <a class="identity" href="exhibit.html"><span class="brand-icon" aria-hidden="true">潮</span><span>江海阅潮生<small>地方文献展 · 线上导览</small></span></a>
+    <nav aria-label="主导航"><a href="index.html">张謇诗路</a><a href="exhibit.html#map">七境诗歌地图</a><a href="exhibit.html#books">江海书架</a><a href="exhibit.html#travel">怎么去</a></nav>
+  </div></header>
+  <main id="library" class="frame library">
+    <a href="shilu.html#archive">浏览原诗歌档案</a>
+    <h1>张謇诗歌影音</h1>
+    <div class="library-layout">
+      <section aria-label="诗歌目录" class="library-index">
+        <label for="library-query">查找诗题、诗句或年谱</label>
+        <input type="search" id="library-query" placeholder="如：盆松、钟声随鸟远">
+        <label for="library-format">呈现形式</label>
+        <select id="library-format"><option value="">全部作品</option><option value="films">视频</option><option value="chronicle">年谱影像</option><option value="talk">播客</option><option value="audio">朗读</option><option value="art">配图</option><option value="graph">关系图</option></select>
+        <p id="result-count" role="status"></p>
+        <nav id="library-titles" aria-label="篇目"></nav>
+      </section>
+      <article id="reader" class="library-reader" tabindex="-1" aria-label="作品详情"></article>
+    </div>
+    <noscript>请启用 JavaScript 以浏览作品目录和播放音视频。</noscript>
+  </main>
+</body>
+</html>

@@ -57,3 +57,55 @@
 .walk-ai-help {margin:.3rem 0 1rem;color:#284c50;}
 .walk-ai-help summary {cursor:pointer;font-weight:650;}
 .walk-ai-help p {line-height:1.65;}
+
+.passport-stamp .passport-stamp-mark {
+  position:relative;
+  width:clamp(76px, 7vw, 88px);
+  height:auto;
+  aspect-ratio:1;
+  transform:rotate(-4deg);
+}
+.passport-stamp .seal-glyph,.passport-stamp .seal-inscription { display:none; }
+.passport-stamp.visited { border-color:#bc8570; background:#fff7eb; }
+.passport-stamp.visited .passport-stamp-mark {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  border:2px solid #953d2f;
+  border-radius:10% 8% 11% 7%;
+  background:#a23d2f;
+  color:#fff3db;
+  box-shadow:inset 0 0 0 2px #fff3db,inset 0 0 0 4px #a23d2f,inset 0 0 0 5px #e7bca2;
+}
+.passport-stamp.visited .seal-number { display:none; }
+.passport-stamp.visited .seal-glyph {
+  display:block;
+  font:700 clamp(36px,3.5vw,44px)/1.04 "STKaiti","KaiTi",var(--serif);
+}
+.passport-stamp.visited .seal-inscription {
+  display:flex;
+  align-items:center;
+  gap:.3em;
+  font:700 13px/1.15 var(--serif);
+  letter-spacing:.1em;
+}
+.seal-inscription::before,.seal-inscription::after {
+  content:"";
+  width:.68em;
+  height:3px;
+  border-block:1px solid currentColor;
+}
+.passport-stamp.visited small { color:#863929; }
+@media (prefers-reduced-motion:no-preference) {
+  .passport-stamp.visited.just-stamped .passport-stamp-mark {
+    animation:passport-press .58s cubic-bezier(.22,.72,.25,1) both;
+  }
+  @keyframes passport-press {
+    0% { opacity:.18; transform:translateY(-12px) scale(1.35) rotate(-12deg); }
+    48% { opacity:1; transform:scale(.91) rotate(-4deg); }
+    70% { transform:scale(1.04) rotate(-4deg); }
+    100% { transform:rotate(-4deg); }
+  }
+}
