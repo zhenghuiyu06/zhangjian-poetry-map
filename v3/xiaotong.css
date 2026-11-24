@@ -1,0 +1,232 @@
+.xiaotong {
+  --xt-ink: #173d38;
+  --xt-jade: #176057;
+  --xt-paper: #fbf8ef;
+  --xt-line: #d9dfd1;
+  font: 15px/1.55 system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  letter-spacing: normal;
+}
+.xiaotong *, .xiaotong *::before, .xiaotong *::after { box-sizing: border-box; }
+.xiaotong :is(button, input, a, [tabindex]):focus-visible {
+  outline: 2px solid #0a766a;
+  outline-offset: 2px;
+}
+.xt-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.xt-launcher {
+  position: fixed;
+  z-index: 95;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  width: 126px;
+  padding: 0 0 2px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--xt-ink);
+  font: inherit;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.xt-launcher.is-dragging { cursor: grabbing; }
+.xt-name {
+  position: relative;
+  margin-top: -3px;
+  padding: 2px 12px;
+  border: 1px solid #b8c9b9;
+  border-radius: 999px;
+  background: #fffaf0;
+  box-shadow: 0 3px 8px #173d3833;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+.xt-launcher:hover .xt-name, .xt-launcher.is-dragging .xt-name { border-color: #267369; }
+
+.xt-avatar {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  flex: none;
+  pointer-events: none;
+}
+.xt-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.xt-launcher .xt-avatar { filter: drop-shadow(0 4px 5px #16352e55); }
+.xt-render { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.xt-avatar.is-live img { visibility: hidden; }
+
+.xt-dialog {
+  position: fixed;
+  inset: auto max(20px, env(safe-area-inset-right)) max(20px, var(--xt-keyboard-inset, 0px), env(safe-area-inset-bottom)) auto;
+  width: min(424px, calc(100% - 28px));
+  max-width: none;
+  height: min(615px, calc(var(--xt-viewport-height, 100dvh) - 32px));
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #a6bcb1;
+  border-radius: 22px;
+  background: var(--xt-paper);
+  color: var(--xt-ink);
+  box-shadow: 0 18px 64px #142e2b3f;
+  font: inherit;
+}
+.xt-dialog[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.xt-dialog::backdrop { background: #142e2b32; }
+.xt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: linear-gradient(115deg, #174f49, #246d60);
+  color: #fff9e9;
+}
+.xt-header .xt-avatar {
+  width: 72px;
+  overflow: hidden;
+  border: 1px solid #e9e5cf;
+  border-radius: 50%;
+  background: #f5edda;
+}
+.xt-header .xt-avatar img {
+  position: absolute;
+  top: 4%;
+  left: -47%;
+  width: 194%;
+  height: 194%;
+  max-width: none;
+}
+.xt-heading { flex: 1; min-width: 0; }
+.xt-heading h2 {
+  margin: 0;
+  color: inherit;
+  font: 700 23px/1.2 "Songti SC", "Noto Serif SC", serif;
+}
+.xt-heading p { margin: 2px 0 0; font-size: 12px; color: #e2f2e9; }
+.xt-dialog button { min-height: 44px; font: inherit; cursor: pointer; }
+.xt-header button {
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff9e9;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.xt-header button:hover { background: #ffffff1f; }
+.xt-header .xt-close { font-size: 24px; min-width: 44px; padding: 0; }
+.xt-header :is(button, h2, a):focus-visible { outline-color: #fff9e9; }
+.xt-log {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 14px;
+  background: linear-gradient(155deg, #f0f4ea, var(--xt-paper) 56%);
+}
+.xt-message { display: grid; gap: 5px; max-width: 92%; margin-bottom: 12px; }
+.xt-message:last-child { margin-bottom: 0; }
+.xt-message.is-user { justify-items: end; margin-left: auto; }
+.xt-bubble {
+  margin: 0;
+  width: fit-content;
+  padding: 9px 12px;
+  border: 1px solid var(--xt-line);
+  border-radius: 5px 14px 14px 14px;
+  background: #fffefa;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.is-user .xt-bubble {
+  border-color: #cee1d3;
+  border-radius: 14px 5px 14px 14px;
+  background: #e0eee1;
+}
+.xt-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 53px;
+  padding: 5px 10px 5px 7px;
+  border: 1px solid var(--xt-line);
+  border-radius: 10px;
+  background: #fffefa;
+  color: var(--xt-jade);
+  text-decoration: none;
+}
+.xt-card:hover { border-color: var(--xt-jade); }
+.xt-thumb { width: 56px; height: 42px; object-fit: cover; border-radius: 5px; }
+.xt-card-caption { display: grid; align-content: center; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.xt-card small { color: #4c6d61; font-size: 12px; }
+.xt-card strong { font-size: 14px; }
+.xt-arrow { font-size: 17px; line-height: 1; }
+.xt-prompts {
+  display: flex;
+  gap: 6px;
+  padding: 7px 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  border-top: 1px solid var(--xt-line);
+}
+.xt-prompts button {
+  flex: none;
+  padding: 0 10px;
+  border: 1px solid #bed2c3;
+  border-radius: 999px;
+  background: #edf4eb;
+  color: var(--xt-jade);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.xt-prompts button:hover { background: #deeee2; }
+.xt-form { display: flex; gap: 7px; padding: 7px 12px 12px; }
+.xt-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 11px;
+  border: 1px solid #aabeb2;
+  border-radius: 8px;
+  background: #fffefa;
+  color: var(--xt-ink);
+  font: inherit;
+  font-size: 16px;
+}
+.xt-form button {
+  flex: none;
+  padding: 0 15px;
+  border: 1px solid #124f47;
+  border-radius: 8px;
+  background: var(--xt-jade);
+  color: #fffdf6;
+}
+.xt-dialog button:disabled { opacity: .55; cursor: wait; }
+@media (max-width: 560px) {
+  .xt-launcher { width: 102px; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); }
+  .xt-dialog { inset-inline: 8px; width: auto; height: min(650px, calc(var(--xt-viewport-height, 100dvh) - 16px)); }
+  .xt-dialog { bottom: max(8px, var(--xt-keyboard-inset, 0px), env(safe-area-inset-bottom)); }
+  .xt-header { gap: 8px; padding: 10px; }
+  .xt-header .xt-avatar { width: 62px; }
+}
+@media (max-height: 400px) {
+  .xt-header .xt-avatar { display: none; }
+  .xt-header { padding-block: 2px; }
+  .xt-prompts, .xt-form { padding-block: 3px; }
+}

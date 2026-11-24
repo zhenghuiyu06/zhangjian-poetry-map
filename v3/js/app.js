@@ -40,9 +40,9 @@
     return '<a class="place-link" data-place="'+p.id+'" href="#p='+p.id+'" aria-label="查看地点：'+esc(p.name)+'">查看地点 <span aria-hidden="true">→</span></a>';
   }
   const readingNotes = {
-    'catalog-23': ['展览配诗', '展表用《盆松》带读如皋盆景。校注将此诗系于张謇少年在家乡私塾读书期间，未指明今日园区为创作地点。', '1'],
+    'catalog-23': ['展览配诗', '看如皋盆景时可配读《盆松》。校注将此诗系于张謇少年在家乡私塾读书期间。', '1'],
     'catalog-10': ['诗中地点', '诗题点明宋宅，校注将宋宅系于今通州区西亭镇。这里标到镇，宅楼的今址仍待考。', '2'],
-    'catalog-07': ['沿河走读', '展表在运盐河条目中引此诗。校注记排河观遗址在金沙镇南，并指出张謇从常乐前往西亭宋宅途中经过此处。观址与今日河岸的距离仍待核。', '3–4']
+    'catalog-07': ['沿河走读', '在运盐河可配读《过排河观》。校注记排河观遗址在金沙镇南，张謇从常乐前往西亭宋宅途中曾经过此处。观址与今日河岸的距离仍待核。', '3–4']
   };
   function readingNote(p) {
     const record = readingNotes[p.id];
@@ -340,7 +340,12 @@
     };
     const actions=document.createElement('div');
     actions.className='walk-actions';
-    actions.append(jump,noteJump);
+    const askGuide=document.createElement('button');
+    askGuide.type='button';
+    askGuide.className='walk-jump';
+    askGuide.dataset.xtAsk=p.id;
+    askGuide.textContent='问小通';
+    actions.append(jump,noteJump,askGuide);
     $('place-content').querySelector('.entry-text').before(actions);
     const destination=new URLSearchParams(location.hash.slice(1));
     if(destination.get('walk')==='1')goToWalk();
@@ -428,7 +433,7 @@
     result.replaceChildren();
     const matches=places.filter(p=>input.includes(p.name.replace(/\s/g,'')) || (films.has(p.id) && input.includes(films.get(p.id)[0])));
     if(matches.length!==1){
-      result.textContent=matches.length?'请一次查询一处地点或一首诗。':'请写出展表中的地点全名或站内诗画作品名。';
+      result.textContent=matches.length?'请一次查询一处地点或一首诗。':'请输入完整的地名或诗名。';
       return;
     }
     const p=matches[0];
@@ -438,21 +443,21 @@
     intent=intent.replace(/^(请问|我想查|想查|查一下|查)/,'').replace(/[的呢吗呀]/g,'');
     let answer;
     if(/^(书目与页码|书目|对应书目|参考书|对应哪本书|出自哪本书|在哪本书|页码|在第几页|第几页|在哪一页)$/.test(intent)){
-      answer='《'+p.title+'》'+(p.pages?'，'+p.pages:'，展表未列页码')+'。';
+      answer='《'+p.title+'》'+(p.pages?'，'+p.pages:'')+'。';
     } else if(/^(配在哪里|在哪个地点|对应哪个地点|对应地点|展览配诗地点)$/.test(intent) && title){
-      answer='展表在'+p.region+'的“'+p.name+'”条目引用《'+title+'》。';
+      answer='游览'+p.region+'的'+p.name+'时，可以配读《'+title+'》。';
     } else if(/^(诗地关系|诗与地点关系|与地点关系)$/.test(intent) && readingNotes[p.id]){
       answer=readingNotes[p.id][1]+' 参照《张謇诗编年校注》上册第'+readingNotes[p.id][2]+'页。';
     }
     const paragraph=document.createElement('p');
-    paragraph.textContent=answer||'现有站内问答未收录这个问题，请查阅该地点的展表说明和原书页。';
+    paragraph.textContent=answer||'可以打开地点卡，查看介绍和对应书目。';
     const source=document.createElement('a');
     source.href='#p='+p.id;
     source.dataset.place=p.id;
     source.textContent='查看'+p.name;
     result.append(paragraph,source);
   });
-  $('quiz').innerHTML='<p>展览目录在哪一处引用了《盆松》？</p><div class="quiz-options">'+[23,2,50].map(n=>action('answer',n,places[n-1].name)).join('')+'</div>';
+  $('quiz').innerHTML='<p>展览中，哪一处地点配读《盆松》？</p><div class="quiz-options">'+[23,2,50].map(n=>action('answer',n,places[n-1].name)).join('')+'</div>';
   $('stamps').innerHTML=districts.map(d=>action('stamp',d.id,d.name)).join('');
   async function stamps(change){
     try{

@@ -28,6 +28,7 @@
       --line:rgba(23,36,44,.15);--white:#fffdf8;--shadow:0 22px 60px rgba(31,48,58,.12);
       --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
       --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      --header-offset:6rem;
     }
     *{box-sizing:border-box}
     [hidden]{display:none!important}
@@ -42,13 +43,37 @@
     :focus-visible{outline:3px solid rgba(166,70,52,.38);outline-offset:3px}
     .skip{position:fixed;left:14px;top:-80px;z-index:999;background:var(--ink);color:white;padding:10px 16px;border-radius:999px}
     .skip:focus{top:14px}
-    .topbar{position:sticky;top:0;z-index:50;height:72px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;padding:0 clamp(18px,4vw,64px);background:rgba(244,240,231,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+    header.topbar{
+      position:sticky;top:0;z-index:50;min-height:78px;display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(10px,1.5vw,24px);
+      padding:9px clamp(18px,3.2vw,56px);
+      background:#fcf8ee;border-bottom:1px solid #caba97;
+      box-shadow:0 5px 16px #192c2a14;
+    }
     .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--serif);font-weight:700;letter-spacing:.14em;white-space:nowrap}
     .brand-seal{width:34px;height:34px;display:grid;place-items:center;background:var(--seal);color:#fff7e8;border-radius:4px;font-size:12px;line-height:1.05;box-shadow:inset 0 0 0 2px rgba(255,255,255,.38)}
-    .topnav{display:flex;justify-content:center;align-items:center;gap:clamp(12px,1.6vw,24px)}
-    .topnav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;line-height:1.4;white-space:nowrap;text-decoration:none;color:var(--muted);font-size:14px}.topnav a:hover{color:var(--river)}
-    .search-jump{border:1px solid var(--line);background:rgba(255,255,255,.52);border-radius:999px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:7px}
+    .topbar .topnav{
+      display:flex;align-items:center;justify-content:flex-start;justify-content:safe center;gap:2px;
+      min-width:0;overflow-x:auto;overscroll-behavior-inline:contain;
+      padding:4px;background:#f4ead5;border:1px solid #deccaa;border-radius:12px;
+      scrollbar-width:thin;scrollbar-color:#a78a5d transparent;
+    }
+    .topbar .topnav a{
+      display:inline-flex;flex:none;align-items:center;justify-content:center;
+      min-height:48px;padding:4px clamp(8px,.85vw,12px);
+      border-radius:8px;line-height:1.35;white-space:nowrap;text-decoration:none;
+      color:#183d42;font-size:clamp(16px,1.27vw,19px);font-weight:750;letter-spacing:0;
+    }
+    .topbar .topnav a:is(:hover,:focus-visible){color:#145e51;background:#fff9ec}
+    .topbar .topnav a:focus-visible{outline-offset:-3px;outline-color:#92703b}
+    .topbar .topnav .topnav-research{
+      padding-inline:clamp(11px,1.05vw,16px);border:1px solid #154b43;
+      background:#176357;color:#fffaf0;box-shadow:0 2px 5px #103b3530;
+    }
+    .topbar .topnav .topnav-research:is(:hover,:focus-visible){background:#134c44;color:#fffaf0}
+    .search-jump{min-height:44px;border:1px solid #cebf9f;background:#fffdf5;border-radius:999px;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:7px}
     main{overflow:hidden}
+    main[id],main section[id],main :is(#project,#method){scroll-margin-top:var(--header-offset)}
     .eyebrow{display:flex;align-items:center;gap:10px;color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
     .eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
     .city-inscription{display:block;width:clamp(220px,34vw,420px);max-width:100%;height:auto}
@@ -78,7 +103,7 @@
     .station-keyword{color:var(--seal);font-weight:700;letter-spacing:.14em;font-size:13px}
     .story-sheet{grid-column:1/-1;display:grid;grid-template-columns:minmax(170px,.7fr) minmax(0,1.2fr) minmax(0,1.2fr);gap:0;max-width:1280px;width:100%;margin:8px auto 0;border:1px solid var(--line);border-radius:8px;background:#fffdf8;box-shadow:0 14px 38px rgba(24,51,60,.07);overflow:hidden}
     .story-intro,.story-column{padding:24px clamp(20px,2.8vw,36px)}.story-intro{background:#e9f0ee}.story-intro .eyebrow{color:var(--seal)}.story-intro h3{font-family:var(--serif);font-size:clamp(25px,2.3vw,34px);line-height:1.3;margin:12px 0}.story-intro p{margin:0;color:#53666b;font-size:13px;line-height:1.7}.story-type{display:inline-block;margin-top:20px;padding:5px 10px;border-radius:999px;background:white;color:var(--river);font-size:12px;font-weight:700}
-    .story-column{border-left:1px solid var(--line)}.story-column .story-label{display:block;margin-bottom:10px;color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.15em}.story-column p{margin:0;color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.8}.story-places{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.story-places span{padding:5px 10px;border:1px solid #ccd8d3;border-radius:999px;color:var(--river);font-size:12px}.story-relation{grid-column:1/-1;margin:0;padding:13px 24px;border-top:1px solid var(--line);color:#53666b;font-size:13px;line-height:1.7}.story-sources{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding:0 24px 18px;font-size:12px}.story-sources a{color:var(--river);text-underline-offset:3px}.story-sources a:hover{color:var(--seal)}
+    .story-column{border-left:1px solid var(--line)}.story-column .story-label{display:block;margin-bottom:10px;color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.15em}.story-column p{margin:0;color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.8}.story-places{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.story-places span{padding:5px 10px;border:1px solid #ccd8d3;border-radius:999px;color:var(--river);font-size:12px}
     .station-photo{position:relative;aspect-ratio:16/10;min-height:160px;margin:20px 0 0;border-radius:6px;overflow:hidden;background:var(--river-soft)}
     .station-photo img{display:block;width:100%;height:100%;object-fit:cover}.station-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 9px;background:linear-gradient(transparent,rgba(9,24,34,.75));color:white;font-size:12px}
     .image-fallback{display:none;place-items:center;text-align:center;padding:22px;color:var(--river);background:var(--river-soft);font-size:14px}.image-failed img{display:none!important}.image-failed .image-fallback{display:grid;min-height:100%;width:100%}.image-failed figcaption{display:none}
@@ -123,20 +148,19 @@
     .activity-slot{margin-top:18px}.activity-panel{border:1px solid var(--line);border-radius:8px;background:var(--white);padding:18px}.activity-panel h3{font-family:var(--serif);font-size:23px;line-height:1.4;margin:0 0 8px;color:var(--river)}.activity-panel p{margin:8px 0;color:#46545c}.activity-where{display:inline-flex;margin:6px 0 12px;padding:4px 10px;border-radius:999px;background:var(--river-soft);color:var(--river);font-size:12px}.activity-guides{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}.activity-guides div{padding:12px;background:var(--paper);border-radius:5px;font-size:13px}.activity-guides b{display:block;color:var(--river);margin-bottom:3px}.activity-panel label[for="activityNote"]{display:block;font-weight:700;margin:12px 0 6px}.activity-panel textarea{display:block;width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);border-radius:5px;padding:11px 12px;background:white;color:var(--ink);font:inherit}.activity-panel textarea:focus{outline:2px solid var(--river)}.activity-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.activity-actions button{min-height:44px;border:1px solid var(--line);border-radius:999px;background:var(--paper);padding:0 15px;cursor:pointer}.activity-actions button:hover{background:var(--river-soft)}.activity-actions .primary{background:var(--river);color:white;border-color:var(--river)}.activity-actions .primary:hover{background:#0d2e47}.activity-actions button:disabled{opacity:.55;cursor:wait}.activity-preview{display:grid;grid-template-columns:minmax(120px,.8fr) minmax(0,1fr);gap:14px;align-items:stretch;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#f4f0e7;margin:14px 0}.activity-preview-image{min-height:160px;background:var(--river-soft);display:grid;place-items:center;color:var(--river);text-align:center;font-size:13px;padding:12px}.activity-preview-image:has(img){padding:0}.activity-preview-image img{display:block;width:100%;height:100%;max-height:260px;object-fit:cover}.activity-preview-copy{padding:16px 14px 16px 0;min-width:0}.activity-preview-copy b{font-family:var(--serif);color:var(--seal);font-size:13px}.activity-preview-copy blockquote{font-family:var(--serif);font-size:17px;line-height:1.7;margin:8px 0}.activity-preview-copy p{font-size:13px;overflow-wrap:anywhere;white-space:pre-wrap}.activity-status{min-height:22px;font-size:13px!important;color:var(--muted)!important}.activity-privacy{font-size:12px!important;color:var(--muted)!important;line-height:1.65}.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .toast{position:fixed;left:50%;bottom:24px;translate:-50% 20px;opacity:0;z-index:80;background:var(--ink);color:white;border-radius:999px;padding:10px 18px;font-size:13px;transition:.25s;pointer-events:none}.toast.show{opacity:1;translate:-50% 0}
     @media(max-width:1100px){.stage{grid-template-columns:.9fr 1.2fr}.station-panel{grid-column:1/-1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.9fr);gap:12px 28px;align-items:start}.station-heading,.station-note,.station-facts,.station-actions{grid-column:1}.station-photo{grid-column:2;grid-row:1/span 4;height:100%;min-height:245px;aspect-ratio:auto;margin:0}.station-note,.station-facts,.station-actions{margin:0}.poem-grid{grid-template-columns:repeat(2,1fr)}.method-flow{grid-template-columns:repeat(5,1fr)}}
-    @media(max-width:760px){.topbar{height:62px;grid-template-columns:1fr auto;padding:0 16px}.topnav{display:none}.brand{font-size:14px}.brand-seal{width:30px;height:30px}.search-jump span{display:none}.stage{min-height:auto;display:flex;flex-direction:column;padding:34px 16px 46px}.stage-copy h1{font-size:48px}.stage-copy .lead{font-size:18px}.route-map{min-height:540px;order:2}.route-chips{max-width:100%;overflow-x:auto;justify-content:flex-start}.station-panel{order:3;display:flex;flex-direction:column;min-height:0;padding:22px}.station-count{font-size:44px}.station-photo{height:auto;min-height:0;aspect-ratio:16/10;margin:14px 0 0}.station-note{margin:14px 0}.station-facts{margin-top:12px}.station-actions{margin-top:14px}.route-node text{font-size:16px}.section{padding:72px 16px}.section-head{grid-template-columns:1fr;margin-bottom:28px}.section-head h2{font-size:38px}.archive-tools{grid-template-columns:1fr}.filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.filter{white-space:nowrap}.poem-grid{grid-template-columns:1fr}.poem-card{min-height:240px}.scenic-grid{grid-template-columns:1fr}.scenic-card,.scenic-card.secondary{min-height:500px}.scenic-card.public-photo{min-height:620px}.scenic-content{padding:24px}.scenic-content h3{font-size:32px}.observe{grid-template-columns:1fr}.observe article{border-right:0;border-bottom:1px solid var(--line)}.method-flow{grid-template-columns:1fr 1fr}.method-step:last-child{grid-column:1/-1}.dialog-inner{display:flex;flex-direction:column;min-height:0;height:88dvh}.dialog-side{min-height:118px;padding:18px 24px;flex:0 0 auto}.dialog-number{font-size:40px}.dialog-side .place{margin-top:4px}.dialog-main{flex:1 1 auto;min-height:0;padding:22px}.dialog-main h2{font-size:28px}.dialog-views{gap:6px}.dialog-views button{padding:7px 12px;font-size:13px}.station-dialog-inner{display:flex;flex-direction:column;max-height:88dvh;min-height:0;overflow-y:auto}.station-dialog-photo{flex:0 0 210px;min-height:210px}.station-dialog-copy{padding:22px;max-height:none;overflow:visible}.station-dialog-copy h2{font-size:30px}footer{display:block}footer span{display:block;margin-top:8px}}
+    @media(max-width:760px){.brand{font-size:14px}.brand-seal{width:30px;height:30px}.search-jump span{display:none}.stage{min-height:auto;display:flex;flex-direction:column;padding:34px 16px 46px}.stage-copy h1{font-size:48px}.stage-copy .lead{font-size:18px}.route-map{min-height:540px;order:2}.route-chips{max-width:100%;overflow-x:auto;justify-content:flex-start}.station-panel{order:3;display:flex;flex-direction:column;min-height:0;padding:22px}.station-count{font-size:44px}.station-photo{height:auto;min-height:0;aspect-ratio:16/10;margin:14px 0 0}.station-note{margin:14px 0}.station-facts{margin-top:12px}.station-actions{margin-top:14px}.route-node text{font-size:16px}.section{padding:72px 16px}.section-head{grid-template-columns:1fr;margin-bottom:28px}.section-head h2{font-size:38px}.archive-tools{grid-template-columns:1fr}.filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.filter{white-space:nowrap}.poem-grid{grid-template-columns:1fr}.poem-card{min-height:240px}.scenic-grid{grid-template-columns:1fr}.scenic-card,.scenic-card.secondary{min-height:500px}.scenic-card.public-photo{min-height:620px}.scenic-content{padding:24px}.scenic-content h3{font-size:32px}.observe{grid-template-columns:1fr}.observe article{border-right:0;border-bottom:1px solid var(--line)}.method-flow{grid-template-columns:1fr 1fr}.method-step:last-child{grid-column:1/-1}.dialog-inner{display:flex;flex-direction:column;min-height:0;height:88dvh}.dialog-side{min-height:118px;padding:18px 24px;flex:0 0 auto}.dialog-number{font-size:40px}.dialog-side .place{margin-top:4px}.dialog-main{flex:1 1 auto;min-height:0;padding:22px}.dialog-main h2{font-size:28px}.dialog-views{gap:6px}.dialog-views button{padding:7px 12px;font-size:13px}.station-dialog-inner{display:flex;flex-direction:column;max-height:88dvh;min-height:0;overflow-y:auto}.station-dialog-photo{flex:0 0 210px;min-height:210px}.station-dialog-copy{padding:22px;max-height:none;overflow:visible}.station-dialog-copy h2{font-size:30px}footer{display:block}footer span{display:block;margin-top:8px}}
     @media(max-width:980px){.story-sheet{grid-template-columns:repeat(2,minmax(0,1fr))}.story-intro{grid-column:1/-1}.story-column:nth-of-type(2){border-left:0}}
-    @media(max-width:600px){.story-sheet{display:block;order:4;margin-top:0}.story-intro,.story-column{padding:22px}.story-column{border-left:0;border-top:1px solid var(--line)}.story-column p{font-size:17px}.story-type{margin-top:12px}.story-relation{padding:14px 22px}.story-sources{padding:0 22px 20px}}
+    @media(max-width:600px){.story-sheet{display:block;order:4;margin-top:0}.story-intro,.story-column{padding:22px}.story-column{border-left:0;border-top:1px solid var(--line)}.story-column p{font-size:17px}.story-type{margin-top:12px}}
     @media(max-width:760px){.activity-guides,.activity-preview{grid-template-columns:1fr}.activity-preview-image{min-height:190px;max-height:230px}.activity-preview-copy{padding:0 16px 16px}}
     @media(max-width:760px){.method-try{align-items:stretch;flex-direction:column}.method-try button{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
-    #passport-stamps-title{margin:0 0 .55em;color:var(--ink);font:700 clamp(1.65rem,1.25rem + 1.4vw,2.45rem)/1.25 var(--serif);scroll-margin-top:5rem;}
-    @media(max-width:1140px){
-      .topbar{height:auto;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand search" "links links";row-gap:0;padding-block:6px}
+    #passport-stamps-title{margin:0 0 .55em;color:var(--ink);font:700 clamp(1.65rem,1.25rem + 1.4vw,2.45rem)/1.25 var(--serif);scroll-margin-top:var(--header-offset);}
+    @media(max-width:1220px){
+      :root{--header-offset:8rem}
+      header.topbar{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand search" "links links";row-gap:6px;padding-block:7px}
       .topbar .brand{grid-area:brand}
       .topbar .search-jump{grid-area:search}
-      .topbar .topnav{grid-area:links;display:flex;justify-content:safe center;overflow-x:auto;gap:16px;padding:3px;scrollbar-width:thin}
-      .topnav a{flex:none}
-      main :is(section[id],#explore){scroll-margin-top:7rem}
+      .topbar .topnav{grid-area:links}
     }
   </style>
   <script>
@@ -191,6 +215,8 @@
   <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=navigation-20261124">
 
   <link rel="stylesheet" href="headings.css?v=hero-gold">
+  <link rel="stylesheet" href="xiaotong.css?v=dribble">
+  <script defer src="js/xiaotong.js?v=dribble"></script>
 </head>
 <body>
   <div class="intro-veil" id="introVeil" aria-hidden="true">
@@ -220,7 +246,7 @@
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图 ↗</a><a href="#seven-gates">按地区游览</a><a href="#explore">漫游路线</a><a href="poetry.html">诗歌影音</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
+    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图</a><a href="#seven-gates">按地区游览</a><a href="#explore">漫游路线</a><a href="poetry.html">诗歌影音</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
     <button class="search-jump" id="searchJump" type="button" aria-label="搜索展览地点与文献">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
@@ -287,7 +313,7 @@
         </div>
         <div class="guide-panel" id="guidePanel" aria-live="polite">
           <figure class="guide-visual"><img id="guideImage" src="../assets/scenic/langshan.webp" alt="狼山国家森林公园现代实景" loading="lazy" decoding="async"><div class="guide-image-fallback" id="guideImageFallback" hidden>图片暂时无法加载，仍可查看地点介绍。</div><figcaption id="guideCaption">今日狼山实景</figcaption></figure>
-          <div class="guide-copy"><div class="guide-kicker" id="guideKicker">展览目录 · 地点与文献</div><h3 id="guideTitle">从狼山，读到一座城</h3><p id="guideDescription">在狼山风景名胜区读《琅山》。</p><div class="guide-steps" id="guideSteps"></div><p class="guide-caveat" id="guideCaveat" hidden></p><p class="guide-credit" id="guideCredit" hidden></p><div class="guide-actions"><button class="primary" id="guidePlace" type="button">查看地点特色</button><button class="ghost" id="guidePoem" type="button">查看本境地点</button></div></div>
+          <div class="guide-copy"><h3 id="guideTitle">从狼山，读到一座城</h3><p id="guideDescription">在狼山风景名胜区读《琅山》。</p><div class="guide-steps" id="guideSteps"></div><p class="guide-caveat" id="guideCaveat" hidden></p><p class="guide-credit" id="guideCredit" hidden></p><div class="guide-actions"><button class="primary" id="guidePlace" type="button">查看地点特色</button><button class="ghost" id="guidePoem" type="button">查看本境地点</button></div></div>
         </div>
       </div>
     </section>
@@ -325,10 +351,9 @@
         <div class="station-actions"><button class="primary" id="stationFeature" type="button">查看本站特色</button><button class="ghost" id="stationOpen" type="button">查看本境地点</button></div>
       </aside>
       <section class="story-sheet" aria-labelledby="storyTitle" aria-live="polite">
-        <div class="story-intro"><div class="eyebrow">足迹与风物</div><h3 id="storyTitle">从海门读起</h3><p>点选地图上的一境，看看历史线索如何连到今日风景。</p><span class="story-type" id="storyType">故里原点</span></div>
+        <div class="story-intro"><div class="eyebrow">足迹与风物</div><h3 id="storyTitle">从海门读起</h3><span class="story-type" id="storyType">故里原点</span></div>
         <div class="story-column"><span class="story-label">张謇线索 · 当时</span><p id="storyTrace">张謇生于海门常乐镇。</p></div>
         <div class="story-column"><span class="story-label">对应书目</span><p id="storyToday">从常乐的纪念空间认识张謇的故乡。</p><span class="story-label">今日景点</span><div class="story-places" id="storyPlaces"><span>张謇纪念馆</span></div></div>
-        <p class="story-relation" id="storyRelation">出生地与同镇纪念空间；不将今日景点误写为诗歌创作原址。</p><div class="story-sources" id="storySources"></div>
         <div class="field-task"><strong>本境推荐走读任务</strong><p id="stationTask"></p><a id="stationTaskLink" href="exhibit.html#p=catalog-05">打开学生走读任务 →</a></div>
       </section>
     </section>
@@ -371,7 +396,7 @@
     <section class="section method" id="method" aria-labelledby="method-title">
       <header class="section-head"><div><div class="eyebrow">边走边读</div><h2 id="method-title" class="site-heading">数字人文五步法</h2></div><p>读诗、辨地点、看今日、留记录。背后是数字人文的方法，体验却可以从一张照片和一句观察开始。</p></header>
       <div class="method-grid">
-        <div class="method-flow" aria-label="数字人文五步法"><div class="method-step"><span>第一步</span><strong>文本</strong><small>从参展目录查找作品与引句。</small></div><div class="method-step"><span>第二步</span><strong>地点</strong><small>对照展表中的地区与地点。</small></div><div class="method-step"><span>第三步</span><strong>时间</strong><small>只记录题名或资料可确认的时间。</small></div><div class="method-step"><span>第四步</span><strong>关系</strong><small>标注直接、同镇、延伸与周边。</small></div><div class="method-step"><span>第五步</span><strong>证据</strong><small>为事实保留来源，存疑内容留空。</small></div></div>
+        <div class="method-flow" aria-label="数字人文五步法"><div class="method-step"><span>第一步</span><strong>文本</strong><small>读原诗，找出要对照的诗句。</small></div><div class="method-step"><span>第二步</span><strong>地点</strong><small>核对诗中地名和今天的位置。</small></div><div class="method-step"><span>第三步</span><strong>时间</strong><small>只记录题名或资料可确认的时间。</small></div><div class="method-step"><span>第四步</span><strong>关系</strong><small>标注直接、同镇、延伸与周边。</small></div><div class="method-step"><span>第五步</span><strong>证据</strong><small>为事实保留来源，存疑内容留空。</small></div></div>
         <div class="method-try"><div><strong>在运盐河，读《过排河观》</strong><p>“钟声随鸟远，河势趁林回。”</p></div><a class="primary" href="exhibit.html#p=catalog-07">读地点文献 ↗</a></div>
       </div>
     </section>
@@ -386,5 +411,5 @@
   <dialog id="profileDialog" class="profile-dialog" aria-labelledby="profileDialogTitle"><button class="dialog-close" id="profileDialogClose" type="button" aria-label="关闭数字江海印象">×</button><div class="profile-dialog-body"><div class="eyebrow">这一程的读城方式</div><h2 id="profileDialogTitle" class="site-heading">我的数字江海印象</h2><p class="profile-dialog-intro">四个选择，回望你怎样读过这座城。结果只保存在当前浏览器。</p><div id="profileContent"></div><p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/data.js?v=56a"></script><script src="js/guide.js?v=walk1"></script><script src="js/walks.js?v=2"></script><script src="js/local-record.js"></script>
-  <script src="js/home-map.js?v=place-photos-20261122"></script><script src="js/catalog-profile-core.js?v=study-desk-1"></script><script src="js/catalog-profile.js?v=study-desk-1"></script></body></html>
+  <script src="js/data.js?v=copy-20261124"></script><script src="js/guide.js?v=walk1"></script><script src="js/walks.js?v=2"></script><script src="js/local-record.js"></script>
+  <script src="js/home-map.js?v=copy-20261124"></script><script src="js/catalog-profile-core.js?v=study-desk-1"></script><script src="js/catalog-profile.js?v=study-desk-1"></script></body></html>

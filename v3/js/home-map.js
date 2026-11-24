@@ -28,7 +28,6 @@ function selectStation(id){
   $home('storyTrace').textContent=p.description.split('。').slice(0,2).join('。')+'。';
   $home('storyToday').textContent='《'+p.title+'》'+(p.pages?' · '+p.pages:'');
   $home('storyPlaces').replaceChildren(...entries.map(r=>{const a=document.createElement('a');a.href=mapUrl(r.id);a.textContent=r.name;return a;}));
-  $home('storyRelation').textContent='资料据《参展图书目录增补完善修订版》。';
 }
 document.querySelectorAll('[data-entrance-station]').forEach(a=>a.onclick=()=>selectStation(a.dataset.entranceStation));
 document.querySelectorAll('[data-station]').forEach(n=>{
@@ -176,7 +175,7 @@ function showTrailStop() {
   $home('trail-read').href = mapUrl(id);
   $home('trail-map').href = regionUrl(place.area);
   $home('trail-note').href = mapUrl(id) + '&note=1';
-  trailDraft.value = trailDrafts.get(id) ?? (place.region + ' · ' + place.name + '\n“' + quote + '”——张謇' + work + '\n展表所列书目：《' + place.title + '》' + (place.pages ? '，' + place.pages : ''));
+  trailDraft.value = trailDrafts.get(id) ?? (place.region + ' · ' + place.name + '\n“' + quote + '”——张謇' + work + '\n参考书目：《' + place.title + '》' + (place.pages ? '，' + place.pages : ''));
   trailStatus.textContent = '';
 }
 const returnStop = new URLSearchParams(location.search).get('trail');
