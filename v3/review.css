@@ -1,21 +1,22 @@
 #project, #method { scroll-margin-top: 5rem; }
-.project-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(24px,4vw,64px); align-items:start; }
-.works-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 1.25rem; }
-.works-list a { display:grid; gap:.32rem; padding:.85rem 0; color:inherit; text-decoration:none; border-bottom:1px solid var(--line,#d4cdbf); }
+#project > .section-head { display:block; margin-bottom:clamp(1rem,2vw,1.75rem); }
+.project-works { max-width:1280px; margin-inline:auto; }
+.works-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 clamp(1.25rem,3vw,3rem); }
+.works-list a { display:grid; align-content:start; gap:.35rem; padding:1.15rem 0; color:inherit; text-decoration:none; border-top:1px solid #c7b9a3; }
+.works-list strong { font:700 clamp(1.2rem,1.65vw,1.5rem)/1.4 var(--serif); color:var(--river,#143c5a); }
 .works-list a:is(:hover,:focus-visible) strong { text-decoration:underline; }
-.works-list small,.teaching-model figcaption,.project-source { color:var(--muted,#495d61); }
-.teaching-model {margin:0;}
-.teaching-model img {display:block; width:100%; height:auto; background:white;}
-.teaching-model figcaption,.project-source {font-size:.9rem; line-height:1.65; margin-top:.7rem;}
+.works-list small { color:var(--muted,#495d61); }
 .project-links {display:flex; gap:1rem; flex-wrap:wrap;}
-.project-links a,.teaching-model a,.field-task a {color:inherit;}
+.project-links a,.field-task a {color:inherit;}
 .field-task {grid-column:1/-1; padding:1rem 0; border-top:1px solid var(--line,#d4cdbf);}
 .field-task p {margin:.35rem 0 .55rem; line-height:1.65;}
 .poem-context,.verse-reader {padding:1rem; margin:1rem 0; background:#edf1e7; border-left:3px solid #8d783e;}
 .verse-reader details {padding:.4rem 0;}
 .verse-reader summary {cursor:pointer; color:#124969;}
 .verse-reader blockquote {margin:.5rem 0 .5rem 1rem;}
-@media(max-width:760px) {.project-grid{grid-template-columns:1fr;} .works-list {gap:0 .7rem;} .project-links {margin-top:.7rem;} }
+@media(max-width:850px) {.works-list {grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:760px) {.project-links {margin-top:.7rem;}}
+@media(max-width:540px) {.works-list {grid-template-columns:1fr;}}
 .map-favorites {padding:.75rem 1rem;color:#164657;} .map-favorites summary {cursor:pointer;} .map-favorites p {line-height:1.8;}
 .map-ask{display:inline-block;margin:.7rem 1rem 0;} #catalog-question{display:flex;gap:.5rem;flex-wrap:wrap;} #catalog-question label{width:100%;} #catalog-question input{max-width:100%;min-width:0;flex:1;padding:.65rem;font:inherit;}
 

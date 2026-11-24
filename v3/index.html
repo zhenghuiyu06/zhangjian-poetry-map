@@ -45,8 +45,8 @@
     .topbar{position:sticky;top:0;z-index:50;height:72px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;padding:0 clamp(18px,4vw,64px);background:rgba(244,240,231,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
     .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--serif);font-weight:700;letter-spacing:.14em;white-space:nowrap}
     .brand-seal{width:34px;height:34px;display:grid;place-items:center;background:var(--seal);color:#fff7e8;border-radius:4px;font-size:12px;line-height:1.05;box-shadow:inset 0 0 0 2px rgba(255,255,255,.38)}
-    .topnav{display:flex;justify-content:center;gap:24px}
-    .topnav a{text-decoration:none;color:var(--muted);font-size:14px}.topnav a:hover{color:var(--river)}
+    .topnav{display:flex;justify-content:center;align-items:center;gap:clamp(12px,1.6vw,24px)}
+    .topnav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;line-height:1.4;white-space:nowrap;text-decoration:none;color:var(--muted);font-size:14px}.topnav a:hover{color:var(--river)}
     .search-jump{border:1px solid var(--line);background:rgba(255,255,255,.52);border-radius:999px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:7px}
     main{overflow:hidden}
     .eyebrow{display:flex;align-items:center;gap:10px;color:var(--seal);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
@@ -130,6 +130,14 @@
     @media(max-width:760px){.method-try{align-items:stretch;flex-direction:column}.method-try button{width:100%}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.scenic-card:hover img,.poem-card:hover{transform:none}}
     #passport-stamps-title{margin:0 0 .55em;color:var(--ink);font:700 clamp(1.65rem,1.25rem + 1.4vw,2.45rem)/1.25 var(--serif);scroll-margin-top:5rem;}
+    @media(max-width:1140px){
+      .topbar{height:auto;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand search" "links links";row-gap:0;padding-block:6px}
+      .topbar .brand{grid-area:brand}
+      .topbar .search-jump{grid-area:search}
+      .topbar .topnav{grid-area:links;display:flex;justify-content:safe center;overflow-x:auto;gap:16px;padding:3px;scrollbar-width:thin}
+      .topnav a{flex:none}
+      main :is(section[id],#explore){scroll-margin-top:7rem}
+    }
   </style>
   <script>
     // 入场动画：每个浏览器会话只播一次；带锚点的深链与“减少动态效果”设置直接进入正文。
@@ -180,7 +188,7 @@
   <link rel="stylesheet" href="../profile.css?v=impression2">
   <link rel="stylesheet" href="../fusion.css?v=20261021">
   <link rel="stylesheet" href="derived.css">
-  <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=place-photos-20261122">
+  <link rel="stylesheet" href="intro.css"><link rel="stylesheet" href="review.css?v=navigation-20261124">
 
   <link rel="stylesheet" href="headings.css?v=hero-gold">
 </head>
@@ -212,7 +220,7 @@
   <a class="skip" href="#seven-gates">跳到七境入口</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="返回首页"><span class="brand-seal" aria-hidden="true">謇<br>迹</span><span>张謇诗路 · 南通漫游</span></a>
-    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图</a><a href="#seven-gates">七境</a><a href="#explore">漫游路线</a><a href="poetry.html">诗歌影音</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
+    <nav class="topnav" aria-label="主要导航"><a href="exhibit.html#map" class="topnav-research">七境诗歌地图 ↗</a><a href="#seven-gates">按地区游览</a><a href="#explore">漫游路线</a><a href="poetry.html">诗歌影音</a><a href="shilu.html#archive">诗歌档案</a><a href="exhibit.html#books">书架</a><a href="#passport">诗路护照</a><a href="exhibit.html">地方文献展</a></nav>
     <button class="search-jump" id="searchJump" type="button" aria-label="搜索展览地点与文献">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>搜索</span>
     </button>
@@ -368,10 +376,8 @@
       </div>
     </section>
     <section class="section" id="project" aria-labelledby="project-title">
-      <header class="section-head"><div><div class="eyebrow">项目纪实</div><h2 id="project-title" class="site-heading">从课堂到七境</h2></div><p>《数字人文实务》把诗文整理带入地方走读，《语义网技术》关注诗、地点与人物之间的关系。作品按地点收入地图，读者可以对照书页，留下自己的观察。</p></header>
-      <div class="project-grid"><div><h3>诗画作品与署名</h3><div id="worksList" class="works-list"></div></div>
-      <figure class="teaching-model"><a href="assets/teaching-model.jpg" target="_blank" rel="noopener"><img src="assets/teaching-model.jpg" loading="lazy" width="2269" height="1280" alt="三链融通机制图，展示课程方法链、数智资源链和实践活动链如何衔接"></a><figcaption>课程、资源与走读如何衔接 · 申报书图1　<a href="assets/teaching-model.jpg" target="_blank" rel="noopener">查看原图 ↗</a></figcaption></figure></div>
-      <p class="project-source">地点、书目与页码据《参展图书目录增补完善修订版》（2026年11月16日）。诗歌校注的出处列在相应地点卡中。</p>
+      <header class="section-head"><div class="eyebrow">项目纪实</div><h2 id="project-title" class="site-heading">从课堂到七境</h2></header>
+      <div class="project-works"><h3>诗画作品与署名</h3><div id="worksList" class="works-list"></div></div>
     </section>
   </main>
 
