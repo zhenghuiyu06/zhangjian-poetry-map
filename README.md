@@ -1,51 +1,50 @@
 # 张謇诗路 · 南通漫游
 
-这是“城市漫游＋诗路护照”与原版“张謇时空罗盘”的融合版。桌面原件 `网站.html` 和 `网站资源/` 保留不动；GitHub `main` 分支通过 GitHub Pages 发布到 [loveeti.top](https://loveeti.top/)。
+[打开网站](https://loveeti.top/) · [七境诗歌地图](https://loveeti.top/v3/exhibit.html#map) · [诗歌影音](https://loveeti.top/v3/poetry.html) · [维护指南](v3/README.md)
 
-## 如何查看
+《张謇诗路》把张謇诗文、南通地方文献和今日景点放在同一张地图上。可以从一首诗找到关联地点，也可以从一处景点查到对应书目和页码。站内的「江海阅潮生」是 2026 年南通市公共图书馆地方文献展的线上导览。
 
-在线打开 [loveeti.top](https://loveeti.top/)。在桌面预览文件夹中，也可双击 `启动预览.command`，打开 `http://127.0.0.1:8877/index.html`；如果端口被占用，可用其他端口启动静态服务器。不同网址和 `file://` 的本机护照记录不会自动互通。
+## 从哪里开始
 
-首页从“张謇与南通七境”开始。七站入口可直接切换到对应地点卡；终点“张謇的书桌”是线上阅读入口，可继续打开诗歌、地图和个人护照。原有两条探索入口仍保留：
+| 入口 | 可以做什么 |
+| --- | --- |
+| [南通七境首页](https://loveeti.top/) | 从水墨入场进入，按地区或主题选一站，从首屏打开七境诗歌地图。 |
+| [七境诗歌地图](https://loveeti.top/v3/exhibit.html#map) | 切换街道地图和分区示意图，查地点、非遗、美食与出行。地点详情关联诗文、书目和页码，可打开导航或分享。 |
+| [江海书架](https://loveeti.top/v3/exhibit.html#books) | 按书名、地名或地区查展览书目，从书回到关联地点。 |
+| [诗歌影音](https://loveeti.top/v3/poetry.html) | 读诗、听朗读，查看对应的诗画视频、阅读札记或关系图。 |
+| [八首诗歌档案](https://loveeti.top/v3/shilu.html#archive) · [经典诗歌地图](https://loveeti.top/v3/research.html) | 按诗题或地点继续读，点选关系图线索，对照原诗。 |
+| [我的诗路护照](https://loveeti.top/v3/#passport) | 自记七境到访、回看观察卡。集齐七境后可生成「我的数字江海印象」。 |
+| [小通导览](https://loveeti.top/v3/#top) | 点右下角带球奔跑的 3D 小通。小通会挥手打招呼，也可在地图地点卡点「问小通」，直接了解该地点。 |
 
-- **漫游体验**：从主题、七境、景点、诗歌和个人护照探索今日南通。
-- **诗歌地图**：打开 `research.html`，沿地图、诗句关系、诗中人物和诗歌主题继续阅读，也可使用诗路问答与收藏；如嵌入显示受浏览器限制，可点右上角「单独打开地图」。
+小通根据站内资料和本地规则回答问题。印章、观察卡和旅人画像保存在当前浏览器。换域名或本地端口时，请回到原来使用的地址查看已有记录。
 
-地图底图与诗歌主题统计图仍需联网加载；诗句关系图现在由本地页面绘制，断网仍可点击探索。诗文与媒体文件也保存在本地。
+## 本地预览
 
-在新版的诗歌详情「诗文与朗读」页，还可以直达同一首诗的地图卡。`classic/网站.html` 是桌面旧站的独立网页副本，诗歌正文和原有媒体保留；网页版复用上层 `assets/`，桌面文件夹中的 `classic/网站资源/` 原副本未删除。两种界面里的个人记录不会自动合并；副本换了页面地址，原桌面版的收藏也可能不会显示在副本中。要查看原有收藏，请继续打开桌面的原版 `网站.html`。`file://` 与 `localhost` 的浏览器记录同样不会自动互通。
+从 GitHub 克隆或下载完整仓库，在仓库根目录启动静态服务。
 
-桌面预览文件夹另有 `预览截图/`，供离线查看画面；截图不能代替交互体验。
+```sh
+python3 -m http.server 8879 --bind 127.0.0.1
+```
 
-## 这版有什么
+打开 [本地首页](http://127.0.0.1:8879/v3/)。`v3/` 页面会引用上一级目录的原站图片、音视频和脚本，预览时请保留完整目录结构。
 
-- 以海门故里实景为封面的七境序厅，依次呈现海门、通州、如皋、如东、海安、启东与南通城区；仍保留“山水与城市、常乐慢读、海天追光”三种主题入口。
-- “张謇的书桌”是线上策展与阅读设计，不表示已建成线下展厅；方案中尚未落地的耳机、盖章、品茶、实体文创等没有作为现有服务上站。
-- 七境地点卡、八首诗歌档案、已有朗读、七段本地视频和八张知识图谱完整保留。
-- 七境下方新增“足迹与风物”：点选地区后并排查看可核的张謇历史线索、今日可看的景点及两者的关联层级。每站附资料来源；如皋水绘园、海安青墩等今日景点不写成张謇亲历地点。
-- 如东站主图改为小洋口滩涂实景，打开地点卡可在“滩涂 / 风电场”两张照片间切换；大豫垦殖历史与今日小洋口景观分开叙述。
-- 诗歌地图的诗句关系图采用固定布局，连线对应已有关系数据；点选线索可看到原诗对照、诗文高亮和可继续点选的策展关联，并可按类别筛选、展开阅读区域。手机端点选后会滚动到解释卡，原有图谱图片仍可展开查看。
-- 景点与诗歌之间保留“直接地点、同镇人文、地区/同城延伸”等区分。主题去处不等于交通路线。
-- 新增可见的“我的诗路护照”：七境自记到访印章和已保存的诗歌观察摘要。打卡不使用定位，也不作为景区认证。
-- 集齐七境后可自主打开“江海旅人画像”：回答四道行旅偏好题，再选择最想重访的一站。四种结果是本次读城方式，不是人格或心理测评；并列时优先参考第四题、第一题，结果不显示伪精确的百分比。
-- 画像可重测、删除、复制文字和导出 PNG。默认图片不含私人照片或观察原文；只有明确选中、预览并确认一条观察后，本次下载才会加入照片和文字摘录。关闭画像即恢复默认。导出失败时，页面上的文字结果仍可查看和复制。
-- 个人照片、文字和到访印章只存在当前浏览器的本机数据库；融合版使用独立的数据库名称，不会混用原网站记录。清理浏览器数据后记录可能丢失。
-- 画像也保存在同一浏览器的本机数据库。数据库仅新增 `profiles` 记录，不覆盖七境印章或诗歌观察。取消任一印章会暂时锁定画像，重新集齐后原答案仍在；删除画像也不会删除打卡或观察。
-- 通过 `file://` 双击打开与通过 `http://127.0.0.1:8877` 打开，属于不同的浏览器存储地址，记录不会自动互通。要查看以前的打卡，请继续使用当时相同的浏览器和打开方式；本版不做跨地址迁移。
-- 页面新增濠河、南大街商圈、南通 CBD 大有境的今日同城延伸入口。没有将它们写为诗歌原址或“步行可达”邻近点。
+## 发布与历史
 
-## 内容与素材
+`main` 分支由 [GitHub Pages 工作流](.github/workflows/deploy.yml) 发布到 [loveeti.top](https://loveeti.top/)。
 
-诗歌正文、现有多媒体与地点数据来自原项目。新添同城去处核对了[南通市政府市情页面](https://www.nantong.gov.cn/ntsrmzf/sq/sq.html)、[南大街商圈相关政府资料](https://www.nantong.gov.cn/ntsrmzf/xwfbh/content/1c230647-ffbd-4efa-8852-caa303ee86b4.html)和[CBD 大有境相关政府资料](https://www.nantong.gov.cn/ntsrmzf/ntxw/content/f3b045f5-7767-4582-a3da-4a1105820830.htm)。旧版已有景点来源和网络图片许可继续显示在地点卡与图片下方；狼山和张謇纪念馆照片继续使用项目授权素材。
+| 网站版本 | 记录 |
+| --- | --- |
+| 2026-11-24 · 小通导览 | [版本说明](v3/RELEASE-2026-11-24-XIAOTONG.md) · [发布标签](https://github.com/zhenghuiyu06/zhangjian-poetry-map/tree/production-2026-11-24-xiaotong) |
+| 2026-11-24 · 首页导航 | [版本说明](v3/RELEASE-2026-11-24.md) · [上一版回退点](https://github.com/zhenghuiyu06/zhangjian-poetry-map/tree/production-2026-11-24-navigation) |
+| 2026-11-22 · 地点影像与诗歌影音 | [版本说明](v3/RELEASE-2026-11-22.md) |
+| 更早的版本 | [发布标签](https://github.com/zhenghuiyu06/zhangjian-poetry-map/tags) |
 
-诗歌地图新增两张有明确许可的实景图：[濠河夜景](https://commons.wikimedia.org/wiki/File:Hao_River_in_The_Evening.JPG)由大眼夹拍摄于 2007 年，按 CC BY-SA 3.0 使用；[南大街街景](https://commons.wikimedia.org/wiki/File:Nantong_Bus_Route_G1_at_Nan_Dajie_in_Jiangsu,_China_20260219.jpg)由 4084470 0.smil 拍摄于 2026 年，按 CC BY 4.0 使用。网页版本经过缩放压缩，照片原图与许可链接可从景点卡查看。南通 CBD 大有境尚未找到许可明确的准确照片，保留文字信息但不显示空白图片位；获得自摄或授权图后再补入。桌面旧站原件不受影响。
+回退前先查看目标版本及其后的提交。通过新的回退提交发布，保留 GitHub 上的版本历史。文件位置、检查步骤和回退示例见 [维护指南](v3/README.md)。
 
-如东小洋口滩涂照片由 Alastair Rae 拍摄于 2014 年，原图见 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg)，按 [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) 使用；站内使用缩放版，地点卡保留作者、许可及原图链接。原有潮间带风电场照片作为第二张图保留，不将两处现代景观指认为垦殖旧址。
+## 资料与素材
 
-页面不接入 AI API，不上传个人照片。任何现代实景图都不表示诗作年代的原貌。
+各地点的对应书目、页码和诗文可在详情查看，照片来源与许可在相关页面标注。馆方核对事项见 [资料交接页](v3/handoff.html)。
 
-## 设计借鉴
-
-借鉴了 [Poetry on the Trail](https://poetryonthetrail.org/elizabethrivertrail) 的“诗歌点位＋城市生活”体验路径，及 [Visit Korean Heritage Campaign](https://www.kh.or.kr/visit/en/content.do?key=2408080040) 的主题线路与护照机制。页面布局、文字与视觉为本项目重新设计，未复制参考网站素材或品牌。
-
-“江海旅人画像”借鉴了[芬兰旅游局的旅行偏好短测](https://www.visitfinland.com/en/lapland-summer-wilderness/vesku-activity-quiz/)、[曼彻斯特博物馆的轻量互动问题](https://www.museumsassociation.org/museums-journal/in-practice/2024/11/case-study-producing-playful-digital-content/)和[安大略美术馆的个人体验回顾](https://ago.ca/art-rate-monitor)的机制；四种类型、文案、图形与计分规则均为本项目原创。参考案例不是本项目的用户效果数据。
+- 濠河夜景，大眼夹摄影，CC BY-SA 3.0。[原图](https://commons.wikimedia.org/wiki/File:Hao_River_in_The_Evening.JPG)
+- 南大街街景，4084470 0.smil 摄影，CC BY 4.0。[原图](https://commons.wikimedia.org/wiki/File:Nantong_Bus_Route_G1_at_Nan_Dajie_in_Jiangsu,_China_20260219.jpg)
+- 如东小洋口滩涂，Alastair Rae 摄影，CC BY-SA 2.0。[原图](https://commons.wikimedia.org/wiki/File:Xiaoyangkou_(15248630404).jpg)

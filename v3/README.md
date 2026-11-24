@@ -1,43 +1,70 @@
-# 江海阅潮生 · 展览线上导览
+# 张謇诗路 · v3 维护指南
 
-## 非遗与美食完整版
+`v3/` 是 [loveeti.top](https://loveeti.top/) 当前使用的站点目录。仓库根目录的 `index.html` 会将访客引导至 `v3/`，并带上原链接的查询参数和锚点。
 
-在展览七境地图的原有右栏合入文化卡片，内容基于提供的策展调研，并按卡片所列的公开名录、地方资料校订。数据见 `js/culture.js`（16 项非遗、14 项美食，覆盖七个地区）。有实体地点或风味地域的条目复用展陈地点编号，不新增推测坐标；来源折叠在各卡片中。原 Demo 地址转至展览页，保留书签。公共页面不展示编辑备注、展表行号或书号。
+## 页面与内容文件
 
-验收：`node v3/qa/check-culture.cjs`，原双地图回归：`node v3/qa/check-dual-map.cjs`。
+下列链接均相对于 `v3/`。本站以原生 HTML、CSS 和 JavaScript 运行，可以直接由静态服务器提供。
 
-发布标签：`production-2026-11-21-culture`。发布前的线上快照：`production-2026-11-19-evening`（`d35a221`）。此版由现有 GitHub Pages 工作流从 `main` 部署，不更换域名和本机数据库。若需回退，在确认无其他改动后，用新提交依序撤回本次两个提交（先撤非遗美食、再撤双地图），不强推、不删除标签。
+| 要改的内容 | 从这里找 |
+| --- | --- |
+| 首页水墨入场、一级导航、七境导览、诗路护照 | [index.html](index.html)、[intro.css](intro.css)、[js/home-map.js](js/home-map.js) |
+| 展览七境地图、地点详情、书架与交通 | [exhibit.html](exhibit.html)、[js/app.js](js/app.js)、[js/data.js](js/data.js)、[js/guide.js](js/guide.js) |
+| 街道地图、分区示意图 | [js/street-atlas.js](js/street-atlas.js)、[js/nantong-boundaries.js](js/nantong-boundaries.js)、[assets/district-streets/](assets/district-streets/) |
+| 非遗、美食与出处 | [js/culture.js](js/culture.js) |
+| 地点照片、走读任务 | [js/place-photos.js](js/place-photos.js)、[assets/place-photos/](assets/place-photos/)、[js/walks.js](js/walks.js) |
+| 诗歌影音、阅读札记、年谱影像 | [poetry.html](poetry.html)、[js/poetry-library.js](js/poetry-library.js)、[js/poem-readings.js](js/poem-readings.js)、[js/chronicles.js](js/chronicles.js) |
+| 八首诗歌档案、经典诗歌地图 | [shilu.html](shilu.html)、[research.html](research.html)，共用仓库根目录的 [assets/](../assets/) 和 [classic/](../classic/) |
+| 小通外观、动画与对话 | [xiaotong.css](xiaotong.css)、[js/xiaotong.js](js/xiaotong.js)、[js/xiaotong-companion.mjs](js/xiaotong-companion.mjs)、[js/xiaotong-guide.js](js/xiaotong-guide.js) |
+| 本地记录、数字江海印象 | [js/local-record.js](js/local-record.js)、[js/catalog-profile.js](js/catalog-profile.js)、[js/catalog-profile-core.js](js/catalog-profile-core.js) |
+| 交接事项、待核资料 | [handoff.html](handoff.html) |
 
-## 2026-11-21 双地图预览
+首页和诗路页面现在直接维护。旧版的 `build-derived.mjs` 会覆盖 `index.html` 和 `shilu.html`，其中涉及新版导航和小通入口，修改前请先查看它生成的差异。
 
-- 基于生产提交 `d35a221` 合入《张謇诗路_南通七境_双地图与地点分享版_完整部署包.zip`，SHA-256：`71ba359dc029c137b2e9cde1b4325de9b9cea56ac43ee50332957ba74813cac5`。
-- 展览地点、书目和引文据《参展图书目录增补完善修订版》（2026 年 11 月 16 日，56 处、51 种图书）。提供街道／分区双地图及 6 段地点诗画视频。地点卡可导航、分享或保存本机观察。
-- 地点卡不再展示书号、制表行号、配图备注及空字段提示，保留书名、实际页码和正文。旧地点链接仅对能可靠对应的新条目转换。
-- 主页面保留水墨入场。原有八首诗与旧诗歌地图继续通过 `shilu.html#archive`、`research.html` 访问，根目录的经典地图和原媒体不被 ZIP 中的重定向占位替换。新旧护照沿用同一数据库，旧诗歌观察在诗歌档案里查看。
-- 预览：`python3 -m http.server 8882 --bind 127.0.0.1`（仓库根目录）。本版直接维护 `v3/index.html` 与 `v3/js/data.js`，不要运行下述旧版生成脚本覆盖。查询前版发布和回退见 `RELEASE-2026-11-19.md`。
-- 本地验收：`node v3/qa/check-dual-map.cjs`（Playwright；路径或端口可用 `PLAYWRIGHT`、`CHROME`、`QA_URL` 覆盖）。
+## 内容和链接怎么维护
 
-## 11 月 19 日版维护记录
+- 地点、图书和配图更新时，保留现有地点 ID，检查地图落点、地点卡、书架及分享链接是否对应。地点卡展示书名和实际页码。
+- 地图深链可直接打开[启东美食](https://loveeti.top/v3/exhibit.html#d=qidong&tab=food)或[狼山风景名胜区](https://loveeti.top/v3/exhibit.html#p=catalog-50)。链中的 `d` 表示地区 ID，`p` 表示地点 ID，`tab` 可指定非遗或美食栏。
+- 新增史实、引文和配图时保留出处及许可。将历史地点和今日景点的关系写清，地图落点用于位置参考。
+- 原始展表缺项、重复 ISBN、年代和超星链接等核对事项均可从 [资料交接页](handoff.html) 查询。
 
-本目录为 2026 年 11 月 20 日南通市公共图书馆地方文献展的配套预览。主办单位按展览资料写为南通市图书馆。预览分支 `v3-jianghai` 不改变 `main` 或线上入口。
+## 小通和本机记录
 
-## 预览和维护
+小通通过网页内的 3D 模型循环带球奔跑，打开对话时将模型切换到对话头像。设备无法渲染 3D 时显示头像图片。对话从站内数据读取地点和诗文信息，使用浏览器内的规则生成回答。
 
-在**仓库根目录**运行 `python3 -m http.server 8879 --bind 127.0.0.1`，打开 `http://127.0.0.1:8879/v3/`。诗路、诗歌地图和音视频直接复用相邻的原站目录；请保留根目录、`assets/` 和 `classic/`。同浏览器、同源下，原站和预览共用 `zhangjian-poetry-observations-v2` 版本 2，`observations`、`visits`、`profiles` 不迁移。切换到另外域名或端口不会带走本机记录。
+模型源文件为 [xiaotong-character.mjs](js/xiaotong-character.mjs)，导出脚本为 [build-xiaotong-model.mjs](js/build-xiaotong-model.mjs)。页面直接加载已入库的 GLB 与 Three.js 组件，更新模型时才需要安装脚本依赖并重新生成资源。[Three.js 许可](vendor/three.LICENSE.txt)
 
-- `index.html`：复用原站的水墨入场与封面，首屏只保留诗歌地图和七境漫游两个操作。首屏下的三个导览入口分别解决找诗、看景、查书；诗歌详情、景点卡和护照补上各自的后续操作。
-- `exhibit.html`：完整地方文献展，从展览序厅、内联 SVG 七境导览出发，接到足迹年表、十个「第一」、书架、交通与互动。旧版展览地点深链由首页自动转至该页。
-- `js/data.js`：八份引言、73 条原展表书目记录、64 种展陈书目、74 个地点条目。54 个地点有制图参考坐标；其余在列表中保留，不硬落点。`js/guide.js` 补充地图参考点、非遗与风味、交通及来源。
-- `shilu.html`、`research.html`：保留上版诗路链接以及经典诗歌地图入口。原站 8 首诗、8 段朗读、7 段视频、8 张关系图继续引用根目录文件。编辑首页导览或展览入口时修改 `home-guide.html`、`exhibit-entry.html`，再执行 `node v3/build-derived.mjs`。
-- `handoff.html`：逐条列出文字修正、原表缺项、待核地点、补充资料和编辑方法。改后的馆方文字建议先同原件对读，再更新页面。
+新旧页面在同一浏览器、同一网站来源下共用 IndexedDB 库 `zhangjian-poetry-observations-v2`，版本为 `2`，包含 `observations`、`visits`、`profiles`。七境印章键为 `haimen`、`tongzhou`、`rugao`、`rudong`、`haian`、`qidong`、`nantong`。保持这些标识能让更新后的页面继续读取旧记录。
 
-## 提请馆方确认
+## 本地检查
 
-- 如东只有原站三条地点线索和展览引言，参展图书表待补。合并显示的南通博物苑和水绘园保留各展表出处；重复、缺失或校验失败的 ISBN 未补造。
-- 展表中可辨识并附来源的引录保留待对读状态。女师和女红的「第一」称谓、军山气象台的年份口径、部分非遗申报单位与级别、如东站开通及现行客运、四条美食书目的版权页信息等仍列在核对页。
-- 《古镇余西》使用所提供的超星专题链接。未核到免登录、可直查单书的公开 URL 模板，其余书提供读秀入口和复制书名。若取得专题，以 `books[].chaoxing` 逐本补入，或验证后填写 `chaoxing.searchTemplate`。
-- 地图海岸和区界手绘，落点是参考位置。对外分享请在正式确认部署后使用同域链接；本机 `127.0.0.1` 链接只对当前电脑有效。外部导航、12306 和超星的实时结果不由本站控制。
+从完整仓库的根目录启动服务，打开 [本地首页](http://127.0.0.1:8879/v3/)。
 
-## 验收
+```sh
+python3 -m http.server 8879 --bind 127.0.0.1
+```
 
-从仓库根目录运行 `node v3/qa/check.cjs`（需可用的 Playwright / Chromium；可用 `PLAYWRIGHT`、`CHROME` 指定本机路径，`QA_OUT` 指定截图输出目录）。检查 1440、390 宽度下的地图图层、分区面板、键盘点位、地点和区县深链、分享复制后备、书架检索筛选、问答、七境印章与诗路画像的解锁/重锁，以及媒体路径和经典地图入口。截图默认保存到 `/tmp/jianghai-qa`，不随站点发布。原站外部服务、手机原生分享、地图 App 跳转和读秀账号权限没有作为自动化通过项。
+安装 Playwright 和可用的 Chromium 后，可以从仓库根目录运行现有检查。需要指定浏览器时可设置 `CHROME`，截图目录由 `QA_OUT` 指定。
+
+```sh
+QA_URL=http://127.0.0.1:8879 node v3/qa/check-dual-map.cjs
+QA_URL=http://127.0.0.1:8879 node v3/qa/check-culture.cjs
+QA_URL=http://127.0.0.1:8879 node v3/qa/check-study-desk.cjs
+```
+
+发布前可用桌面和手机宽度打开首页、地图和地点深链。小通需单独点开确认打招呼动作，也可从狼山地点卡点「问小通」，检查回答是否引用对应地点。地图 App 跳转和手机原生分享需要在实际设备上检查。
+
+## 发布与回退
+
+推送到 `main` 后，[GitHub Pages 工作流](../.github/workflows/deploy.yml) 会发布整个仓库的站点文件。发布提交和标签可在 GitHub 找到，完成后再打开线上首页与相关深链抽查。
+
+- [2026-11-24 小通版](RELEASE-2026-11-24-XIAOTONG.md)，标签 `production-2026-11-24-xiaotong`。
+- [2026-11-24 首页导航版](RELEASE-2026-11-24.md)，标签 `production-2026-11-24-navigation`，对应提交 `a0e75a5`。
+- [2026-11-22 地点影像版](RELEASE-2026-11-22.md) · [2026-11-21 走读书桌版](RELEASE-2026-11-21-STUDY-DESK.md) · [2026-11-19 展览改版](RELEASE-2026-11-19.md)。
+
+如果要撤回小通版，先更新本地 `main` 并取回标签，检查有没有后续提交改动同一批文件。确认后，撤销小通发布提交并推送新提交。
+
+```sh
+git revert production-2026-11-24-xiaotong
+git push origin main
+```
