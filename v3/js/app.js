@@ -7,16 +7,17 @@
   const byPlace = new Map(places.map(p => [p.id,p]));
   const district = id => districts.find(d => d.id === id);
   const state = {area:'',layer:'all',tab:'foot',place:''};
-  const culture = window.JIANGHAI_CULTURE;
+  const cultureLoaded = Boolean(window.JIANGHAI_CULTURE);
+  const culture = window.JIANGHAI_CULTURE || { heritage: [], food: [] };
   const inCulture = () => Object.hasOwn(culture,state.tab);
   const regionLabel = id => district(id)?.name || '南通全域';
-  const cultureItems = () => culture[state.tab].filter(item =>
+  const cultureItems = () => (culture[state.tab] || []).filter(item =>
     (!state.area || item.areas.includes(state.area)) &&
     [item.title,item.kind,...item.areas.map(regionLabel),byPlace.get(item.place)?.name]
       .some(value=>value?.includes($('map-query').value.trim())));
   const stampKeys = new Set();
-  const readings = window.JIANGHAI_POEM_READINGS;
-  const mediaByTitle = new Map(window.JIANGHAI_POETRY_MEDIA.map(work => [work.title, work]));
+  const readings = window.JIANGHAI_POEM_READINGS || {};
+  const mediaByTitle = new Map((window.JIANGHAI_POETRY_MEDIA || []).map(work => [work.title, work]));
   const query = (p, term) => [p.name,p.title,p.region,p.description].some(s => s.includes(term))
     || Boolean(readings[p.id]?.some(poem => poem.title.includes(term) || poem.lines.some(line => line.includes(term))));
   // Only redirect old IDs when the revised catalogue still lists the same place.
@@ -67,19 +68,20 @@
       const pictures = (poem.pictures || []).map(([file, description]) =>
         '<img loading="lazy" decoding="async" src="'+base+file+'.webp" alt="'+esc(description)+'">'
       ).join('');
-      const text = '<blockquote>'+poem.lines.map(esc).join('<br>')+'</blockquote>';
+      const text = '<div class="verse-stage"><blockquote>'+poem.lines.map(esc).join('<br>')+'</blockquote></div>';
       const normalizeVerse = value => value.replace(/[\s\p{P}]/gu,'');
       const inIntroduction = normalizeVerse(p.description).includes(normalizeVerse(poem.lines.join('')));
-      const verse = poem.lines.length > 8 || inIntroduction
-        ? '<details class="poem-full"><summary>'+(inIntroduction ? '分行读诗' : '展开诗文')+'</summary>'+text+'</details>'
-        : text;
+      const verseToggle = '<div class="verse-toolbar"><span class="verse-toolbar-label">张謇原诗</span><button type="button" class="verse-mode-btn" data-verse-toggle aria-pressed="false">切换竖排</button></div>';
+      const verse = poem.lines.length > 10 || inIntroduction
+        ? '<details class="poem-full"><summary>'+(inIntroduction ? '分行读诗' : '展开全文')+'</summary>'+verseToggle+text+'</details>'
+        : verseToggle+text;
       const annotations = Object.entries(poem.annotations || {}).filter(([heading]) => heading !== '创作背景').map(([heading, paragraphs]) => {
         const body = paragraphs.filter(line => line.trim() && !/[:：]\s*$/.test(line))
           .map(line => '<p>'+esc(line)+'</p>').join('');
         return body ? '<details class="poem-annotation"><summary>'+esc(heading)+'</summary>'+body+'</details>' : '';
       }).join('');
       const audio = poem.podcast ? '<div class="reading-audio"><strong>听诗歌播客</strong><span>'+esc(poem.podcast[1])+
-        '</span><audio controls preload="none" aria-label="'+esc(poem.podcast[1])+'" src="'+base+poem.podcast[0]+'.mp3"></audio></div>' : '';
+        '</span><audio controls preload="metadata" aria-label="'+esc(poem.podcast[1])+'" src="'+base+poem.podcast[0]+'.mp3"></audio></div>' : '';
       return '<section class="place-reading"><header><small>'+esc(poem.relation || '诗歌选读')+'</small><h3>《'+esc(poem.title)+'》'+esc(poem.selection || '')+'</h3></header>'+
         (poem.note ? '<p>'+esc(poem.note)+'</p>' : '')+verse+
         (poem.source ? '<small>'+esc(poem.source)+'</small>' : '')+
@@ -91,25 +93,25 @@
     }).join('');
   }
   function poemFilm(p){
-    const film=window.JIANGHAI_FILMS.get(p.id);
+    const film=window.JIANGHAI_FILMS?.get(p.id);
     if(!film)return '';
     const [title,file,creator,teacher]=film;
     const base='assets/poem-films/'+file;
     return '<figure class="poem-film"><figcaption><h3>《'+title+'》诗画视频</h3><small>视频制作　<strong>'+creator+'</strong>　指导教师　<strong>'+teacher+'</strong></small></figcaption>'+
-      '<video controls playsinline preload="none" poster="'+base+'.jpg" aria-label="播放《'+title+'》诗画视频" src="'+base+'.mp4"></video></figure>';
+      '<video controls playsinline preload="metadata" poster="'+base+'.jpg" aria-label="播放《'+title+'》诗画视频" src="'+base+'.mp4"></video></figure>';
   }
   function relatedVideo(title, caption, src, poster) {
     return '<figure class="poem-film"><figcaption><h3>'+esc(title)+'</h3><small>'+esc(caption)+'</small></figcaption>'+
-      '<video controls playsinline preload="none"'+(poster?' poster="'+esc(poster)+'"':'')+' aria-label="'+esc(title)+'" src="'+esc(src)+'"></video></figure>';
+      '<video controls playsinline preload="metadata"'+(poster?' poster="'+esc(poster)+'"':'')+' aria-label="'+esc(title)+'" src="'+esc(src)+'"></video></figure>';
   }
   function chronicleFilms(p) {
-    return window.JIANGHAI_CHRONICLES.filter(clip => clip.places[p.id]).map(clip => {
+    return (window.JIANGHAI_CHRONICLES || []).filter(clip => clip.places[p.id]).map(clip => {
       const path = 'assets/poetry-library/'+clip.file;
       return relatedVideo(clip.title, clip.places[p.id], path+'.mp4', path+'.jpg');
     }).join('');
   }
   const hrefRegion = d => '#d='+d.id;
-  const scrollMap = () => $('map').scrollIntoView({block:'start'});
+  const scrollMap = () => requestAnimationFrame(() => $('map').scrollIntoView({block:'start'}));
   const areaItems = id => places.filter(p=>p.area===id);
   $('ribbons').innerHTML=districts.map((d,i)=>'<a class="ribbon" data-region="'+d.id+'" href="'+hrefRegion(d)+'" style="--tint:'+d.color+'"><i>0'+(i+1)+'</i><strong>'+d.name+'</strong><small>'+areaItems(d.id).length+' 处地点</small></a>').join('');
   $('districts').innerHTML=action('region','','全域')+districts.map(d=>action('region',d.id,d.name)).join('');
@@ -155,6 +157,10 @@
   function drawCulture(){
     const items=cultureItems(), heritage=state.tab==='heritage';
     const label=heritage?'非遗':'美食';
+    if(!cultureLoaded){
+      $('station-body').innerHTML='<div class="zj-degraded-banner"><span>'+label+'资料暂时未能加载，请刷新页面重试。</span><button type="button" class="button" onclick="location.reload()">刷新重试</button></div>';
+      return;
+    }
     const regionOptions=[['','南通全域'],...districts.map(d=>[d.id,d.name])];
     $('station-body').innerHTML='<div class="culture-panel" data-theme="'+state.tab+'">'+
       '<div class="culture-panel-tools"><p><strong>'+label+'精选</strong></p>'+
@@ -186,9 +192,10 @@
     $('map-query-label').textContent=isCulture?(state.tab==='heritage'?'查找非遗':'查找美食'):'查找地点';
     $('map-query').placeholder=isCulture?'项目名、地区或关联地名':'地名、书名或诗句';
     $('station-header').innerHTML='<p class="eyebrow">江海阅潮生 / 地方文献展</p><h3>'+esc(district(state.area)?.name||(isCulture?'南通全域':'从序厅出发'))+'</h3>';
-    if(isCulture){drawCulture();updateStreet();return;}
+    if(isCulture){drawCulture();window.ZJPolish?.animateSwap($('station-body'));updateStreet();return;}
     const items=filtered();
     $('station-body').innerHTML=items.length?'<ul class="place-list">'+items.map(p=>'<li>'+toPlace(p)+(state.tab==='access'?' <a target="_blank" rel="noopener" href="'+directions(p)+'">查路线</a>':'')+'</li>').join('')+'</ul>':'<p class="muted">没有找到相关地点。</p>';
+    window.ZJPolish?.animateSwap($('station-body'));
     updateStreet();
   }
   function externalLink(url, label){
@@ -208,11 +215,14 @@
   }
   async function copyValue(value,status,success){
     try{
-      await navigator.clipboard.writeText(value);status.textContent=success;
+      await navigator.clipboard.writeText(value);
+      if(status)status.textContent=success;
+      window.ZJPolish?.toast(success);
     }catch{
       const field=document.createElement('input');
       field.readOnly=true;field.value=value;field.setAttribute('aria-label','手动复制');
-      status.replaceChildren('可手动复制：',field);field.focus();field.select();
+      if(status)status.replaceChildren('可手动复制：',field);
+      field.focus();field.select();
     }
   }
   document.addEventListener('click',event=>{
@@ -253,13 +263,18 @@
     function display(){
       const photo = photos[index];
       link.href = 'assets/place-photos/' + photo.file;
-      link.setAttribute('aria-label', '查看大图：' + photo.caption + '（新窗口）');
+      link.setAttribute('aria-label', '查看大图：' + photo.caption);
       img.width = photo.width;
       img.height = photo.height;
       img.alt = photo.caption;
       img.src = link.href;
       caption.textContent = (photos.length > 1 ? (index + 1) + ' / ' + photos.length + '　' : '') + photo.caption;
     }
+    link.addEventListener('click', event => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      window.ZJPolish?.openLightbox(link.href, photos[index]?.caption || p.name);
+    });
     if (photos.length > 1){
       const controls = document.createElement('div');
       controls.className = 'place-photo-controls';
@@ -281,19 +296,54 @@
   function renderPlace(p){
     $('place-content').querySelectorAll('audio, video').forEach(media => media.pause());
     state.place=p.id;
+    const hasPoem = Boolean(readings[p.id]?.length || window.JIANGHAI_FILMS?.has(p.id) || readingNotes[p.id]);
     $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title" class="site-heading">'+esc(p.name)+'</h2>'+
-      '<div class="place-actions"><button type="button" class="button" id="jump-book">查看书目与页码</button>'+
-      '<button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
+      '<div class="place-actions"><button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
+      '<button type="button" class="button" id="toggle-favorite" aria-pressed="false">收藏此地点</button>'+
       '<button type="button" class="button" id="share-place">分享给朋友</button></div>'+
       '<div id="place-maps" role="group" aria-label="选择地图平台" hidden>'+mapActions(p)+'</div><div class="source" role="status" id="share-status"></div>'+
-      '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+poemReadings(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+chronicleFilms(p)+'<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
-      (p.pages?'<p class="muted">'+esc(p.pages)+'</p>':'')+bookActions(p)+'</li></ul>';
+      '<div class="place-tabs" role="tablist" aria-label="地点详情分栏">'+
+        '<button type="button" class="place-tab" role="tab" data-place-tab="poem" aria-selected="true">'+(hasPoem?'诗与景':'景点导览')+'</button>'+
+        '<button type="button" class="place-tab" role="tab" data-place-tab="book" aria-selected="false">文献与书目</button>'+
+        '<button type="button" class="place-tab" role="tab" data-place-tab="walk" aria-selected="false">走读与笔记</button>'+
+      '</div>'+
+      '<div class="place-tab-panel" data-place-panel="poem">'+
+        '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+poemReadings(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+chronicleFilms(p)+
+      '</div>'+
+      '<div class="place-tab-panel" data-place-panel="book" hidden>'+
+        '<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
+        (p.pages?'<p class="muted">'+esc(p.pages)+'</p>':'')+bookActions(p)+'</li></ul>'+
+      '</div>'+
+      '<div class="place-tab-panel" data-place-panel="walk" hidden></div>';
     showPlacePhotos(p);
-    $('jump-book').onclick=()=>{$('place-book').focus();$('place-book').scrollIntoView({block:'nearest'});};
+    function switchPlaceTab(name){
+      for(const btn of $('place-content').querySelectorAll('[data-place-tab]')){
+        btn.setAttribute('aria-selected', String(btn.dataset.placeTab===name));
+      }
+      for(const panel of $('place-content').querySelectorAll('[data-place-panel]')){
+        const active = panel.dataset.placePanel===name;
+        panel.hidden = !active;
+        if(active) window.ZJPolish?.animateSwap(panel);
+      }
+    }
+    $('place-content').querySelector('.place-tabs').addEventListener('click', event => {
+      const btn = event.target.closest('[data-place-tab]');
+      if(btn) switchPlaceTab(btn.dataset.placeTab);
+    });
+    $('place-content').querySelectorAll('[data-verse-toggle]').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const stage = toggle.closest('.verse-toolbar')?.nextElementSibling;
+        if(!stage) return;
+        const vertical = stage.classList.toggle('is-vertical');
+        toggle.setAttribute('aria-pressed', String(vertical));
+        toggle.textContent = vertical ? '切换横排' : '切换竖排';
+      });
+    });
     $('travel-toggle').onclick=event=>{
       const panel=$('place-maps');
       panel.hidden=!panel.hidden;
       event.currentTarget.setAttribute('aria-expanded',String(!panel.hidden));
+      if(!panel.hidden) window.ZJPolish?.animateSwap(panel);
     };
     $('share-place').onclick=async()=>{
       const url=new URL('#p='+p.id, location.href).href;
@@ -303,53 +353,41 @@
       }
       await copyValue(url,$('share-status'),'地点链接已复制，可分享给朋友。');
     };
-    const favorite=document.createElement('button');
-    favorite.type='button';
-    favorite.className='button';
-    favorite.id='toggle-favorite';
-    favorite.onclick=()=>{
+    $('toggle-favorite').onclick=()=>{
       try {
-        if(localStorage.getItem(favoritePrefix+p.id)==='1')localStorage.removeItem(favoritePrefix+p.id);
-        else localStorage.setItem(favoritePrefix+p.id,'1');
+        const adding = localStorage.getItem(favoritePrefix+p.id)!=='1';
+        if(adding)localStorage.setItem(favoritePrefix+p.id,'1');
+        else localStorage.removeItem(favoritePrefix+p.id);
         showFavorites();
+        window.ZJPolish?.toast(adding ? '已收藏「'+p.name+'」' : '已取消收藏');
       } catch { $('share-status').textContent='当前浏览器无法保存收藏。'; }
     };
-    $('place-content').append(favorite);
     showFavorites();
-    const noteBox=attachPlaceNote(p,$('place-content'));
+    const walkPanel = $('place-content').querySelector('[data-place-panel="walk"]');
+    const noteBox=attachPlaceNote(p,walkPanel);
     if(!mapDialog.open)mapDialog.showModal();
-    const jump=document.createElement('button');
-    jump.type='button';
-    jump.className='walk-jump';
-    jump.textContent='查看学生走读任务 ↓';
-    const goToWalk=()=>{
-      const heading=$('walk-heading');
-      heading.focus({preventScroll:true});
-      heading.scrollIntoView({block:'start'});
-    };
-    jump.onclick=goToWalk;
-    const noteJump=document.createElement('button');
-    noteJump.type='button';
-    noteJump.className='walk-jump';
-    noteJump.textContent='填写观察卡 ↓';
-    noteJump.setAttribute('aria-controls',noteBox.id);
-    noteJump.onclick=()=>{
-      noteBox.open=true;
-      noteBox.scrollIntoView({block:'nearest'});
-      (noteBox.querySelector('textarea:enabled')||noteBox.querySelector('summary')).focus();
-    };
-    const actions=document.createElement('div');
-    actions.className='walk-actions';
     const askGuide=document.createElement('button');
     askGuide.type='button';
     askGuide.className='walk-jump';
     askGuide.dataset.xtAsk=p.id;
-    askGuide.textContent='问小通';
-    actions.append(jump,noteJump,askGuide);
-    $('place-content').querySelector('.entry-text').before(actions);
+    askGuide.textContent='问小通 · 聊聊这里';
+    const actions=document.createElement('div');
+    actions.className='walk-actions';
+    actions.append(askGuide);
+    walkPanel.prepend(actions);
     const destination=new URLSearchParams(location.hash.slice(1));
-    if(destination.get('walk')==='1')goToWalk();
-    if(destination.get('note')==='1')noteJump.click();
+    if(destination.get('walk')==='1'){
+      switchPlaceTab('walk');
+      const heading=$('walk-heading');
+      heading?.focus({preventScroll:true});
+      heading?.scrollIntoView({block:'start'});
+    }
+    if(destination.get('note')==='1'){
+      switchPlaceTab('walk');
+      noteBox.open=true;
+      noteBox.scrollIntoView({block:'nearest'});
+      (noteBox.querySelector('textarea:enabled')||noteBox.querySelector('summary'))?.focus();
+    }
 
   }
   function openPlace(id,change=true,origin){
@@ -575,9 +613,17 @@ function attachPlaceNote(place,container){
     if(!note.value.trim()){status.textContent='请先写一句观察。';return;}
     save.disabled=true;remove.disabled=true;
     const updated={id:place.id,note:note.value.trim(),photo:file.files[0]||prior?.photo||null,updatedAt:Date.now()};
-    try{await localRecord('observations','readwrite','put',updated);prior=updated;file.value='';status.textContent='已保存在当前浏览器。';}
+    try{await localRecord('observations','readwrite','put',updated);prior=updated;file.value='';status.textContent='已保存在当前浏览器。';window.ZJPolish?.toast('观察卡已保存');}
     catch{status.textContent='保存失败，请检查本机存储空间。';}finally{save.disabled=false;remove.disabled=!prior;}
   };
-  remove.onclick=async()=>{remove.disabled=true;save.disabled=true;try{await localRecord('observations','readwrite','delete',place.id);prior=null;note.value='';file.value='';status.textContent='本条观察已删除。';}catch{status.textContent='删除失败，请重试。';}finally{save.disabled=false;remove.disabled=!prior;}};
+  remove.onclick=()=>{
+    const doRemove=async()=>{
+      remove.disabled=true;save.disabled=true;
+      try{await localRecord('observations','readwrite','delete',place.id);prior=null;note.value='';file.value='';status.textContent='本条观察已删除。';window.ZJPolish?.toast('观察卡已删除');}
+      catch{status.textContent='删除失败，请重试。';}finally{save.disabled=false;remove.disabled=!prior;}
+    };
+    if(window.ZJPolish?.confirmDanger) window.ZJPolish.confirmDanger(remove,'再点一次确认删除',doRemove);
+    else doRemove();
+  };
   return box;
 }

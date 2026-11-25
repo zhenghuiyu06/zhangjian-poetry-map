@@ -1,11 +1,22 @@
 (() => {
   'use strict';
-  const readings = new Map(Object.values(window.JIANGHAI_POEM_READINGS).flat().map(p => [p.title, p]));
-  const media = new Map(window.JIANGHAI_POETRY_MEDIA.map(p => [p.title, p]));
+  const catalogById = new Map((window.JIANGHAI_CATALOG || []).map(p => [p.id, p]));
+  const placesByTitle = new Map();
+  for (const [placeId, listOfPoems] of Object.entries(window.JIANGHAI_POEM_READINGS || {})) {
+    const place = catalogById.get(placeId);
+    if (!place) continue;
+    for (const poem of listOfPoems) {
+      if (!placesByTitle.has(poem.title)) placesByTitle.set(poem.title, []);
+      const arr = placesByTitle.get(poem.title);
+      if (!arr.some(item => item.id === place.id)) arr.push(place);
+    }
+  }
+  const readings = new Map(Object.values(window.JIANGHAI_POEM_READINGS || {}).flat().map(p => [p.title, p]));
+  const media = new Map((window.JIANGHAI_POETRY_MEDIA || []).map(p => [p.title, p]));
   const titles = new Set([...media.keys(), ...readings.keys()]);
   const works = [...titles].map(title => {
     const reading = readings.get(title) || {};
-    const work = { ...media.get(title), ...reading, title };
+    const work = { ...media.get(title), ...reading, title, linkedPlaces: placesByTitle.get(title) || [] };
     if (reading.pictures) {
       work.art = reading.pictures.map(([file, alt]) => ['assets/poem-readings/' + file + '.webp', alt]);
     }
@@ -15,9 +26,10 @@
     }
     return work;
   });
-  for (const clip of window.JIANGHAI_CHRONICLES) {
+  for (const clip of (window.JIANGHAI_CHRONICLES || [])) {
     const path = 'assets/poetry-library/' + clip.file;
-    works.push({ title: clip.title, chronicle: true, description: clip.description,
+    const linked = Object.keys(clip.places || {}).map(id => catalogById.get(id)).filter(Boolean);
+    works.push({ title: clip.title, chronicle: true, description: clip.description, linkedPlaces: linked,
       films: [{ src: path+'.mp4', poster: path+'.jpg', label: clip.title }] });
   }
   const byTitle = new Map(works.map(work => [work.title, work]));
@@ -51,7 +63,7 @@
     const figure = element('figure');
     const control = element(tag);
     control.controls = true;
-    control.preload = 'none';
+    control.preload = 'metadata';
     control.src = src;
     control.setAttribute('aria-label', caption);
     if (poster) control.poster = poster;
@@ -67,10 +79,43 @@
     image.loading = 'lazy';
     const link = element('a');
     link.href = src;
+    link.setAttribute('aria-label', '放大查看：' + alt);
+    link.addEventListener('click', event => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      window.ZJPolish?.openLightbox(src, alt);
+    });
     link.append(image);
     const figure = element('figure');
-    figure.append(link);
+    figure.className = 'zoomable-figure';
+    const hint = element('span', '点击图片放大细读 ↗');
+    hint.className = 'zoom-hint';
+    figure.append(link, hint);
     reader.append(figure);
+  }
+
+  function renderLinkedPlaces(work) {
+    if (!work.linkedPlaces?.length) return;
+    const section = element('section');
+    section.className = 'poetry-places-section';
+    section.append(element('h3', '去诗中之地 · 南通文旅导览'));
+    const grid = element('div');
+    grid.className = 'poetry-places-grid';
+    for (const place of work.linkedPlaces) {
+      const card = element('a');
+      card.className = 'poetry-place-card';
+      card.href = 'exhibit.html#p=' + encodeURIComponent(place.id);
+      const badge = element('span', place.region);
+      badge.className = 'poetry-place-badge';
+      const title = element('strong', place.name);
+      const desc = element('p', (place.description || '').split('。')[0] + '。');
+      const cta = element('span', '去地图看实景与出行攻略 →');
+      cta.className = 'poetry-place-cta';
+      card.append(badge, title, desc, cta);
+      grid.append(card);
+    }
+    section.append(grid);
+    reader.append(section);
   }
 
   function show(work) {
@@ -85,11 +130,29 @@
     reader.append(element('h2', work.title));
     if (work.selection) reader.append(element('p', work.selection));
     if (work.lines?.length) {
+      const toolbar = element('div');
+      toolbar.className = 'verse-toolbar';
+      const label = element('span', '张謇原诗');
+      label.className = 'verse-toolbar-label';
+      const toggle = element('button', '切换竖排');
+      toggle.type = 'button';
+      toggle.className = 'verse-mode-btn';
+      toggle.setAttribute('aria-pressed', 'false');
+      toolbar.append(label, toggle);
+      const stage = element('div');
+      stage.className = 'verse-stage';
       const verse = element('div');
       verse.className = 'library-verse';
       for (const line of work.lines) verse.append(element('div', line));
-      reader.append(verse);
+      stage.append(verse);
+      toggle.addEventListener('click', () => {
+        const vertical = stage.classList.toggle('is-vertical');
+        toggle.setAttribute('aria-pressed', String(vertical));
+        toggle.textContent = vertical ? '切换横排' : '切换竖排';
+      });
+      reader.append(toolbar, stage);
     }
+    renderLinkedPlaces(work);
     if (work.description) reader.append(element('p', work.description));
     if (work.source) reader.append(element('p', work.source));
     if (work.audio) {
@@ -120,6 +183,7 @@
     const annotations = Object.entries(work.annotations || {}).filter(([group]) => group !== '创作背景');
     if (annotations.length) reader.append(element('h3', '项目阅读札记'));
     for (const [group, paragraphs] of annotations) notes(group, paragraphs);
+    window.ZJPolish?.animateSwap(reader);
   }
 
   function hashTitle() {

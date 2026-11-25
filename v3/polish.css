@@ -1,0 +1,795 @@
+/* ==========================================================================
+   张謇诗路 · 统一动效语言与文旅体验升级层 (polish.css)
+   原则：复杂留给系统，体验留给用户；动效解释状态变化，全站同一曲线与节奏。
+   ========================================================================== */
+
+:root {
+  /* 统一动效语言：一套曲线、一套节奏 */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.38, 0.64, 1);
+  --ease-press: cubic-bezier(0.2, 0, 0, 1);
+  --dur-press: 110ms;
+  --dur-fast: 180ms;
+  --dur-base: 260ms;
+  --dur-panel: 340ms;
+
+  /* 统一全站视觉基调补充 */
+  --zj-surface: #fffdf8;
+  --zj-paper: #f4f0e7;
+  --zj-ink: #17242c;
+  --zj-river: #143c5a;
+  --zj-jade: #176057;
+  --zj-seal: #a64634;
+  --zj-gold: #b78c43;
+  --zj-line: rgba(23, 36, 44, 0.14);
+  --zj-shadow-sm: 0 4px 14px rgba(20, 44, 52, 0.08);
+  --zj-shadow-md: 0 14px 36px rgba(20, 44, 52, 0.12);
+  --zj-shadow-lg: 0 24px 64px rgba(15, 29, 36, 0.24);
+}
+
+/* --------------------------------------------------------------------------
+   1. 统一锚点滚动安全边距 & 底部留白（防止吸顶导航和右下角小通遮挡内容）
+   -------------------------------------------------------------------------- */
+[id] {
+  scroll-margin-top: var(--header-offset, 5.75rem);
+}
+
+body {
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+
+/* --------------------------------------------------------------------------
+   2. 统一子页（exhibit.html / poetry.html）顶部导航风格与当前页高亮
+   -------------------------------------------------------------------------- */
+header.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(252, 248, 238, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid #caba97;
+  box-shadow: 0 4px 16px rgba(25, 44, 42, 0.07);
+}
+
+.masthead .masthead-inner {
+  min-height: 70px;
+}
+
+.masthead nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  background: #f4ead5;
+  border: 1px solid #deccaa;
+  border-radius: 12px;
+}
+
+.masthead nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border-bottom: 0 !important; /* 移除旧版强制给最后一个链接加的下划线 */
+  color: #183d42;
+  font-size: clamp(0.88rem, 1.08vw, 1rem);
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out-expo),
+    color var(--dur-fast) var(--ease-out-expo),
+    transform var(--dur-press) var(--ease-press);
+}
+
+.masthead nav a:is(:hover, :focus-visible) {
+  background: #fff9ec;
+  color: #145e51;
+}
+
+.masthead nav a[aria-current="page"] {
+  background: #176357;
+  color: #fffaf0;
+  box-shadow: 0 2px 6px rgba(16, 59, 53, 0.24);
+}
+
+.masthead nav a:active {
+  transform: scale(0.97);
+}
+
+/* 首页顶栏细节同步 */
+header.topbar {
+  background: rgba(252, 248, 238, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* --------------------------------------------------------------------------
+   3. 全站统一触控与微交互：按下去有回应，悬停轻柔克制
+   -------------------------------------------------------------------------- */
+button,
+.button,
+.primary,
+.ghost,
+.hero-primary,
+.hero-secondary,
+.route-chip,
+.filter,
+.guide-option,
+.passport-link,
+.walk-jump,
+.map-ask,
+#map-modes button,
+.filters button,
+.stamp-row button,
+.topbar .topnav a,
+.search-jump {
+  transition:
+    transform var(--dur-press) var(--ease-press),
+    background-color var(--dur-fast) var(--ease-out-expo),
+    border-color var(--dur-fast) var(--ease-out-expo),
+    color var(--dur-fast) var(--ease-out-expo),
+    box-shadow var(--dur-fast) var(--ease-out-expo),
+    opacity var(--dur-fast) var(--ease-out-expo);
+}
+
+button:not(:disabled):active,
+.button:active,
+.primary:active,
+.ghost:active,
+.hero-primary:active,
+.hero-secondary:active,
+.route-chip:active,
+.filter:active,
+.guide-option:active,
+.walk-jump:active,
+#map-modes button:active,
+.filters button:active,
+.stamp-row button:active {
+  transform: scale(0.968);
+}
+
+/* 卡片悬停微浮（仅 transform + shadow，0 重排） */
+.mode-card,
+.seven-gates-grid a,
+.book-card,
+.travel-card,
+.first-card,
+.ribbon,
+.poem-card,
+.poetry-place-card,
+.xt-card {
+  transition:
+    transform var(--dur-base) var(--ease-out-expo),
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    border-color var(--dur-fast) var(--ease-out-expo),
+    background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.mode-card:hover,
+.seven-gates-grid a:hover,
+.book-card:hover,
+.travel-card:hover,
+.first-card:hover,
+.ribbon:hover,
+.poetry-place-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--zj-shadow-md);
+}
+
+.mode-card:active,
+.seven-gates-grid a:active,
+.ribbon:active,
+.poetry-place-card:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+/* 移除首页站点面板右上角无语义的空圆圈 */
+.station-panel::after {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. 内容切换丝滑动效（状态变化：换地区 / 换 Tab / 换诗篇）
+   -------------------------------------------------------------------------- */
+@keyframes zj-swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fx-swap {
+  animation: zj-swap-in var(--dur-base) var(--ease-out-expo) both;
+}
+
+/* --------------------------------------------------------------------------
+   5. 弹窗 (<dialog>) 统一苹果式丝滑进出 + 遮罩淡入
+   -------------------------------------------------------------------------- */
+dialog {
+  transition:
+    opacity var(--dur-panel) var(--ease-out-expo),
+    transform var(--dur-panel) var(--ease-out-expo),
+    overlay var(--dur-panel) allow-discrete,
+    display var(--dur-panel) allow-discrete;
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+}
+
+dialog[open] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  dialog[open] {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+dialog::backdrop {
+  background: rgba(15, 29, 36, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition:
+    opacity var(--dur-panel) var(--ease-out-expo),
+    overlay var(--dur-panel) allow-discrete,
+    display var(--dur-panel) allow-discrete;
+  opacity: 0;
+}
+
+dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. 小通悬浮球防遮挡与丝滑退隐
+   -------------------------------------------------------------------------- */
+.xt-launcher {
+  width: 86px !important;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    opacity var(--dur-fast) var(--ease-out-expo);
+}
+
+.xt-launcher:hover:not(.is-dragging) {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.xt-launcher:active:not(.is-dragging) {
+  transform: scale(0.94);
+}
+
+/* 拖拽时 100% 0 延迟跟手 */
+.xt-launcher.is-dragging {
+  transition: none !important;
+  transform: scale(1.06);
+}
+
+/* 打开任意全屏弹窗时，小通自动优雅退隐，绝不遮挡内容 */
+body:has(dialog[open]:not(#xiaotong-chat)) .xt-launcher {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px) scale(0.84);
+}
+
+/* 小通快捷提问胶囊完整展示，不裁切 */
+.xt-prompts {
+  flex-wrap: wrap !important;
+  overflow-x: visible !important;
+  gap: 6px !important;
+}
+
+.xt-prompts button {
+  min-height: 34px !important;
+  padding: 4px 11px !important;
+}
+
+/* 小通消息入场微动效 */
+.xt-message {
+  animation: zj-swap-in var(--dur-base) var(--ease-out-expo) both;
+}
+
+/* 头像加载失败时的优雅国风兜底 */
+.xt-avatar-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #176057, #0e3d42);
+  color: #fff8e7;
+  font: 700 28px/1 var(--serif, serif);
+  border: 2px solid #e7d8b4;
+  box-shadow: 0 4px 12px rgba(20, 56, 52, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   7. 地图页：国风坐标点 + 景点详情弹窗分栏（诗与景 / 攻略 / 文献 / 走读）
+   -------------------------------------------------------------------------- */
+.atlas-pin {
+  border-radius: 999px !important;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    box-shadow var(--dur-fast) var(--ease-out-expo),
+    background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.atlas-pin:hover,
+.atlas-pin:focus-visible {
+  transform: translate(-50%, -50%) scale(1.18) !important;
+  box-shadow: 0 6px 16px rgba(20, 44, 52, 0.28) !important;
+}
+
+.atlas-pin:active {
+  transform: translate(-50%, -50%) scale(0.95) !important;
+}
+
+/* 景点详情内分栏导航 */
+.place-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  margin: 12px 0 16px;
+  background: #f1e9d8;
+  border: 1px solid #d7cab3;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.place-tab {
+  flex: 1 0 auto;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #365054;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.place-tab:hover {
+  background: rgba(255, 253, 248, 0.72);
+  color: var(--zj-river);
+}
+
+.place-tab[aria-selected="true"] {
+  background: var(--zj-river);
+  color: #fffaf0;
+  box-shadow: 0 2px 8px rgba(20, 60, 90, 0.22);
+}
+
+.place-tab-panel[hidden] {
+  display: none !important;
+}
+
+/* 收藏按钮高亮态 */
+#toggle-favorite[aria-pressed="true"] {
+  background: #faebe6;
+  border-color: var(--zj-seal);
+  color: var(--zj-seal);
+}
+
+/* 危险/删除按钮二次确认态 */
+button.is-confirming {
+  background: var(--zj-seal) !important;
+  border-color: #822f21 !important;
+  color: #fffaf0 !important;
+}
+
+/* 弱网/数据降级提示条 */
+.zj-degraded-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border: 1px solid #d8b58a;
+  border-radius: 10px;
+  background: #fdf6e8;
+  color: #6b481b;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. 诗词排版升级（横排 / 古典竖排切换 + 诗中今址文旅联动卡）
+   -------------------------------------------------------------------------- */
+.verse-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.verse-toolbar-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  color: var(--zj-seal);
+  font-weight: 700;
+}
+
+.verse-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 4px 12px;
+  border: 1px solid #cbbda2;
+  border-radius: 999px;
+  background: #fbf7ee;
+  color: var(--zj-river);
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.verse-mode-btn[aria-pressed="true"] {
+  background: var(--zj-river);
+  border-color: var(--zj-river);
+  color: #fffaf0;
+}
+
+.verse-stage {
+  position: relative;
+  padding: clamp(16px, 2.4vw, 26px);
+  margin: 8px 0 16px;
+  border: 1px solid #dfd3bc;
+  border-left: 3px solid var(--zj-seal);
+  border-radius: 10px;
+  background: linear-gradient(160deg, #fffdf8, #f7f1e3);
+  transition: opacity var(--dur-fast) var(--ease-out-expo);
+}
+
+.verse-stage.is-vertical {
+  border-left: 1px solid #dfd3bc;
+  border-right: 3px solid var(--zj-seal);
+  overflow-x: auto;
+  display: flex;
+  justify-content: flex-end;
+  padding-block: 24px;
+}
+
+.verse-stage.is-vertical .library-verse,
+.verse-stage.is-vertical blockquote {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  letter-spacing: 0.16em;
+  line-height: 2.2;
+  max-height: 340px;
+}
+
+/* 诗歌页 → 文旅景点反向联动卡片 */
+.poetry-places-section {
+  margin: 20px 0 22px;
+  padding: 16px;
+  border: 1px solid #d5cab4;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f8f3e6, #eef4f0);
+}
+
+.poetry-places-section h3 {
+  margin: 0 0 10px !important;
+  font-size: 1.05rem;
+  color: var(--zj-jade);
+}
+
+.poetry-places-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.poetry-place-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid #cfc4ad;
+  border-radius: 10px;
+  background: #fffdf8;
+  color: var(--zj-ink);
+  text-decoration: none;
+}
+
+.poetry-place-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e4efe9;
+  color: var(--zj-jade);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.poetry-place-card strong {
+  font-family: var(--serif, serif);
+  font-size: 1.1rem;
+  color: var(--zj-river);
+}
+
+.poetry-place-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #536363;
+  line-height: 1.55;
+}
+
+.poetry-place-cta {
+  margin-top: auto;
+  padding-top: 4px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--zj-seal);
+}
+
+/* 诗歌页：放宽关系图/视频显示并标明可点击放大 */
+.library-reader .zoomable-figure {
+  position: relative;
+  cursor: zoom-in;
+}
+
+.library-reader .zoomable-figure img {
+  width: 100%;
+  max-height: 44rem;
+  object-fit: contain;
+  border: 1px solid #ddd2be;
+  border-radius: 8px;
+  background: #fffdf8;
+  transition: transform var(--dur-base) var(--ease-out-expo), box-shadow var(--dur-base) var(--ease-out-expo);
+}
+
+.library-reader .zoomable-figure:hover img {
+  transform: scale(1.012);
+  box-shadow: var(--zj-shadow-sm);
+}
+
+.zoom-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--zj-jade);
+  font-weight: 600;
+}
+
+/* 首页七境站点面板内嵌代表诗句 */
+.station-poem-quote {
+  margin: 12px 0 6px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--zj-seal);
+  border-radius: 0 8px 8px 0;
+  background: rgba(166, 70, 52, 0.06);
+  font-family: var(--serif, serif);
+  color: #243840;
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.station-poem-quote small {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--sans, sans-serif);
+  font-size: 0.78rem;
+  color: #6b767c;
+}
+
+/* --------------------------------------------------------------------------
+   9. 全站轻量灯箱 (Lightbox) & 底部胶囊提示 (Toast)
+   -------------------------------------------------------------------------- */
+dialog.zj-lightbox {
+  width: min(1240px, calc(100% - 24px));
+  max-width: none;
+  max-height: 92dvh;
+  padding: 0;
+  border: 1px solid rgba(255, 250, 240, 0.22);
+  border-radius: 14px;
+  background: #101c22;
+  color: #f7f3ea;
+  box-shadow: var(--zj-shadow-lg);
+  overflow: hidden;
+}
+
+dialog.zj-lightbox[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.zj-lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(16, 28, 34, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.zj-lightbox-caption {
+  font-size: 0.9rem;
+  color: #e6dfd0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zj-lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.zj-lightbox-actions a,
+.zj-lightbox-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fffaf0;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.zj-lightbox-actions a:hover,
+.zj-lightbox-actions button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.zj-lightbox-body {
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #0d171c;
+}
+
+.zj-lightbox-body img {
+  max-width: 100%;
+  max-height: calc(92dvh - 96px);
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  cursor: zoom-in;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+.zj-lightbox-body img.is-zoomed {
+  max-width: none;
+  max-height: none;
+  width: min(1600px, 160vw);
+  cursor: zoom-out;
+}
+
+/* 底部轻提示 Toast */
+.zj-toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 1200;
+  max-width: min(90vw, 420px);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(23, 36, 44, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fffdf8;
+  font-size: 0.88rem;
+  font-weight: 550;
+  box-shadow: 0 12px 32px rgba(10, 22, 28, 0.28);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 14px) scale(0.96);
+  transition:
+    opacity var(--dur-fast) var(--ease-out-expo),
+    transform var(--dur-base) var(--ease-spring);
+}
+
+.zj-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   10. 移动端与窄屏细节：底部抽屉手感 + 避免小通遮挡
+   -------------------------------------------------------------------------- */
+@media (max-width: 770px) {
+  .xt-launcher {
+    width: 72px !important;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  .xt-name {
+    font-size: 11px;
+    padding: 1px 9px;
+  }
+
+  /* 移动端地点弹窗底部抽屉化 */
+  dialog#place-dialog {
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: 90dvh;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+    border-bottom: 0;
+    transform: translateY(28px);
+  }
+
+  dialog#place-dialog[open] {
+    transform: translateY(0);
+  }
+
+  @starting-style {
+    dialog#place-dialog[open] {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+
+  .masthead nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 2px;
+    padding: 3px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .masthead nav a {
+    flex: 1 0 auto;
+    min-height: 36px;
+    font-size: 0.78rem;
+    padding: 4px 6px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. 严格尊重系统「减少动态效果」偏好
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

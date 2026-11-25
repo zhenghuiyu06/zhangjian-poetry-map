@@ -40,6 +40,19 @@
       '<input id="xt-question" type="text" maxlength="150" placeholder="说说你想怎么玩…" enterkeyhint="send" autocomplete="off" required>' +
       '<button type="submit">发送</button></form></dialog>';
   document.body.append(widget);
+  widget.querySelectorAll('.xt-avatar img').forEach(img => {
+    const showFallback = () => {
+      const parent = img.parentElement;
+      if (!parent || parent.querySelector('.xt-avatar-fallback')) return;
+      img.hidden = true;
+      const badge = document.createElement('span');
+      badge.className = 'xt-avatar-fallback';
+      badge.textContent = '通';
+      parent.append(badge);
+    };
+    img.addEventListener('error', showFallback, { once: true });
+    if (img.complete && img.naturalWidth === 0) showFallback();
+  });
 
   const find = selector => widget.querySelector(selector);
   const launcher = find('.xt-launcher');
@@ -177,12 +190,21 @@
     updatePrompts(receiptPrompts(current.context));
   }
   renderChat();
-  find('.xt-new').addEventListener('click', () => {
-    current = { context: {}, messages: [] };
-    write('sessionStorage', chatKey, null);
-    form.reset();
-    renderChat();
-    find('#xt-title').focus();
+  const resetBtn = find('.xt-new');
+  resetBtn.addEventListener('click', () => {
+    const doReset = () => {
+      current = { context: {}, messages: [] };
+      write('sessionStorage', chatKey, null);
+      form.reset();
+      renderChat();
+      find('#xt-title').focus();
+      window.ZJPolish?.toast('已开启新对话');
+    };
+    if (current.messages.length > 0 && window.ZJPolish?.confirmDanger) {
+      window.ZJPolish.confirmDanger(resetBtn, '再点确认重开', doReset);
+    } else {
+      doReset();
+    }
   });
   find('.xt-close').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => {

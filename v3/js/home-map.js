@@ -4,8 +4,25 @@ const $home=id=>document.getElementById(id);
 const mapUrl=id=>'exhibit.html#p='+id;
 const regionUrl=id=>'exhibit.html#d='+id;
 let selected='haimen';
-const districtPictures={rugao:['public/station-rugao.jpg','如皋水绘园 · Howhowforever · CC BY-SA 3.0'],haian:['public/station-haian.jpg','海安青墩遗址 · Howhowforever · CC BY-SA 3.0'],haimen:['zhangjian-memorial.webp','张謇纪念馆'],nantong:['langshan.webp','狼山风景名胜区']};
-function selectStation(id){
+const districtPictures={
+  haimen:['zhangjian-memorial.webp','张謇纪念馆'],
+  tongzhou:['public/station-tongzhou.jpg','通州实景'],
+  rugao:['public/station-rugao.jpg','如皋水绘园 · Howhowforever · CC BY-SA 3.0'],
+  rudong:['public/rudong-xiaoyangkou-tidal-flat.jpg','如东小洋口滩涂 · Alastair Rae · CC BY-SA 2.0'],
+  haian:['public/station-haian.jpg','海安青墩遗址 · Howhowforever · CC BY-SA 3.0'],
+  qidong:['public/qidong-seawall-viewing-platform.jpg','启东海堤观景台'],
+  nantong:['langshan.webp','狼山风景名胜区']
+};
+const districtQuotes={
+  haimen:['十千吉贝资维耦，五万飞轳跂报章。','《第三纺织厂开工祀土礼成有作》'],
+  tongzhou:['钟声随鸟远，河势趁林回。','《过排河观》'],
+  rugao:['青苍一撮土，蟠郁百年根。','《盆松》'],
+  rudong:['堤下潮痕堤上草，未妨早晚有高低。','《沈堤》'],
+  haian:['林月濛濛天影压，岸风飒飒涨痕消。','《过太平桥》'],
+  qidong:['新世界，垦牧乡。新少年，小学生。','《垦牧乡小学校歌》'],
+  nantong:['乐工兴事，厚其生谓生。','《题大生纱厂》题联']
+};
+function selectStation(id, animate=false){
   selected=id;
   const entries=catalogue.filter(p=>p.area===id),p=entries[0];
   for(const node of document.querySelectorAll('[data-station]')) {node.classList.toggle('active',node.dataset.station===id);node.setAttribute('aria-pressed',String(node.dataset.station===id));}
@@ -22,31 +39,55 @@ function selectStation(id){
   if(credits[id]?.length){const link=document.createElement('a');link.href=credits[id][1];link.textContent=' · 原图';const license=document.createElement('a');license.href=credits[id][0];license.textContent=' · 许可';$home('stationPhotoCaption').append(link,license);}
   $home('stationPoems').textContent=entries.length;$home('stationStatus').textContent=new Set(entries.map(r=>r.title)).size;
   $home('stationNote').textContent=p.description.split('。')[0]+'。';
+  const quote=districtQuotes[id];
+  let quoteEl=$home('stationPoemQuote');
+  if(!quoteEl){
+    quoteEl=document.createElement('blockquote');
+    quoteEl.id='stationPoemQuote';
+    quoteEl.className='station-poem-quote';
+    $home('stationNote').after(quoteEl);
+  }
+  if(quote){
+    quoteEl.hidden=false;
+    quoteEl.innerHTML='“'+quote[0]+'”<small>—— 张謇 '+quote[1]+'</small>';
+  }else{
+    quoteEl.hidden=true;
+  }
   $home('stationFeature').onclick=()=>location.assign(mapUrl(p.id));
   $home('stationOpen').onclick=()=>location.assign(regionUrl(id));
   $home('storyTitle').textContent='从'+p.region+'读起';$home('storyType').textContent=p.name;
   $home('storyTrace').textContent=p.description.split('。').slice(0,2).join('。')+'。';
   $home('storyToday').textContent='《'+p.title+'》'+(p.pages?' · '+p.pages:'');
   $home('storyPlaces').replaceChildren(...entries.map(r=>{const a=document.createElement('a');a.href=mapUrl(r.id);a.textContent=r.name;return a;}));
+  if(animate){
+    window.ZJPolish?.animateSwap(document.querySelector('.station-panel'));
+    window.ZJPolish?.animateSwap(document.querySelector('.story-sheet'));
+  }
 }
-document.querySelectorAll('[data-entrance-station]').forEach(a=>a.onclick=()=>selectStation(a.dataset.entranceStation));
+document.querySelectorAll('[data-entrance-station]').forEach(a=>a.onclick=()=>selectStation(a.dataset.entranceStation,true));
 document.querySelectorAll('[data-station]').forEach(n=>{
-  n.onclick=()=>selectStation(n.dataset.station);
-  if(n instanceof SVGElement)n.onkeydown=e=>{if([' ','Enter'].includes(e.key)){e.preventDefault();selectStation(n.dataset.station);}};
+  n.onclick=()=>selectStation(n.dataset.station,true);
+  if(n instanceof SVGElement)n.onkeydown=e=>{if([' ','Enter'].includes(e.key)){e.preventDefault();selectStation(n.dataset.station,true);}};
 });
-$home('todayBtn').onclick=()=>selectStation(Object.keys(stations)[Math.floor(Math.random()*7)]);
+$home('todayBtn').onclick=()=>{
+  const others=Object.keys(stations).filter(k=>k!==selected);
+  const pick=others[Math.floor(Math.random()*others.length)];
+  selectStation(pick,true);
+  window.ZJPolish?.toast('已为你选定：'+stations[pick].name);
+};
 $home('searchJump').onclick=()=>location.assign('exhibit.html#search');
 const routes={city:[50,51,42],haimen:[2,1,3],coast:[45,49,48]};
 const pictures={city:['langshan.webp','狼山'],haimen:['zhangjian-memorial.webp','张謇纪念馆'],coast:['public/nantong-museum-historical-building.jpg','南通博物苑']};
-function selectRoute(id){
+function selectRoute(id, animate=false){
   const entries=routes[id].map(n=>catalogue[n-1]),p=entries[0],pic=pictures[id];
   for(const b of document.querySelectorAll('[data-guide]')){const active=b.dataset.guide===id;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));}
   $home('guideTitle').textContent=p.name;$home('guideDescription').textContent=p.description.split('。').slice(0,2).join('。')+'。';
   $home('guideImage').src='../assets/scenic/'+pic[0];$home('guideImage').alt=pic[1];$home('guideCaption').textContent=pic[1];$home('guideCredit').hidden=id!=='coast';$home('guideCredit').innerHTML="<div class=\"photo-credit\"><span>© Peter Potrowl</span><details><summary>图片来源</summary><div class=\"credit-links\"><a href=\"https://creativecommons.org/licenses/by/3.0\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 3.0</a> · <a href=\"https://commons.wikimedia.org/wiki/File:Nantong_Museum_-_historical_building_1.jpg\" target=\"_blank\" rel=\"noopener noreferrer\">Wikimedia Commons 原图</a></div></details></div>";
   $home('guideSteps').replaceChildren(...entries.map(r=>{const link=document.createElement('a');link.href=mapUrl(r.id);link.textContent=r.name;return link;}));
   $home('guidePlace').onclick=()=>location.assign(mapUrl(p.id));$home('guidePoem').onclick=()=>location.assign(regionUrl(p.area));
+  if(animate)window.ZJPolish?.animateSwap($home('guidePanel'));
 }
-document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>selectRoute(b.dataset.guide));
+document.querySelectorAll('[data-guide]').forEach(b=>b.onclick=()=>selectRoute(b.dataset.guide,true));
 selectRoute('city');selectStation(selected);
 const passportPhotos = new Set();
 function makePassportStamp(district, index) {
@@ -82,6 +123,7 @@ function makePassportStamp(district, index) {
         adding ? {key:district.id, checkedAt:Date.now()} : district.id);
       button.classList.toggle('just-stamped', adding);
       await refreshVisitMarkers();
+      window.ZJPolish?.toast(adding ? '已盖下「' + district.name + '」印章' : '已收回「' + district.name + '」印章');
     } catch {
       action.textContent = '保存失败，请重试';
     } finally {
