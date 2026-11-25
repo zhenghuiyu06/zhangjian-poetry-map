@@ -1,16 +1,23 @@
-const landmarkEmblems=[
-  [/轨道交通/,'🚇'],[/车站|站$/,'🚉'],[/桥/,'🌉'],[/博物|纪念馆|档案馆/,'🏛️'],
-  [/纱厂|酒厂|三厂|二厂|公司/,'🏭'],[/寺|观音|禅/,'🛕'],[/气象台/,'🌦️'],
-  [/学校|小学|学宫|师范|女校/,'🏫'],[/剧院|剧场|伶工/,'🎭'],[/园林|水绘园|啬园|花木|影梅/,'🌿'],
-  [/园/,'🌳'],[/钟楼/,'🕰️'],[/故居|故里|别业|故宅|精舍/,'🏡'],
-  [/河|湖|潮间带|滩涂|挡浪墙/,'🌊'],[/渔|港/,'⚓'],[/山/,'⛰️'],
-  [/镇|街|古城/,'🏘️'],[/遗址|青墩/,'🏺'],[/书|图书/,'📚']
-];
+const guofengIcons = {
+  poem: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19v20H6.5a2.5 2.5 0 0 1 0-5H19"/><path d="M9 7h6M9 11h4"/></svg>',
+  transit: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16M8 21l2-4M16 21l-2-4M8.5 14.5h.01M15.5 14.5h.01"/></svg>',
+  museum: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18M5 10v8M10 10v8M14 10v8M19 10v8M2 20h20M12 3 3 9h18z"/></svg>',
+  industry: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18V9l-5 3V9l-5 3V4H3z"/><path d="M7 15h2M12 15h2"/></svg>',
+  nature: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 6-9 4 5 3-4 5 8z"/><path d="M2 20c3-1.5 6-1.5 9 0s6 1.5 11 0"/></svg>',
+  garden: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9"/><path d="M12 13c-4 0-7-3-7-7 4 0 7 3 7 7Z"/><path d="M12 11c3.5 0 6.5-2.5 6.5-6.5-3.5 0-6.5 2.5-6.5 6.5Z"/></svg>',
+  place: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10Z"/><circle cx="12" cy="11" r="2.2"/></svg>'
+};
+window.atlasPlaceIconKind=function(item){
+  if(item.poem)return 'poem';
+  if(item.transit || /轨道交通|车站|站$/.test(item.name))return 'transit';
+  if(/纱厂|酒厂|三厂|二厂|公司/.test(item.name))return 'industry';
+  if(/博物|纪念馆|档案馆|故居|故里|别业|故宅|精舍|遗址|书|图书|学校|师范|寺|观音/.test(item.name))return 'museum';
+  if(/园林|水绘园|啬园|花木|影梅|园/.test(item.name) || item.number===23)return 'garden';
+  if(/山|河|湖|潮间带|滩涂|挡浪墙|渔|港|桥/.test(item.name))return 'nature';
+  return 'place';
+};
 window.atlasPlaceSymbol=function(item){
-  if(item.number===23)return '🪴';
-  if(item.number===6)return '🧵';
-  if(item.number===16)return '🖋️';
-  return landmarkEmblems.find(([pattern])=>pattern.test(item.name))?.[1] || '📍';
+  return guofengIcons[window.atlasPlaceIconKind(item)] || guofengIcons.place;
 };
 /* Web Mercator raster tiles, using the same provider and editorial coordinates as the poetry map. */
 window.createStreetAtlas = function (root, selectPlace, status) {
@@ -188,9 +195,11 @@ window.createStreetAtlas = function (root, selectPlace, status) {
         fragment.append(line);
       }
       const button=document.createElement('button');button.type='button';
-      button.className='atlas-pin '+(item.poem?'poem':item.transit?'transit':'place');
+      const iconKind = window.atlasPlaceIconKind(item);
+      button.className='atlas-pin '+iconKind+(item.poem?' poem':item.transit?' transit':' place');
+      button.dataset.pinId=item.id;
       button.style.left=x+'px';button.style.top=y+'px';
-      button.textContent=window.atlasPlaceSymbol(item);
+      button.innerHTML=window.atlasPlaceSymbol(item);
       button.title=item.name+(item.positionNote?' · '+item.positionNote:'');button.setAttribute('aria-label',button.title);
       if(cultureView)button.dataset.culturePin=item.id;
       button.onclick=()=>selectPlace(item.id);

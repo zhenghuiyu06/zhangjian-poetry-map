@@ -36,7 +36,8 @@
   const tests = {all:()=>true,verse:p=>literaryEntries.has(p.number),heritage:p=>/非遗|非物质文化遗产/.test(p.description),history:p=>/实业|纱厂|纺织|盐垦|盐业|垦牧|码头/.test(p.description)};
   const filtered = () => places.filter(p=>(!state.area || p.area===state.area) && tests[state.layer](p) && query(p,$('map-query').value.trim()));
   const action = (k,v,label) => '<button type="button" data-'+k+'="'+esc(v)+'">'+esc(label)+'</button>';
-  const toPlace = p => '<a data-place="'+p.id+'" href="#p='+p.id+'">'+esc(p.name)+'</a>';
+  const hasPoemMedia = p => Boolean(readings[p.id]?.length || window.JIANGHAI_FILMS?.has(p.id) || readingNotes[p.id]);
+  const toPlace = p => '<a data-place="'+p.id+'" href="#p='+p.id+'"><span>'+esc(p.name)+'</span>'+(hasPoemMedia(p)?'<span class="place-poem-tag" title="含张謇诗文线索">诗</span>':'')+'</a>';
   function placeLink(p){
     return '<a class="place-link" data-place="'+p.id+'" href="#p='+p.id+'" aria-label="查看地点：'+esc(p.name)+'">查看地点 <span aria-hidden="true">→</span></a>';
   }
@@ -191,7 +192,9 @@
     $('layers').hidden=isCulture;
     $('map-query-label').textContent=isCulture?(state.tab==='heritage'?'查找非遗':'查找美食'):'查找地点';
     $('map-query').placeholder=isCulture?'项目名、地区或关联地名':'地名、书名或诗句';
-    $('station-header').innerHTML='<p class="eyebrow">江海阅潮生 / 地方文献展</p><h3>'+esc(district(state.area)?.name||(isCulture?'南通全域':'从序厅出发'))+'</h3>';
+    const countNum = isCulture ? cultureItems().length : filtered().length;
+    const countUnit = isCulture ? (state.tab==='heritage'?' 项非遗':' 道风味') : ' 处地点';
+    $('station-header').innerHTML='<p class="eyebrow">江海阅潮生 / 地方文献展</p><h3>'+esc(district(state.area)?.name||(isCulture?'南通全域':'从序厅出发'))+' <span class="station-count-pill">'+countNum+countUnit+'</span></h3>';
     if(isCulture){drawCulture();window.ZJPolish?.animateSwap($('station-body'));updateStreet();return;}
     const items=filtered();
     $('station-body').innerHTML=items.length?'<ul class="place-list">'+items.map(p=>'<li>'+toPlace(p)+(state.tab==='access'?' <a target="_blank" rel="noopener" href="'+directions(p)+'">查路线</a>':'')+'</li>').join('')+'</ul>':'<p class="muted">没有找到相关地点。</p>';
@@ -291,12 +294,29 @@
       figure.querySelector('figcaption').append(controls);
     }
     display();
-    $('place-content').querySelector('.entry-text').after(figure);
+    const mediaSlot = $('place-content').querySelector('.place-editorial-media');
+    if (mediaSlot) {
+      mediaSlot.append(figure);
+    } else {
+      $('place-content').querySelector('.entry-text').after(figure);
+    }
+  }
+  function nearbyCultureHtml(p) {
+    if (!cultureLoaded) return '';
+    const pick = (list, kindLabel, tabName) => (list || [])
+      .filter(item => item.place === p.id || item.areas?.includes(p.area))
+      .sort((a, b) => (b.place === p.id ? 1 : 0) - (a.place === p.id ? 1 : 0))
+      .slice(0, 2)
+      .map(item => '<div class="nearby-culture-item"><span class="nearby-badge">'+kindLabel+' · '+esc(item.kind)+'</span><strong>'+esc(item.title)+'</strong><p>'+esc(item.summary)+'</p></div>');
+    const cards = [...pick(culture.heritage, '非遗', 'heritage'), ...pick(culture.food, '风味', 'food')];
+    if (!cards.length) return '';
+    return '<section class="place-nearby-culture"><h3>本境非遗与风味推荐</h3><div class="nearby-culture-grid">'+cards.join('')+'</div></section>';
   }
   function renderPlace(p){
     $('place-content').querySelectorAll('audio, video').forEach(media => media.pause());
     state.place=p.id;
-    const hasPoem = Boolean(readings[p.id]?.length || window.JIANGHAI_FILMS?.has(p.id) || readingNotes[p.id]);
+    const hasPoem = hasPoemMedia(p);
+    const hasPhotos = Boolean(window.placePhotos?.[p.id]?.length);
     $('place-content').innerHTML='<p class="eyebrow">'+esc(p.region)+' / 地点与文献</p><h2 id="place-title" class="site-heading">'+esc(p.name)+'</h2>'+
       '<div class="place-actions"><button type="button" class="button" id="travel-toggle" aria-expanded="false" aria-controls="place-maps">前往此地<span aria-hidden="true">▾</span></button>'+
       '<button type="button" class="button" id="toggle-favorite" aria-pressed="false">收藏此地点</button>'+
@@ -304,15 +324,19 @@
       '<div id="place-maps" role="group" aria-label="选择地图平台" hidden>'+mapActions(p)+'</div><div class="source" role="status" id="share-status"></div>'+
       '<div class="place-tabs" role="tablist" aria-label="地点详情分栏">'+
         '<button type="button" class="place-tab" role="tab" data-place-tab="poem" aria-selected="true">'+(hasPoem?'诗与景':'景点导览')+'</button>'+
-        '<button type="button" class="place-tab" role="tab" data-place-tab="book" aria-selected="false">文献与书目</button>'+
+        '<button type="button" class="place-tab" role="tab" data-place-tab="book" aria-selected="false">文献与文旅攻略</button>'+
         '<button type="button" class="place-tab" role="tab" data-place-tab="walk" aria-selected="false">走读与笔记</button>'+
       '</div>'+
       '<div class="place-tab-panel" data-place-panel="poem">'+
-        '<p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+poemReadings(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+chronicleFilms(p)+
+        '<div class="place-editorial-grid'+(hasPhotos?' has-photos':'')+'">'+
+          (hasPhotos?'<div class="place-editorial-media"></div>':'')+
+          '<div class="place-editorial-copy"><p class="entry-text">'+esc(p.description)+'</p>'+readingNote(p)+poemReadings(p)+(p.id==='catalog-23'?verseReader():'')+poemFilm(p)+chronicleFilms(p)+'</div>'+
+        '</div>'+
       '</div>'+
       '<div class="place-tab-panel" data-place-panel="book" hidden>'+
         '<ul class="reference-list"><li><h3 tabindex="-1" id="place-book">《'+esc(p.title)+'》</h3>'+
         (p.pages?'<p class="muted">'+esc(p.pages)+'</p>':'')+bookActions(p)+'</li></ul>'+
+        nearbyCultureHtml(p)+
       '</div>'+
       '<div class="place-tab-panel" data-place-panel="walk" hidden></div>';
     showPlacePhotos(p);
@@ -537,6 +561,18 @@
       const nodes=[...$('station-tabs').children],i=nodes.indexOf(e.target);
       const next=nodes[e.key==='Home'?0:e.key==='End'?nodes.length-1:(i+(e.key==='ArrowLeft'?-1:1)+nodes.length)%nodes.length];e.preventDefault();next.click();next.focus();
     }
+  });
+  $('station-body').addEventListener('pointerover', event => {
+    const link = event.target.closest('[data-place]');
+    if (!link) return;
+    const pin = street.querySelector('.atlas-pin[data-pin-id="' + CSS.escape(link.dataset.place) + '"]');
+    if (pin) pin.classList.add('is-linked-hover');
+  });
+  $('station-body').addEventListener('pointerout', event => {
+    const link = event.target.closest('[data-place]');
+    if (!link) return;
+    const pin = street.querySelector('.atlas-pin[data-pin-id="' + CSS.escape(link.dataset.place) + '"]');
+    if (pin) pin.classList.remove('is-linked-hover');
   });
   draw();drawBooks();stamps();route();
   window.addEventListener('focus',()=>stamps());

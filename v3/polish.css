@@ -781,6 +781,154 @@ dialog.zj-lightbox[open] {
 }
 
 /* --------------------------------------------------------------------------
+   10.5 电脑端优先：七境诗歌地图宽屏双栏、国风矢量点位、景点双栏诗景弹窗与周边文旅
+   -------------------------------------------------------------------------- */
+.atlas-pin {
+  width: 30px !important;
+  height: 30px !important;
+  color: #143c5a !important;
+  background: #fffcf4 !important;
+  border: 1.5px solid #b59e78 !important;
+  box-shadow: 0 2px 6px rgba(20, 44, 52, 0.22) !important;
+}
+
+.atlas-pin.poem {
+  background: #9e3b2e !important;
+  border-color: #e2be74 !important;
+  color: #fff9eb !important;
+}
+
+.atlas-pin.transit {
+  background: #e5f1ec !important;
+  border-color: #4f8a7d !important;
+  color: #14544c !important;
+}
+
+.atlas-pin.garden,
+.atlas-pin.nature {
+  color: #185c54 !important;
+  border-color: #82a99c !important;
+}
+
+.atlas-pin.is-linked-hover {
+  z-index: 6 !important;
+  transform: translate(-50%, -50%) scale(1.28) !important;
+  box-shadow: 0 0 0 5px rgba(166, 70, 52, 0.26), 0 8px 20px rgba(20, 44, 52, 0.34) !important;
+}
+
+.station-count-pill {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 6px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #e8efe9;
+  color: var(--zj-jade);
+  font: 700 0.78rem/1.4 system-ui, sans-serif;
+}
+
+.place-poem-tag {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: #faebe6;
+  border: 1px solid #d9a092;
+  color: var(--zj-seal);
+  font: 700 0.72rem/1 var(--serif, serif);
+}
+
+.place-nearby-culture {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--zj-line);
+}
+
+.place-nearby-culture h3 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  color: var(--zj-jade);
+}
+
+.nearby-culture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.nearby-culture-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #d7cab3;
+  border-radius: 10px;
+  background: #fffdf8;
+}
+
+.nearby-badge {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0eadc;
+  color: #6b5126;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.nearby-culture-item strong {
+  font-family: var(--serif, serif);
+  font-size: 1rem;
+  color: var(--zj-river);
+}
+
+.nearby-culture-item p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #536363;
+  line-height: 1.55;
+}
+
+@media (min-width: 960px) {
+  .map-layout {
+    grid-template-columns: minmax(0, 1.85fr) minmax(330px, 1fr);
+    gap: 1.25rem;
+  }
+
+  .station-body {
+    max-height: 550px;
+  }
+
+  dialog#place-dialog {
+    width: min(940px, calc(100% - 48px));
+    max-height: 88dvh;
+  }
+
+  dialog#place-dialog .dialog-inner {
+    padding: 1.4rem 1.8rem 1.8rem;
+  }
+
+  .place-editorial-grid.has-photos {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.18fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .place-editorial-media {
+    position: sticky;
+    top: 64px;
+  }
+
+  .place-editorial-media .place-photos {
+    margin: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
    11. 严格尊重系统「减少动态效果」偏好
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
