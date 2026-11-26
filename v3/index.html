@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="海门常乐镇张謇纪念馆门匾">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-  <link rel="preload" as="image" href="assets/prologue/mountain.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/prologue/slides/slide-01.webp" type="image/webp" fetchpriority="high">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23143c5a'/%3E%3Cpath d='M14 44c10-3 13-24 26-25 6 0 10 5 10 11 0 9-9 15-21 15' fill='none' stroke='%23f3e9cf' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='25' cy='42' r='5' fill='%23a94a35'/%3E%3C/svg%3E">
   <style>
     :root{
@@ -216,7 +216,8 @@
   <link rel="stylesheet" href="headings.css?v=hero-gold">
   <link rel="stylesheet" href="xiaotong.css?v=dribble">
   <link rel="stylesheet" href="polish.css?v=20261125">
-  <link rel="stylesheet" href="home-prologue.css?v=20261126">
+  <link rel="stylesheet" href="home-prologue.css?v=ppt-carousel-20261126">
+  <script defer src="js/home-prologue.js?v=20261126"></script>
   <script defer src="js/polish.js?v=20261125"></script>
   <script defer src="js/xiaotong.js?v=dribble"></script>
 </head>
@@ -255,23 +256,24 @@
   </header>
 
   <main id="top">
-    <section class="home-prologue" aria-labelledby="prologue-title">
-      <div class="prologue-inner">
-        <div class="prologue-copy">
-          <p class="prologue-kicker" lang="en">NANTONG · CHINA’S FIRST MODERN CITY</p>
-          <h2 id="prologue-title">跟着状元公张謇<br>游南通</h2>
-          <p class="prologue-subtitle">“中国近代第一城”，等你来“悦读”</p>
-          <p class="prologue-description">南通不止家纺，江海间藏着“理想之城”。</p>
-          <div class="prologue-actions">
-            <a class="prologue-map" href="exhibit.html#map">打开七境诗歌地图 <span aria-hidden="true">↗</span></a>
-            <a class="prologue-continue" href="#tour-hero">继续游览 <span aria-hidden="true">↓</span></a>
+    <section class="home-prologue" aria-label="跟着状元公张謇游南通 · PPT 图片展阅">
+      <div class="prologue-gallery" id="prologue-gallery">
+        <button type="button" class="prologue-slide" id="prologue-slide" aria-label="查看下一页" aria-describedby="prologue-page">
+          <img id="prologue-image" src="assets/prologue/slides/slide-01.webp" width="1600" height="900" alt="跟着状元公张謇游南通，中国近代第一城，等你来悦读" fetchpriority="high" decoding="async">
+        </button>
+        <div class="prologue-toolbar">
+          <div class="prologue-controls" aria-label="幻灯片控制">
+            <button type="button" id="prologue-prev" aria-label="上一页">‹</button>
+            <span id="prologue-page">1 / 31</span>
+            <button type="button" id="prologue-next" aria-label="下一页">›</button>
+            <button type="button" class="prologue-play" id="prologue-play" aria-label="暂停自动播放">Ⅱ <span>暂停</span></button>
           </div>
-          <p class="prologue-credit">南通大学数字人文学生团队制作</p>
+          <div class="prologue-links">
+            <a class="prologue-map" href="exhibit.html#map">七境诗歌地图 ↗</a>
+            <a class="prologue-continue" href="#tour-hero">继续游览 ↓</a>
+          </div>
         </div>
-        <div class="prologue-photos">
-          <img src="assets/prologue/clocktower.webp" width="900" height="629" alt="蓝天下的红砖钟楼" decoding="async">
-          <img src="assets/prologue/haoriver.webp" width="750" height="500" alt="灯光映照下的濠河桥与亭阁" decoding="async">
-        </div>
+        <p class="prologue-sr" id="prologue-announcement" role="status" aria-live="polite"></p>
       </div>
     </section>
 

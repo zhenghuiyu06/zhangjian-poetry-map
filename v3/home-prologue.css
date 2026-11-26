@@ -1,140 +1,94 @@
-/* Homepage prologue, adapted from the supplied presentation cover. */
+/* Original presentation pages, displayed as undistorted images. */
 .home-prologue {
+  background: #f4ecdd;
+  padding: clamp(8px, 1.3vw, 18px) clamp(10px, 3vw, 38px);
+}
+.prologue-gallery {
+  width: min(100%, 1440px);
+  max-width: max(600px, calc((100svh - 170px) * 16 / 9));
+  margin: 0 auto;
+}
+.prologue-slide {
+  display: block;
   position: relative;
-  isolation: isolate;
-  color: #fff9ea;
-  background: #263e40 url("assets/prologue/mountain.webp") center 55% / cover no-repeat;
-  padding: clamp(24px, 4vw, 64px);
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid #caba97;
+  border-radius: 6px;
+  background: #1b373b;
+  box-shadow: 0 8px 24px #1c2a331c;
+  cursor: pointer;
 }
-
-.home-prologue::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(105deg, rgba(16, 39, 44, .96) 0%, rgba(22, 43, 44, .86) 39%, rgba(29, 43, 41, .32) 100%);
-}
-
-.prologue-inner {
-  max-width: 1440px;
-  min-height: clamp(490px, 46vw, 650px);
-  margin-inline: auto;
-  border: 1px solid #f7e4bd70;
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, .92fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 64px);
-  padding: clamp(24px, 4.6vw, 66px);
-}
-
-.prologue-copy { min-width: 0; }
-
-.prologue-kicker {
-  display: block;
-  color: #f1ddbc;
-  font: 500 clamp(11px, 1vw, 14px)/1.6 Georgia, serif;
-  letter-spacing: .15em;
-  margin: 0 0 20px;
-}
-
-.prologue-kicker::before {
-  content: "";
-  display: block;
-  width: 46px;
-  height: 3px;
-  margin-bottom: 20px;
-  background: #ce7452;
-}
-
-#prologue-title {
-  margin: 0 0 24px;
-  color: #fff2d6;
-  font-family: var(--serif);
-  font-size: clamp(35px, 4.25vw, 68px);
-  font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: .015em;
-  text-shadow: 0 3px 16px #102e3450;
-}
-
-.prologue-subtitle {
-  font: 600 clamp(18px, 1.7vw, 26px)/1.6 var(--serif);
-  color: #fff4da;
-  margin: 0 0 12px;
-}
-
-.prologue-description {
-  max-width: 34em;
-  font-size: clamp(14px, 1.2vw, 18px);
-  color: #f5efe4;
-  margin: 0;
-  line-height: 1.8;
-}
-
-.prologue-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-.prologue-actions a {
-  display: inline-flex;
-  min-height: 48px;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 18px;
-  border: 1px solid #f0dab0;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 1.45;
-}
-
-.prologue-map { background: #f5e4bd; color: #163f3d; }
-.prologue-map:hover { background: #fff2d6; }
-.prologue-continue { color: #fff6de; background: #24403f86; }
-.prologue-continue:hover { background: #395958; }
-.prologue-actions a:focus-visible { outline: 3px solid #fff6de; outline-offset: 3px; }
-
-.prologue-credit {
-  font-size: 12px;
-  letter-spacing: .05em;
-  color: #e3d8c6;
-  margin: 24px 0 0;
-}
-
-.prologue-photos { display: grid; gap: clamp(12px, 2vw, 24px); min-width: 0; }
-.prologue-photos img {
+.prologue-slide img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border: 4px solid #fff2d8;
-  border-radius: 3px;
-  box-shadow: 0 12px 30px #142e3760;
+  height: 100%;
+  object-fit: contain;
 }
-
-@media (max-width: 850px) {
-  .home-prologue { padding: 18px; }
-  .prologue-inner { min-height: auto; padding: 28px; gap: 26px; grid-template-columns: 1fr; }
-  .prologue-photos { grid-template-columns: 1fr 1fr; }
-  .home-prologue::before { background: linear-gradient(180deg, #182f34f2, #233e3ee0 65%, #314b4766); }
+.prologue-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding: 7px 80px 0 0;
 }
-
-@media (max-width: 480px) {
+.prologue-controls, .prologue-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.prologue-toolbar button, .prologue-links a {
+  display: inline-flex;
+  min-height: 44px;
+  min-width: 44px;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1px solid #caba97;
+  border-radius: 6px;
+  color: #183d42;
+  background: #fbf7ee;
+  cursor: pointer;
+  text-decoration: none;
+  font: 650 13px/1.35 var(--sans);
+  white-space: nowrap;
+}
+.prologue-toolbar button:hover, .prologue-links a:hover { background: #e9dfc9; }
+.prologue-toolbar button:active { transform: scale(.96); }
+.prologue-toolbar #prologue-prev, .prologue-toolbar #prologue-next {
+  padding: 0;
+  font-size: 29px;
+  font-weight: 400;
+}
+#prologue-page {
+  color: #475a59;
+  min-width: 55px;
+  text-align: center;
+  font: 600 14px/1.4 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+.prologue-toolbar .prologue-play { gap: 5px; }
+.prologue-links .prologue-map { background: #176357; color: #fffaf0; border-color: #176357; }
+.prologue-links .prologue-map:hover { background: #134c44; }
+.prologue-gallery :focus-visible { outline: 3px solid #167062; outline-offset: 3px; }
+.prologue-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
   .home-prologue { padding: 10px; }
-  .prologue-inner { padding: 20px 16px 24px; gap: 20px; }
-  .prologue-kicker { margin-bottom: 14px; font-size: 10px; letter-spacing: .09em; }
-  .prologue-kicker::before { margin-bottom: 12px; width: 34px; }
-  #prologue-title { font-size: clamp(30px, 8.5vw, 40px); line-height: 1.32; margin-bottom: 16px; }
-  .prologue-subtitle { font-size: 17px; margin-bottom: 8px; }
-  .prologue-description { font-size: 14px; }
-  .prologue-actions { margin-top: 20px; display: grid; }
-  .prologue-credit { margin-top: 16px; font-size: 11px; }
-  .prologue-photos { gap: 8px; }
-  .prologue-photos img { border-width: 2px; aspect-ratio: 4 / 3; }
+  .prologue-gallery { max-width: 100%; }
+  .prologue-toolbar { justify-content: center; padding-right: 0; }
+  .prologue-controls, .prologue-links { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prologue-gallery * { animation: none !important; transition: none !important; }
 }
