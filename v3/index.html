@@ -18,8 +18,7 @@
   <meta property="og:image:alt" content="海门常乐镇张謇纪念馆门匾">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
-  <!-- 首屏封面是 CSS 背景图，提前声明可让浏览器不必等 v2.css 解析完才开始下载。 -->
-  <link rel="preload" as="image" href="../assets/scenic/zhangjian-memorial.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/prologue/mountain.webp" type="image/webp" fetchpriority="high">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23143c5a'/%3E%3Cpath d='M14 44c10-3 13-24 26-25 6 0 10 5 10 11 0 9-9 15-21 15' fill='none' stroke='%23f3e9cf' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='25' cy='42' r='5' fill='%23a94a35'/%3E%3C/svg%3E">
   <style>
     :root{
@@ -217,6 +216,7 @@
   <link rel="stylesheet" href="headings.css?v=hero-gold">
   <link rel="stylesheet" href="xiaotong.css?v=dribble">
   <link rel="stylesheet" href="polish.css?v=20261125">
+  <link rel="stylesheet" href="home-prologue.css?v=20261126">
   <script defer src="js/polish.js?v=20261125"></script>
   <script defer src="js/xiaotong.js?v=dribble"></script>
 </head>
@@ -255,7 +255,27 @@
   </header>
 
   <main id="top">
-    <section class="tour-hero" aria-labelledby="tour-hero-title">
+    <section class="home-prologue" aria-labelledby="prologue-title">
+      <div class="prologue-inner">
+        <div class="prologue-copy">
+          <p class="prologue-kicker" lang="en">NANTONG · CHINA’S FIRST MODERN CITY</p>
+          <h2 id="prologue-title">跟着状元公张謇<br>游南通</h2>
+          <p class="prologue-subtitle">“中国近代第一城”，等你来“悦读”</p>
+          <p class="prologue-description">南通不止家纺，江海间藏着“理想之城”。</p>
+          <div class="prologue-actions">
+            <a class="prologue-map" href="exhibit.html#map">打开七境诗歌地图 <span aria-hidden="true">↗</span></a>
+            <a class="prologue-continue" href="#tour-hero">继续游览 <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="prologue-credit">南通大学数字人文学生团队制作</p>
+        </div>
+        <div class="prologue-photos">
+          <img src="assets/prologue/clocktower.webp" width="900" height="629" alt="蓝天下的红砖钟楼" decoding="async">
+          <img src="assets/prologue/haoriver.webp" width="750" height="500" alt="灯光映照下的濠河桥与亭阁" decoding="async">
+        </div>
+      </div>
+    </section>
+
+    <section class="tour-hero" id="tour-hero" aria-labelledby="tour-hero-title">
       <div class="tour-hero-copy">
         <img class="city-inscription tour-hero-kicker" src="assets/city-inscription-cover.png" width="1335" height="201" alt="走读近代第一城">
         <h1 id="tour-hero-title" class="site-heading">张謇与<br><em>南通七境</em></h1>
