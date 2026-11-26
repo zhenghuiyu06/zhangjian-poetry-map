@@ -1,0 +1,451 @@
+/* Editorial design study for the existing Zhang Jian cultural guide. */
+body.taste-demo {
+  --taste-paper: #f5f0e5;
+  --taste-white: #fffdf7;
+  --taste-ink: #202d2b;
+  --taste-green: #17594f;
+  --taste-green-dark: #103e38;
+  --taste-stone: #53625b;
+  --taste-line: #d8d0bf;
+  --taste-gap: clamp(18px, 2.1vw, 32px);
+  --taste-gutter: max(24px, calc((100vw - 1280px) / 2));
+  --taste-section: clamp(52px, 6.7vw, 96px);
+  --taste-serif: "Jianghai Song", "Songti SC", STSong, "Noto Serif CJK SC", serif;
+  --paper: var(--taste-paper);
+  --white: var(--taste-white);
+  --card: var(--taste-white);
+  --ink: var(--taste-ink);
+  --river: var(--taste-green);
+  --jade: var(--taste-green);
+  --sea: var(--taste-green-dark);
+  --muted: var(--taste-stone);
+  --line: var(--taste-line);
+  --heading-ink: var(--taste-green-dark);
+  background: var(--taste-paper);
+  color: var(--taste-ink);
+}
+.taste-demo :is(h1, h2, h3) { text-wrap: balance; }
+.taste-demo :is(.section-head, .seven-gates-head, .section-heading) h2.site-heading {
+  --heading-ink: var(--taste-green-dark);
+  --heading-family: var(--taste-serif);
+  --heading-size: clamp(32px, 3.6vw, 52px);
+  letter-spacing: 0;
+  margin: 8px 0 0;
+}
+.taste-demo :is(.section-head, .seven-gates-head, .section-heading) > p {
+  color: var(--taste-stone);
+  font-size: 16px;
+  line-height: 1.75;
+  max-width: 33rem;
+}
+.taste-demo .eyebrow {
+  color: var(--taste-green);
+  font-size: 13px;
+  letter-spacing: .06em;
+  font-weight: 700;
+}
+.taste-demo .eyebrow::before { width: 18px; }
+.taste-demo :is(.primary, .hero-primary, .button.primary) {
+  background: var(--taste-green);
+  color: var(--taste-white);
+  border-color: var(--taste-green);
+  border-radius: 5px;
+  min-height: 46px;
+  box-shadow: none;
+}
+.taste-demo :is(.primary, .hero-primary, .button.primary):hover {
+  background: var(--taste-green-dark);
+  color: var(--taste-white);
+}
+.taste-demo :is(.ghost, .hero-secondary, .button:not(.primary)) {
+  color: var(--taste-green-dark);
+  background: transparent;
+  border: 1px solid #a9b3a7;
+  border-radius: 5px;
+  min-height: 44px;
+  box-shadow: none;
+}
+.taste-demo :is(.ghost, .hero-secondary, .button:not(.primary)):hover {
+  background: #e5eade;
+}
+.taste-demo :focus-visible { outline: 3px solid #977f49; outline-offset: 3px; }
+
+/* Shared, quieter navigation with the map visibly prioritised. */
+.taste-home header.topbar,
+.taste-demo header.masthead {
+  background: var(--taste-white);
+  border-bottom: 1px solid var(--taste-line);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.taste-home header.topbar {
+  padding-inline: var(--taste-gutter);
+  column-gap: clamp(10px, 1.5vw, 22px);
+}
+.taste-home .brand { letter-spacing: .035em; font-weight: 750; font-size: 16px; }
+.taste-home .brand-seal { width: 36px; height: 36px; }
+.taste-home .topbar .topnav,
+.taste-demo .masthead nav {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  gap: 4px;
+}
+.taste-home .topbar .topnav a,
+.taste-demo .masthead nav a {
+  padding-inline: clamp(8px,.8vw,12px);
+  font-size: clamp(15px, 1.18vw, 17px);
+  border: 0;
+  font-weight: 650;
+  border-radius: 5px;
+  color: var(--taste-ink);
+  min-height: 44px;
+}
+.taste-home .topbar .topnav a:is(:hover,:focus-visible),
+.taste-demo .masthead nav a:is(:hover,:focus-visible) {
+  background: #e9ede3;
+  color: var(--taste-green-dark);
+}
+.taste-home .topbar .topnav a.topnav-research,
+.taste-demo .masthead nav a[aria-current="page"] {
+  background: var(--taste-green);
+  color: var(--taste-white);
+  box-shadow: none;
+}
+.taste-home .search-jump { background: var(--taste-white); border: 1px solid var(--taste-line); border-radius: 5px; }
+.taste-demo .masthead .identity { font-family: var(--taste-serif); font-size: clamp(19px, 2vw, 26px); color: var(--taste-green-dark); }
+.taste-demo .masthead .identity small { font: 500 12px/1.4 system-ui, sans-serif; letter-spacing: .02em; color: var(--taste-stone); }
+.taste-demo .masthead .brand-icon { width: 38px; height: 38px; font-size: 22px; border-radius: 4px; }
+.taste-demo .masthead .frame,
+.taste-exhibit main.frame, .taste-poetry main.frame, .taste-demo .footer .frame {
+  width: min(calc(100% - 2 * var(--taste-gutter)), 1280px);
+  max-width: 1280px;
+}
+.taste-demo .masthead .masthead-inner { min-height: 76px; gap: 20px; }
+.taste-demo .masthead nav { width: auto; }
+
+/* Original PPT and ink opening stay at the top. */
+.taste-home .home-prologue {
+  background: var(--taste-paper);
+  padding: 0;
+}
+.taste-home .prologue-gallery { width: 100%; max-width: none; }
+.taste-home .prologue-slide {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* A single, photographic editorial cover following the slide sequence. */
+.taste-home .tour-hero {
+  background: var(--taste-white);
+  color: var(--taste-ink);
+  min-height: 0;
+  grid-template-columns: minmax(0,.91fr) minmax(0,1.09fr);
+  gap: 0;
+  align-items: stretch;
+  padding: 0;
+}
+.taste-home .tour-hero::before, .taste-home .tour-hero::after { content: none; }
+.taste-home .tour-hero-copy { max-width: none; min-width: 0; align-self: center; padding: var(--taste-section) var(--taste-gutter); }
+.taste-home .tour-hero-kicker { width: min(74%, 300px); filter: none; }
+.taste-home #tour-hero-title {
+  --heading-ink: var(--taste-green-dark);
+  --heading-family: var(--taste-serif);
+  --heading-size: clamp(48px, 5.85vw, 84px);
+  margin: 24px 0 20px;
+  text-shadow: none;
+  letter-spacing: 0;
+  line-height: 1.17;
+}
+.taste-home .tour-hero-copy > p { font-size: clamp(18px,1.5vw,22px); color: var(--taste-stone); margin: 0 0 28px; max-width: 28em; }
+.taste-home .tour-hero-aside {
+  display: block;
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  backdrop-filter: none;
+}
+.taste-home .taste-hero-image {
+  margin: 0 0 20px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #ded9cb;
+}
+.taste-home .taste-hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.taste-home .tour-hero-aside > span { color: var(--taste-green); font-size: 13px; letter-spacing: .06em; }
+.taste-home .tour-hero-aside > strong { color: var(--taste-ink); font-size: 27px; margin: 6px 0; }
+.taste-home .tour-hero-aside > p { color: var(--taste-stone); font-size: 16px; margin: 0 0 8px; }
+.taste-home .tour-hero-aside > small { color: var(--taste-stone); font-size: 13px; }
+.taste-home .tour-scroll { position: static; transform: none; color: var(--taste-green); grid-column: 1 / -1; justify-self: center; font-size: 14px; }
+
+/* Sections use matching edges, open space, and fewer nested panels. */
+.taste-home main > :is(.section, .seven-gates, .stage, .desk-section) {
+  padding: var(--taste-section) var(--taste-gutter);
+}
+.taste-home :is(.section-head, .seven-gates-head) { max-width: none; gap: var(--taste-gap); margin: 0 0 36px; }
+.taste-home .jianghai-guide { background: var(--taste-paper); }
+.taste-home .mode-grid, .taste-home .seven-gates-grid {
+  max-width: none;
+  gap: var(--taste-gap);
+}
+.taste-home .mode-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-auto-rows: 1fr;
+}
+.taste-home .jianghai-guide .mode-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  background: var(--taste-white);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  min-height: 0;
+  color: var(--taste-ink);
+}
+.taste-home .taste-mode-photo { margin: 0 0 18px; aspect-ratio: 16/10; background: #e2dfd1; overflow: hidden; }
+.taste-home .taste-mode-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .28s ease; }
+.taste-home .mode-card-research .taste-mode-photo img { object-fit: cover; object-position: center; }
+.taste-home .mode-card-exhibit .taste-mode-photo img { object-fit: contain; background: #e2eae5; }
+.taste-home .mode-card :is(.mode-card-number, h3, p, strong) { margin-inline: 24px; }
+.taste-home .mode-card-number { color: var(--taste-green); letter-spacing: .04em; font-size: 13px; }
+.taste-home .mode-card h3 { color: var(--taste-green-dark); font-family: var(--taste-serif); font-size: clamp(25px,2.3vw,33px); margin-block: 8px 12px; }
+.taste-home .jianghai-guide .mode-card p { font-size: 16px; line-height: 1.65; color: var(--taste-stone); margin-bottom: 24px; }
+.taste-home .mode-card strong { color: var(--taste-green); margin-top: auto; margin-bottom: 22px; font-size: 15px; text-decoration: underline; text-underline-offset: 5px; }
+.taste-home .mode-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px #172e2810; }
+.taste-home .mode-card:hover img { transform: scale(1.025); }
+
+/* Real photographs distinguish the seven districts, without badges or generic card chrome. */
+.taste-home .seven-gates { background: var(--taste-white); }
+.taste-home .seven-gates-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.taste-home .seven-gates-grid a {
+  display: flex;
+  flex-direction: column;
+  background: var(--taste-paper);
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0;
+  min-height: 0;
+  box-shadow: none;
+  transition: transform .2s ease;
+}
+.taste-home .seven-gates-grid a::before,
+.taste-home .seven-gates-grid a::after { content: none; }
+.taste-home .taste-gate-photo { margin: 0; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #ded9cb; }
+.taste-home .taste-gate-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .28s ease; }
+.taste-home .taste-gate-copy { position: relative; padding: 16px 38px 18px 16px; flex: 1; }
+.taste-home .seven-gates-grid strong { color: var(--taste-green-dark); font-family: var(--taste-serif); margin: 0 0 5px; font-size: clamp(23px,2vw,30px); line-height: 1.35; }
+.taste-home .seven-gates-grid small { color: var(--taste-stone); font-size: 14px; line-height: 1.6; }
+.taste-home .taste-gate-copy i { font: 500 20px/1 sans-serif; position: absolute; right: 16px; top: 20px; color: var(--taste-green); }
+.taste-home .seven-gates-grid a:hover { transform: translateY(-2px); box-shadow: none; }
+.taste-home .seven-gates-grid a:hover img { transform: scale(1.025); }
+.taste-home .seven-gates-grid .seven-gates-finale { background: #dce6db; color: var(--taste-green-dark); justify-content: center; }
+.taste-home .taste-finale-text { padding: clamp(20px,3vw,38px); }
+.taste-home .seven-gates-finale strong { font-size: clamp(28px,2.7vw,40px); line-height: 1.15; }
+.taste-home .seven-gates-finale em { display: block; color: var(--taste-green); font-size: 14px; margin-top: 16px; }
+.taste-home .taste-photo-credit { margin-top: 18px; color: var(--taste-stone); font-size: 13px; }
+.taste-home .taste-photo-credit summary { cursor: pointer; }
+.taste-home .taste-photo-credit p { max-width: 90ch; }
+
+/* Reading paths: flatter panels and balanced image/text space. */
+.taste-home .explore-v2 { background: var(--taste-paper); }
+.taste-home .guide-layout { max-width: none; }
+.taste-home .guide-panel, .taste-home .station-panel, .taste-home .story-sheet {
+  border: 1px solid var(--taste-line);
+  border-radius: 4px;
+  box-shadow: none;
+  background: var(--taste-white);
+}
+.taste-home .guide-option { border-radius: 4px; box-shadow: none; border-color: var(--taste-line); }
+.taste-home .guide-option.is-active { background: var(--taste-green); color: var(--taste-white); }
+.taste-home .guide-option.is-active :is(strong,span,small) { color: var(--taste-white); }
+.taste-home .guide-visual { min-width: 0; }
+.taste-home .guide-copy { min-width: 0; padding: clamp(20px,3vw,40px); }
+.taste-home .guide-copy h3, .taste-home #stationName { font-family: var(--taste-serif); color: var(--taste-green-dark); }
+.taste-home .stage {
+  background: var(--taste-white);
+  grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr);
+  min-height: 0;
+  gap: var(--taste-gap);
+  align-items: start;
+}
+.taste-home .stage-copy { grid-column: 1/-1; max-width: none; align-self: start; }
+.taste-home #stage-title { --heading-ink: var(--taste-green-dark); --heading-size: clamp(36px,4vw,56px); margin-block: 8px 12px; }
+.taste-home #stage-title > span { display: inline; }
+.taste-home .stage-copy .lead { margin-bottom: 18px; }
+.taste-home .route-map { background: #edf0e6; min-height: 0; padding: 20px; border-radius: 4px; overflow: hidden; }
+.taste-home .route-svg { max-height: 550px; }
+.taste-home .station-panel { grid-column: auto; display: flex; height: auto; min-height: 0; align-self: stretch; padding: 24px; }
+.taste-home .station-photo { aspect-ratio: 16/9; min-height: 0; margin: 12px 0; height: auto; }
+.taste-home .station-photo img { width: 100%; height: 100%; }
+.taste-home .station-count { color: var(--taste-green); }
+.taste-home .station-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.taste-home .story-sheet { max-width: none; }
+.taste-home .story-intro { background: #e1e9df; }
+.taste-home .desk-section { background: #dfe8df; border: 0; }
+.taste-home .desk-still-life { box-shadow: none; border-radius: 4px; }
+.taste-home .journey { background: var(--taste-paper); --heading-ink: var(--taste-green-dark); }
+.taste-home .journey .section-head { color: var(--taste-ink); }
+.taste-home .journey .section-head > p { color: var(--taste-stone); }
+.taste-home .scenic-card { border-radius: 4px; box-shadow: none; }
+.taste-home .passport-v2 { background: var(--taste-white); }
+.taste-home .method { background: var(--taste-paper); }
+.taste-home #project { background: var(--taste-white); }
+.taste-home footer { background: #e0e8df; color: var(--taste-ink); padding-inline: var(--taste-gutter); }
+.taste-home footer a { color: var(--taste-green-dark); }
+
+/* Exhibition and interactive map — let the map, photographs and documents do the work. */
+.taste-exhibit .hero { padding-block: 64px; gap: var(--taste-gap); }
+.taste-exhibit .hero #hero-title {
+  --heading-ink: var(--taste-green-dark);
+  --heading-family: var(--taste-serif);
+  --heading-size: clamp(42px,5.6vw,76px);
+  letter-spacing: 0;
+}
+.taste-exhibit .hero-art { border: 0; box-shadow: none; background: transparent; margin: 0; padding: 0; }
+.taste-exhibit .hero-art img { border-radius: 4px; width: 100%; }
+.taste-exhibit .hero-art figcaption { display: none; }
+.taste-exhibit .ribbon-head { border: 0; padding: 0 0 12px; }
+.taste-exhibit .ribbons { gap: 10px; padding: 0 0 20px; }
+.taste-exhibit .ribbon {
+  background: #e4e9df;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--taste-green-dark);
+}
+.taste-exhibit .ribbon::before, .taste-exhibit .ribbon::after { box-shadow: none; }
+.taste-exhibit main > .section { margin: 0; padding: var(--taste-section) 0; border-top: 1px solid var(--taste-line); }
+.taste-exhibit .section-heading { margin-bottom: 30px; }
+.taste-exhibit .map-layout { grid-template-columns: minmax(0,1.7fr) minmax(300px,1fr); gap: 20px; align-items: start; }
+.taste-exhibit :is(.map-card,.station-card,.book-card,.first-card,.travel-card,.card) {
+  border-color: var(--taste-line);
+  border-radius: 4px;
+  background: var(--taste-white);
+  box-shadow: none;
+}
+.taste-exhibit .map-card { overflow: hidden; }
+.taste-exhibit .map-card .filters { gap: 8px; }
+.taste-exhibit .atlas-bar { background: #eef0e5; }
+.taste-exhibit .map-caption { color: var(--taste-stone); }
+.taste-exhibit .station-header { background: #e4e9df; }
+.taste-exhibit .station-header h3 { color: var(--taste-green-dark); font-family: var(--taste-serif); }
+.taste-exhibit .station-card .tabs { background: var(--taste-white); gap: 4px; }
+.taste-exhibit .station-body { background: var(--taste-white); }
+.taste-exhibit .station-body .place-list li { border-bottom-color: var(--taste-line); }
+.taste-exhibit :is(.book-card,.first-card,.travel-card) h3 { color: var(--taste-green-dark); }
+.taste-exhibit .timeline li { border-top-color: var(--taste-green); }
+.taste-exhibit .timeline b { color: var(--taste-green); }
+.taste-exhibit .book-grid { gap: 16px; }
+.taste-exhibit dialog#place-dialog { border-radius: 6px; border-color: var(--taste-line); }
+.taste-exhibit #place-title { color: var(--taste-green-dark); font-family: var(--taste-serif); }
+.taste-exhibit .reference-list { color: var(--taste-ink); }
+
+/* The poetry library reads like a book rather than a stack of dashboard cards. */
+.taste-poetry .library { padding-block: 48px var(--taste-section); }
+.taste-poetry .library > a { color: var(--taste-green); }
+.taste-poetry .library h1 { color: var(--taste-green-dark); font-family: var(--taste-serif); font-size: clamp(38px,5vw,66px); margin: 14px 0 30px; letter-spacing: 0; }
+.taste-poetry .library-layout { gap: var(--taste-gap); grid-template-columns: minmax(220px,.67fr) minmax(0,1.8fr); }
+.taste-poetry .library-index { background: #e7ece1; padding: 22px; border: 0; border-radius: 4px; }
+.taste-poetry .library-index label { color: var(--taste-green-dark); font-size: 15px; }
+.taste-poetry .library-index :is(input,select) { min-height: 45px; border: 1px solid #aab8a8; border-radius: 4px; background: var(--taste-white); }
+.taste-poetry #library-titles a { border-bottom-color: #cbd4c6; min-height: 44px; padding: 12px; }
+.taste-poetry #library-titles a[aria-current] { background: var(--taste-green); }
+.taste-poetry .library-reader { border-radius: 4px; padding: clamp(24px,3.6vw,50px); background: var(--taste-white); box-shadow: none; }
+.taste-poetry .library-reader h2 { font-family: var(--taste-serif); color: var(--taste-green-dark); font-size: clamp(32px,3.5vw,48px); line-height: 1.28; }
+.taste-poetry .library-verse { color: var(--taste-ink); font-size: clamp(19px,2vw,26px); line-height: 2; }
+.taste-poetry .library-reader :is(video,img) { border-radius: 3px; }
+
+@media (max-width: 1100px) {
+  body.taste-demo { --taste-gutter: 32px; }
+  .taste-home header.topbar { padding-inline: var(--taste-gutter); }
+  .taste-home .seven-gates-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 900px) {
+  .taste-home .tour-hero { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0; }
+  .taste-home .tour-hero-aside { max-width: none; }
+  .taste-home .mode-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .taste-home .mode-card :is(.mode-card-number,h3,p,strong) { margin-inline: 14px; }
+  .taste-home .stage { grid-template-columns: minmax(0,1fr); }
+  .taste-home .station-panel { grid-column: 1/-1; display: flex; }
+  .taste-home .route-map { max-height: 620px; }
+  .taste-exhibit .map-layout { grid-template-columns: minmax(0,1fr); }
+  .taste-poetry .library-layout { grid-template-columns: minmax(0,1fr); }
+  .taste-poetry #library-titles { max-height: 33vh; }
+}
+@media (max-width: 650px) {
+  body.taste-demo { --taste-gutter: 16px; --taste-gap: 14px; --taste-section: 48px; }
+  .taste-home header.topbar { padding-inline: 16px; row-gap: 6px; }
+  .taste-home .brand { font-size: 14px; }
+  .taste-home .brand-seal { width: 30px; height: 30px; }
+  .taste-home .topbar .topnav { justify-content: flex-start; }
+  .taste-home .topbar .topnav a { font-size: 15px; padding-inline: 12px; min-height: 44px; }
+  .taste-demo .masthead .masthead-inner { gap: 6px; padding-block: 8px; }
+  .taste-demo .masthead nav { flex-wrap: nowrap; overflow-x: auto; width: 100%; max-width: 100%; }
+  .taste-demo .masthead nav a { flex: 0 0 auto; font-size: 14px; }
+  .taste-home .home-prologue { padding: 0; }
+  .taste-home .prologue-gallery { max-width: 100%; }
+  .taste-home .tour-hero { grid-template-columns: minmax(0,1fr); gap: 0; }
+  .taste-home #tour-hero-title { --heading-size: clamp(39px,11vw,56px); margin: 15px 0; }
+  .taste-home .tour-hero-actions { flex-direction: column; }
+  .taste-home .taste-hero-image { margin-bottom: 14px; }
+  .taste-home .tour-hero-aside > strong { font-size: 24px; }
+  .taste-home :is(.section-head, .seven-gates-head) { gap: 10px; margin-bottom: 24px; }
+  .taste-home .mode-grid { grid-template-columns: minmax(0,1fr); }
+  .taste-home .mode-card :is(.mode-card-number,h3,p,strong) { margin-inline: 20px; }
+  .taste-home .seven-gates-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .taste-home .taste-gate-copy { padding: 12px 22px 14px 12px; }
+  .taste-home .seven-gates-grid strong { font-size: 20px; }
+  .taste-home .seven-gates-grid small { font-size: 13px; }
+  .taste-home .taste-gate-copy i { right: 8px; top: 16px; font-size: 15px; }
+  .taste-home .taste-finale-text { padding: 16px; }
+  .taste-home .seven-gates-finale strong { font-size: 25px; line-height: 1.3; }
+  .taste-home .route-map { padding: 10px; }
+  .taste-home .station-panel { padding: 16px; }
+  .taste-home .station-actions { grid-template-columns: 1fr; }
+  .taste-home .stage .story-sheet { margin-top: 4px; }
+  .taste-exhibit .hero { padding-block: 34px; gap: 24px; }
+  .taste-exhibit .section-heading { margin-bottom: 22px; }
+  .taste-exhibit .map-layout { gap: 14px; grid-template-columns: minmax(0,1fr); }
+  .taste-poetry .library { padding-block: 28px; }
+  .taste-poetry .library-index { padding: 14px; }
+  .taste-poetry .library-reader { padding: 18px; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .taste-demo :is(.mode-card,.seven-gates-grid a,.taste-mode-photo img,.taste-gate-photo img) { transition: none; transform: none; }
+}
+
+/* Keep the map task immediately visible and remove decorative card paint. */
+.taste-home .mode-card::before,
+.taste-home .mode-card::after { content: none; }
+.taste-home .taste-hero-image { margin: 0; height: 100%; min-height: min(560px, 70svh); aspect-ratio: auto; }
+.taste-home .tour-hero-aside { align-self: stretch; }
+.taste-home .tour-hero-copy .tour-scroll { display: inline-flex; margin-top: 24px; }
+.taste-home .route-map { width: 100%; }
+.taste-home .route-map::before { content: none; }
+.taste-home .route-chips {
+  position: static;
+  translate: none;
+  width: 100%;
+  overflow-x: auto;
+  justify-content: flex-start;
+  border-radius: 4px;
+  margin-top: 12px;
+  background: var(--taste-white);
+}
+.taste-home .route-chip { flex: 0 0 auto; min-height: 44px; }
+.taste-exhibit main #map { padding-top: 32px; }
+@media(max-width:650px) {
+  .taste-home .taste-hero-image { min-height: 0; height: auto; aspect-ratio: 4/3; }
+  .taste-home .route-map { max-height: none; }
+  .taste-home .route-svg { max-height: 460px; }
+  .taste-exhibit main #map { padding-top: 24px; }
+}
