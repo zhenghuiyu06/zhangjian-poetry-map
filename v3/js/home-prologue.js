@@ -14,31 +14,23 @@
   ];
   const image = document.getElementById('prologue-image');
   const imageButton = document.getElementById('prologue-slide');
-  const pageNumber = document.getElementById('prologue-page');
-  const play = document.getElementById('prologue-play');
   const status = document.getElementById('prologue-announcement');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let index = 0;
   let requested = 0;
   let requestId = 0;
   let timer;
-  let playing = !reducedMotion.matches;
   let visible = true;
 
   const pathFor = (i) => 'assets/prologue/slides/slide-' + String(i + 1).padStart(2, '0') + '.webp';
   const wrap = (i) => (i + titles.length) % titles.length;
 
-  function updatePlay() {
-    play.innerHTML = playing ? 'Ⅱ <span>暂停</span>' : '▶ <span>播放</span>';
-    play.setAttribute('aria-label', playing ? '暂停自动播放' : '开始自动播放');
-  }
-
   function schedule() {
     clearTimeout(timer);
     const opening = document.documentElement.classList.contains('intro') &&
       !document.documentElement.classList.contains('intro-done');
-    if (playing && visible && !document.hidden && !opening) {
-      timer = setTimeout(() => show(index + 1, false), 8000);
+    if (!reducedMotion.matches && visible && !document.hidden && !opening) {
+      timer = setTimeout(() => show(index + 1, false), 5000);
     }
   }
 
@@ -67,20 +59,12 @@
     index = target;
     image.src = next.src;
     image.alt = titles[index];
-    pageNumber.textContent = (index + 1) + ' / ' + titles.length;
     if (manual) status.textContent = '第 ' + (index + 1) + ' 页，' + titles[index];
     preload(index + 1);
     schedule();
   }
 
   imageButton.addEventListener('click', () => show(requested + 1, true));
-  document.getElementById('prologue-prev').addEventListener('click', () => show(requested - 1, true));
-  document.getElementById('prologue-next').addEventListener('click', () => show(requested + 1, true));
-  play.addEventListener('click', () => {
-    playing = !playing;
-    updatePlay();
-    schedule();
-  });
   gallery.addEventListener('keydown', (event) => {
     if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault();
@@ -95,12 +79,7 @@
   }
   const introObserver = new MutationObserver(schedule);
   introObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-  reducedMotion.addEventListener('change', (event) => {
-    playing = !event.matches;
-    updatePlay();
-    schedule();
-  });
-  updatePlay();
+  reducedMotion.addEventListener('change', schedule);
   preload(1);
   schedule();
 })();
