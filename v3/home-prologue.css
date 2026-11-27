@@ -40,3 +40,94 @@
 @media (prefers-reduced-motion: reduce) {
   .prologue-gallery * { animation: none !important; transition: none !important; }
 }
+
+/* Manual reading opens in a dedicated, distraction-free dialog. */
+.prologue-gallery { position: relative; }
+.prologue-gallery .prologue-open {
+  position: absolute;
+  z-index: 1;
+  top: clamp(8px, 1.2vw, 16px);
+  right: clamp(8px, 1.2vw, 16px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 15px;
+  border: 1px solid #d8c8a1;
+  border-radius: 999px;
+  background: #fbf7ee;
+  color: #194b48;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 3px 14px #142d3033;
+  cursor: pointer;
+}
+.prologue-gallery .prologue-open:hover { background: #eee3cd; }
+dialog.prologue-viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  border: 0;
+  border-radius: 0;
+  background: #122a2d;
+  color: #fffaf0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+dialog.prologue-viewer[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+}
+.prologue-viewer::backdrop { background: #122a2d; }
+.prologue-viewer-header, .prologue-viewer-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.prologue-viewer-header { justify-content: space-between; }
+.prologue-viewer-header h2 {
+  color: inherit;
+  min-width: 0;
+  margin: 0;
+  font: 650 clamp(16px, 2vw, 23px)/1.35 var(--sans);
+}
+.prologue-viewer-header button, .prologue-viewer-footer button {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid #e3d9bf7a;
+  border-radius: 6px;
+  background: #fbf7ee;
+  color: #194b48;
+  font: 650 14px/1.35 var(--sans);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.prologue-viewer button:focus-visible { outline: 3px solid #ead7a3; outline-offset: 2px; }
+.prologue-viewer-footer button:disabled { opacity: .4; cursor: default; }
+.prologue-viewer-stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+}
+.prologue-viewer-stage img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.prologue-viewer-footer { justify-content: center; }
+#prologue-viewer-page { font: 600 15px/1.4 var(--sans); min-width: 76px; text-align: center; font-variant-numeric: tabular-nums; }
+body:has(.prologue-viewer[open]) { overflow: hidden; }
+@media(max-width: 480px) {
+  .prologue-gallery .prologue-open { min-height: 44px; padding-inline: 12px; font-size: 13px; }
+  .prologue-viewer-header button, .prologue-viewer-footer button { padding-inline: 12px; }
+}

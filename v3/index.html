@@ -216,8 +216,8 @@
   <link rel="stylesheet" href="headings.css?v=hero-gold">
   <link rel="stylesheet" href="xiaotong.css?v=dribble">
   <link rel="stylesheet" href="polish.css?v=20261125">
-  <link rel="stylesheet" href="home-prologue.css?v=ppt-only-20261127">
-  <script defer src="js/home-prologue.js?v=ppt-3s-20261127"></script>
+  <link rel="stylesheet" href="home-prologue.css?v=ppt-reader-20261127">
+  <script defer src="js/home-prologue.js?v=ppt-reader-20261127"></script>
   <script defer src="js/polish.js?v=20261125"></script>
   <script defer src="js/xiaotong.js?v=dribble"></script>
 </head>
@@ -261,9 +261,25 @@
         <button type="button" class="prologue-slide" id="prologue-slide" aria-label="查看下一页">
           <img id="prologue-image" src="assets/prologue/slides/slide-01.webp" width="1600" height="900" alt="跟着状元公张謇游南通，中国近代第一城，等你来悦读" fetchpriority="high" decoding="async">
         </button>
+        <button type="button" class="prologue-open" id="prologue-open" aria-haspopup="dialog" aria-controls="prologue-viewer" hidden>手动阅览 <span aria-hidden="true">↗</span></button>
         <p class="prologue-sr" id="prologue-announcement" role="status" aria-live="polite"></p>
       </div>
     </section>
+
+    <dialog class="prologue-viewer" id="prologue-viewer" aria-labelledby="prologue-viewer-title">
+      <header class="prologue-viewer-header">
+        <h2 id="prologue-viewer-title">跟着状元公张謇游南通</h2>
+        <button type="button" id="prologue-viewer-close" autofocus>退出阅览 <span aria-hidden="true">×</span></button>
+      </header>
+      <button type="button" class="prologue-viewer-stage" id="prologue-viewer-stage" aria-label="点击图片查看下一页">
+        <img id="prologue-viewer-image" src="assets/prologue/slides/slide-01.webp" width="1600" height="900" alt="跟着状元公张謇游南通">
+      </button>
+      <div class="prologue-viewer-footer">
+        <button type="button" id="prologue-viewer-prev" aria-label="上一页">‹ 上一页</button>
+        <span id="prologue-viewer-page" role="status" aria-live="polite">1 / 31</span>
+        <button type="button" id="prologue-viewer-next" aria-label="下一页">下一页 ›</button>
+      </div>
+    </dialog>
 
     <section class="tour-hero" id="tour-hero" aria-labelledby="tour-hero-title">
       <div class="tour-hero-copy">

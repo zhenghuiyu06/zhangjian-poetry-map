@@ -15,6 +15,16 @@
   const image = document.getElementById('prologue-image');
   const imageButton = document.getElementById('prologue-slide');
   const status = document.getElementById('prologue-announcement');
+  const viewer = document.getElementById('prologue-viewer');
+  const openViewerButton = document.getElementById('prologue-open');
+  const viewerImage = document.getElementById('prologue-viewer-image');
+  const viewerStage = document.getElementById('prologue-viewer-stage');
+  const viewerPage = document.getElementById('prologue-viewer-page');
+  const prev = document.getElementById('prologue-viewer-prev');
+  const next = document.getElementById('prologue-viewer-next');
+  let viewerIndex = 0;
+  let viewerRequested = 0;
+  let viewerRequestId = 0;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let index = 0;
   let requested = 0;
@@ -29,7 +39,7 @@
     clearTimeout(timer);
     const opening = document.documentElement.classList.contains('intro') &&
       !document.documentElement.classList.contains('intro-done');
-    if (!reducedMotion.matches && visible && !document.hidden && !opening) {
+    if (!reducedMotion.matches && visible && !document.hidden && !opening && !viewer.open) {
       timer = setTimeout(() => show(index + 1, false), 3000);
     }
   }
@@ -63,6 +73,78 @@
     preload(index + 1);
     schedule();
   }
+
+  function updateViewer() {
+    viewerPage.textContent = (viewerIndex + 1) + ' / ' + titles.length;
+    const focused = document.activeElement;
+    prev.disabled = viewerIndex === 0;
+    next.disabled = viewerIndex === titles.length - 1;
+    if ((focused === prev && prev.disabled) || (focused === next && next.disabled)) {
+      viewerStage.focus({ preventScroll: true });
+    }
+    viewerStage.setAttribute('aria-label', next.disabled ? '已到最后一页' : '点击图片查看下一页');
+  }
+
+  async function showViewer(nextIndex) {
+    viewerRequested = Math.max(0, Math.min(nextIndex, titles.length - 1));
+    if (viewerRequested === viewerIndex) {
+      ++viewerRequestId;
+      return;
+    }
+    const target = viewerRequested;
+    const thisRequest = ++viewerRequestId;
+    const upcoming = new Image();
+    upcoming.src = pathFor(target);
+    try {
+      await upcoming.decode();
+    } catch {
+      if (thisRequest === viewerRequestId) {
+        viewerRequested = viewerIndex;
+        viewerPage.textContent = '图片未载入，请重试';
+      }
+      return;
+    }
+    if (thisRequest !== viewerRequestId || !viewer.open) return;
+    viewerIndex = target;
+    viewerImage.src = upcoming.src;
+    viewerImage.alt = titles[target];
+    updateViewer();
+    if (target < titles.length - 1) preload(target + 1);
+  }
+
+  function openViewer() {
+    if (viewer.open) return;
+    clearTimeout(timer);
+    // Cancel an in-flight automatic change before entering manual reading.
+    ++requestId;
+    requested = index;
+    ++viewerRequestId;
+    viewerIndex = viewerRequested = 0;
+    viewerImage.src = pathFor(0);
+    viewerImage.alt = titles[0];
+    updateViewer();
+    viewer.showModal();
+    preload(1);
+  }
+
+  openViewerButton.addEventListener('click', openViewer);
+  document.getElementById('prologue-viewer-close').addEventListener('click', () => viewer.close());
+  viewerStage.addEventListener('click', () => showViewer(viewerRequested + 1));
+  prev.addEventListener('click', () => showViewer(viewerRequested - 1));
+  next.addEventListener('click', () => showViewer(viewerRequested + 1));
+  document.addEventListener('keydown', (event) => {
+    if (!viewer.open || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const target = event.key === 'Home' ? 0 : event.key === 'End' ? titles.length - 1 :
+      viewerRequested + (event.key === 'ArrowRight' ? 1 : -1);
+    showViewer(target);
+  });
+  viewer.addEventListener('close', () => {
+    ++viewerRequestId;
+    openViewerButton.focus({ preventScroll: true });
+    schedule();
+  });
+  if (typeof viewer.showModal === 'function') openViewerButton.hidden = false;
 
   imageButton.addEventListener('click', () => show(requested + 1, true));
   gallery.addEventListener('keydown', (event) => {
