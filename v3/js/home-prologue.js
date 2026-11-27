@@ -30,7 +30,7 @@
     const opening = document.documentElement.classList.contains('intro') &&
       !document.documentElement.classList.contains('intro-done');
     if (!reducedMotion.matches && visible && !document.hidden && !opening) {
-      timer = setTimeout(() => show(index + 1, false), 5000);
+      timer = setTimeout(() => show(index + 1, false), 3000);
     }
   }
 
